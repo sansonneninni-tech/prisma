@@ -32,3 +32,10 @@ Netlify, sito `prismamov.netlify.app`, collegato a questo repo: ogni push su `ma
    Anteprima al passaggio (4 secondi): `ffmpeg -ss 2 -t 4 -i public/media/<id>/web.mp4 -an -vf "scale=400:-2,fps=24" -c:v libx264 -crf 31 -movflags +faststart public/media/<id>/preview.mp4`
 3. Originale: `ffmpeg -i sorgente.mov -c:v libx264 -crf 20 -c:a aac -b:a 192k -movflags +faststart public/originali/<id>.mp4`
 4. Aggiungi una voce in `LAVORI` dentro `src/data.js`.
+
+## Versioni da confrontare (27/10/2026)
+- `/` versione attuale (v2).
+- `/a/` Versione A, libertà creativa: sala di montaggio con monitor, ispettore e timeline di tutti i lavori. Codice in `a/` e `src/a/`.
+- `/b/` Versione B, sulla traccia di nataschavavrina.com: nome spezzato, video a tutto schermo, indice di titoli. Codice in `b/` e `src/b/`.
+- Parti comuni in `src/shared/works.js`. Video della home B: `public/media/_reel/reel-h.mp4` (orizzontale) e `reel-v.mp4` (verticale).
+- Le due versioni hanno `noindex`, per non fare concorrenza al sito attuale su Google.
