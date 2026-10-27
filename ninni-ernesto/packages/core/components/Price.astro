@@ -1,0 +1,34 @@
+---
+/**
+ * Price with optional "da" (from) prefix and VAT note. `cents = null` → "Prezzo su richiesta".
+ * Classes: isa-price, isa-price__amount, isa-price__vat, isa-price--on-request.
+ */
+import { formatPrice, useTranslations } from '../src/i18n/index.ts';
+import type { Locale, ProductKind } from '../src/types.ts';
+
+interface Props {
+  cents: number | null;
+  lang: Locale;
+  kind?: ProductKind;
+  /** Show "da {prezzo}" (lowest of several options). */
+  from?: boolean;
+  /** Show "IVA 5% inclusa" / "IVA 22% inclusa". */
+  vatNote?: boolean;
+  class?: string;
+}
+
+const { cents, lang, kind = 'original', from = false, vatNote = false, class: className } = Astro.props;
+const t = useTranslations(lang);
+const formatted = cents === null ? null : formatPrice(cents, lang);
+---
+
+{
+  formatted === null ? (
+    <span class:list={['isa-price', 'isa-price--on-request', className]}>{t('etichette.prezzo_su_richiesta')}</span>
+  ) : (
+    <span class:list={['isa-price', className]} data-kind={kind}>
+      <span class="isa-price__amount">{from ? t('etichette.prezzo_da', { prezzo: formatted }) : formatted}</span>
+      {vatNote && <span class="isa-price__vat">{kind === 'original' ? t('etichette.iva_originali') : t('etichette.iva_stampe')}</span>}
+    </span>
+  )
+}

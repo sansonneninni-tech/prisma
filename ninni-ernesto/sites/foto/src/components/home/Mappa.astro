@@ -1,0 +1,93 @@
+---
+/**
+ * H2 Mappa della home (DIREZIONE §6 P1, §4.2): la «stanza» (foto dell'atelier a tutto schermo, §12 D2) con sopra
+ * la tavola bianca a 3 pannelli link (C19): Opere · Isabella · Altro. È anche l'Indice su computer (`#indice`).
+ * Sotto la tavola una riga bianca: da 768 i link secondari (Stampe · Proposte di Isa · Su commissione ·
+ * Prossimamente · Contatti) e la nota demo; sul telefono «Andria, Puglia» e «Sito dimostrativo».
+ * È l'unico posto della home con la nota demo (la home non ha footer). Dati in src/data/home.json.
+ * Proporzioni (audit di ninni 22/10: «Opere bello grosso, Isabella e Altro a metà»): da 768 e col telefono in
+ * orizzontale Opere a sinistra a tutta altezza (55%), a destra Isabella sopra e Altro sotto, metà altezza ciascuno.
+ * Telefono in verticale: pannelli impilati, Opere per primo e più alto. Stili in styles/home.css.
+ */
+import ArtworkPicture from '@ne/core/components/ArtworkPicture.astro';
+import type { Artwork } from '@ne/core/catalog';
+import Pannello from './Pannello.astro';
+import { HOME } from '../../lib/home';
+import { href, useT, type Locale } from '../../lib/i18n';
+import { MAPPA_RIGA, hrefVoce } from '../../lib/nav';
+import '../../styles/home.css';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useT(lang);
+const { sfondo, sfondoPosizione, ritratto, opere, altro } = HOME.mappa;
+
+// Opere: n colonne riempite «alla più corta» con le proporzioni vere (come C8), calcolate qui: niente JS, niente salti.
+// Due versioni (2 colonne: telefono e tablet in verticale; 3: computer e telefono in orizzontale), se ne vede una;
+// le immagini sono lazy, quindi quella nascosta non scarica nulla.
+function masonry(n: number): Artwork[][] {
+  const colonne: Artwork[][] = Array.from({ length: n }, () => []);
+  const alt = new Array<number>(n).fill(0);
+  for (const a of opere) {
+    const k = alt.indexOf(Math.min(...alt));
+    colonne[k]!.push(a);
+    alt[k]! += 1 / a.aspectRatio + 0.12;
+  }
+  return colonne;
+}
+const versioni = [
+  { n: 2, sizes: '(max-width: 767px) 45vw, 26vw' },
+  { n: 3, sizes: '(max-width: 1023px) 12vw, 19vw' },
+];
+---
+<section class:list={['mappa wrap', !sfondo && 'mappa--bianca']} id="indice" aria-labelledby="mappa-t" style={sfondo ? `--sfondo-pos:${sfondoPosizione}` : undefined}>
+  <h2 class="vh" id="mappa-t">{t('galleria.indice.titolo')}</h2>
+  {sfondo && (
+    <ArtworkPicture photoId={sfondo} lang={lang} alt="" class="mappa__sfondo" sizes="(max-width: 767px) 260vw, (max-width: 1023px) 150vw, 100vw" />
+  )}
+  <div class="mappa__tav">
+    <div class="tav">
+      <Pannello nome="opere" href={href(lang, '/ninni/')} titolo={t('galleria.nav.ninni')}>
+        {versioni.map(({ n, sizes }) => (
+          <div class={`pan__mas pan__mas--${n}`}>
+            {masonry(n).map((col) => (
+              <div class="pan__col">
+                {col.map((a) => (
+                  <figure class="pan__op">
+                    <ArtworkPicture artwork={a} lang={lang} alt="" width={360} sizes={sizes} />
+                  </figure>
+                ))}
+              </div>
+            ))}
+          </div>
+        ))}
+      </Pannello>
+      <Pannello nome="isabella" href={href(lang, '/ernesto/')} titolo={t('galleria.nav.ernesto')}>
+        {/* il catalogo di Ernesto apre più avanti: il pannello lo dice e porta alla lista d'attesa */}
+        <div class="pan__presto">
+          <span class="pan__presto-t">{t('galleria.home.ernesto_presto')}</span>
+          <span class="pan__presto-s">{t('galleria.home.ernesto_avvisami')}</span>
+        </div>
+      </Pannello>
+      <Pannello nome="altro" href={href(lang, '/altro/')} titolo={t('galleria.nav.altro')}>
+        <div class="pan__al">
+          <ul class="pan__voci">
+            {altro.voci.map((v) => <li>{t(v.chiave)}</li>)}
+          </ul>
+          <div class="pan__al-img">
+            <figure class="pan__al-op" style={`--ar:${altro.opera.aspectRatio}`}>
+              <ArtworkPicture artwork={altro.opera} lang={lang} alt="" width={360} sizes="(min-width: 768px) 16vw, 45vw" />
+            </figure>
+          </div>
+        </div>
+      </Pannello>
+    </div>
+    <div class="mappa__piede">
+      <ul class="mappa__riga">
+        {MAPPA_RIGA.map((v) => <li><a class="mappa__lnk" href={hrefVoce(lang, v)}>{t(v.chiave)}</a></li>)}
+      </ul>
+      <span class="mappa__luogo">{t('galleria.indice.luogo')}</span>
+      <span class="mappa__demo mappa__demo--breve">{t('galleria.indice.demo')}</span>
+      <span class="mappa__demo mappa__demo--lunga">{t('galleria.footer.demo')}</span>
+    </div>
+  </div>
+</section>

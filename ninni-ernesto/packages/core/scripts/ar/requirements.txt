@@ -1,0 +1,2 @@
+usd-core>=24.0
+pillow>=10.0

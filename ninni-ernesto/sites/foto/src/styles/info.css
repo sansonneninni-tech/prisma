@@ -1,0 +1,51 @@
+/* ==========================================================================
+   Galleria — P11 Info (pezzo 7). Titolo, sottoindice, 4 sezioni: titolo --t-tab a sinistra (da 1024 in 4 colonne,
+   attaccato sotto il sottoindice), testo 16 px massimo 34rem. Tabella spedizioni: da 768 vera tabella, sul telefono
+   una riga per zona con le tre cifre sotto.
+   ========================================================================== */
+
+.inf { padding-bottom: var(--s-9); }
+.inf__tit { margin-top: var(--s-2); }
+.inf__tit h1 { padding-bottom: 0.12em; }
+.inf__bozza { margin-block: var(--s-3) var(--s-4); font-size: var(--t-small); color: var(--c-mute); line-height: var(--lh-text); }
+@media (min-width: 768px) {
+  html:has(.si--computer) { scroll-padding-top: calc(var(--header-h) + env(safe-area-inset-top) + var(--touch) + var(--s-4)); }
+}
+
+.inf__sez { margin-top: var(--s-8); border-top: var(--line); padding-top: var(--s-3); display: grid; gap: var(--s-5); }
+.inf__h2 { font-size: var(--t-tab); font-weight: var(--w-display); line-height: var(--lh-tab); letter-spacing: -0.02em; }
+:lang(zh) .inf__h2 { letter-spacing: 0; }
+.inf__c { display: grid; gap: var(--s-4); max-width: 34rem; min-width: 0; font-size: 1rem; line-height: 1.5; }
+.inf__h3 { margin-top: var(--s-3); font-size: 1rem; font-weight: var(--w-strong); line-height: 1.3; }
+.inf__nota { font-size: var(--t-small); color: var(--c-mute); margin-top: calc(-1 * var(--s-2)); }
+.inf__a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.inf__dl { display: grid; gap: var(--s-4); }
+.inf__dl dt { font-weight: var(--w-strong); }
+.inf__dl dd { margin: 0; }
+.inf__cookie { display: grid; gap: var(--s-3); justify-items: start; margin-top: var(--s-4); scroll-margin-top: var(--s-4); }
+.inf__cookie .inf__h3 { margin-top: 0; }
+.inf__scelta { font-weight: var(--w-strong); }
+.inf__scelta:empty { display: none; }
+
+/* ---------- tabella spedizioni ---------- */
+.inf__tab { width: 100%; border-collapse: collapse; font-size: var(--t-ui); line-height: 1.3; }
+.inf__tab caption { text-align: left; font-weight: var(--w-strong); font-size: 1rem; padding-bottom: var(--s-2); }
+.inf__tab th, .inf__tab td { text-align: left; font-weight: var(--w-text); padding: var(--s-2) var(--s-3) var(--s-2) 0; border-bottom: var(--line-soft); vertical-align: top; }
+.inf__tab thead th { font-weight: var(--w-strong); border-bottom: var(--line); color: var(--c-mute); }
+.inf__tab tbody th { font-weight: var(--w-strong); }
+.inf__tab td { white-space: nowrap; }
+@media (max-width: 767.98px) {
+  .inf__tab thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .inf__tab, .inf__tab tbody { display: block; }
+  .inf__tab tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--s-3); padding-block: var(--s-3); border-bottom: var(--line-soft); }
+  .inf__tab tbody th { grid-column: 1 / -1; padding: 0 0 var(--s-1); border: 0; }
+  .inf__tab td { padding: 0; border: 0; white-space: normal; }
+  .inf__tab td::before { content: attr(data-l); display: block; font-size: var(--t-small); color: var(--c-mute); }
+  .inf__tab caption { display: block; }
+}
+
+@media (min-width: 1024px) {
+  .inf__sez { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); }
+  .inf__h2 { grid-column: 1 / span 4; align-self: start; position: sticky; top: calc(var(--header-h) + env(safe-area-inset-top) + var(--touch) + var(--s-3)); }
+  .inf__c { grid-column: 5 / span 7; max-width: 38rem; }
+}

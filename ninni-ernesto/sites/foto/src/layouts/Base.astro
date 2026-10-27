@@ -1,0 +1,99 @@
+---
+/**
+ * Layout base di Galleria (pezzo 1): <html lang>, meta, favicon, font (preload del solo latin al primo caricamento),
+ * ClientRouter, header (C1), Indice (C3), footer (C2, non in home), cassetto (C11, non su carrello e checkout),
+ * annunci del carrello (CartLiveRegion del core), banner cookie (pezzo 7), movimento e cursore A7 (pezzo 8).
+ * `home`: niente spazio sotto l'header (l'apertura lo ha già nella sua griglia) e niente footer.
+ */
+import { ClientRouter } from 'astro:transitions';
+import CartLiveRegion from '@ne/core/components/CartLiveRegion.astro';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/struttura.css';
+import '../styles/acquisto.css';
+import '../styles/movimento.css';
+import Header from '../components/Header.astro';
+import Indice from '../components/Indice.astro';
+import Footer from '../components/Footer.astro';
+import Cassetto from '../components/acquisto/Cassetto.astro';
+import Cookie from '../components/Cookie.astro';
+import { HTML_LANG, alternateLinks, useT, type Locale } from '../lib/i18n';
+import { CHIAVI } from '../lib/storage';
+
+interface Props {
+  lang: Locale; title?: string; description?: string; noindex?: boolean; home?: boolean;
+  /** pagina carrello o checkout: niente cassetto («Carrello (n)» porta alla pagina); nel checkout header ridotto */
+  acquisto?: 'carrello' | 'checkout';
+}
+const { lang, title, description, noindex = false, home = false, acquisto } = Astro.props;
+const t = useT(lang);
+const pathname = Astro.url.pathname;
+const brand = 'Ninni & Ernesto';
+const fullTitle = title ? `${title} · ${brand}` : brand;
+const desc = description ?? t('galleria.meta.descrizione');
+const alternates = alternateLinks(pathname, Astro.site);
+const canonical = Astro.site ? new URL(pathname, Astro.site).href : pathname;
+---
+<!doctype html>
+<html lang={HTML_LANG[lang]} data-lang={lang} data-home={home ? '' : undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : lang === 'en' ? 'en_GB' : 'it_IT'} />
+    <!-- Inter Tight latin: preload solo al primo caricamento della scheda. Dopo è nella cache e un preload
+         inutilizzato scrive un avviso in console (regola di Casa). -->
+    <script is:inline define:vars={{ kFont: CHIAVI.font }}>
+      (function () {
+        var visto = false;
+        try { visto = sessionStorage.getItem(kFont) === '1'; sessionStorage.setItem(kFont, '1'); } catch (e) {}
+        if (visto) return;
+        var l = document.createElement('link');
+        l.rel = 'preload'; l.as = 'font'; l.type = 'font/woff2'; l.crossOrigin = 'anonymous';
+        l.href = '/fonts/inter-tight-latin-wght-normal.woff2';
+        document.head.appendChild(l);
+      })();
+    </script>
+    <link rel="stylesheet" href="/fonts/fonts.css" />
+    <!-- dialog con una voce nella storia (AR, lente): il loro popstate deve arrivare PRIMA di quello del ClientRouter,
+         che altrimenti rifà la pagina (regola di Casa). Script classico: il suo ascoltatore è il primo. -->
+    <script is:inline>
+      if (!window.__galPop) {
+        window.__galPop = new Set();
+        addEventListener('popstate', function (e) { window.__galPop.forEach(function (f) { f(e); }); });
+      }
+    </script>
+    <ClientRouter fallback="swap" />
+  </head>
+  <body>
+    <a class="salta" href="#contenuto">{t('galleria.nav.salta')}</a>
+    <Header lang={lang} pathname={pathname} ridotto={acquisto === 'checkout'} />
+    <main id="contenuto" class:list={['main', home && 'main--home']} tabindex="-1">
+      <slot />
+    </main>
+    {!home && <Footer lang={lang} />}
+    {acquisto !== 'checkout' && <Indice lang={lang} pathname={pathname} />}
+    {!acquisto && <Cassetto lang={lang} />}
+    <!-- banner cookie (pezzo 7): fisso in basso finché non c'è una scelta -->
+    <Cookie lang={lang} />
+    <!-- annunci del carrello: lo script del core si aggancia solo alla regione della prima pagina; dopo un cambio pagina
+         del ClientRouter annuncia lib/struttura-client.ts nella regione nuova (stessi testi, letti da data-i18n) -->
+    <CartLiveRegion lang={lang} />
+    <!-- A7 cursore con etichetta (pezzo 8): lo accende lib/cursore.ts solo con puntatore fine; una per lingua -->
+    <div class="cur" data-cur aria-hidden="true" transition:persist={`cursore-${lang}`}
+      data-apri={t('galleria.cursore.apri')} data-vedi={t('galleria.cursore.vedi')}
+      data-parete={t('galleria.cursore.parete')} data-ingrandisci={t('galleria.cursore.ingrandisci')}><span data-cur-t></span></div>
+    <script>
+      import '../lib/struttura-client';
+      import '../lib/movimento';
+    </script>
+  </body>
+</html>

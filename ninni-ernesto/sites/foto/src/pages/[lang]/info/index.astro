@@ -1,0 +1,133 @@
+---
+/**
+ * /[lang]/info/ — P11 Info (DIREZIONE §6 P11): spedizioni e resi, termini, privacy e cookie, note legali in una pagina
+ * con àncore (#spedizioni, #termini, #privacy, #cookie, #note-legali: i rinvii di public/_redirects e i link del core
+ * arrivano qui). «← Home», titolo, sottoindice (attaccato sotto l'header da 768; sul telefono 2 × 2).
+ * Tabella spedizioni dal core (SHIPPING_RATES, SHIPPING_ZONE_ORDER, PREPARATION_BUSINESS_DAYS): si aggiorna da sola.
+ * Testi legali dei testi comuni, accorciati molto in galleria.info.* e senza segnaposto (le parti «[da …]» sono tolte;
+ * cosa manca è in CANTIERE.md). Cookie: la scelta attuale e «Cambia la scelta», che riapre il banner (lib/info-client.ts).
+ * Nessun IBAN.
+ */
+import Base from '../../../layouts/Base.astro';
+import Torna from '../../../components/Torna.astro';
+import Sottoindice from '../../../components/Sottoindice.astro';
+import { PREPARATION_BUSINESS_DAYS, SHIPPING_RATES, SHIPPING_ZONE_ORDER } from '@ne/core';
+import { formatPrice, localeStaticPaths } from '@ne/core/i18n';
+import { href, useT, type Locale } from '../../../lib/i18n';
+import { fit } from '../../../lib/fit';
+import { EMAIL, TELEFONO } from '../../../lib/nav';
+import '../../../styles/info.css';
+
+export const getStaticPaths = () => localeStaticPaths();
+const lang = Astro.params.lang as Locale;
+const t = useT(lang);
+const k = (c: string, p?: Record<string, string | number>) => t(`galleria.info.${c}`, p);
+const titolo = t('galleria.nav.info');
+const f = fit(titolo);
+
+const voci = [
+  { id: 'spedizioni', nome: t('galleria.footer.spedizioni') },
+  { id: 'termini', nome: k('termini_t') },
+  { id: 'privacy', nome: k('privacy_t') },
+  { id: 'note-legali', nome: t('galleria.footer.note_legali') },
+];
+const prezzo = (c: number) => (c === 0 ? t('galleria.acquisto.inclusa') : formatPrice(c, lang));
+const zone = SHIPPING_ZONE_ORDER.map((z) => {
+  const r = SHIPPING_RATES[z];
+  return {
+    nome: t(`core.zone.${z}`),
+    originali: prezzo(r.original.perItemCents),
+    stampe: prezzo(r.print.firstItemCents),
+    giorni: k('giorni', { min: r.deliveryDays.min, max: r.deliveryDays.max }),
+  };
+});
+const termini = t.raw<[string, string][]>('galleria.info.termini') ?? [];
+const privacy = t.raw<[string, string][]>('galleria.info.privacy') ?? [];
+const virgola = lang === 'zh' ? '，' : ', ';
+const i18n = JSON.stringify({ tutti: k('scelta_tutti'), necessari: k('scelta_necessari'), nessuna: k('scelta_nessuna') });
+---
+<Base lang={lang} title={titolo} description={k('descrizione')}>
+  <article class="wrap inf" aria-labelledby="inf-h">
+    <Torna href={href(lang, '/')}>{t('galleria.nav.home')}</Torna>
+    <div class="titolo inf__tit" style={f ? `--fit:${f}` : undefined}><h1 id="inf-h">{titolo}</h1></div>
+    <p class="inf__bozza">{k('bozza')}</p>
+    <Sottoindice voci={voci} label={k('sezioni')} fisso="computer" />
+
+    <section class="inf__sez" id="spedizioni" aria-labelledby="sp-h">
+      <h2 class="inf__h2" id="sp-h">{t('galleria.footer.spedizioni')}</h2>
+      <div class="inf__c">
+        <p>{k('sped_intro')}</p>
+        <table class="inf__tab">
+          <caption>{t('legale.spedizioni.zone_titolo')}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{t('legale.spedizioni.colonna_zona')}</th>
+              <th scope="col">{t('legale.spedizioni.colonna_originali')}</th>
+              <th scope="col">{t('legale.spedizioni.colonna_stampe')}</th>
+              <th scope="col">{t('legale.spedizioni.colonna_tempi')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {zone.map((z) => (
+              <tr>
+                <th scope="row">{z.nome}</th>
+                <td class="num" data-l={t('legale.spedizioni.colonna_originali')}>{z.originali}</td>
+                <td class="num" data-l={t('legale.spedizioni.colonna_stampe')}>{z.stampe}</td>
+                <td class="num" data-l={t('legale.spedizioni.colonna_tempi')}>{z.giorni}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="inf__nota">{k('tab_nota')}</p>
+        <p>{k('preparazione', { o: PREPARATION_BUSINESS_DAYS.original, s: PREPARATION_BUSINESS_DAYS.print })}</p>
+        <p>{t('galleria.acquisto.dazi')}</p>
+        <h3 class="inf__h3">{t('legale.spedizioni.danni_titolo')}</h3>
+        <p>{t('legale.spedizioni.danni_testo')}</p>
+        <h3 class="inf__h3">{t('legale.spedizioni.resi_titolo')}</h3>
+        <p>{k('resi')}</p>
+        <p>{k('esclusi')}</p>
+      </div>
+    </section>
+
+    <section class="inf__sez" id="termini" aria-labelledby="te-h">
+      <h2 class="inf__h2" id="te-h">{k('termini_t')}</h2>
+      <dl class="inf__c inf__dl">
+        {termini.map(([a, b]) => <div><dt>{a}</dt><dd>{b}</dd></div>)}
+      </dl>
+    </section>
+
+    <section class="inf__sez" id="privacy" aria-labelledby="pr-h">
+      <h2 class="inf__h2" id="pr-h">{k('privacy_t')}</h2>
+      <div class="inf__c">
+        <dl class="inf__dl">
+          {privacy.map(([a, b]) => <div><dt>{a}</dt><dd>{b}</dd></div>)}
+        </dl>
+        <div class="inf__cookie" id="cookie" data-info-cookie data-i18n={i18n}>
+          <h3 class="inf__h3">{k('cookie_t')}</h3>
+          <p>{k('cookie')}</p>
+          <p class="inf__scelta" aria-live="polite" data-info-scelta></p>
+          <button class="btn btn--linea" type="button" data-info-cambia>{k('cambia')}</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="inf__sez" id="note-legali" aria-labelledby="nl-h">
+      <h2 class="inf__h2" id="nl-h">{t('galleria.footer.note_legali')}</h2>
+      <div class="inf__c">
+        <p>
+          Ninni &amp; Ernesto<br />
+          <span lang="it">Indirizzo da definire</span>{virgola}{k('paese')}<br />
+          {k('piva')}<br />
+          <a class="inf__a" href={`mailto:${EMAIL}`}>{EMAIL}</a><br />
+          <a class="inf__a num" href={`tel:${TELEFONO.replace(/\s/g, '')}`}>{TELEFONO}</a>
+        </p>
+        <p>{k('diritti')}</p>
+        <p>{k('demo')}</p>
+      </div>
+    </section>
+  </article>
+</Base>
+
+<script>
+  import '../../../lib/info-client';
+</script>

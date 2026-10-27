@@ -1,0 +1,245 @@
+---
+/**
+ * Full cart: lines (quantity for prints, remove), destination country, VAT detail, shipping,
+ * delivery estimate, duties note, installments, checkout link. Rendered in the browser from the cart store.
+ *
+ * Classes: isa-cart, isa-cart__empty, isa-cart__lines, isa-cart-line(__img|__info|__title|__detail|__unique|__qty|__price|__remove),
+ * isa-cart__country, isa-cart-summary(__row|__label|__value|__total|__vat|__delivery|__duties|__installments), isa-cart__checkout.
+ * State: `data-empty="true|false"` on the root.
+ */
+import { SHIPPABLE_COUNTRIES } from '../src/config/shipping.ts';
+import { countryName, localizePath, pickStrings, useTranslations } from '../src/i18n/index.ts';
+import type { Locale } from '../src/types.ts';
+import Field from './Field.astro';
+
+interface Props {
+  lang: Locale;
+  checkoutHref?: string;
+  /** Where "Continua a guardare" points (path without language). */
+  continueHref?: string;
+  class?: string;
+}
+
+const { lang, checkoutHref = '/checkout', continueHref = '/opere', class: className } = Astro.props;
+const t = useTranslations(lang);
+const collator = new Intl.Collator(lang);
+const countries = [...SHIPPABLE_COUNTRIES]
+  .map((code) => ({ value: code, label: countryName(code, lang) }))
+  .sort((a, b) => (a.value === 'IT' ? -1 : b.value === 'IT' ? 1 : collator.compare(a.label, b.label)));
+
+const strings = pickStrings(t, [
+  'carrello.subtotale',
+  'carrello.iva_inclusa',
+  'carrello.iva_dettaglio_originali',
+  'carrello.iva_dettaglio_stampe',
+  'carrello.spedizione',
+  'carrello.spedizione_scegli_paese',
+  'carrello.spedizione_gratis',
+  'carrello.nota_extra_ue',
+  'carrello.totale',
+  'carrello.originale_unico',
+  'carrello.rate_nota',
+  'etichette.rate',
+  'etichette.consegna_stimata',
+  'etichette.quantita',
+  'etichette.carta_fotografica',
+  'etichette.tela',
+  'bottoni.rimuovi',
+  'core.cart.diminuisci',
+  'core.cart.aumenta',
+  'core.cart.rimuovi',
+  'core.cart.stampa_dettaglio',
+  'core.cart.originale_dettaglio',
+  'core.cart.assicurazione',
+  'core.cart.totale_aggiornato',
+  'core.cart.iva_esente',
+  'core.zone.italy',
+  'core.zone.eu',
+  'core.zone.uk-ch',
+  'core.zone.asia',
+  'core.zone.world',
+]);
+---
+
+<div class:list={['isa-cart', className]} data-isa-cart data-empty="true" data-lang={lang} data-i18n={JSON.stringify(strings)}>
+  <div class="isa-cart__empty" data-cart-empty>
+    <p class="isa-cart__empty-title">{t('carrello.vuoto_titolo')}</p>
+    <p class="isa-cart__empty-text">{t('carrello.vuoto_testo')}</p>
+    <a class="isa-cart__continue" href={localizePath(continueHref, lang)}>{t('bottoni.continua')}</a>
+  </div>
+
+  <div class="isa-cart__content" data-cart-content hidden>
+    <ul class="isa-cart__lines" data-cart-lines></ul>
+
+    <div class="isa-cart__country">
+      <Field idPrefix="isa-cart" name="country" as="select" label={t('carrello.spedizione_scegli_paese')} autocomplete="country" options={[{ value: '', label: '—' }, ...countries]} />
+    </div>
+
+    <section class="isa-cart-summary" aria-labelledby="isa-cart-summary-title" data-cart-summary>
+      <h2 class="isa-cart-summary__title" id="isa-cart-summary-title">{t('checkout.riepilogo_titolo')}</h2>
+      <dl class="isa-cart-summary__list" data-summary-list></dl>
+      <p class="isa-cart-summary__delivery" data-summary-delivery hidden></p>
+      <p class="isa-cart-summary__duties" data-summary-duties hidden></p>
+      <p class="isa-cart-summary__installments" data-summary-installments hidden></p>
+      <p class="isa-visually-hidden" role="status" aria-live="polite" data-summary-live></p>
+    </section>
+
+    <a class="isa-cart__checkout" href={localizePath(checkoutHref, lang)}>{t('bottoni.vai_checkout')}</a>
+    <a class="isa-cart__continue" href={localizePath(continueHref, lang)}>{t('bottoni.continua')}</a>
+  </div>
+</div>
+
+<script>
+  import { $cart, $cartCountry, $cartTotals, removeFromCart, setCartCountry, setQuantity } from '../src/cart/store.ts';
+  import { maxQuantityFor } from '../src/cart/store.ts';
+  import { describeLine } from '../src/email/order-email.ts';
+  import { addBusinessDays, formatDate, formatPrice } from '../src/i18n/format.ts';
+  import { calculateInstallments } from '../src/pricing/installments.ts';
+  import type { CartLine, Locale } from '../src/types.ts';
+  import { announce, readTranslator } from '../src/ui/dom.ts';
+
+  function el<K extends keyof HTMLElementTagNameMap>(tag: K, className: string, text?: string): HTMLElementTagNameMap[K] {
+    const node = document.createElement(tag);
+    node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-isa-cart]').forEach((root) => {
+    const t = readTranslator(root);
+    const lang = (root.dataset.lang ?? 'it') as Locale;
+    const price = (c: number) => formatPrice(c, lang);
+    const empty = root.querySelector<HTMLElement>('[data-cart-empty]')!;
+    const content = root.querySelector<HTMLElement>('[data-cart-content]')!;
+    const list = root.querySelector<HTMLUListElement>('[data-cart-lines]')!;
+    const summary = root.querySelector<HTMLElement>('[data-summary-list]')!;
+    const delivery = root.querySelector<HTMLElement>('[data-summary-delivery]')!;
+    const duties = root.querySelector<HTMLElement>('[data-summary-duties]')!;
+    const installments = root.querySelector<HTMLElement>('[data-summary-installments]')!;
+    const live = root.querySelector<HTMLElement>('[data-summary-live]');
+    const country = root.querySelector<HTMLSelectElement>('select[name="country"]')!;
+
+    const renderLine = (line: CartLine): HTMLLIElement => {
+      const li = el('li', `isa-cart-line isa-cart-line--${line.kind}`);
+      li.dataset.key = line.key;
+      if (line.image) {
+        const img = el('img', 'isa-cart-line__img');
+        img.src = line.image.src;
+        img.width = line.image.width;
+        img.height = line.image.height;
+        img.alt = '';
+        img.loading = 'lazy';
+        li.append(img);
+      }
+      const info = el('div', 'isa-cart-line__info');
+      const title = line.url ? el('a', 'isa-cart-line__title', line.title) : el('p', 'isa-cart-line__title', line.title);
+      if (line.url && title instanceof HTMLAnchorElement) title.href = line.url;
+      info.append(title, el('p', 'isa-cart-line__detail', describeLine(line, t)));
+      if (line.kind === 'original') info.append(el('p', 'isa-cart-line__unique', t('carrello.originale_unico')));
+      li.append(info);
+
+      if (line.kind === 'print') {
+        const qty = el('div', 'isa-cart-line__qty');
+        qty.setAttribute('role', 'group');
+        qty.setAttribute('aria-label', `${t('etichette.quantita')}: ${line.title}`);
+        const minus = el('button', 'isa-cart-line__qty-btn isa-cart-line__qty-btn--minus', '−');
+        minus.type = 'button';
+        minus.setAttribute('aria-label', t('core.cart.diminuisci', { titolo: line.title }));
+        minus.dataset.focusId = `${line.key}:minus`;
+        minus.addEventListener('click', () => setQuantity(line.key, line.quantity - 1));
+        const input = el('input', 'isa-cart-line__qty-input');
+        input.type = 'number';
+        input.min = '1';
+        input.max = String(maxQuantityFor(line.kind));
+        input.value = String(line.quantity);
+        input.inputMode = 'numeric';
+        input.setAttribute('aria-label', `${t('etichette.quantita')}: ${line.title}`);
+        input.dataset.focusId = `${line.key}:input`;
+        input.addEventListener('change', () => setQuantity(line.key, Number(input.value) || 1));
+        const plus = el('button', 'isa-cart-line__qty-btn isa-cart-line__qty-btn--plus', '+');
+        plus.type = 'button';
+        plus.setAttribute('aria-label', t('core.cart.aumenta', { titolo: line.title }));
+        plus.dataset.focusId = `${line.key}:plus`;
+        plus.disabled = line.quantity >= maxQuantityFor(line.kind);
+        plus.addEventListener('click', () => setQuantity(line.key, line.quantity + 1));
+        qty.append(minus, input, plus);
+        li.append(qty);
+      }
+
+      li.append(el('p', 'isa-cart-line__price', price(line.unitPriceCents * line.quantity)));
+      const remove = el('button', 'isa-cart-line__remove', t('bottoni.rimuovi'));
+      remove.type = 'button';
+      remove.setAttribute('aria-label', t('core.cart.rimuovi', { titolo: line.title }));
+      remove.dataset.focusId = `${line.key}:remove`;
+      remove.addEventListener('click', () => {
+        const next = li.nextElementSibling ?? li.previousElementSibling;
+        removeFromCart(line.key);
+        // keep keyboard focus in a sensible place
+        const target = next?.querySelector<HTMLElement>('.isa-cart-line__remove') ?? root.querySelector<HTMLElement>('.isa-cart__continue');
+        target?.focus();
+      });
+      li.append(remove);
+      return li;
+    };
+
+    const row = (label: string, value: string, modifier = '') => {
+      const wrap = el('div', `isa-cart-summary__row${modifier ? ` isa-cart-summary__row--${modifier}` : ''}`);
+      wrap.append(el('dt', 'isa-cart-summary__label', label), el('dd', 'isa-cart-summary__value', value));
+      return wrap;
+    };
+
+    const renderLines = (lines: readonly CartLine[]) => {
+      const focusId = (document.activeElement as HTMLElement | null)?.dataset?.focusId;
+      root.dataset.empty = String(lines.length === 0);
+      empty.hidden = lines.length > 0;
+      content.hidden = lines.length === 0;
+      list.replaceChildren(...lines.map(renderLine));
+      if (focusId) list.querySelector<HTMLElement>(`[data-focus-id="${CSS.escape(focusId)}"]`)?.focus();
+    };
+
+    const renderSummary = () => {
+      const totals = $cartTotals.get();
+      const rows: HTMLElement[] = [row(t('carrello.subtotale'), price(totals.subtotalCents))];
+      const s = totals.shipping;
+      if (s) {
+        rows.push(row(`${t('carrello.spedizione')} · ${t(`core.zone.${s.zone}`)}`, s.totalCents === 0 ? t('carrello.spedizione_gratis') : price(s.totalCents)));
+        if (s.insuranceCents > 0) rows.push(row(t('core.cart.assicurazione'), price(s.insuranceCents), 'sub'));
+      } else {
+        rows.push(row(t('carrello.spedizione'), t('carrello.spedizione_scegli_paese'), 'pending'));
+      }
+      rows.push(row(t('carrello.totale'), price(totals.totalCents), 'total'));
+      if (totals.vatExempt) rows.push(row(t('core.cart.iva_esente'), '', 'vat'));
+      else if (totals.vat.length) rows.push(row(t('carrello.iva_inclusa'), price(totals.vatTotalCents), 'vat'));
+      for (const v of totals.vat) {
+        const label = v.kind === 'original' ? t('carrello.iva_dettaglio_originali') : t('carrello.iva_dettaglio_stampe');
+        rows.push(row(label, price(v.vatCents), 'vat-detail'));
+      }
+      summary.replaceChildren(...rows);
+
+      if (s) {
+        const today = new Date();
+        const from = formatDate(addBusinessDays(today, s.deliveryDays.min), lang, { day: 'numeric', month: 'short' });
+        const to = formatDate(addBusinessDays(today, s.deliveryDays.max), lang, { day: 'numeric', month: 'short' });
+        delivery.textContent = t('etichette.consegna_stimata', { data_da: from, data_a: to });
+      }
+      delivery.hidden = !s;
+      duties.textContent = s?.dutiesMayApply ? t('carrello.nota_extra_ue') : '';
+      duties.hidden = !s?.dutiesMayApply;
+      const plan = calculateInstallments(totals.totalCents);
+      installments.textContent = plan.eligible ? `${t('etichette.rate', { importo: price(plan.amounts[0] ?? 0) })}. ${t('carrello.rate_nota')}` : '';
+      installments.hidden = !plan.eligible;
+    };
+
+    country.value = $cartCountry.get() ?? '';
+    country.addEventListener('change', () => {
+      setCartCountry(country.value || null);
+      announce(live, t('core.cart.totale_aggiornato', { totale: price($cartTotals.get().totalCents) }));
+    });
+
+    $cart.subscribe(renderLines);
+    $cartTotals.subscribe(renderSummary);
+    $cartCountry.subscribe((c) => {
+      if (country.value !== (c ?? '')) country.value = c ?? '';
+    });
+  });
+</script>

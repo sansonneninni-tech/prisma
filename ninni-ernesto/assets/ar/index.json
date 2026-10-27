@@ -1,0 +1,471 @@
+{
+ "generato_da": "scripts/foto/genera_ar_foto.py",
+ "unita": "metri (1 unita' = 1 m)",
+ "opere": [
+  {
+   "id": "01-20x30",
+   "titolo": "Tulipano",
+   "larghezza_cm": 20,
+   "altezza_cm": 30,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "01-20x30.glb",
+   "usdz": "01-20x30.usdz",
+   "glb_kb": 138,
+   "usdz_kb": 139,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "01-30x45",
+   "titolo": "Tulipano",
+   "larghezza_cm": 30,
+   "altezza_cm": 45,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "01-30x45.glb",
+   "usdz": "01-30x45.usdz",
+   "glb_kb": 138,
+   "usdz_kb": 139,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "01-40x60",
+   "titolo": "Tulipano",
+   "larghezza_cm": 40,
+   "altezza_cm": 60,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "01-40x60.glb",
+   "usdz": "01-40x60.usdz",
+   "glb_kb": 741,
+   "usdz_kb": 742,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "01-60x90",
+   "titolo": "Tulipano",
+   "larghezza_cm": 60,
+   "altezza_cm": 90,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "01-60x90.glb",
+   "usdz": "01-60x90.usdz",
+   "glb_kb": 741,
+   "usdz_kb": 742,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "01-ed",
+   "titolo": "Tulipano",
+   "larghezza_cm": 74.0,
+   "altezza_cm": 104.0,
+   "profondita_cm": 3.5,
+   "unita": "metri",
+   "glb": "01-ed.glb",
+   "usdz": "01-ed.usdz",
+   "glb_kb": 532,
+   "usdz_kb": 533,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "02-20x30",
+   "titolo": "Alstroemeria",
+   "larghezza_cm": 20,
+   "altezza_cm": 30,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "02-20x30.glb",
+   "usdz": "02-20x30.usdz",
+   "glb_kb": 89,
+   "usdz_kb": 91,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "02-30x45",
+   "titolo": "Alstroemeria",
+   "larghezza_cm": 30,
+   "altezza_cm": 45,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "02-30x45.glb",
+   "usdz": "02-30x45.usdz",
+   "glb_kb": 89,
+   "usdz_kb": 91,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "02-40x60",
+   "titolo": "Alstroemeria",
+   "larghezza_cm": 40,
+   "altezza_cm": 60,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "02-40x60.glb",
+   "usdz": "02-40x60.usdz",
+   "glb_kb": 450,
+   "usdz_kb": 451,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "02-60x90",
+   "titolo": "Alstroemeria",
+   "larghezza_cm": 60,
+   "altezza_cm": 90,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "02-60x90.glb",
+   "usdz": "02-60x90.usdz",
+   "glb_kb": 450,
+   "usdz_kb": 451,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "02-ed",
+   "titolo": "Alstroemeria",
+   "larghezza_cm": 52.0,
+   "altezza_cm": 72.0,
+   "profondita_cm": 3.5,
+   "unita": "metri",
+   "glb": "02-ed.glb",
+   "usdz": "02-ed.usdz",
+   "glb_kb": 304,
+   "usdz_kb": 305,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "03-20x30",
+   "titolo": "Volto",
+   "larghezza_cm": 20,
+   "altezza_cm": 30,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "03-20x30.glb",
+   "usdz": "03-20x30.usdz",
+   "glb_kb": 282,
+   "usdz_kb": 283,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "03-30x45",
+   "titolo": "Volto",
+   "larghezza_cm": 30,
+   "altezza_cm": 45,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "03-30x45.glb",
+   "usdz": "03-30x45.usdz",
+   "glb_kb": 282,
+   "usdz_kb": 283,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "03-40x60",
+   "titolo": "Volto",
+   "larghezza_cm": 40,
+   "altezza_cm": 60,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "03-40x60.glb",
+   "usdz": "03-40x60.usdz",
+   "glb_kb": 1021,
+   "usdz_kb": 1022,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "03-60x90",
+   "titolo": "Volto",
+   "larghezza_cm": 60,
+   "altezza_cm": 90,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "03-60x90.glb",
+   "usdz": "03-60x90.usdz",
+   "glb_kb": 1021,
+   "usdz_kb": 1022,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "03-ed",
+   "titolo": "Volto",
+   "larghezza_cm": 74.0,
+   "altezza_cm": 104.0,
+   "profondita_cm": 3.5,
+   "unita": "metri",
+   "glb": "03-ed.glb",
+   "usdz": "03-ed.usdz",
+   "glb_kb": 787,
+   "usdz_kb": 788,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "04-30x30",
+   "titolo": "Negativo",
+   "larghezza_cm": 30,
+   "altezza_cm": 30,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "04-30x30.glb",
+   "usdz": "04-30x30.usdz",
+   "glb_kb": 188,
+   "usdz_kb": 189,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "04-50x50",
+   "titolo": "Negativo",
+   "larghezza_cm": 50,
+   "altezza_cm": 50,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "04-50x50.glb",
+   "usdz": "04-50x50.usdz",
+   "glb_kb": 1037,
+   "usdz_kb": 1038,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "04-70x70",
+   "titolo": "Negativo",
+   "larghezza_cm": 70,
+   "altezza_cm": 70,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "04-70x70.glb",
+   "usdz": "04-70x70.usdz",
+   "glb_kb": 1037,
+   "usdz_kb": 1038,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "04-ed",
+   "titolo": "Negativo",
+   "larghezza_cm": 62.0,
+   "altezza_cm": 62.0,
+   "profondita_cm": 3.5,
+   "unita": "metri",
+   "glb": "04-ed.glb",
+   "usdz": "04-ed.usdz",
+   "glb_kb": 669,
+   "usdz_kb": 670,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "05-20x30",
+   "titolo": "Pugno",
+   "larghezza_cm": 20,
+   "altezza_cm": 30,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "05-20x30.glb",
+   "usdz": "05-20x30.usdz",
+   "glb_kb": 164,
+   "usdz_kb": 165,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "06-20x30",
+   "titolo": "Arancia",
+   "larghezza_cm": 20,
+   "altezza_cm": 30,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "06-20x30.glb",
+   "usdz": "06-20x30.usdz",
+   "glb_kb": 159,
+   "usdz_kb": 160,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "06-30x45",
+   "titolo": "Arancia",
+   "larghezza_cm": 30,
+   "altezza_cm": 45,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "06-30x45.glb",
+   "usdz": "06-30x45.usdz",
+   "glb_kb": 159,
+   "usdz_kb": 160,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "06-40x60",
+   "titolo": "Arancia",
+   "larghezza_cm": 40,
+   "altezza_cm": 60,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "06-40x60.glb",
+   "usdz": "06-40x60.usdz",
+   "glb_kb": 1038,
+   "usdz_kb": 1039,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "07-20x30",
+   "titolo": "Croce rossa",
+   "larghezza_cm": 20,
+   "altezza_cm": 30,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "07-20x30.glb",
+   "usdz": "07-20x30.usdz",
+   "glb_kb": 226,
+   "usdz_kb": 227,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "07-30x45",
+   "titolo": "Croce rossa",
+   "larghezza_cm": 30,
+   "altezza_cm": 45,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "07-30x45.glb",
+   "usdz": "07-30x45.usdz",
+   "glb_kb": 226,
+   "usdz_kb": 227,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "08-30x40",
+   "titolo": "Due",
+   "larghezza_cm": 30,
+   "altezza_cm": 40,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "08-30x40.glb",
+   "usdz": "08-30x40.usdz",
+   "glb_kb": 210,
+   "usdz_kb": 211,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "08-45x60",
+   "titolo": "Due",
+   "larghezza_cm": 45,
+   "altezza_cm": 60,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "08-45x60.glb",
+   "usdz": "08-45x60.usdz",
+   "glb_kb": 802,
+   "usdz_kb": 803,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "08-60x80",
+   "titolo": "Due",
+   "larghezza_cm": 60,
+   "altezza_cm": 80,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "08-60x80.glb",
+   "usdz": "08-60x80.usdz",
+   "glb_kb": 802,
+   "usdz_kb": 803,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "08-ed",
+   "titolo": "Due",
+   "larghezza_cm": 57.0,
+   "altezza_cm": 72.0,
+   "profondita_cm": 3.5,
+   "unita": "metri",
+   "glb": "08-ed.glb",
+   "usdz": "08-ed.usdz",
+   "glb_kb": 604,
+   "usdz_kb": 605,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  }
+ ],
+ "saltate": []
+}

@@ -1,0 +1,18 @@
+{
+  "_nota": "Home di Ninni & Ernesto. sequenza.opere: foto che si alternano in apertura (la prima è il tulipano). mappa.sfondo: id di una foto del manifest oppure null (bianco). mappa.opere: foto nel pannello Ninni. altro.opera: foto nel pannello Altro.",
+  "sequenza": {
+    "opere": ["01", "02", "04", "03", "06", "07", "08", "05"],
+    "modo": "taglio",
+    "intervalloMs": 2600
+  },
+  "mappa": {
+    "sfondo": "ninni-ernesto-ritratto",
+    "sfondoPosizione": "50% 40%",
+    "ritratto": "ninni-ernesto-ritratto",
+    "opere": ["01", "04", "02", "07", "03", "06", "08", "05"],
+    "altro": {
+      "voci": ["carte", "chi_siamo", "prisma"],
+      "opera": "08"
+    }
+  }
+}

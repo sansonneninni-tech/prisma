@@ -1,0 +1,32 @@
+---
+/**
+ * Scheda di una foto: /[lang]/[autore]/[slug]/. `?v=stampa` apre la stampa,
+ * `#parete` apre «Vedi sulla tua parete» (è l'indirizzo del QR sul computer).
+ * Dati in lib/scheda.ts, markup in components/scheda/, comportamento in lib/scheda-client.ts e lib/parete-client.ts.
+ */
+import Base from '../../../../layouts/Base.astro';
+import Scheda from '../../../../components/scheda/Scheda.astro';
+import Lente from '../../../../components/scheda/Lente.astro';
+import ParetaAr from '../../../../components/scheda/ParetaAr.astro';
+import { LOCALES, type Locale } from '@ne/core/i18n';
+import { getArtworks, requireArtwork } from '@ne/core/catalog';
+import { datiScheda } from '../../../../lib/scheda';
+import '../../../../styles/scheda.css';
+
+export const getStaticPaths = () =>
+  LOCALES.flatMap((lang) => getArtworks().map((art) => ({ params: { lang, autore: art.author, slug: art.slug }, props: { id: art.id } })));
+
+const lang = Astro.params.lang as Locale;
+const { id } = Astro.props as { id: string };
+const d = datiScheda(requireArtwork(id), lang, Astro.site);
+---
+<Base lang={lang} title={d.titolo} description={d.metaDescrizione}>
+  <script type="application/ld+json" set:html={d.jsonLd} />
+  <Scheda d={d} lang={lang} />
+  <Lente art={d.art} particolari={d.particolari} lang={lang} />
+  <ParetaAr art={d.art} ar={d.ar} lang={lang} />
+  <script>
+    import '../../../../lib/scheda-client';
+    import '../../../../lib/parete-client';
+  </script>
+</Base>

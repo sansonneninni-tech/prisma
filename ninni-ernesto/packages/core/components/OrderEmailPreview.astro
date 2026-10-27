@@ -1,0 +1,105 @@
+---
+/**
+ * Preview of the order confirmation email (demo: never sent). Shows the last demo order of this tab
+ * (sessionStorage) and updates when `CheckoutFlow` confirms an order. With `sample`, shows an example
+ * order when there is none, so the preview can live on its own page.
+ *
+ * Classes: isa-email-preview, __title, __note, __subject, __frame. Hidden until there is something to show.
+ */
+import { getArtworks, toCartProduct, toPrintCartProduct } from '../src/catalog/index.ts';
+import type { Order } from '../src/checkout/types.ts';
+import { EMAIL_TEXT_KEYS, type EmailTheme } from '../src/email/order-email.ts';
+import { pickStrings, useTranslations } from '../src/i18n/index.ts';
+import { calculateTotals } from '../src/pricing/totals.ts';
+import type { CartLine, Locale } from '../src/types.ts';
+
+interface Props {
+  lang: Locale;
+  theme?: EmailTheme;
+  /** Show an example order when no demo order exists yet. */
+  sample?: boolean;
+  /** Heading level for the title (default 2). */
+  headingLevel?: 2 | 3;
+  class?: string;
+}
+
+const { lang, theme = { brandName: 'Ninni & Ernesto' }, sample = false, headingLevel = 2, class: className } = Astro.props;
+const t = useTranslations(lang);
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+
+let sampleOrder: Order | null = null;
+if (sample) {
+  const available = getArtworks({ status: 'available' });
+  const lines: CartLine[] = [];
+  const original = available[0] ? toCartProduct(available[0], lang) : null;
+  const printArt = available.find((a) => a.printable && a !== available[0]);
+  const print = printArt ? toPrintCartProduct(printArt, printArt.orientation === 'landscape' ? '70x50' : printArt.orientation === 'square' ? '50x50' : '50x70', 'paper', lang) : null;
+  if (original) lines.push({ ...original, key: `original:${original.artworkId}`, quantity: 1, addedAt: 0 });
+  if (print) lines.push({ ...print, key: `print:${print.artworkId}`, quantity: 1, addedAt: 0 });
+  sampleOrder = {
+    number: 'IP-DEMO-0000-ESEMPIO',
+    createdAt: new Date().toISOString(),
+    lang,
+    isDemo: true,
+    customer: {
+      firstName: 'Anna', lastName: 'Rossi', email: 'anna.rossi@example.com', phone: '+39 333 000 0000', address1: 'Via Example 1', address2: '',
+      postalCode: '70121', city: 'Bari', province: 'BA', country: 'IT', notes: '', wantsInvoice: false, taxCode: '', sdiOrPec: '',
+    },
+    shipping: { isGift: false, giftMessage: '' },
+    lines,
+    totals: calculateTotals(lines, { country: 'IT' }),
+    payment: { providerId: 'demo', method: 'card', paymentId: 'pay_demo_example', last4: '4242' },
+  };
+}
+
+const strings = pickStrings(t, [...EMAIL_TEXT_KEYS]);
+---
+
+<section
+  class:list={['isa-email-preview', className]}
+  data-isa-email-preview
+  data-lang={lang}
+  data-i18n={JSON.stringify(strings)}
+  data-theme={JSON.stringify(theme)}
+  data-sample={sampleOrder ? JSON.stringify(sampleOrder) : undefined}
+  aria-labelledby="isa-email-preview-title"
+  hidden
+>
+  <Heading class="isa-email-preview__title" id="isa-email-preview-title">{t('bottoni.anteprima_email')}</Heading>
+  <p class="isa-email-preview__note">{t('demo.email_finta')}</p>
+  <p class="isa-email-preview__subject" data-email-subject></p>
+  <iframe class="isa-email-preview__frame" title={t('bottoni.anteprima_email')} sandbox="allow-same-origin" loading="lazy" style="width:100%;border:0;" data-email-frame></iframe>
+</section>
+
+<script>
+  import { getLastOrder } from '../src/checkout/store.ts';
+  import type { Order } from '../src/checkout/types.ts';
+  import { renderOrderEmail, type EmailTheme } from '../src/email/order-email.ts';
+  import { readJsonData, readTranslator } from '../src/ui/dom.ts';
+
+  document.querySelectorAll<HTMLElement>('[data-isa-email-preview]').forEach((root) => {
+    const t = readTranslator(root);
+    const theme = readJsonData<EmailTheme>(root, 'theme') ?? { brandName: 'Ninni & Ernesto' };
+    const frame = root.querySelector<HTMLIFrameElement>('[data-email-frame]')!;
+    const subject = root.querySelector<HTMLElement>('[data-email-subject]')!;
+
+    const show = (order: Order | null) => {
+      if (!order) return;
+      const email = renderOrderEmail(order, { t, theme, baseUrl: location.origin });
+      subject.textContent = email.subject;
+      frame.srcdoc = email.html;
+      root.hidden = false;
+    };
+    frame.addEventListener('load', () => {
+      try {
+        const h = frame.contentDocument?.documentElement.scrollHeight;
+        if (h) frame.style.height = `${h}px`;
+      } catch {
+        /* cross-origin: keep CSS height */
+      }
+    });
+
+    show(getLastOrder() ?? readJsonData<Order>(root, 'sample'));
+    document.addEventListener('isa:order-confirmed', (e) => show((e as CustomEvent<Order>).detail));
+  });
+</script>

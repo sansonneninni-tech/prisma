@@ -1,0 +1,142 @@
+---
+/**
+ * Accessible form field: label, optional hint, error slot wired with aria-describedby.
+ * No styling: classes `isa-field`, `isa-field__label`, `isa-field__hint`, `isa-field__control`, `isa-field__error`.
+ * Checkbox/radio inputs also get `isa-field__check` (and the wrapper `isa-field--check`), so a site can style them
+ * without inheriting text-field rules. For compatibility they still carry `isa-field__control` unless
+ * `checkControlClass={false}` is passed (planned default for the next major version).
+ * Errors are filled by the form scripts (`showFieldErrors` from `@ne/core/ui`).
+ */
+import type { HTMLAttributes } from 'astro/types';
+
+interface Option {
+  value: string;
+  label: string;
+  selected?: boolean;
+}
+
+interface Props {
+  /** Unique prefix for ids (e.g. the form id). */
+  idPrefix: string;
+  name: string;
+  label: string;
+  as?: 'input' | 'textarea' | 'select';
+  type?: HTMLAttributes<'input'>['type'];
+  hint?: string;
+  required?: boolean;
+  autocomplete?: HTMLAttributes<'input'>['autocomplete'];
+  inputmode?: HTMLAttributes<'input'>['inputmode'];
+  options?: Option[];
+  value?: string;
+  checked?: boolean;
+  rows?: number;
+  accept?: string;
+  maxlength?: number;
+  placeholder?: string;
+  class?: string;
+  /**
+   * Checkbox/radio only: keep the `isa-field__control` class next to `isa-field__check` (default `true`,
+   * backwards compatible). Pass `false` so text-field styles on `.isa-field__control` no longer reach the box.
+   */
+  checkControlClass?: boolean;
+}
+
+const {
+  idPrefix,
+  name,
+  label,
+  as = 'input',
+  type = 'text',
+  hint,
+  required = false,
+  autocomplete,
+  inputmode,
+  options = [],
+  value,
+  checked,
+  rows = 5,
+  accept,
+  maxlength,
+  placeholder,
+  class: className,
+  checkControlClass = true,
+} = Astro.props;
+
+const id = `${idPrefix}-${name}`;
+const hintId = hint ? `${id}-hint` : undefined;
+const errorId = `${id}-error`;
+const describedBy = [hintId, errorId].filter(Boolean).join(' ');
+const isCheck = as === 'input' && (type === 'checkbox' || type === 'radio');
+---
+
+<div class:list={['isa-field', isCheck && 'isa-field--check', `isa-field--${as === 'input' ? type : as}`, className]} data-field={name}>
+  {
+    isCheck ? (
+      <>
+        <input
+          class:list={['isa-field__check', checkControlClass && 'isa-field__control']}
+          id={id}
+          name={name}
+          type={type}
+          value={value ?? 'on'}
+          checked={checked}
+          required={required}
+          aria-describedby={describedBy}
+        />
+        <label class="isa-field__label" for={id}>
+          {label}
+        </label>
+      </>
+    ) : (
+      <label class="isa-field__label" for={id}>
+        {label}
+      </label>
+    )
+  }
+  {hint && <p class="isa-field__hint" id={hintId}>{hint}</p>}
+  {
+    as === 'textarea' && (
+      <textarea
+        class="isa-field__control"
+        id={id}
+        name={name}
+        rows={rows}
+        required={required}
+        autocomplete={autocomplete}
+        maxlength={maxlength}
+        placeholder={placeholder}
+        aria-describedby={describedBy}
+      >{value}</textarea>
+    )
+  }
+  {
+    as === 'select' && (
+      <select class="isa-field__control" id={id} name={name} required={required} autocomplete={autocomplete} aria-describedby={describedBy}>
+        {options.map((o) => (
+          <option value={o.value} selected={o.selected || o.value === value}>
+            {o.label}
+          </option>
+        ))}
+      </select>
+    )
+  }
+  {
+    as === 'input' && !isCheck && (
+      <input
+        class="isa-field__control"
+        id={id}
+        name={name}
+        type={type}
+        value={value}
+        required={required}
+        autocomplete={autocomplete}
+        inputmode={inputmode}
+        accept={accept}
+        maxlength={maxlength}
+        placeholder={placeholder}
+        aria-describedby={describedBy}
+      />
+    )
+  }
+  <p class="isa-field__error" id={errorId} data-error-for={name} hidden></p>
+</div>

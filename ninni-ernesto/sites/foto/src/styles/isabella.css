@@ -1,0 +1,77 @@
+/* ==========================================================================
+   Galleria — P8 Isabella (pezzo 7). Titolo gigante, sottoindice attaccato sotto l'header, bio (ritratto 6 colonne +
+   testo 5 da 1024), atelier (2 foto 6 + 6), contatti (3 blocchi 4 + 4 + 4) e modulo.
+   ========================================================================== */
+
+.is { padding-bottom: var(--s-9); }
+.is__tit { padding-top: var(--s-4); }
+.is__tit h1 { padding-bottom: 0.12em; }
+html:has(.si--sempre) { scroll-padding-top: calc(var(--header-h) + env(safe-area-inset-top) + var(--touch) + var(--s-4)); }
+
+.is__sez { margin-top: var(--s-8); }
+.is__sez:first-of-type { margin-top: var(--s-4); }
+.is__h2 {
+  border-top: var(--line); padding-top: var(--s-3); margin-bottom: var(--s-5);
+  font-size: var(--t-tab); font-weight: var(--w-display); line-height: var(--lh-tab); letter-spacing: -0.02em;
+}
+:lang(zh) .is__h2 { letter-spacing: 0; }
+.is .isa-picture { display: block; background: var(--isa-dominant, var(--c-placeholder)) var(--isa-lqip, none) center / cover no-repeat; }
+.is .isa-picture img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- bio ---------- */
+.is__bio { display: grid; gap: var(--s-5); }
+.is__ritratto .isa-picture { aspect-ratio: 4 / 5; }
+.is__ritratto img { object-position: 50% 30%; }
+.is__testo { display: grid; gap: var(--s-6); align-content: space-between; }
+.is__bio-t { font-size: var(--t-lead); line-height: var(--lh-tight); max-width: 30rem; }
+.is__frase blockquote p {
+  font-size: var(--t-lead); font-weight: var(--w-strong); line-height: var(--lh-tight); letter-spacing: -0.01em; max-width: 30rem;
+}
+.is__frase blockquote { margin: 0; }
+.is__frase figcaption { margin-top: var(--s-2); font-size: var(--t-small); color: var(--c-mute); }
+:lang(zh) .is__frase blockquote p { letter-spacing: 0; }
+
+/* ---------- atelier ---------- */
+.is__foto2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--col-gap); }
+.is__foto2 .isa-picture { aspect-ratio: 2 / 3; }
+.is__riga { margin-top: var(--s-4); font-size: var(--t-cap); line-height: var(--lh-text); max-width: 34rem; }
+
+/* ---------- mostre (solo con dati) ---------- */
+.is__mostre li { display: grid; grid-template-columns: 4rem minmax(0, 1fr); gap: 2px var(--s-4); padding-block: var(--s-3); border-bottom: var(--line-soft); font-size: var(--t-cap); }
+.is__mostre li > :last-child { grid-column: 2; }
+
+/* ---------- contatti ---------- */
+.is__blocchi { display: grid; gap: var(--s-5); }
+.is__b { display: grid; gap: var(--s-2); align-content: start; font-size: var(--t-cap); line-height: var(--lh-text); }
+.is__bt { font-size: var(--t-ui); font-weight: var(--w-strong); color: var(--c-mute); }
+.is__b .lnk { justify-self: start; margin-top: calc(-1 * var(--s-1)); }
+.is__a { display: inline-flex; align-items: center; min-height: var(--touch); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; overflow-wrap: anywhere; }
+@media (hover: hover) { .is__a:hover { text-decoration-thickness: 2px; } }
+
+.is__modulo { margin-top: var(--s-8); display: grid; gap: var(--s-5); }
+.is__mt { font-size: var(--t-tab); font-weight: var(--w-display); line-height: var(--lh-tab); letter-spacing: -0.02em; }
+.is__mi { margin-top: var(--s-3); font-size: var(--t-cap); line-height: var(--lh-text); max-width: 28rem; }
+.ct { display: grid; gap: var(--s-5); }
+.ct__due { display: grid; gap: var(--s-5); }
+
+@media (min-width: 768px) {
+  .is__bio { grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); column-gap: var(--col-gap); }
+  .is__ritratto { grid-column: 1 / span 5; }
+  .is__testo { grid-column: 6 / -1; padding-left: var(--s-4); }
+  .is__blocchi { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--col-gap); }
+  .ct__due { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-4); }
+}
+@media (min-width: 1024px) {
+  .is__ritratto { grid-column: 1 / span 6; }
+  .is__ritratto .isa-picture { aspect-ratio: auto; height: min(78svh, 46vw); max-height: 980px; }
+  .is__testo { grid-column: 8 / span 5; padding-left: 0; }
+  .is__foto2 .isa-picture { aspect-ratio: auto; height: min(80svh, 40vw); max-height: 900px; }
+  .is__modulo { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--col-gap); }
+  .is__mod-int { grid-column: 1 / span 4; }
+  .is__mod-campi { grid-column: 6 / span 7; }
+}
+@media (min-width: 1440px) { .is__mod-campi { grid-column: 6 / span 6; } }
+/* telefono in orizzontale: il ritratto non riempie tutto lo schermo */
+@media (max-height: 500px) and (orientation: landscape) {
+  .is__ritratto .isa-picture { aspect-ratio: auto; height: 80svh; }
+}

@@ -1,0 +1,853 @@
+{
+  "meta": {
+    "lingua": "it",
+    "codice_lingua": "it-IT",
+    "nome_lingua": "Italiano",
+    "stato": "Testi di Ninni & Ernesto",
+    "versione": "0.2 — 19/10/2026",
+    "nota": "Testi in bozza. [Parentesi quadre] = dato mancante da compilare. {graffe} = valore inserito dal sito (non tradurre)."
+  },
+  "nav": {
+    "home": "Home",
+    "opere": "Opere",
+    "proposte": "Le proposte di Isa",
+    "stampe": "Stampe",
+    "atelier": "Atelier",
+    "bio": "Isabella",
+    "commissioni": "Su commissione",
+    "prossimamente": "Prossimamente",
+    "mostre": "Mostre e stampa",
+    "contatti": "Contatti",
+    "carrello": "Carrello",
+    "carrello_conteggio": "Carrello ({n})",
+    "cerca": "Cerca",
+    "cerca_placeholder": "Cerca un'opera, un colore, una misura…",
+    "lingua": "Lingua",
+    "menu_apri": "Apri il menu",
+    "menu_chiudi": "Chiudi il menu",
+    "salta_contenuto": "Vai al contenuto"
+  },
+  "footer": {
+    "firma": "Isabella Pistillo — pittrice. Atelier in via Felice Orsini, Andria.",
+    "colonna_opere": "Opere",
+    "colonna_isabella": "Isabella",
+    "colonna_info": "Informazioni",
+    "colonna_contatti": "Contatti",
+    "indirizzo": "Via Felice Orsini 69A, 76123 Andria (BT), Italia",
+    "email": "info@isabellapistillo.com",
+    "telefono": "+39 376 0426 212",
+    "instagram": "Instagram",
+    "facebook": "Facebook",
+    "whatsapp": "Scrivimi su WhatsApp",
+    "newsletter_titolo": "Quando nasce un quadro nuovo",
+    "newsletter_testo": "Ti scrivo quando finisco un quadro nuovo o quando c'è una mostra. Non più di [N] volte l'anno.",
+    "newsletter_placeholder": "La tua email",
+    "newsletter_bottone": "Iscriviti",
+    "newsletter_successo": "Fatto. La prossima lettera arriva a {email}.",
+    "link_termini": "Termini di vendita",
+    "link_spedizioni": "Spedizioni e resi",
+    "link_privacy": "Privacy",
+    "link_cookie": "Cookie",
+    "link_preferenze_cookie": "Preferenze cookie",
+    "copyright": "© {anno} Isabella Pistillo. Tutte le opere sono protette da diritto d'autore.",
+    "dati_fiscali": "Pistillo Isabella — P.IVA [numero P.IVA]",
+    "credito": "Sito: [nome studio/ninni]"
+  },
+  "bottoni": {
+    "aggiungi_carrello": "Aggiungi al carrello",
+    "aggiunta_carrello": "Nel carrello",
+    "acquista": "Acquista",
+    "richiedi_info": "Fai una domanda",
+    "visualizza_stanza": "Visualizza nella tua stanza",
+    "vai_carrello": "Vai al carrello",
+    "vai_checkout": "Procedi all'acquisto",
+    "continua": "Continua a guardare",
+    "vedi_opera": "Vedi l'opera",
+    "vedi_tutte": "Tutte le opere",
+    "vedi_proposte": "Le proposte di Isa",
+    "vedi_atelier": "Entra nell'atelier",
+    "vedi_stampe": "Vedi le stampe",
+    "inizia_conversazione": "Iniziamo a parlarne",
+    "invia": "Invia",
+    "invia_messaggio": "Invia il messaggio",
+    "iscriviti_lista": "Avvisami",
+    "rimuovi": "Rimuovi",
+    "chiudi": "Chiudi",
+    "indietro": "Indietro",
+    "avanti": "Avanti",
+    "precedente": "Opera precedente",
+    "successiva": "Opera successiva",
+    "ingrandisci": "Ingrandisci",
+    "leggi_tutto": "Continua a leggere",
+    "torna_home": "Torna alla home",
+    "anteprima_email": "Vedi l'email di conferma",
+    "carica_foto": "Carica una foto della tua parete",
+    "riprova": "Riprova"
+  },
+  "etichette": {
+    "venduta": "Esaurita",
+    "venduta_nota": "Quest'opera è già in una casa. Se ti piace, posso dipingerne una nello stesso spirito: vedi Su commissione.",
+    "disponibile": "Disponibile",
+    "riservata": "Riservata",
+    "nuova": "Nuova",
+    "prossimamente": "Prossimamente",
+    "esemplare_unico": "Originale, esemplare unico",
+    "prezzo_su_richiesta": "Prezzo su richiesta",
+    "prezzo_da": "da {prezzo}",
+    "misure": "Misure",
+    "misure_valore": "{base} × {altezza} cm",
+    "misure_nota": "Base × altezza, tela esclusa la cornice",
+    "tecnica": "Tecnica",
+    "tecnica_default": "Acrilico su tela, pennello e spatola",
+    "anno": "Anno",
+    "anno_mancante": "[anno]",
+    "firma": "Firma",
+    "firma_valore": "Firmata a mano sul fronte",
+    "cornice": "Cornice",
+    "cornice_inclusa": "Cornice inclusa",
+    "senza_cornice": "Senza cornice",
+    "certificato": "Certificato di autenticità firmato [da confermare]",
+    "orientamento": "Formato",
+    "verticale": "Verticale",
+    "orizzontale": "Orizzontale",
+    "quadrato": "Quadrato",
+    "colori": "Colori",
+    "iva_originali": "",
+    "iva_stampe": "",
+    "iva_nota_originali": "Le opere originali dipinte a mano e firmate hanno l'IVA agevolata al 5%.",
+    "iva_nota_stampe": "Sulle stampe si applica l'IVA ordinaria al 22%.",
+    "spedizione": "Spedizione",
+    "spedizione_calcolata": "Spedizione calcolata al checkout in base al paese",
+    "spedizione_zone": "Italia {italia} · Europa {europa} · Resto del mondo {mondo}",
+    "tempi_originale": "Stampata, firmata e incorniciata in {giorni} giorni lavorativi",
+    "tempi_stampa": "Stampata e spedita in {giorni} giorni lavorativi",
+    "consegna_stimata": "Consegna stimata: {data_da}–{data_a}",
+    "rate": "Oppure in 3 rate da {importo} senza interessi con Scalapay",
+    "rate_breve": "Pagabile in 3 rate",
+    "quantita": "Quantità",
+    "formato_stampa": "Formato",
+    "supporto_stampa": "Carta",
+    "carta_fotografica": "Carta fine art",
+    "tela": "Tela",
+    "con_telaio": "Montata su telaio",
+    "in_tubo": "Arrotolata in tubo",
+    "cm": "cm"
+  },
+  "catalogo": {
+    "titolo": "Opere",
+    "intro": "Dipinti originali, uno per uno. Le misure sono scritte sotto ogni quadro, così sai subito se ci sta sulla tua parete.",
+    "filtro_tutte": "Tutte",
+    "filtro_disponibili": "Disponibili",
+    "filtro_vendute": "Vendute",
+    "filtro_formato": "Formato",
+    "filtro_colore": "Colore",
+    "filtro_misura": "Misura",
+    "misura_piccola": "Fino a 60 cm",
+    "misura_media": "60–100 cm",
+    "misura_grande": "Oltre 100 cm",
+    "ordina": "Ordina",
+    "ordina_recenti": "Più recenti",
+    "ordina_prezzo_su": "Prezzo crescente",
+    "ordina_prezzo_giu": "Prezzo decrescente",
+    "conteggio": "{n} opere",
+    "nessun_risultato": "Nessuna opera con questi filtri. Prova a toglierne uno, oppure chiedimi un quadro su misura.",
+    "hover_suggerimento": "Tocca per i dettagli"
+  },
+  "scheda_opera": {
+    "sezione_descrizione": "L'opera",
+    "sezione_dettagli": "Dettagli",
+    "sezione_spedizione": "Spedizione e resi",
+    "sezione_firma": "La firma",
+    "sezione_materia": "Da vicino",
+    "materia_didascalia": "Particolare della superficie: si vedono i segni della spatola.",
+    "descrizione_segnaposto": "[Due o tre righe di Isabella su questo quadro: cosa stava guardando, cosa voleva tenere.]",
+    "spedizione_testo": "Ogni originale viene imballato a mano in atelier, protetto agli angoli e assicurato. Ti mando il numero di tracciamento appena parte.",
+    "domanda_titolo": "Hai una domanda su quest'opera?",
+    "domanda_testo": "Scrivimi: ti mando altre foto, un video della superficie o le misure esatte con la cornice.",
+    "proposte_titolo": "Isa lo vede accanto a",
+    "proposte_testo": "Pezzi con gli stessi colori, scelti da me per stare sulla stessa parete.",
+    "stanza_titolo": "Visualizza nella tua stanza",
+    "stanza_testo": "Scegli una stanza o carica una foto della tua parete. Il quadro appare in scala, con le sue misure reali.",
+    "stanza_soggiorno": "Soggiorno",
+    "stanza_camera": "Camera da letto",
+    "stanza_ingresso": "Ingresso",
+    "stanza_tua": "La tua parete",
+    "stanza_larghezza": "Larghezza della parete (cm)",
+    "stanza_istruzioni_foto": "Fotografa la parete di fronte, dritta. Poi indica quanto è larga in centimetri.",
+    "stanza_nota": "L'anteprima è indicativa: luce e colori dello schermo cambiano rispetto al vero.",
+    "stanza_privacy": "La foto resta sul tuo dispositivo e non viene caricata su nessun server."
+  },
+  "stampe": {
+    "titolo": "Stampe",
+    "intro": "Alcuni quadri li ho voluti anche in stampa. L'originale è uno solo; la stampa costa meno e si può scegliere in più formati.",
+    "differenza_titolo": "Originale o stampa?",
+    "differenza_testo": "L'originale è la tela che ho dipinto io, con la materia in rilievo e la firma a mano. La stampa riproduce l'immagine su carta fotografica o su tela, nei formati qui sotto.",
+    "formati_titolo": "Formati disponibili",
+    "telaio_nota": "In Italia le stampe su tela arrivano montate su telaio, tranne i formati grandi, che spediamo arrotolati in tubo. All'estero viaggiano sempre senza telaio. [verificare con le regole di spedizione attuali]"
+  },
+  "home": {
+    "hero": {
+      "A": {
+        "stile": "Claim A — caldo, da casa (ispirato a Lulu and Georgia)",
+        "occhiello": "Quadri originali di Isabella Pistillo",
+        "titolo": "Una parete si veste come una persona.",
+        "sottotitolo": "Scegli il quadro come sceglieresti un vestito, partendo dai colori. Poi ti suggerisco io cosa metterci accanto: una stampa, un vaso, una candela.",
+        "cta_primaria": "Le proposte di Isa",
+        "cta_secondaria": "Tutte le opere"
+      },
+      "B": {
+        "stile": "Claim B — silenzioso, da galleria",
+        "occhiello": "Isabella Pistillo",
+        "titolo": "La mia arte, il mio mondo.",
+        "sottotitolo": "Acrilico su tela. Volti e figure di donna. Atelier ad Andria.",
+        "cta_primaria": "Vedi le opere",
+        "cta_secondaria": "Isabella"
+      },
+      "C": {
+        "stile": "Claim C — audace, editoriale",
+        "occhiello": "Isabella Pistillo — pittrice, Andria",
+        "titolo": "Dipingere è un gioco. Lo prendo sul serio.",
+        "sottotitolo": "Volti di donna scomposti alla maniera cubista, ad acrilico e spatola. Ogni quadro lo disegno prima nella mente, poi sulla tela.",
+        "cta_primaria": "Entra nell'atelier",
+        "cta_secondaria": "Vedi le opere"
+      }
+    },
+    "opere_titolo": "Ultime opere",
+    "opere_testo": "Le misure sono scritte sotto ogni quadro. Se una ti piace, aprila: ci sono i particolari della materia e la firma.",
+    "citazione": "Mi metto di fronte a una tela bianca, la fisso, la osservo e la disegno prima di aggiungere la materia.",
+    "citazione_autrice": "Isabella Pistillo",
+    "proposte_titolo": "Le proposte di Isa",
+    "proposte_testo": "Un quadro, una stampa, un oggetto, con gli stessi colori. Li ho messi insieme io, come si fa con un vestito e la giacca giusta.",
+    "atelier_titolo": "In atelier",
+    "atelier_testo": "Via Felice Orsini, Andria. Qui una tela bianca diventa un volto, in cinque passaggi.",
+    "commissioni_titolo": "Un quadro per una parete precisa",
+    "commissioni_testo": "Mi racconti la stanza e chi ci vive. Io ti mostro un bozzetto. In 20–30 giorni il quadro è pronto.",
+    "bio_titolo": "Isabella",
+    "bio_testo": "Sono nata nel 1969 in Puglia. Dipingere è il mio primo pensiero la mattina e l'ultimo la sera.",
+    "prossimamente_titolo": "Dall'atelier, presto",
+    "prossimamente_testo": "Vasi, candele The Moon, abiti dipinti a mano. Iscriviti per saperlo prima degli altri.",
+    "fiducia_spedizione": "Spedisco in Italia, in Europa e nel resto del mondo",
+    "fiducia_firma": "Ogni originale è firmato a mano",
+    "fiducia_rate": "Puoi pagare in 3 rate"
+  },
+  "bio": {
+    "titolo": "Isabella",
+    "breve": "Isabella Pistillo è nata nel 1969 in Puglia. Dipinge ad acrilico su tela, con pennello e spatola, nel suo atelier di via Felice Orsini ad Andria. Al centro del suo lavoro ci sono il volto e la figura femminile, letti attraverso il cubismo e la pittura del Novecento. Le sue opere sono in case in Italia e all'estero, fino a New York.",
+    "lunga": [
+      "Sono nata nel 1969 in Puglia, e qui dipingo ancora. Il mio atelier è in via Felice Orsini, ad Andria: tutti i quadri di questo sito sono nati lì.",
+      "Per me dipingere è un gioco. È il mio primo pensiero la mattina e l'ultimo prima di dormire.",
+      "Dipingo quasi sempre donne. Volti visti di fronte e di profilo nello stesso momento, corpi fatti di linee nere e campiture piene, rosso, ocra, verde smeraldo, blu notte, a volte l'oro. Devo molto al cubismo e ai pittori del Novecento: da loro ho imparato che un volto si può smontare e rimontare, e resta riconoscibile.",
+      "Lavoro ad acrilico su tela. Uso il pennello per il disegno e la spatola per la materia, che voglio si veda e si possa quasi toccare.",
+      "Oltre ai quadri ho lavorato su stampe, su tessuto e su capi d'abbigliamento, e ho collaborato con [studi di architettura / progetti da citare]. [Formazione, mostre principali, premi: da compilare.]",
+      "Le mie opere sono in case in Italia e all'estero. Una è partita per New York."
+    ],
+    "citazione": "La persona si deve innamorare.",
+    "dati_titolo": "In breve",
+    "dato_nascita": "Nata nel 1969, Puglia",
+    "dato_atelier": "Atelier: via Felice Orsini 69A, Andria",
+    "dato_tecnica": "Acrilico su tela, pennello e spatola",
+    "dato_soggetto": "Il volto e la figura femminile",
+    "dato_formazione": "[Formazione]",
+    "foto_didascalia": "Isabella nell'atelier di via Felice Orsini. Foto: [nome fotografo], 2026."
+  },
+  "statement": {
+    "titolo": "Perché dipingo donne",
+    "paragrafi": [
+      "Dipingo quasi sempre volti di donna, e quasi mai da un solo punto di vista. Nello stesso viso metto l'occhio visto di fronte e il naso visto di profilo.",
+      "L'ho imparato guardando i cubisti e la pittura del Novecento. Smonto il volto e lo rimonto con poche linee nere e colori pieni. [Isabella: i volti sono di persone reali o immaginate? Aggiungere una frase.]",
+      "Il quadro nasce prima nella mente. Quando arrivo alla tela so già dove va lo sguardo, dove va il rosso, dove resta il fondo vuoto. Poi con la spatola stendo e tolgo il colore, e a volte il quadro cambia strada. Per questo dico che dipingere è un gioco.",
+      "Alcuni colori tornano da un quadro all'altro: rosso cadmio, ocra, verde smeraldo, blu petrolio, il nero dei contorni. Spesso c'è un dettaglio d'oro."
+    ]
+  },
+  "atelier": {
+    "titolo": "Come nasce un quadro",
+    "intro": "Ogni quadro attraversa le stesse cinque fasi, nello stesso atelier di via Felice Orsini, ad Andria. Ci vogliono giorni, a volte settimane.",
+    "passi": [
+      {
+        "numero": "01",
+        "titolo": "La tela bianca",
+        "testo": "Mi metto di fronte alla tela bianca, la fisso, la osservo. Prima di tutto la preparo con una base di acrilico molto diluito con l'acqua, sfumata col bianco: toglie la patina della tela e fa presa meglio il colore."
+      },
+      {
+        "numero": "02",
+        "titolo": "Il disegno",
+        "testo": "Il quadro è già tutto nella mente. Lo porto sulla tela con il disegno: le linee del volto, il profilo, la posizione delle mani. Senza il disegno non aggiungo niente."
+      },
+      {
+        "numero": "03",
+        "titolo": "La materia",
+        "testo": "Poi arriva il colore, a campiture piene: rosso, ocra, verde, blu notte, il nero dei contorni. Strato dopo strato, finché il fondo e la figura si tengono."
+      },
+      {
+        "numero": "04",
+        "titolo": "La spatola",
+        "testo": "Con la spatola stendo e tolgo il colore. Lascia segni che il pennello non fa, e la superficie prende rilievo: con la luce radente si vedono le creste della pittura."
+      },
+      {
+        "numero": "05",
+        "titolo": "La firma",
+        "testo": "Quando non c'è più niente da togliere, firmo, in basso a destra, a mano. Poi il quadro viene fotografato intero, in due particolari e nella firma: sono le immagini che trovi nella sua scheda."
+      }
+    ],
+    "chiusura": "Nella scheda di ogni opera ci sono due particolari della superficie e la firma: aprili ingranditi per vedere i segni della spatola.",
+    "visite_titolo": "Venire in atelier",
+    "visite_testo": "[Visite su appuntamento: da confermare con Isabella.] Scrivimi e troviamo un giorno.",
+    "didascalia_foto": "[Didascalia foto atelier]"
+  },
+  "proposte": {
+    "titolo": "Le proposte di Isa",
+    "intro": "Arredare una stanza è un po' come vestirsi: un capo bello da solo diventa giusto quando trovi cosa metterci accanto. Qui ho messo insieme quadri, stampe e oggetti che stanno bene sulla stessa parete, partendo dai colori.",
+    "nota_unici": "Gli originali sono pezzi unici: ogni proposta si può prendere tutta o in parte. Se un pezzo è venduto, te ne suggerisco un altro.",
+    "set": [
+      {
+        "id": "rosso-notte",
+        "nome": "Rosso e notte",
+        "colori": "Rosso cadmio, nero profondo, un filo d'oro",
+        "testo": "Per una parete scura, un ingresso o lo spazio dietro un divano nero. Il rosso è il colore dominante, l'oro compare in un dettaglio.",
+        "pezzi": [
+          "[opera NN] — originale",
+          "[opera NN] — stampa",
+          "[oggetto: vaso / candela]"
+        ]
+      },
+      {
+        "id": "ocra-mezzogiorno",
+        "nome": "Ocra di mezzogiorno",
+        "colori": "Giallo ocra, senape, nero, bianco avorio",
+        "testo": "Colori caldi che stanno bene con il legno chiaro, il lino e le pareti bianche.",
+        "pezzi": [
+          "[opera NN] — originale",
+          "[opera NN] — stampa",
+          "[oggetto: vaso / candela]"
+        ]
+      },
+      {
+        "id": "smeraldo-oro",
+        "nome": "Smeraldo e oro",
+        "colori": "Verde smeraldo, arancio, oro",
+        "testo": "Per stanze con velluti, ottone o legno scuro. La sera l'oro del quadro riflette la luce delle lampade.",
+        "pezzi": [
+          "[opera NN] — originale",
+          "[opera NN] — stampa",
+          "[oggetto: vaso / candela]"
+        ]
+      },
+      {
+        "id": "petrolio-avorio",
+        "nome": "Petrolio e avorio",
+        "colori": "Blu petrolio, blu notte, bianco avorio, rosa carne",
+        "testo": "La proposta più quieta: toni freddi, pochi contrasti. Per una camera da letto o uno studio.",
+        "pezzi": [
+          "[opera NN] — originale",
+          "[opera NN] — stampa",
+          "[oggetto: vaso / candela]"
+        ]
+      }
+    ],
+    "cta_set": "Vedi i pezzi",
+    "cta_parla": "Vuoi una proposta per la tua stanza? Mandami una foto."
+  },
+  "commissioni": {
+    "titolo": "Su commissione",
+    "sottotitolo": "Un quadro dipinto per la tua parete.",
+    "intro": "A volte il quadro giusto non c'è ancora. Allora lo dipingo. Partiamo da una conversazione sulla stanza, sulla luce e su chi ci vive; il resto lo decidiamo insieme sul bozzetto.",
+    "fasi": [
+      {
+        "titolo": "Ci conosciamo",
+        "testo": "Mi scrivi due righe, poi ci sentiamo al telefono, in videochiamata o in atelier ad Andria. Mi racconti la casa, la luce, i colori che hai già."
+      },
+      {
+        "titolo": "Ascolto",
+        "testo": "Ti faccio qualche domanda e ti chiedo una foto della parete. Mi interessa sapere anche chi guarderà il quadro ogni giorno."
+      },
+      {
+        "titolo": "Il bozzetto",
+        "testo": "Ti mando un bozzetto con le misure e i colori. Ne parliamo, lo correggiamo insieme se serve. Comincio a dipingere solo quando ti convince."
+      },
+      {
+        "titolo": "La pittura",
+        "testo": "Dai 20 ai 30 giorni, a seconda della misura. Se vuoi ti mando qualche foto mentre il quadro cresce."
+      },
+      {
+        "titolo": "La consegna",
+        "testo": "Il quadro, firmato, parte dall'atelier imballato a mano e assicurato. In Italia, in Europa o più lontano."
+      }
+    ],
+    "prezzo_titolo": "Quanto costa",
+    "prezzo_testo": "Dipende dalla misura e dal lavoro. Ti do un prezzo chiaro insieme al bozzetto, prima di cominciare. [Acconto: da definire, es. 30% all'approvazione del bozzetto.]",
+    "modulo": {
+      "titolo": "Raccontami",
+      "intro": "Non serve sapere già tutto. Scrivi quello che hai in mente, anche solo un'idea: ti rispondo io entro [N] giorni.",
+      "campo_nome": "Come ti chiami",
+      "campo_email": "Email",
+      "campo_telefono": "Telefono (se preferisci sentirci)",
+      "campo_citta": "Dove vivi",
+      "campo_stanza": "Dove andrà il quadro?",
+      "campo_stanza_aiuto": "Per esempio: «sopra il divano in soggiorno, parete lunga circa 3 metri, luce da sinistra».",
+      "campo_messaggio": "Raccontami l'idea",
+      "campo_messaggio_aiuto": "Colori che ami, un quadro mio che ti è piaciuto, la persona a cui è dedicato. Tutto aiuta.",
+      "campo_foto": "Una foto della parete (facoltativa)",
+      "campo_quando": "C'è una data a cui tieni?",
+      "campo_quando_aiuto": "Un compleanno, un trasloco, un anniversario.",
+      "consenso_privacy": "Ho letto l'informativa privacy e accetto che Isabella mi contatti per questa richiesta.",
+      "invia": "Invia a Isabella",
+      "successo_titolo": "Grazie, l'ho ricevuto.",
+      "successo_testo": "Leggo con calma e ti rispondo entro [N] giorni, all'indirizzo {email}. Nel frattempo, se ti viene in mente altro, scrivimi pure."
+    }
+  },
+  "prossimamente": {
+    "titolo": "Prossimamente",
+    "intro": "Oltre ai quadri, in atelier sto preparando quattro cose nuove, alcune quasi finite. Se ne vuoi una, mettiti in lista: te lo dico prima che arrivino sul sito.",
+    "voci": [
+      {
+        "id": "fabric-art",
+        "nome": "Fabric Art",
+        "testo": "I miei volti portati sul tessuto. [Descrivere cosa sono esattamente: tele su stoffa, pannelli, foulard?] [Ogni pezzo è firmato?]",
+        "stato": "Primi pezzi già disponibili su richiesta"
+      },
+      {
+        "id": "vasi",
+        "nome": "Vasi",
+        "testo": "Ceramica e creta dipinte a mano, con gli stessi colori dei quadri. Li sto finendo: manca l'ultima mano, quella che li protegge.",
+        "stato": "In lavorazione"
+      },
+      {
+        "id": "candele-the-moon",
+        "nome": "Candele The Moon",
+        "testo": "Le fa mia figlia Francesca, a mano, con stampi [disegnati da lei?]. È una collaborazione tra noi due, con il suo marchio The Moon.",
+        "stato": "In arrivo"
+      },
+      {
+        "id": "abiti-dipinti",
+        "nome": "Abiti dipinti",
+        "testo": "Giacche e tailleur che riprendo in mano e dipingo con i colori per tessuto. Edizione limitata: pochi capi, ognuno diverso. [Sono firmati?]",
+        "stato": "Edizione limitata: [numero capi]"
+      }
+    ],
+    "lista_attesa": {
+      "titolo": "Mettiti in lista",
+      "testo": "Lasciami la tua email e scegli cosa ti interessa. Ti scrivo una volta sola, quando è pronto.",
+      "campo_email": "Email",
+      "campo_interesse": "Cosa ti interessa",
+      "bottone": "Avvisami",
+      "successo": "Ci sei. Ti scrivo a {email} appena è pronto.",
+      "privacy": "Uso la tua email solo per questo avviso. Puoi cancellarti in ogni momento."
+    }
+  },
+  "mostre": {
+    "titolo": "Mostre e stampa",
+    "intro": "Dove sono stati i miei quadri e chi ne ha scritto.",
+    "mostre_titolo": "Mostre",
+    "mostre_vuoto": "L'elenco delle mostre è in preparazione.",
+    "mostre_elenco": [
+      {
+        "anno": "[anno]",
+        "titolo": "[Titolo della mostra]",
+        "luogo": "[Spazio, città]",
+        "tipo": "[Personale / collettiva]"
+      },
+      {
+        "anno": "[anno]",
+        "titolo": "[Titolo della mostra]",
+        "luogo": "[Spazio, città]",
+        "tipo": "[Personale / collettiva]"
+      },
+      {
+        "anno": "[anno]",
+        "titolo": "[Titolo della mostra]",
+        "luogo": "[Spazio, città]",
+        "tipo": "[Personale / collettiva]"
+      }
+    ],
+    "stampa_titolo": "Stampa",
+    "stampa_elenco": [
+      {
+        "testata": "[Testata]",
+        "titolo": "[Titolo dell'articolo]",
+        "data": "[data]",
+        "link": "[URL]"
+      },
+      {
+        "testata": "[Testata]",
+        "titolo": "[Titolo dell'articolo]",
+        "data": "[data]",
+        "link": "[URL]"
+      }
+    ],
+    "prossimo_titolo": "Il prossimo appuntamento",
+    "prossimo_testo": "[Evento in programma, data e luogo: es. l'evento con abiti dipinti in primavera, da confermare.]",
+    "contatto_stampa_titolo": "Per la stampa",
+    "contatto_stampa_testo": "Foto ad alta risoluzione, biografia e immagini delle opere: scrivi a info@isabellapistillo.com."
+  },
+  "contatti": {
+    "titolo": "Contatti",
+    "intro": "Per una foto, un formato speciale o un regalo. Rispondiamo noi, di solito in giornata.",
+    "atelier_titolo": "Atelier",
+    "indirizzo": "Via Felice Orsini 69A\n76123 Andria (BT)\nItalia",
+    "orari": "[Orari / su appuntamento]",
+    "mappa": "Apri in Mappe",
+    "email_titolo": "Email",
+    "telefono_titolo": "Telefono e WhatsApp",
+    "social_titolo": "Mi trovi anche qui",
+    "modulo_titolo": "Scrivimi",
+    "campo_nome": "Nome",
+    "campo_email": "Email",
+    "campo_telefono": "Telefono (facoltativo)",
+    "campo_argomento": "Di cosa vuoi parlarmi",
+    "argomento_opera": "Una foto in particolare",
+    "argomento_commissione": "Un formato su misura",
+    "argomento_ordine": "Un ordine",
+    "argomento_stampa": "Stampa o mostre",
+    "argomento_altro": "Altro",
+    "campo_messaggio": "Messaggio",
+    "consenso_privacy": "Ho letto l'informativa privacy.",
+    "consenso_newsletter": "Avvisatemi quando esce una nuova edizione (facoltativo).",
+    "successo": "Grazie, {nome}. Ti rispondo entro [N] giorni lavorativi."
+  },
+  "carrello": {
+    "titolo": "Carrello",
+    "vuoto_titolo": "Il carrello è vuoto",
+    "vuoto_testo": "Quando una foto ti piace, la trovi qui.",
+    "aggiunto": "{titolo} è nel carrello.",
+    "rimosso": "{titolo} è stato tolto dal carrello.",
+    "subtotale": "Subtotale",
+    "iva_inclusa": "",
+    "iva_dettaglio_originali": "IVA 5% su opere originali",
+    "iva_dettaglio_stampe": "IVA 22% su stampe",
+    "spedizione": "Spedizione",
+    "spedizione_scegli_paese": "Scegli il paese di consegna",
+    "zona_italia": "Italia",
+    "zona_europa": "Europa (UE)",
+    "zona_mondo": "Resto del mondo",
+    "spedizione_gratis": "Gratuita",
+    "nota_extra_ue": "Per le spedizioni fuori dall'Unione Europea possono esserci dazi e imposte del paese di arrivo, a carico di chi riceve. [da verificare con il commercialista]",
+    "totale": "Totale",
+    "tempi_titolo": "Quando arriva",
+    "tempi_italia": "Italia: [2–3] giorni lavorativi dalla spedizione",
+    "tempi_europa": "Europa: [5–8] giorni lavorativi dalla spedizione",
+    "tempi_mondo": "Resto del mondo: [7–12] giorni lavorativi dalla spedizione",
+    "originale_unico": "È un esemplare numerato: lo teniamo per te solo a pagamento concluso.",
+    "originale_quantita": "Ogni numero dell’edizione si compra una volta sola.",
+    "venduta_nel_frattempo": "{titolo} è stata venduta mentre era nel tuo carrello. Mi dispiace: l'ho tolta. Se vuoi, posso dipingerne una simile.",
+    "rate_nota": "Al checkout puoi scegliere di pagare in 3 rate."
+  },
+  "demo": {
+    "banner": "Modalità demo: nessun pagamento reale",
+    "banner_dettaglio": "Questo sito è una prova. Puoi fare un acquisto finto con la carta 4242 4242 4242 4242, qualsiasi data futura e qualsiasi CVC: nessun addebito, nessun ordine vero, nessuna email inviata.",
+    "banner_chiudi": "Ho capito",
+    "etichetta": "DEMO",
+    "rate_finte": "Nella demo le rate sono simulate: non parte nessuna richiesta.",
+    "email_finta": "Anteprima: in un sito vero questa email arriverebbe nella tua casella."
+  },
+  "checkout": {
+    "titolo": "Acquisto",
+    "passo_dati": "I tuoi dati",
+    "passo_spedizione": "Spedizione",
+    "passo_pagamento": "Pagamento",
+    "passo_conferma": "Conferma",
+    "campo_nome": "Nome",
+    "campo_cognome": "Cognome",
+    "campo_email": "Email",
+    "campo_email_aiuto": "Qui ti arrivano la conferma e il numero di tracciamento.",
+    "campo_telefono": "Telefono",
+    "campo_telefono_aiuto": "Serve al corriere per la consegna.",
+    "campo_indirizzo": "Indirizzo",
+    "campo_indirizzo2": "Scala, interno, citofono (facoltativo)",
+    "campo_cap": "CAP",
+    "campo_citta": "Città",
+    "campo_provincia": "Provincia",
+    "campo_paese": "Paese",
+    "campo_note": "Note per la consegna (facoltativo)",
+    "fattura_check": "Mi serve la fattura",
+    "campo_cf_piva": "Codice fiscale o P.IVA",
+    "campo_sdi": "Codice destinatario o PEC",
+    "regalo_check": "È un regalo",
+    "regalo_biglietto": "Biglietto scritto a mano (facoltativo)",
+    "regalo_aiuto": "Scrivi il messaggio: lo copio io a mano e non metto prezzi nel pacco.",
+    "metodo_titolo": "Come vuoi pagare",
+    "metodo_carta": "Carta di credito o debito",
+    "metodo_rate": "In 3 rate senza interessi con Scalapay",
+    "metodo_rate_dettaglio": "3 rate da {importo}: la prima oggi, le altre ogni 30 giorni.",
+    "campo_carta_numero": "Numero della carta",
+    "campo_carta_scadenza": "Scadenza (MM/AA)",
+    "campo_carta_cvc": "CVC",
+    "campo_carta_titolare": "Nome sulla carta",
+    "sicurezza": "Pagamento gestito da Stripe. I dati della carta non passano dal sito.",
+    "riepilogo_titolo": "Il tuo ordine",
+    "modifica": "Modifica",
+    "termini_check": "Accetto i termini di vendita e le condizioni di spedizione e reso.",
+    "privacy_nota": "Uso i tuoi dati solo per questo ordine.",
+    "paga": "Paga {totale}",
+    "paga_demo": "Conferma l'ordine di prova",
+    "elaborazione": "Un momento, sto registrando l'ordine…",
+    "successo_titolo": "Grazie, {nome}.",
+    "successo_testo": "Abbiamo ricevuto l’ordine e ti abbiamo scritto a {email}. Ti avvisiamo quando parte.",
+    "successo_demo": "Questo era un ordine di prova: nessun pagamento è stato fatto.",
+    "numero_ordine": "Ordine n. {numero}",
+    "prossimi_passi_titolo": "Cosa succede adesso",
+    "prossimi_passi": [
+      "Controlliamo la stampa sotto luce neutra.",
+      "Firmiamo e prepariamo il certificato, se è un’edizione.",
+      "Imballiamo a mano e ti mandiamo il tracciamento."
+    ]
+  },
+  "email_conferma": {
+    "oggetto": "Ordine n. {numero} · Ninni & Ernesto",
+    "preheader": "Ho ricevuto il tuo ordine. Ecco il riepilogo.",
+    "saluto": "Ciao {nome},",
+    "corpo": "grazie. Il tuo ordine è arrivato e da adesso ce ne occupiamo noi. Qui sotto trovi il riepilogo.",
+    "corpo_originale": "Hai scelto un’edizione limitata: la firmiamo e numeriamo a mano, con il certificato di autenticità.",
+    "riepilogo_titolo": "Riepilogo",
+    "colonna_opera": "Foto",
+    "colonna_prezzo": "Prezzo",
+    "riga_subtotale": "Subtotale",
+    "riga_spedizione": "Spedizione ({zona})",
+    "riga_iva": "",
+    "riga_totale": "Totale pagato",
+    "riga_metodo": "Pagamento",
+    "spedizione_titolo": "Indirizzo di consegna",
+    "tempi_titolo": "Quando parte",
+    "tempi_testo": "Le stampe partono entro 5 giorni lavorativi, le edizioni incorniciate entro 10. Ti scriviamo con il numero di tracciamento.",
+    "domande": "Per qualsiasi cosa rispondi a questa email, oppure scrivimi su WhatsApp al +39 376 0426 212.",
+    "chiusura": "A presto,",
+    "firma": "Ninni & Ernesto",
+    "ps": "P.S. Quando la foto è appesa, se ti va, mandacene una foto.",
+    "footer": "Ninni & Ernesto · Puglia · ciao@ninnieernesto.example",
+    "footer_demo": "Anteprima demo: questa email non è stata inviata."
+  },
+  "errori": {
+    "obbligatorio": "Questo campo serve: compilalo per continuare.",
+    "email": "Questa email non sembra completa. Controlla che ci siano la @ e il dominio (es. nome@email.it).",
+    "telefono": "Scrivi il numero con il prefisso del paese, per esempio +39 333 1234567.",
+    "cap": "Il CAP italiano ha 5 cifre.",
+    "paese_non_servito": "Per questo paese non ho ancora una tariffa. Scrivimi e troviamo una soluzione.",
+    "carta_numero": "Il numero della carta non è valido. Ricontrolla le cifre.",
+    "carta_scadenza": "La carta risulta scaduta. Usa una carta con una data futura.",
+    "carta_cvc": "Il CVC sono le 3 cifre sul retro della carta (4 per American Express).",
+    "carta_rifiutata": "La banca ha rifiutato il pagamento. Prova con un'altra carta o scegli il pagamento a rate.",
+    "carta_demo": "In modalità demo funziona solo la carta di prova 4242 4242 4242 4242.",
+    "consenso": "Per inviare devi accettare l'informativa privacy.",
+    "termini": "Per completare l'acquisto devi accettare i termini di vendita.",
+    "messaggio_breve": "Scrivi qualche parola in più: mi aiuta a risponderti bene.",
+    "file_formato": "Puoi caricare una foto JPG, PNG o HEIC.",
+    "file_peso": "La foto pesa troppo: il massimo è 10 MB.",
+    "invio": "Il messaggio non è partito. Controlla la connessione e riprova, oppure scrivi a ciao@ninnieernesto.example.",
+    "rete": "Sembra che tu sia offline. Riconnettiti e riprova: i dati che hai scritto restano qui.",
+    "pagina_non_trovata_titolo": "Questa pagina non c'è",
+    "pagina_non_trovata_testo": "Il link è sbagliato o la pagina non esiste più.",
+    "generico": "Qualcosa non ha funzionato da parte nostra. Riprova tra un minuto."
+  },
+  "cookie_banner": {
+    "titolo": "Cookie",
+    "testo": "Uso cookie tecnici per far funzionare il carrello e, solo se me lo permetti, cookie per capire quali pagine vengono visitate. [BOZZA: da allineare all'elenco reale dei cookie]",
+    "accetta": "Accetta tutti",
+    "rifiuta": "Solo necessari",
+    "personalizza": "Scegli tu"
+  },
+  "legale": {
+    "banner_bozza": "BOZZA: testo provvisorio, da far verificare a un legale o al commercialista prima della pubblicazione.",
+    "aggiornamento": "Ultimo aggiornamento: [data]",
+    "termini": {
+      "titolo": "Termini di vendita",
+      "sezioni": [
+        {
+          "titolo": "Chi vende",
+          "testo": "Le opere sono vendute da Pistillo Isabella, via Felice Orsini 69A, 76123 Andria (BT), P.IVA [numero], email info@isabellapistillo.com."
+        },
+        {
+          "titolo": "Le opere",
+          "testo": "Gli originali sono dipinti a mano e firmati, ed esistono in un solo esemplare. Le foto sono fatte con cura, ma colori e materia possono apparire diversi su schermi diversi. Le stampe riproducono un'opera originale nei formati indicati."
+        },
+        {
+          "titolo": "Prezzi e IVA",
+          "testo": "I prezzi sono in euro e comprendono l'IVA: 5% sulle opere originali, 22% sulle stampe e sugli altri prodotti. Le spese di spedizione sono indicate nel carrello prima del pagamento. [Vendite extra-UE: verificare regime IVA e dazi.]"
+        },
+        {
+          "titolo": "Ordine e pagamento",
+          "testo": "Il contratto si conclude quando ricevi l'email di conferma dell'ordine. Il pagamento avviene con carta tramite Stripe oppure a rate tramite Scalapay, alle condizioni del fornitore."
+        },
+        {
+          "titolo": "Disponibilità",
+          "testo": "Se un originale risulta già venduto dopo il tuo ordine, ti avviso e ti rimborso per intero entro [N] giorni."
+        },
+        {
+          "titolo": "Opere su commissione",
+          "testo": "Le opere su commissione sono realizzate su indicazioni personali del cliente: per questo non si applica il diritto di recesso (art. 59, lett. c, Codice del Consumo). Prezzo, misure, tempi e acconto vengono concordati per iscritto all'approvazione del bozzetto. [da verificare]"
+        },
+        {
+          "titolo": "Diritto di recesso",
+          "testo": "Per gli acquisti online hai 14 giorni dal ricevimento per recedere, senza dover dare una motivazione. Vedi la pagina Spedizioni e resi."
+        },
+        {
+          "titolo": "Diritti d'autore",
+          "testo": "L'acquisto di un'opera non trasferisce i diritti di riproduzione, che restano a Isabella Pistillo."
+        },
+        {
+          "titolo": "Legge applicabile",
+          "testo": "Si applica la legge italiana. Per i consumatori resta competente il foro del luogo di residenza. [da verificare]"
+        }
+      ]
+    },
+    "spedizioni": {
+      "titolo": "Spedizioni e resi",
+      "intro": "Ogni opera viene imballata a mano in atelier e spedita assicurata con [corriere: Poste Italiane / GLS / altro]. Ti mando il numero di tracciamento appena parte.",
+      "zone_titolo": "Tariffe per zona",
+      "zone": [
+        {
+          "zona": "Italia",
+          "originali": "[€ XX]",
+          "stampe": "[€ XX — gratuita sopra € XX]",
+          "tempi": "[2–3] giorni lavorativi"
+        },
+        {
+          "zona": "Europa (UE)",
+          "originali": "[€ XX]",
+          "stampe": "[€ XX]",
+          "tempi": "[5–8] giorni lavorativi"
+        },
+        {
+          "zona": "Resto del mondo",
+          "originali": "[€ XX]",
+          "stampe": "[€ XX]",
+          "tempi": "[7–12] giorni lavorativi"
+        }
+      ],
+      "colonna_zona": "Zona",
+      "colonna_originali": "Edizioni",
+      "colonna_stampe": "Stampe",
+      "colonna_tempi": "Consegna",
+      "preparazione": "Tempi di preparazione: originali disponibili 5 giorni lavorativi; stampe 3 giorni lavorativi; opere su commissione 20–30 giorni.",
+      "extra_ue": "Fuori dall'Unione Europea possono essere richiesti dazi e imposte di importazione, a carico di chi riceve. [da verificare]",
+      "danni_titolo": "Se il pacco arriva danneggiato",
+      "danni_testo": "Fotografa il pacco prima di aprirlo e accetta con riserva. Scrivici entro 48 ore con le foto: ristampiamo o rimborsiamo.",
+      "resi_titolo": "Resi",
+      "resi_testo": "Hai 14 giorni dal ricevimento per restituire un'opera. Scrivimi prima di spedire: ti dico come imballarla. L'opera deve tornare integra, nell'imballo originale. Le spese di restituzione sono a carico di chi rende [da decidere]. Rimborso entro 14 giorni dal rientro in atelier.",
+      "esclusi_titolo": "Cosa non si può rendere",
+      "esclusi_testo": "Le opere su commissione e i pezzi personalizzati. [Altri casi: da definire]"
+    },
+    "privacy": {
+      "titolo": "Informativa privacy",
+      "sezioni": [
+        {
+          "titolo": "Titolare",
+          "testo": "Pistillo Isabella, via Felice Orsini 69A, 76123 Andria (BT), info@isabellapistillo.com."
+        },
+        {
+          "titolo": "Quali dati",
+          "testo": "Nome, contatti, indirizzo di consegna e dati di fatturazione quando acquisti; quello che scrivi nei moduli; la tua email se ti iscrivi alla lettera o a una lista d'attesa. I dati della carta li tratta Stripe, non questo sito."
+        },
+        {
+          "titolo": "Perché",
+          "testo": "Per gestire ordini, consegne e fatture; per rispondere ai tuoi messaggi; per mandarti la lettera solo se lo hai chiesto."
+        },
+        {
+          "titolo": "Con chi li condivido",
+          "testo": "Solo con chi serve: corriere, Stripe, Scalapay, commercialista, fornitore del sito e dell'email. [Elenco fornitori da completare]"
+        },
+        {
+          "titolo": "Per quanto tempo",
+          "testo": "I dati degli ordini per il tempo richiesto dalla legge fiscale; i contatti della lettera finché non ti cancelli."
+        },
+        {
+          "titolo": "I tuoi diritti",
+          "testo": "Puoi chiedere di vedere, correggere o cancellare i tuoi dati scrivendo a info@isabellapistillo.com. Puoi anche rivolgerti al Garante per la protezione dei dati personali."
+        }
+      ]
+    },
+    "cookie": {
+      "titolo": "Cookie",
+      "sezioni": [
+        {
+          "titolo": "Cookie necessari",
+          "testo": "Servono a far funzionare il carrello, la lingua e il checkout. Non si possono disattivare."
+        },
+        {
+          "titolo": "Cookie statistici",
+          "testo": "Solo con il tuo consenso: mi dicono quali pagine vengono visitate, in forma anonima. [Strumento: da definire]"
+        },
+        {
+          "titolo": "Cookie di marketing",
+          "testo": "[Se si usa il pixel di Facebook/Meta, va descritto qui e attivato solo con consenso.]"
+        },
+        {
+          "titolo": "Cambiare idea",
+          "testo": "Puoi modificare le tue scelte in ogni momento dal link «Preferenze cookie» in fondo alla pagina."
+        }
+      ]
+    }
+  },
+  "seo": {
+    "home_titolo": "Isabella Pistillo — quadri originali, acrilico su tela",
+    "home_descrizione": "Volti e figure di donna dipinti ad acrilico, pennello e spatola nell'atelier di Andria. Originali firmati, stampe e opere su commissione, spedite in tutto il mondo.",
+    "opere_titolo": "Opere originali — Isabella Pistillo",
+    "opere_descrizione": "Dipinti originali firmati, con misure e dettagli della materia. IVA 5% inclusa.",
+    "proposte_titolo": "Le proposte di Isa — Isabella Pistillo",
+    "proposte_descrizione": "Quadri, stampe e oggetti abbinati per colore da Isabella, per la stessa parete.",
+    "atelier_titolo": "Come nasce un quadro — Isabella Pistillo",
+    "atelier_descrizione": "Dalla tela bianca alla firma: cinque passaggi nell'atelier di via Felice Orsini, Andria.",
+    "bio_titolo": "Isabella Pistillo — biografia",
+    "bio_descrizione": "Pittrice nata nel 1969 in Puglia. Acrilico su tela, il volto e la figura femminile, cubismo e Novecento.",
+    "commissioni_titolo": "Quadri su commissione — Isabella Pistillo",
+    "commissioni_descrizione": "Un quadro dipinto per la tua parete: incontro, bozzetto, 20–30 giorni di lavoro, consegna assicurata.",
+    "contatti_titolo": "Contatti — Isabella Pistillo",
+    "contatti_descrizione": "Atelier in via Felice Orsini 69A, Andria. Email, telefono e WhatsApp."
+  },
+  "core": {
+    "cart": {
+      "originale_dettaglio": "Edizione limitata, firmata e numerata",
+      "stampa_dettaglio": "Stampa {formato} cm · {supporto}"
+    }
+  },
+  "carte": {
+    "rag": {
+      "nome": "Hahnemühle Photo Rag 308",
+      "breve": "Photo Rag",
+      "nota": "Cotone, opaca",
+      "testo": "100% cotone, 308 g/m², opaca e vellutata. Colori morbidi, nessun riflesso: la carta dei musei per la fotografia a colori."
+    },
+    "baryta": {
+      "nome": "Hahnemühle Photo Rag Baryta 315",
+      "breve": "Baryta",
+      "nota": "Cotone, lucida come la carta da camera oscura",
+      "testo": "Cotone con strato di barite, 315 g/m², lucida. Neri profondi e rossi pieni: la resa della stampa ai sali d’argento."
+    },
+    "washi": {
+      "nome": "Awagami Kozo",
+      "breve": "Washi",
+      "nota": "Fibra di gelso giapponese",
+      "testo": "Carta giapponese di fibra di kozo (gelso). Si vede la trama, la luce passa dentro la carta."
+    },
+    "bizan": {
+      "nome": "Awagami Bizan, fatta a mano",
+      "breve": "Bizan",
+      "nota": "Washi fatta a mano, bordi sfrangiati",
+      "testo": "Washi fatta a mano in Giappone, 200 g/m², quattro bordi sfrangiati. Esiste solo in fogli fino ad A1: la usiamo per le edizioni fino a 45 × 60 cm."
+    }
+  },
+  "cornici": {
+    "none": {
+      "nome": "Senza cornice",
+      "breve": "senza cornice",
+      "nota": "Arriva in tubo rigido",
+      "testo": ""
+    },
+    "alu": {
+      "nome": "Alluminio nero",
+      "breve": "alluminio nero",
+      "nota": "Profilo sottile, passe-partout in cotone, vetro anti-UV",
+      "testo": "Profilo da 15 mm, come nelle gallerie. Passe-partout in cotone, vetro che filtra i raggi UV."
+    },
+    "oak": {
+      "nome": "Rovere a cassetta",
+      "breve": "rovere",
+      "nota": "Legno massello, la foto sospesa nella cornice",
+      "testo": "Rovere massello naturale. La stampa è montata su un pannello e sospesa con 15 mm d’aria intorno: niente vetro."
+    },
+    "walnut": {
+      "nome": "Noce, vetro museo",
+      "breve": "noce, vetro museo",
+      "nota": "Noce massello, Tru Vue Museum Glass",
+      "testo": "Noce massello, passe-partout in cotone, cerniere in carta giapponese. Vetro Museum Glass: meno dell’1% di riflessi e 99% dei raggi UV fermati."
+    }
+  }
+}

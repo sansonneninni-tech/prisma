@@ -1,0 +1,24 @@
+---
+/**
+ * H1 Apertura della home (DIREZIONE §6 P1): sotto l'header l'opera della sequenza (C18), la riga
+ * «Titolo, misure · 01 / 06 · Pausa» e in fondo il nome che riempie la larghezza (testo vivo, <h1>).
+ * Nome: 2 righe sul telefono e sui tablet in verticale, 1 riga da 1024 e su ogni schermo più largo che alto.
+ * Telefono in orizzontale (altezza ≤ 500): l'opera e la sua riga riempiono la prima schermata, il nome viene sotto.
+ * Nessuna frase: nome, opere e didascalia (§12 D3). Stili in styles/home.css.
+ */
+import Sequenza from './Sequenza.astro';
+import { HOME } from '../../lib/home';
+import type { Locale } from '../../lib/i18n';
+import '../../styles/home.css';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+---
+<section class="ap wrap" aria-labelledby="ap-nome">
+  <Sequenza lang={lang} {...HOME.sequenza} />
+  <div class="ap__nome-c">
+    <h1 class="ap__nome" id="ap-nome" translate="no"><span>Ninni &amp;</span> <span>Ernesto</span></h1>
+  </div>
+</section>
+<script>
+  import '../../lib/home-motion';
+</script>

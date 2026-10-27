@@ -1,0 +1,15 @@
+---
+/**
+ * C3 Indice sul telefono (< 768): <dialog> modale a schermo intero sopra la pagina (A8).
+ * Focus intrappolato, Esc e «Chiudi» chiudono e il fuoco torna a «Indice», scroll della pagina bloccato.
+ * Comportamento in lib/struttura-client.ts. Da 768 «Indice» è un link alla mappa e questo dialog non si apre.
+ */
+import IndiceCorpo from './IndiceCorpo.astro';
+import { useT, type Locale } from '../lib/i18n';
+interface Props { lang: Locale; pathname: string }
+const { lang, pathname } = Astro.props;
+const t = useT(lang);
+---
+<dialog class="idx" id="indice-menu" aria-label={t('galleria.indice.titolo')} tabindex="-1" data-indice>
+  <IndiceCorpo lang={lang} pathname={pathname} />
+</dialog>

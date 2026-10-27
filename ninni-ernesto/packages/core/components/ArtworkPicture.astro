@@ -1,0 +1,57 @@
+---
+/**
+ * Responsive artwork (or photo) image: <picture> with AVIF + WebP, width/height to avoid layout shift,
+ * LQIP + dominant colour exposed as CSS variables on the <picture> for a blurred placeholder:
+ *   .isa-picture { background: var(--isa-dominant) var(--isa-lqip) center / cover no-repeat; }
+ */
+import { artworkAlt, getArtworkImage, getPhotoImage } from '../src/catalog/index.ts';
+import type { Artwork, ArtworkImageVariant, Locale, ResponsiveImage } from '../src/types.ts';
+
+interface Props {
+  /** An artwork… */
+  artwork?: Artwork;
+  variant?: ArtworkImageVariant;
+  /** …or a photo id from the manifest… */
+  photoId?: string;
+  /** …or a ready-made image. */
+  image?: ResponsiveImage;
+  lang: Locale;
+  /** Display width in CSS px (sets width/height and default `sizes`). */
+  width?: number;
+  sizes?: string;
+  alt?: string;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  /** Class on <picture>. */
+  class?: string;
+  /** Class on <img>. */
+  imgClass?: string;
+}
+
+const { artwork, variant = 'canvas', photoId, lang, width, sizes, loading = 'lazy', fetchpriority, class: className, imgClass } = Astro.props;
+
+const options = { ...(width ? { width } : {}), ...(sizes ? { sizes } : {}) };
+const image: ResponsiveImage = Astro.props.image ?? (artwork ? getArtworkImage(artwork, variant, options) : getPhotoImage(photoId ?? '', options));
+const alt = Astro.props.alt ?? (artwork ? artworkAlt(artwork, lang) : '');
+const style = [
+  image.dominantColor ? `--isa-dominant:${image.dominantColor}` : '',
+  image.lqip ? `--isa-lqip:url("${image.lqip}")` : '',
+  `--isa-aspect:${image.width}/${image.height}`,
+]
+  .filter(Boolean)
+  .join(';');
+---
+
+<picture class:list={['isa-picture', className]} style={style} data-variant={artwork ? variant : 'photo'}>
+  {image.sources.map((s) => <source type={s.type} srcset={s.srcset} sizes={image.sizes} />)}
+  <img
+    class={imgClass}
+    src={image.src}
+    width={image.width}
+    height={image.height}
+    alt={alt}
+    loading={loading}
+    decoding="async"
+    fetchpriority={fetchpriority}
+  />
+</picture>

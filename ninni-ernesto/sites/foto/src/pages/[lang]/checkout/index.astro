@@ -1,0 +1,240 @@
+---
+/**
+ * P10 Checkout (DIREZIONE §6, pezzo 5): I tuoi dati → Spedizione → Pagamento (DEMO) → conferma con l'email d'ordine.
+ * Stato, validazione e pagamento finto: `createCheckout` del core (DemoPaymentProvider: nessun dato esce dal browser,
+ * la carta non si salva). Markup proprio al posto di CheckoutFlow / OrderEmailPreview del core: i loro script si
+ * agganciano una volta sola e dopo un cambio pagina del ClientRouter restavano senza ascoltatori (lezione di Casa).
+ * Vestito come SSENSE: 2 colonne da 1024 (modulo 7, riepilogo 5 sticky), sul telefono riepilogo chiuso in cima.
+ * Header ridotto (logo, Carrello (n), lingue). Comportamento in lib/checkout-client.ts.
+ */
+import Base from '../../../layouts/Base.astro';
+import Torna from '../../../components/Torna.astro';
+import Freccia from '../../../components/Freccia.astro';
+import Field from '@ne/core/components/Field.astro';
+import { localeStaticPaths } from '@ne/core/i18n';
+import { EMAIL_TEXT_KEYS, sep } from '@ne/core';
+import { fit } from '../../../lib/fit';
+import { href, type Locale } from '../../../lib/i18n';
+import { testiBrowser, catalogoCarrello, paesi, CHIAVI_RIGHE, useTAcquisto } from '../../../lib/acquisto';
+import '../../../styles/core.css';
+
+export const getStaticPaths = () => localeStaticPaths();
+const lang = Astro.params.lang as Locale;
+const t = useTAcquisto(lang);
+const id = 'ck';
+const titolo = t('checkout.titolo');
+const grazie = t('galleria.acquisto.grazie');
+const elencoPaesi = paesi(lang);
+const passi = [
+  { id: 'details', label: t('checkout.passo_dati') },
+  { id: 'shipping', label: t('checkout.passo_spedizione') },
+  { id: 'payment', label: t('checkout.passo_pagamento') },
+] as const;
+const testi = testiBrowser(t, [
+  ...CHIAVI_RIGHE,
+  ...EMAIL_TEXT_KEYS,
+  'errori.obbligatorio', 'errori.email', 'errori.telefono', 'errori.cap', 'errori.paese_non_servito', 'errori.carta_numero',
+  'errori.carta_scadenza', 'errori.carta_cvc', 'errori.carta_rifiutata', 'errori.carta_demo', 'errori.termini', 'errori.generico',
+  'core.checkout.errori_riepilogo', 'core.checkout.campi_da_compilare', 'core.checkout.carrello_vuoto',
+  'core.checkout.rate_non_disponibili', 'core.checkout.carta_rifiutata_senza_rate', 'core.checkout.passo_n',
+  'core.cart.consegna_giorni', 'checkout.metodo_rate_dettaglio', 'checkout.paga_demo', 'checkout.elaborazione',
+  'checkout.passo_dati', 'checkout.passo_spedizione', 'checkout.passo_pagamento',
+  'galleria.acquisto.passo_fatto', 'galleria.acquisto.consegna', 'galleria.acquisto.pagato_carta', 'galleria.acquisto.pagato_rate',
+  'galleria.acquisto.grazie', 'checkout.titolo', 'etichette.rate',
+]);
+const paesiNomi = JSON.stringify(Object.fromEntries(elencoPaesi.map((p) => [p.value, p.label])));
+const prossimi = t.raw<string[]>('checkout.prossimi_passi') ?? [];
+---
+<Base lang={lang} title={titolo} noindex acquisto="checkout">
+  <section
+    class="ck wrap"
+    data-checkout
+    data-carrello-zona
+    data-step="details"
+    data-lang={lang}
+    data-i18n={JSON.stringify(testi)}
+    data-catalogo={JSON.stringify(catalogoCarrello())}
+    data-paesi={paesiNomi}
+  >
+    <div class="ck__testa">
+      <Torna href={href(lang, '/carrello/')}>{t('galleria.nav.carrello')}</Torna>
+      <div class="titolo" style={fit(titolo) ? `--fit:${fit(titolo)}` : undefined} data-fit-titolo={fit(titolo) ?? ''} data-fit-grazie={fit(grazie) ?? ''}>
+        <h1 tabindex="-1" data-ck-h1>{titolo}</h1>
+      </div>
+      <nav class="ck__passi" aria-label={t('galleria.acquisto.passi')}>
+        <ol role="list">
+          {passi.map((p, i) => (
+            <li><button class="ck__passo" type="button" data-passo={p.id} disabled><span class="ck__passo-n">{i + 1}</span><span class="ck__passo-t">{p.label}</span></button></li>
+          ))}
+        </ol>
+      </nav>
+    </div>
+
+    <div class="ck__vuoto vuoto" data-ck-vuoto hidden>
+      <p class="vuoto__t">{t('galleria.acquisto.vuoto')}</p>
+      <ul class="porte" role="list">
+        <li><a class="porta" href={href(lang, '/opere/')}><span>{t('galleria.opere.originali')}</span><Freccia sottile /></a></li>
+        <li><a class="porta" href={href(lang, '/opere/?vista=stampe')}><span>{t('galleria.opere.stampe')}</span><Freccia sottile /></a></li>
+      </ul>
+    </div>
+
+    <div class="ck__corpo" data-ck-corpo>
+      <!-- riepilogo: prima nel DOM (in cima sul telefono, chiuso), colonna destra sticky da 1024 (sempre aperto) -->
+      <details class="ck__riep riep" data-ck-riep>
+        <summary class="riep__testa">
+          <span class="riep__l">{t('galleria.acquisto.riepilogo')}</span>
+          <span class="riep__tot" data-ck-riep-tot></span>
+          <Freccia dir="giu" />
+        </summary>
+        <div class="riep__corpo">
+          <h2 class="riep__h">{t('galleria.acquisto.riepilogo')}</h2>
+          <ul class="righe" role="list" data-ck-righe></ul>
+          <dl class="conto" data-ck-conto></dl>
+          <p class="riep__nota" data-ck-consegna hidden></p>
+          <p class="riep__nota" data-ck-dazi hidden>{t('galleria.acquisto.dazi')}</p>
+          <a class="lnk riep__modifica" href={href(lang, '/carrello/')}>{t('bottoni.vai_carrello')}</a>
+        </div>
+      </details>
+
+      <div class="ck__main">
+        <!-- 1. I tuoi dati -->
+        <section class="ck__pan" data-ck-pan="details" aria-labelledby="ck-h-details">
+          <h2 class="vh" id="ck-h-details" tabindex="-1">{t('checkout.passo_dati')}</h2>
+          <form class="ck__form" data-form="details" novalidate>
+            <div class="isa-error-summary" role="alert" tabindex="-1" data-error-summary hidden></div>
+            <fieldset class="ck__gruppo">
+              <legend class="ck__legenda">{t('galleria.acquisto.contatto')}</legend>
+              <Field idPrefix={id} name="email" type="email" label={t('checkout.campo_email')} required autocomplete="email" inputmode="email" checkControlClass={false} />
+              <Field idPrefix={id} name="phone" type="tel" label={t('checkout.campo_telefono')} required autocomplete="tel" inputmode="tel" checkControlClass={false} />
+            </fieldset>
+            <fieldset class="ck__gruppo">
+              <legend class="ck__legenda">{t('galleria.acquisto.indirizzo')}</legend>
+              <div class="ck__due">
+                <Field idPrefix={id} name="firstName" label={t('checkout.campo_nome')} required autocomplete="given-name" />
+                <Field idPrefix={id} name="lastName" label={t('checkout.campo_cognome')} required autocomplete="family-name" />
+              </div>
+              <Field idPrefix={id} name="country" as="select" label={t('checkout.campo_paese')} required autocomplete="country" options={[{ value: '', label: t('galleria.acquisto.paese_scegli') }, ...elencoPaesi]} />
+              <Field idPrefix={id} name="address1" label={t('checkout.campo_indirizzo')} required autocomplete="address-line1" />
+              <Field idPrefix={id} name="address2" label={t('checkout.campo_indirizzo2')} autocomplete="address-line2" />
+              <div class="ck__luogo">
+                <Field idPrefix={id} name="postalCode" label={t('checkout.campo_cap')} required autocomplete="postal-code" />
+                <Field idPrefix={id} name="city" label={t('checkout.campo_citta')} required autocomplete="address-level2" />
+                <Field idPrefix={id} name="province" label={t('checkout.campo_provincia')} autocomplete="address-level1" />
+              </div>
+              <Field idPrefix={id} name="wantsInvoice" type="checkbox" label={t('checkout.fattura_check')} checkControlClass={false} />
+              <div class="ck__due" data-ck-fattura hidden>
+                <Field idPrefix={id} name="taxCode" label={t('checkout.campo_cf_piva')} />
+                <Field idPrefix={id} name="sdiOrPec" label={t('checkout.campo_sdi')} />
+              </div>
+            </fieldset>
+            <div class="ck__azioni">
+              <a class="lnk" href={href(lang, '/carrello/')}>{t('bottoni.vai_carrello')}</a>
+              <button class="btn" type="submit">{t('bottoni.avanti')}<Freccia /></button>
+            </div>
+          </form>
+        </section>
+
+        <!-- 2. Spedizione -->
+        <section class="ck__pan" data-ck-pan="shipping" aria-labelledby="ck-h-shipping" hidden>
+          <h2 class="vh" id="ck-h-shipping" tabindex="-1">{t('checkout.passo_spedizione')}</h2>
+          <div class="ck__recap">
+            <div class="ck__recap-r">
+              <p class="ck__recap-l">{t('galleria.acquisto.indirizzo')}</p>
+              <p class="ck__recap-t" data-ck-indirizzo></p>
+              <button class="lnk" type="button" data-go="details">{t('checkout.modifica')}</button>
+            </div>
+            <div class="ck__recap-r">
+              <p class="ck__recap-l" data-ck-sped-l>{t('carrello.spedizione')}</p>
+              <p class="ck__recap-t"><span class="num" data-ck-sped-costo></span><br /><span class="mute" data-ck-sped-giorni></span></p>
+            </div>
+          </div>
+          <p class="ck__nota" data-ck-sped-dazi hidden>{t('galleria.acquisto.dazi')}</p>
+          <form class="ck__form" data-form="shipping" novalidate>
+            <Field idPrefix={id} name="isGift" type="checkbox" label={t('checkout.regalo_check')} checkControlClass={false} />
+            <div data-ck-regalo hidden>
+              <Field idPrefix={id} name="giftMessage" as="textarea" rows={4} maxlength={500} label={t('checkout.regalo_biglietto')} hint={t('checkout.regalo_aiuto')} />
+            </div>
+            <div class="ck__azioni">
+              <button class="lnk" type="button" data-go="details">{t('bottoni.indietro')}</button>
+              <button class="btn" type="submit">{t('bottoni.avanti')}<Freccia /></button>
+            </div>
+          </form>
+        </section>
+
+        <!-- 3. Pagamento (DEMO) -->
+        <section class="ck__pan" data-ck-pan="payment" aria-labelledby="ck-h-payment" hidden>
+          <h2 class="vh" id="ck-h-payment" tabindex="-1">{t('checkout.passo_pagamento')}</h2>
+          <div class="ck__demo">
+            <p class="ck__demo-t">{t('galleria.acquisto.demo_carta')}</p>
+            <button class="lnk" type="button" data-ck-carta-prova>{t('galleria.acquisto.carta_prova')}</button>
+          </div>
+          <form class="ck__form" data-form="payment" novalidate>
+            <div class="isa-error-summary" role="alert" tabindex="-1" data-error-summary hidden></div>
+            <fieldset class="metodi">
+              <legend class="metodi__l">{t('checkout.metodo_titolo')}</legend>
+              <label class="metodo">
+                <input type="radio" name="method" value="card" checked />
+                <span class="metodo__box"><span class="metodo__t">{t('checkout.metodo_carta')}</span></span>
+              </label>
+              <label class="metodo">
+                <input type="radio" name="method" value="installments" />
+                <span class="metodo__box"><span class="metodo__t">{t('checkout.metodo_rate')}</span><span class="metodo__n" data-ck-rate-n></span></span>
+              </label>
+            </fieldset>
+            <div class="ck__carta" data-ck-carta>
+              <!-- autocomplete off voluto: è una demo, il browser non deve salvare né proporre carte vere.
+                   Nel sito vero questi campi sono di Stripe (Payment Element). -->
+              <Field idPrefix={id} name="number" label={t('checkout.campo_carta_numero')} inputmode="numeric" autocomplete="off" maxlength={23} />
+              <div class="ck__due">
+                <Field idPrefix={id} name="expiry" label={t('checkout.campo_carta_scadenza')} inputmode="numeric" autocomplete="off" maxlength={5} />
+                <Field idPrefix={id} name="cvc" label={t('checkout.campo_carta_cvc')} inputmode="numeric" autocomplete="off" maxlength={4} />
+              </div>
+              <Field idPrefix={id} name="holder" label={t('checkout.campo_carta_titolare')} autocomplete="off" />
+            </div>
+            <div class="ck__accetto">
+            <Field idPrefix={id} name="acceptTerms" type="checkbox" label={t('checkout.termini_check')} required checkControlClass={false} />
+            <p class="ck__termini">
+              {t('checkout.privacy_nota')} <a href={href(lang, '/info/#termini')}>{t('galleria.acquisto.termini')}</a> · <a href={href(lang, '/info/#privacy')}>{t('galleria.footer.privacy')}</a>
+            </p>
+            </div>
+            <p class="ck__errore" role="alert" tabindex="-1" data-ck-errore hidden></p>
+            <div class="ck__azioni">
+              <button class="lnk" type="button" data-go="shipping">{t('bottoni.indietro')}</button>
+              <button class="btn" type="submit" data-ck-paga><span data-ck-paga-t>{t('checkout.paga_demo')}</span></button>
+            </div>
+            <p class="vh" role="status" aria-live="polite" data-ck-stato></p>
+          </form>
+        </section>
+
+        <!-- Conferma -->
+        <section class="ck__pan ck__fatto" data-ck-pan="confirmation" aria-labelledby="ck-ordine" hidden>
+          <p class="ck__ordine" id="ck-ordine" data-ck-ordine></p>
+          <p class="ck__fatto-t" data-ck-pagato></p>
+          <div>
+            <h2 class="ck__h3">{t('checkout.prossimi_passi_titolo')}</h2>
+            <ol class="ck__prossimi" role="list">
+              {prossimi.map((s, i) => <li><span class="ck__prossimi-n">{String(i + 1).padStart(2, '0')}</span><span>{s}</span></li>)}
+            </ol>
+          </div>
+          <a class="lnk ck__opere" href={href(lang, '/opere/')}>{t('galleria.nav.opere')}<Freccia /></a>
+          <p class="ck__nota">{t('checkout.successo_demo')}</p>
+          <div class="email" data-ck-email hidden>
+            <h2 class="ck__h3">{t('galleria.acquisto.email_titolo')}</h2>
+            <div class="email__meta">
+              <p class="mute">{t('demo.email_finta')}</p>
+              <p class="email__ogg"><span>{t('galleria.acquisto.oggetto')}{sep(lang).dp}</span><strong data-ck-email-ogg></strong></p>
+            </div>
+            <iframe class="email__frame" title={t('galleria.acquisto.email_titolo')} sandbox="allow-same-origin" data-ck-email-frame></iframe>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { initCheckout } from '../../../lib/checkout-client';
+  let spegni: (() => void) | null = null;
+  document.addEventListener('astro:page-load', () => { spegni?.(); spegni = initCheckout(); });
+  document.addEventListener('astro:before-swap', () => { spegni?.(); spegni = null; });
+</script>

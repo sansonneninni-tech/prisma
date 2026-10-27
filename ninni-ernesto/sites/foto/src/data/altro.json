@@ -1,0 +1,8 @@
+{
+  "_nota": "Voci di Altro e miniatura al passaggio del mouse (id di una foto in vendita o del manifest).",
+  "voci": [
+    { "voce": "carte", "mini": "02" },
+    { "voce": "chi_siamo", "mini": "ninni-ernesto-ritratto" },
+    { "voce": "prisma", "mini": "04" }
+  ]
+}

@@ -1,0 +1,10 @@
+---
+/**
+ * C4 «← indice»: link 14 px con freccia SVG sopra il titolo, alto 44 px.
+ * Scheda → «← Opere»; Proposte, Prossimamente, Su commissione → «← Altro»; Info → «← Home».
+ */
+import Freccia from './Freccia.astro';
+interface Props { href: string; class?: string }
+const { href, class: cls } = Astro.props;
+---
+<a class:list={['torna', cls]} href={href}><Freccia dir="sinistra" /><span><slot /></span></a>

@@ -1,0 +1,853 @@
+{
+  "meta": {
+    "lingua": "en",
+    "codice_lingua": "en-US",
+    "nome_lingua": "English",
+    "stato": "Ninni & Ernesto texts",
+    "versione": "0.2 — 19/10/2026",
+    "nota": "Draft copy. [Square brackets] = missing information to fill in. {curly braces} = value inserted by the site (do not translate)."
+  },
+  "nav": {
+    "home": "Home",
+    "opere": "Paintings",
+    "proposte": "Isa's Pairings",
+    "stampe": "Prints",
+    "atelier": "Studio",
+    "bio": "Isabella",
+    "commissioni": "Commissions",
+    "prossimamente": "Coming soon",
+    "mostre": "Exhibitions & press",
+    "contatti": "Contact",
+    "carrello": "Cart",
+    "carrello_conteggio": "Cart ({n})",
+    "cerca": "Search",
+    "cerca_placeholder": "Search a painting, a color, a size…",
+    "lingua": "Language",
+    "menu_apri": "Open menu",
+    "menu_chiudi": "Close menu",
+    "salta_contenuto": "Skip to content"
+  },
+  "footer": {
+    "firma": "Isabella Pistillo — painter. Studio in via Felice Orsini, Andria, Italy.",
+    "colonna_opere": "Paintings",
+    "colonna_isabella": "Isabella",
+    "colonna_info": "Information",
+    "colonna_contatti": "Contact",
+    "indirizzo": "Via Felice Orsini 69A, 76123 Andria (BT), Italy",
+    "email": "info@isabellapistillo.com",
+    "telefono": "+39 376 0426 212",
+    "instagram": "Instagram",
+    "facebook": "Facebook",
+    "whatsapp": "Message me on WhatsApp",
+    "newsletter_titolo": "When a new painting is born",
+    "newsletter_testo": "I write when I finish a new painting or when there's an exhibition. No more than [N] times a year.",
+    "newsletter_placeholder": "Your email",
+    "newsletter_bottone": "Sign up",
+    "newsletter_successo": "Done. The next letter will go to {email}.",
+    "link_termini": "Terms of sale",
+    "link_spedizioni": "Shipping & returns",
+    "link_privacy": "Privacy",
+    "link_cookie": "Cookies",
+    "link_preferenze_cookie": "Cookie preferences",
+    "copyright": "© {anno} Isabella Pistillo. All works are protected by copyright.",
+    "dati_fiscali": "Pistillo Isabella — VAT no. [VAT number]",
+    "credito": "Website: [studio name/ninni]"
+  },
+  "bottoni": {
+    "aggiungi_carrello": "Add to cart",
+    "aggiunta_carrello": "In your cart",
+    "acquista": "Buy",
+    "richiedi_info": "Ask a question",
+    "visualizza_stanza": "View in your room",
+    "vai_carrello": "Go to cart",
+    "vai_checkout": "Checkout",
+    "continua": "Keep looking",
+    "vedi_opera": "View painting",
+    "vedi_tutte": "All paintings",
+    "vedi_proposte": "Isa's Pairings",
+    "vedi_atelier": "Step into the studio",
+    "vedi_stampe": "See the prints",
+    "inizia_conversazione": "Let's talk about it",
+    "invia": "Send",
+    "invia_messaggio": "Send message",
+    "iscriviti_lista": "Let me know",
+    "rimuovi": "Remove",
+    "chiudi": "Close",
+    "indietro": "Back",
+    "avanti": "Next",
+    "precedente": "Previous painting",
+    "successiva": "Next painting",
+    "ingrandisci": "Zoom in",
+    "leggi_tutto": "Read on",
+    "torna_home": "Back to home",
+    "anteprima_email": "See the confirmation email",
+    "carica_foto": "Upload a photo of your wall",
+    "riprova": "Try again"
+  },
+  "etichette": {
+    "venduta": "Sold out",
+    "venduta_nota": "This painting already has a home. If you love it, I can paint one in the same spirit: see Commissions.",
+    "disponibile": "Available",
+    "riservata": "Reserved",
+    "nuova": "New",
+    "prossimamente": "Coming soon",
+    "esemplare_unico": "Original, one of a kind",
+    "prezzo_su_richiesta": "Price on request",
+    "prezzo_da": "from {prezzo}",
+    "misure": "Size",
+    "misure_valore": "{base} × {altezza} cm",
+    "misure_nota": "Width × height, canvas only, frame excluded",
+    "tecnica": "Medium",
+    "tecnica_default": "Acrylic on canvas, brush and palette knife",
+    "anno": "Year",
+    "anno_mancante": "[year]",
+    "firma": "Signature",
+    "firma_valore": "Hand-signed on the front",
+    "cornice": "Frame",
+    "cornice_inclusa": "Frame included",
+    "senza_cornice": "Unframed",
+    "certificato": "Signed certificate of authenticity [to be confirmed]",
+    "orientamento": "Format",
+    "verticale": "Portrait",
+    "orizzontale": "Landscape",
+    "quadrato": "Square",
+    "colori": "Colors",
+    "iva_originali": "",
+    "iva_stampe": "",
+    "iva_nota_originali": "Original hand-painted, signed works carry the reduced Italian VAT rate of 5%.",
+    "iva_nota_stampe": "Prints carry the standard Italian VAT rate of 22%.",
+    "spedizione": "Shipping",
+    "spedizione_calcolata": "Shipping calculated at checkout based on your country",
+    "spedizione_zone": "Italy {italia} · Europe {europa} · Rest of the world {mondo}",
+    "tempi_originale": "Printed, signed and framed in {giorni} working days",
+    "tempi_stampa": "Printed and shipped in {giorni} working days",
+    "consegna_stimata": "Estimated delivery: {data_da}–{data_a}",
+    "rate": "Or 3 interest-free payments of {importo} with Scalapay",
+    "rate_breve": "Pay in 3 installments",
+    "quantita": "Quantity",
+    "formato_stampa": "Size",
+    "supporto_stampa": "Paper",
+    "carta_fotografica": "Fine art paper",
+    "tela": "Canvas",
+    "con_telaio": "Stretched on a frame",
+    "in_tubo": "Rolled in a tube",
+    "cm": "cm"
+  },
+  "catalogo": {
+    "titolo": "Paintings",
+    "intro": "Original paintings, one by one. The size is written under each one, so you know straight away whether it fits your wall.",
+    "filtro_tutte": "All",
+    "filtro_disponibili": "Available",
+    "filtro_vendute": "Sold",
+    "filtro_formato": "Format",
+    "filtro_colore": "Color",
+    "filtro_misura": "Size",
+    "misura_piccola": "Up to 60 cm",
+    "misura_media": "60–100 cm",
+    "misura_grande": "Over 100 cm",
+    "ordina": "Sort",
+    "ordina_recenti": "Newest",
+    "ordina_prezzo_su": "Price: low to high",
+    "ordina_prezzo_giu": "Price: high to low",
+    "conteggio": "{n} paintings",
+    "nessun_risultato": "No paintings match these filters. Try removing one, or ask me for a painting made to measure.",
+    "hover_suggerimento": "Tap for details"
+  },
+  "scheda_opera": {
+    "sezione_descrizione": "The painting",
+    "sezione_dettagli": "Details",
+    "sezione_spedizione": "Shipping & returns",
+    "sezione_firma": "The signature",
+    "sezione_materia": "Up close",
+    "materia_didascalia": "Detail of the surface: you can see the marks of the palette knife.",
+    "descrizione_segnaposto": "[Two or three lines from Isabella about this painting: what she was looking at, what she wanted to keep.]",
+    "spedizione_testo": "Every original is packed by hand in the studio, with protected corners, and insured. I'll send you the tracking number as soon as it leaves.",
+    "domanda_titolo": "A question about this painting?",
+    "domanda_testo": "Write to me: I can send more photos, a video of the surface or the exact size with the frame.",
+    "proposte_titolo": "Isa pairs it with",
+    "proposte_testo": "Pieces in the same colors, chosen by me to share the same wall.",
+    "stanza_titolo": "View in your room",
+    "stanza_testo": "Pick a room or upload a photo of your wall. The painting appears to scale, at its real size.",
+    "stanza_soggiorno": "Living room",
+    "stanza_camera": "Bedroom",
+    "stanza_ingresso": "Hallway",
+    "stanza_tua": "Your wall",
+    "stanza_larghezza": "Wall width (cm)",
+    "stanza_istruzioni_foto": "Photograph the wall straight on. Then tell me how wide it is in centimeters.",
+    "stanza_nota": "The preview is a guide: light and screen colors differ from the real thing.",
+    "stanza_privacy": "The photo stays on your device and is not uploaded to any server."
+  },
+  "stampe": {
+    "titolo": "Prints",
+    "intro": "Some paintings I wanted as prints too. The original is one of one; a print costs less and comes in several sizes.",
+    "differenza_titolo": "Original or print?",
+    "differenza_testo": "The original is the canvas I painted myself, with raised texture and a handwritten signature. The print reproduces the image on photographic paper or canvas, in the sizes below.",
+    "formati_titolo": "Available sizes",
+    "telaio_nota": "Within Italy, canvas prints arrive stretched on a frame, except large sizes, which we ship rolled in a tube. Abroad they always travel unstretched. [check against current shipping rules]"
+  },
+  "home": {
+    "hero": {
+      "A": {
+        "stile": "Claim A — warm, homely (inspired by Lulu and Georgia)",
+        "occhiello": "Original paintings by Isabella Pistillo",
+        "titolo": "Dress a wall the way you'd dress yourself.",
+        "sottotitolo": "Choose a painting the way you'd choose clothes, starting from color. Then I'll suggest what goes beside it: a print, a vase, a candle.",
+        "cta_primaria": "Isa's Pairings",
+        "cta_secondaria": "All paintings"
+      },
+      "B": {
+        "stile": "Claim B — quiet, gallery-like",
+        "occhiello": "Isabella Pistillo",
+        "titolo": "My art, my world.",
+        "sottotitolo": "Acrylic on canvas. Women's faces and figures. Studio in Andria, Italy.",
+        "cta_primaria": "View the paintings",
+        "cta_secondaria": "Isabella"
+      },
+      "C": {
+        "stile": "Claim C — bold, editorial",
+        "occhiello": "Isabella Pistillo — painter, Andria",
+        "titolo": "Painting is a game. I take it seriously.",
+        "sottotitolo": "Women's faces taken apart in the Cubist way, in acrylic and palette knife. I draw every painting in my mind first, then on the canvas.",
+        "cta_primaria": "Step into the studio",
+        "cta_secondaria": "View the paintings"
+      }
+    },
+    "opere_titolo": "Latest paintings",
+    "opere_testo": "The size is written under each painting. If one catches your eye, open it: you'll find close-ups of the surface and the signature.",
+    "citazione": "I stand in front of a blank canvas, I stare at it, I study it, and I draw before I add the paint.",
+    "citazione_autrice": "Isabella Pistillo",
+    "proposte_titolo": "Isa's Pairings",
+    "proposte_testo": "A painting, a print, an object, all in the same colors. I put them together myself, the way you'd match a dress with the right jacket.",
+    "atelier_titolo": "In the studio",
+    "atelier_testo": "Via Felice Orsini, Andria. This is where a blank canvas becomes a face, in five steps.",
+    "commissioni_titolo": "A painting for one particular wall",
+    "commissioni_testo": "Tell me about the room and who lives there. I'll show you a sketch. In 20–30 days the painting is ready.",
+    "bio_titolo": "Isabella",
+    "bio_testo": "I was born in 1969 in Puglia. Painting is my first thought in the morning and my last at night.",
+    "prossimamente_titolo": "From the studio, soon",
+    "prossimamente_testo": "Vases, The Moon candles, hand-painted clothes. Sign up to hear first.",
+    "fiducia_spedizione": "I ship to Italy, Europe and the rest of the world",
+    "fiducia_firma": "Every original is hand-signed",
+    "fiducia_rate": "Pay in 3 installments"
+  },
+  "bio": {
+    "titolo": "Isabella",
+    "breve": "Isabella Pistillo was born in 1969 in Puglia, southern Italy. She paints in acrylic on canvas, with brush and palette knife, in her studio on via Felice Orsini in Andria. Her work centers on the female face and figure, seen through Cubism and twentieth-century painting. Her paintings hang in homes in Italy and abroad, as far as New York.",
+    "lunga": [
+      "I was born in 1969 in Puglia, and this is where I still paint. My studio is on via Felice Orsini, in Andria: every painting on this site was made there.",
+      "For me, painting is a game. It's my first thought in the morning and my last before I fall asleep.",
+      "I almost always paint women. Faces seen from the front and in profile at the same moment, bodies made of black lines and solid color: red, ochre, emerald green, midnight blue, sometimes gold. I owe a lot to Cubism and the painters of the twentieth century: they taught me that a face can be taken apart and put back together and still be recognizable.",
+      "I work in acrylic on canvas. I use the brush for drawing and the palette knife for texture, which I want you to see and almost touch.",
+      "Besides paintings I've worked on prints, on fabric and on clothing, and I've collaborated with [architecture studios / projects to name]. [Training, main exhibitions, awards: to fill in.]",
+      "My paintings hang in homes in Italy and abroad. One was shipped to New York."
+    ],
+    "citazione": "People have to fall in love.",
+    "dati_titolo": "In short",
+    "dato_nascita": "Born 1969, Puglia, Italy",
+    "dato_atelier": "Studio: via Felice Orsini 69A, Andria",
+    "dato_tecnica": "Acrylic on canvas, brush and palette knife",
+    "dato_soggetto": "The female face and figure",
+    "dato_formazione": "[Training]",
+    "foto_didascalia": "Isabella in her studio on via Felice Orsini. Photo: [photographer], 2026."
+  },
+  "statement": {
+    "titolo": "Why I paint women",
+    "paragrafi": [
+      "I almost always paint women's faces, and almost never from a single point of view. In the same face I put an eye seen from the front and a nose seen in profile.",
+      "I learned this by looking at the Cubists and twentieth-century painting. I take the face apart and rebuild it with a few black lines and solid color. [Isabella: are the faces real people or imagined? Add a sentence.]",
+      "The painting is born in the mind first. By the time I reach the canvas I already know where the gaze goes, where the red goes, where the background stays empty. Then with the palette knife I spread and scrape the paint, and sometimes the painting changes course. That's why I say painting is a game.",
+      "Some colors come back from one painting to the next: cadmium red, ochre, emerald green, deep teal, the black of the outlines. Often there's a touch of gold."
+    ]
+  },
+  "atelier": {
+    "titolo": "How a painting is born",
+    "intro": "Every painting goes through the same five stages, in the same studio on via Felice Orsini, in Andria. It takes days, sometimes weeks.",
+    "passi": [
+      {
+        "numero": "01",
+        "titolo": "The blank canvas",
+        "testo": "I stand in front of the blank canvas, I stare at it, I study it. First I prime it with a very watery acrylic wash, softened with white: it lifts the sheen off the canvas and helps the color grip."
+      },
+      {
+        "numero": "02",
+        "titolo": "The drawing",
+        "testo": "The painting is already complete in my mind. I bring it onto the canvas with the drawing: the lines of the face, the profile, where the hands go. Without the drawing I add nothing."
+      },
+      {
+        "numero": "03",
+        "titolo": "The paint",
+        "testo": "Then comes color, in solid fields: red, ochre, green, midnight blue, the black of the outlines. Layer after layer, until background and figure hold each other up."
+      },
+      {
+        "numero": "04",
+        "titolo": "The palette knife",
+        "testo": "With the knife I spread and scrape the paint. It leaves marks a brush doesn't, and the surface gains relief: in raking light you can see the ridges of paint."
+      },
+      {
+        "numero": "05",
+        "titolo": "The signature",
+        "testo": "When there's nothing left to take away, I sign, bottom right, by hand. Then the painting is photographed whole, in two close-ups and at the signature: those are the images on its page."
+      }
+    ],
+    "chiusura": "Every painting's page has two close-ups of the surface and the signature: open them full size to see the knife marks.",
+    "visite_titolo": "Visiting the studio",
+    "visite_testo": "[Visits by appointment: to be confirmed with Isabella.] Write to me and we'll find a day.",
+    "didascalia_foto": "[Studio photo caption]"
+  },
+  "proposte": {
+    "titolo": "Isa's Pairings",
+    "intro": "Furnishing a room is a bit like getting dressed: a beautiful piece on its own becomes right once you find what to wear with it. Here I've put together paintings, prints and objects that belong on the same wall, starting from color.",
+    "nota_unici": "Originals are one of a kind: you can take a whole pairing or just part of it. If a piece has sold, I'll suggest another.",
+    "set": [
+      {
+        "id": "rosso-notte",
+        "nome": "Red and Night",
+        "colori": "Cadmium red, deep black, a thread of gold",
+        "testo": "For a dark wall, a hallway or the space behind a black sofa. Red leads; gold appears in a detail.",
+        "pezzi": [
+          "[work NN] — original",
+          "[work NN] — print",
+          "[object: vase / candle]"
+        ]
+      },
+      {
+        "id": "ocra-mezzogiorno",
+        "nome": "Midday Ochre",
+        "colori": "Yellow ochre, mustard, black, ivory white",
+        "testo": "Warm colors that sit well with pale wood, linen and white walls.",
+        "pezzi": [
+          "[work NN] — original",
+          "[work NN] — print",
+          "[object: vase / candle]"
+        ]
+      },
+      {
+        "id": "smeraldo-oro",
+        "nome": "Emerald and Gold",
+        "colori": "Emerald green, orange, gold",
+        "testo": "For rooms with velvet, brass or dark wood. In the evening the gold in the painting catches the lamplight.",
+        "pezzi": [
+          "[work NN] — original",
+          "[work NN] — print",
+          "[object: vase / candle]"
+        ]
+      },
+      {
+        "id": "petrolio-avorio",
+        "nome": "Teal and Ivory",
+        "colori": "Deep teal, midnight blue, ivory white, flesh pink",
+        "testo": "The quietest pairing: cool tones, little contrast. For a bedroom or a study.",
+        "pezzi": [
+          "[work NN] — original",
+          "[work NN] — print",
+          "[object: vase / candle]"
+        ]
+      }
+    ],
+    "cta_set": "See the pieces",
+    "cta_parla": "Want a pairing for your room? Send me a photo."
+  },
+  "commissioni": {
+    "titolo": "Commissions",
+    "sottotitolo": "A painting made for your wall.",
+    "intro": "Sometimes the right painting doesn't exist yet. So I paint it. We start with a conversation about the room, the light and who lives there; the rest we decide together on the sketch.",
+    "fasi": [
+      {
+        "titolo": "We meet",
+        "testo": "You write me a few lines, then we talk on the phone, on a video call or in the studio in Andria. You tell me about the house, the light, the colors you already have."
+      },
+      {
+        "titolo": "I listen",
+        "testo": "I ask a few questions and a photo of the wall. I also like to know who will look at the painting every day."
+      },
+      {
+        "titolo": "The sketch",
+        "testo": "I send you a sketch with the size and colors. We talk about it and adjust it together if needed. I only start painting once you're convinced."
+      },
+      {
+        "titolo": "The painting",
+        "testo": "20 to 30 days, depending on the size. If you like, I'll send you a few photos as it grows."
+      },
+      {
+        "titolo": "Delivery",
+        "testo": "The signed painting leaves the studio packed by hand and insured. To Italy, to Europe or further away."
+      }
+    ],
+    "prezzo_titolo": "What it costs",
+    "prezzo_testo": "It depends on the size and the work involved. I give you a clear price together with the sketch, before I begin. [Deposit: to be defined, e.g. 30% on approval of the sketch.]",
+    "modulo": {
+      "titolo": "Tell me about it",
+      "intro": "You don't need to know everything yet. Write whatever you have in mind, even just an idea: I'll reply within [N] days.",
+      "campo_nome": "Your name",
+      "campo_email": "Email",
+      "campo_telefono": "Phone (if you'd rather talk)",
+      "campo_citta": "Where you live",
+      "campo_stanza": "Where will the painting go?",
+      "campo_stanza_aiuto": "For example: “above the sofa in the living room, wall about 3 meters long, light from the left”.",
+      "campo_messaggio": "Tell me your idea",
+      "campo_messaggio_aiuto": "Colors you love, a painting of mine you liked, the person it's for. Everything helps.",
+      "campo_foto": "A photo of the wall (optional)",
+      "campo_quando": "Is there a date that matters?",
+      "campo_quando_aiuto": "A birthday, a move, an anniversary.",
+      "consenso_privacy": "I have read the privacy notice and agree that Isabella may contact me about this request.",
+      "invia": "Send to Isabella",
+      "successo_titolo": "Thank you, I've got it.",
+      "successo_testo": "I'll read it carefully and reply within [N] days to {email}. In the meantime, if anything else comes to mind, just write."
+    }
+  },
+  "prossimamente": {
+    "titolo": "Coming soon",
+    "intro": "Besides paintings, I'm preparing four new things in the studio, some almost finished. If you'd like one, join the list: I'll tell you before they reach the site.",
+    "voci": [
+      {
+        "id": "fabric-art",
+        "nome": "Fabric Art",
+        "testo": "My faces carried onto fabric. [Describe exactly what they are: canvas on fabric, panels, scarves?] [Is every piece signed?]",
+        "stato": "First pieces already available on request"
+      },
+      {
+        "id": "vasi",
+        "nome": "Vases",
+        "testo": "Ceramic and clay, painted by hand in the same colors as the paintings. I'm finishing them now: the last coat, the one that protects them, is still to come.",
+        "stato": "In progress"
+      },
+      {
+        "id": "candele-the-moon",
+        "nome": "The Moon candles",
+        "testo": "Made by my daughter Francesca, by hand, with molds [she designs herself?]. A collaboration between the two of us, under her label The Moon.",
+        "stato": "Arriving soon"
+      },
+      {
+        "id": "abiti-dipinti",
+        "nome": "Painted clothes",
+        "testo": "Jackets and suits I take back in hand and paint with fabric colors. Limited edition: a few pieces, each one different. [Are they signed?]",
+        "stato": "Limited edition: [number of pieces]"
+      }
+    ],
+    "lista_attesa": {
+      "titolo": "Join the list",
+      "testo": "Leave your email and choose what interests you. I'll write once, when it's ready.",
+      "campo_email": "Email",
+      "campo_interesse": "What interests you",
+      "bottone": "Let me know",
+      "successo": "You're on the list. I'll write to {email} as soon as it's ready.",
+      "privacy": "I only use your email for this notice. You can unsubscribe at any time."
+    }
+  },
+  "mostre": {
+    "titolo": "Exhibitions & press",
+    "intro": "Where my paintings have been, and who has written about them.",
+    "mostre_titolo": "Exhibitions",
+    "mostre_vuoto": "The list of exhibitions is being prepared.",
+    "mostre_elenco": [
+      {
+        "anno": "[year]",
+        "titolo": "[Exhibition title]",
+        "luogo": "[Venue, city]",
+        "tipo": "[Solo / group]"
+      },
+      {
+        "anno": "[year]",
+        "titolo": "[Exhibition title]",
+        "luogo": "[Venue, city]",
+        "tipo": "[Solo / group]"
+      },
+      {
+        "anno": "[year]",
+        "titolo": "[Exhibition title]",
+        "luogo": "[Venue, city]",
+        "tipo": "[Solo / group]"
+      }
+    ],
+    "stampa_titolo": "Press",
+    "stampa_elenco": [
+      {
+        "testata": "[Publication]",
+        "titolo": "[Article title]",
+        "data": "[date]",
+        "link": "[URL]"
+      },
+      {
+        "testata": "[Publication]",
+        "titolo": "[Article title]",
+        "data": "[date]",
+        "link": "[URL]"
+      }
+    ],
+    "prossimo_titolo": "Next date",
+    "prossimo_testo": "[Upcoming event, date and place: e.g. the painted-clothes event in spring, to be confirmed.]",
+    "contatto_stampa_titolo": "For press",
+    "contatto_stampa_testo": "High-resolution photos, biography and images of the paintings: write to info@isabellapistillo.com."
+  },
+  "contatti": {
+    "titolo": "Contact",
+    "intro": "About a photograph, a custom size or a gift. We answer ourselves, usually the same day.",
+    "atelier_titolo": "Studio",
+    "indirizzo": "Via Felice Orsini 69A\n76123 Andria (BT)\nItaly",
+    "orari": "[Opening hours / by appointment]",
+    "mappa": "Open in Maps",
+    "email_titolo": "Email",
+    "telefono_titolo": "Phone & WhatsApp",
+    "social_titolo": "You can also find me here",
+    "modulo_titolo": "Write to me",
+    "campo_nome": "Name",
+    "campo_email": "Email",
+    "campo_telefono": "Phone (optional)",
+    "campo_argomento": "What would you like to talk about",
+    "argomento_opera": "A specific photograph",
+    "argomento_commissione": "A custom size",
+    "argomento_ordine": "An order",
+    "argomento_stampa": "Press or exhibitions",
+    "argomento_altro": "Something else",
+    "campo_messaggio": "Message",
+    "consenso_privacy": "I have read the privacy notice.",
+    "consenso_newsletter": "Tell me when a new edition comes out (optional).",
+    "successo": "Thank you, {nome}. I'll reply within [N] business days."
+  },
+  "carrello": {
+    "titolo": "Your cart",
+    "vuoto_titolo": "Your cart is empty",
+    "vuoto_testo": "When you like a photograph, you will find it here.",
+    "aggiunto": "{titolo} is in your cart.",
+    "rimosso": "{titolo} has been removed from your cart.",
+    "subtotale": "Subtotal",
+    "iva_inclusa": "",
+    "iva_dettaglio_originali": "5% VAT on original works",
+    "iva_dettaglio_stampe": "22% VAT on prints",
+    "spedizione": "Shipping",
+    "spedizione_scegli_paese": "Choose the delivery country",
+    "zona_italia": "Italy",
+    "zona_europa": "Europe (EU)",
+    "zona_mondo": "Rest of the world",
+    "spedizione_gratis": "Free",
+    "nota_extra_ue": "Shipments outside the European Union may be subject to duties and taxes in the destination country, payable by the recipient. [to be checked with the accountant]",
+    "totale": "Total",
+    "tempi_titolo": "When it arrives",
+    "tempi_italia": "Italy: [2–3] business days after shipping",
+    "tempi_europa": "Europe: [5–8] business days after shipping",
+    "tempi_mondo": "Rest of the world: [7–12] business days after shipping",
+    "originale_unico": "It is a numbered copy: we hold it for you once payment is complete.",
+    "originale_quantita": "Each number of the edition can be bought once.",
+    "venduta_nel_frattempo": "{titolo} was sold while it was in your cart. I'm sorry: I've removed it. If you like, I can paint a similar one.",
+    "rate_nota": "At checkout you can choose to pay in 3 installments."
+  },
+  "demo": {
+    "banner": "Demo mode: no real payments",
+    "banner_dettaglio": "This site is a preview. You can make a pretend purchase with card 4242 4242 4242 4242, any future date and any CVC: no charge, no real order, no email sent.",
+    "banner_chiudi": "Got it",
+    "etichetta": "DEMO",
+    "rate_finte": "In the demo, installments are simulated: no request is sent.",
+    "email_finta": "Preview: on a live site this email would arrive in your inbox."
+  },
+  "checkout": {
+    "titolo": "Checkout",
+    "passo_dati": "Your details",
+    "passo_spedizione": "Shipping",
+    "passo_pagamento": "Payment",
+    "passo_conferma": "Confirmation",
+    "campo_nome": "First name",
+    "campo_cognome": "Last name",
+    "campo_email": "Email",
+    "campo_email_aiuto": "Your confirmation and tracking number will be sent here.",
+    "campo_telefono": "Phone",
+    "campo_telefono_aiuto": "The courier needs it for delivery.",
+    "campo_indirizzo": "Address",
+    "campo_indirizzo2": "Apartment, floor, buzzer (optional)",
+    "campo_cap": "ZIP code",
+    "campo_citta": "City",
+    "campo_provincia": "State / Province",
+    "campo_paese": "Country",
+    "campo_note": "Delivery notes (optional)",
+    "fattura_check": "I need an invoice",
+    "campo_cf_piva": "Tax code or VAT number",
+    "campo_sdi": "Recipient code or certified email (Italy only)",
+    "regalo_check": "It's a gift",
+    "regalo_biglietto": "Handwritten card (optional)",
+    "regalo_aiuto": "Write your message: I'll copy it by hand, and I won't put prices in the package.",
+    "metodo_titolo": "How would you like to pay",
+    "metodo_carta": "Credit or debit card",
+    "metodo_rate": "3 interest-free installments with Scalapay",
+    "metodo_rate_dettaglio": "3 payments of {importo}: the first today, the others every 30 days.",
+    "campo_carta_numero": "Card number",
+    "campo_carta_scadenza": "Expiry (MM/YY)",
+    "campo_carta_cvc": "CVC",
+    "campo_carta_titolare": "Name on card",
+    "sicurezza": "Payment handled by Stripe. Card details never pass through this site.",
+    "riepilogo_titolo": "Your order",
+    "modifica": "Edit",
+    "termini_check": "I accept the terms of sale and the shipping and returns conditions.",
+    "privacy_nota": "I use your details only for this order.",
+    "paga": "Pay {totale}",
+    "paga_demo": "Confirm test order",
+    "elaborazione": "One moment, recording your order…",
+    "successo_titolo": "Thank you, {nome}.",
+    "successo_testo": "We received your order and wrote to {email}. We will tell you when it ships.",
+    "successo_demo": "This was a test order: no payment was made.",
+    "numero_ordine": "Order no. {numero}",
+    "prossimi_passi_titolo": "What happens now",
+    "prossimi_passi": [
+      "We check the print under neutral light.",
+      "We sign it and prepare the certificate, for editions.",
+      "We pack it by hand and send you the tracking."
+    ]
+  },
+  "email_conferma": {
+    "oggetto": "Order no. {numero} · Ninni & Ernesto",
+    "preheader": "I've received your order. Here's the summary.",
+    "saluto": "Hello {nome},",
+    "corpo": "thank you. Your order has arrived and we are taking care of it. Your summary is below.",
+    "corpo_originale": "You chose a limited edition: we sign and number it by hand, with a certificate of authenticity.",
+    "riepilogo_titolo": "Summary",
+    "colonna_opera": "Photograph",
+    "colonna_prezzo": "Price",
+    "riga_subtotale": "Subtotal",
+    "riga_spedizione": "Shipping ({zona})",
+    "riga_iva": "",
+    "riga_totale": "Total paid",
+    "riga_metodo": "Payment",
+    "spedizione_titolo": "Delivery address",
+    "tempi_titolo": "When it ships",
+    "tempi_testo": "Prints ship within 5 working days, framed editions within 10. We will write again with the tracking number.",
+    "domande": "For anything at all, reply to this email or message me on WhatsApp at +39 376 0426 212.",
+    "chiusura": "Speak soon,",
+    "firma": "Ninni & Ernesto",
+    "ps": "P.S. Once it is on the wall, send us a picture if you like.",
+    "footer": "Ninni & Ernesto · Puglia, Italy · ciao@ninnieernesto.example",
+    "footer_demo": "Demo preview: this email was not sent."
+  },
+  "errori": {
+    "obbligatorio": "This field is needed: fill it in to continue.",
+    "email": "This email doesn't look complete. Check it has an @ and a domain (e.g. name@email.com).",
+    "telefono": "Write the number with the country code, for example +1 212 555 0100.",
+    "cap": "Check the ZIP code: it doesn't match the country you chose.",
+    "paese_non_servito": "I don't have a rate for this country yet. Write to me and we'll find a way.",
+    "carta_numero": "The card number isn't valid. Check the digits.",
+    "carta_scadenza": "This card has expired. Use a card with a future date.",
+    "carta_cvc": "The CVC is the 3 digits on the back of the card (4 for American Express).",
+    "carta_rifiutata": "Your bank declined the payment. Try another card or choose to pay in installments.",
+    "carta_demo": "In demo mode only the test card 4242 4242 4242 4242 works.",
+    "consenso": "To send, please accept the privacy notice.",
+    "termini": "To complete your purchase, please accept the terms of sale.",
+    "messaggio_breve": "Write a few more words: it helps me give you a proper answer.",
+    "file_formato": "You can upload a JPG, PNG or HEIC photo.",
+    "file_peso": "The photo is too large: the maximum is 10 MB.",
+    "invio": "The message did not go through. Check your connection and try again, or write to ciao@ninnieernesto.example.",
+    "rete": "You seem to be offline. Reconnect and try again: what you've written is still here.",
+    "pagina_non_trovata_titolo": "This page isn't here",
+    "pagina_non_trovata_testo": "The link is wrong or the page no longer exists.",
+    "generico": "Something went wrong on our side. Try again in a minute."
+  },
+  "cookie_banner": {
+    "titolo": "Cookies",
+    "testo": "I use technical cookies to make the cart work and, only if you allow it, cookies to see which pages are visited. [DRAFT: align with the actual list of cookies]",
+    "accetta": "Accept all",
+    "rifiuta": "Necessary only",
+    "personalizza": "Let me choose"
+  },
+  "legale": {
+    "banner_bozza": "DRAFT: provisional text, to be checked by a lawyer or accountant before publication.",
+    "aggiornamento": "Last updated: [date]",
+    "termini": {
+      "titolo": "Terms of sale",
+      "sezioni": [
+        {
+          "titolo": "Who sells",
+          "testo": "Works are sold by Pistillo Isabella, via Felice Orsini 69A, 76123 Andria (BT), Italy, VAT no. [number], email info@isabellapistillo.com."
+        },
+        {
+          "titolo": "The works",
+          "testo": "Originals are painted by hand and signed, and exist in a single copy. Photos are taken with care, but colors and texture may look different on different screens. Prints reproduce an original work in the sizes shown."
+        },
+        {
+          "titolo": "Prices and VAT",
+          "testo": "Prices are in euros and include VAT: 5% on original works, 22% on prints and other products. Shipping costs are shown in the cart before payment. [Non-EU sales: check VAT regime and duties.]"
+        },
+        {
+          "titolo": "Order and payment",
+          "testo": "The contract is concluded when you receive the order confirmation email. Payment is by card via Stripe or in installments via Scalapay, under the provider's conditions."
+        },
+        {
+          "titolo": "Availability",
+          "testo": "If an original turns out to be already sold after your order, I'll let you know and refund you in full within [N] days."
+        },
+        {
+          "titolo": "Commissioned works",
+          "testo": "Commissioned works are made to the customer's personal specifications: for this reason the right of withdrawal does not apply (art. 59(c), Italian Consumer Code). Price, size, timing and deposit are agreed in writing when the sketch is approved. [to be checked]"
+        },
+        {
+          "titolo": "Right of withdrawal",
+          "testo": "For online purchases you have 14 days from receipt to withdraw, without giving a reason. See the Shipping & returns page."
+        },
+        {
+          "titolo": "Copyright",
+          "testo": "Buying a work does not transfer reproduction rights, which remain with Isabella Pistillo."
+        },
+        {
+          "titolo": "Applicable law",
+          "testo": "Italian law applies. Consumers keep the right to the courts of their place of residence. [to be checked]"
+        }
+      ]
+    },
+    "spedizioni": {
+      "titolo": "Shipping & returns",
+      "intro": "Every work is packed by hand in the studio and shipped insured with [courier: Poste Italiane / GLS / other]. I'll send you the tracking number as soon as it leaves.",
+      "zone_titolo": "Rates by zone",
+      "zone": [
+        {
+          "zona": "Italy",
+          "originali": "[€ XX]",
+          "stampe": "[€ XX — free over € XX]",
+          "tempi": "[2–3] business days"
+        },
+        {
+          "zona": "Europe (EU)",
+          "originali": "[€ XX]",
+          "stampe": "[€ XX]",
+          "tempi": "[5–8] business days"
+        },
+        {
+          "zona": "Rest of the world",
+          "originali": "[€ XX]",
+          "stampe": "[€ XX]",
+          "tempi": "[7–12] business days"
+        }
+      ],
+      "colonna_zona": "Zone",
+      "colonna_originali": "Editions",
+      "colonna_stampe": "Prints",
+      "colonna_tempi": "Delivery",
+      "preparazione": "Preparation times: available originals 5 business days; prints 3 business days; commissioned works 20–30 days.",
+      "extra_ue": "Outside the European Union, import duties and taxes may be charged to the recipient. [to be checked]",
+      "danni_titolo": "If the package arrives damaged",
+      "danni_testo": "Photograph the parcel before opening it and accept it with reservation. Write to us within 48 hours with the pictures: we reprint or refund.",
+      "resi_titolo": "Returns",
+      "resi_testo": "You have 14 days from receipt to return a work. Write to me before shipping it back: I'll tell you how to pack it. The work must come back intact, in its original packaging. Return shipping is paid by the customer [to be decided]. Refund within 14 days of the work arriving back at the studio.",
+      "esclusi_titolo": "What can't be returned",
+      "esclusi_testo": "Commissioned works and personalized pieces. [Other cases: to be defined]"
+    },
+    "privacy": {
+      "titolo": "Privacy notice",
+      "sezioni": [
+        {
+          "titolo": "Data controller",
+          "testo": "Pistillo Isabella, via Felice Orsini 69A, 76123 Andria (BT), Italy, info@isabellapistillo.com."
+        },
+        {
+          "titolo": "What data",
+          "testo": "Name, contact details, delivery address and billing details when you buy; whatever you write in forms; your email if you sign up for the letter or a waiting list. Card details are handled by Stripe, not by this site."
+        },
+        {
+          "titolo": "Why",
+          "testo": "To handle orders, deliveries and invoices; to reply to your messages; to send you the letter only if you asked for it."
+        },
+        {
+          "titolo": "Who I share it with",
+          "testo": "Only those who need it: courier, Stripe, Scalapay, accountant, website and email providers. [List of providers to complete]"
+        },
+        {
+          "titolo": "How long",
+          "testo": "Order data for as long as tax law requires; newsletter contacts until you unsubscribe."
+        },
+        {
+          "titolo": "Your rights",
+          "testo": "You can ask to see, correct or delete your data by writing to info@isabellapistillo.com. You can also contact the Italian Data Protection Authority (Garante per la protezione dei dati personali)."
+        }
+      ]
+    },
+    "cookie": {
+      "titolo": "Cookies",
+      "sezioni": [
+        {
+          "titolo": "Necessary cookies",
+          "testo": "They make the cart, language and checkout work. They can't be switched off."
+        },
+        {
+          "titolo": "Statistics cookies",
+          "testo": "Only with your consent: they tell me which pages are visited, anonymously. [Tool: to be defined]"
+        },
+        {
+          "titolo": "Marketing cookies",
+          "testo": "[If the Facebook/Meta pixel is used, it must be described here and enabled only with consent.]"
+        },
+        {
+          "titolo": "Changing your mind",
+          "testo": "You can change your choices at any time from the “Cookie preferences” link at the bottom of the page."
+        }
+      ]
+    }
+  },
+  "seo": {
+    "home_titolo": "Isabella Pistillo — original paintings, acrylic on canvas",
+    "home_descrizione": "Women's faces and figures painted in acrylic, with brush and palette knife, in a studio in Andria, Italy. Signed originals, prints and commissions, shipped worldwide.",
+    "opere_titolo": "Original paintings — Isabella Pistillo",
+    "opere_descrizione": "Signed original paintings, with sizes and close-ups of the surface. 5% VAT included.",
+    "proposte_titolo": "Isa's Pairings — Isabella Pistillo",
+    "proposte_descrizione": "Paintings, prints and objects paired by color by Isabella, for the same wall.",
+    "atelier_titolo": "How a painting is born — Isabella Pistillo",
+    "atelier_descrizione": "From blank canvas to signature: five stages in the studio on via Felice Orsini, Andria.",
+    "bio_titolo": "Isabella Pistillo — biography",
+    "bio_descrizione": "Painter born in 1969 in Puglia, Italy. Acrylic on canvas, the female face and figure, Cubism and the twentieth century.",
+    "commissioni_titolo": "Commissioned paintings — Isabella Pistillo",
+    "commissioni_descrizione": "A painting made for your wall: a conversation, a sketch, 20–30 days of work, insured delivery.",
+    "contatti_titolo": "Contact — Isabella Pistillo",
+    "contatti_descrizione": "Studio at via Felice Orsini 69A, Andria, Italy. Email, phone and WhatsApp."
+  },
+  "core": {
+    "cart": {
+      "originale_dettaglio": "Limited edition, signed and numbered",
+      "stampa_dettaglio": "Print {formato} cm · {supporto}"
+    }
+  },
+  "carte": {
+    "rag": {
+      "nome": "Hahnemühle Photo Rag 308",
+      "breve": "Photo Rag",
+      "nota": "Cotton, matte",
+      "testo": "100% cotton, 308 gsm, matte and velvety. Soft colour and no glare: the museum paper for colour photography."
+    },
+    "baryta": {
+      "nome": "Hahnemühle Photo Rag Baryta 315",
+      "breve": "Baryta",
+      "nota": "Cotton, glossy like darkroom paper",
+      "testo": "Cotton with a baryta layer, 315 gsm, glossy. Deep blacks and full reds: the look of a silver gelatin print."
+    },
+    "washi": {
+      "nome": "Awagami Kozo",
+      "breve": "Washi",
+      "nota": "Japanese mulberry fibre",
+      "testo": "Japanese paper made from kozo (mulberry) fibre. The texture shows and light sits inside the paper."
+    },
+    "bizan": {
+      "nome": "Awagami Bizan, handmade",
+      "breve": "Bizan",
+      "nota": "Handmade washi, deckled edges",
+      "testo": "Washi handmade in Japan, 200 gsm, four deckled edges. It only exists in sheets up to A1, so we use it for editions up to 45 × 60 cm."
+    }
+  },
+  "cornici": {
+    "none": {
+      "nome": "No frame",
+      "breve": "no frame",
+      "nota": "Ships in a rigid tube",
+      "testo": ""
+    },
+    "alu": {
+      "nome": "Black aluminium",
+      "breve": "black aluminium",
+      "nota": "Slim profile, cotton mat, UV glass",
+      "testo": "15 mm profile, as in galleries. Cotton mat, UV-filtering glass."
+    },
+    "oak": {
+      "nome": "Oak shadow box",
+      "breve": "oak",
+      "nota": "Solid wood, the print floats inside",
+      "testo": "Solid natural oak. The print is mounted on a panel and floats with 15 mm of air around it: no glass."
+    },
+    "walnut": {
+      "nome": "Walnut, museum glass",
+      "breve": "walnut, museum glass",
+      "nota": "Solid walnut, Tru Vue Museum Glass",
+      "testo": "Solid walnut, cotton mat, Japanese paper hinges. Museum Glass: under 1% reflection and 99% of UV blocked."
+    }
+  }
+}

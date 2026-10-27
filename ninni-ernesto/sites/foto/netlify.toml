@@ -1,0 +1,10 @@
+# Netlify: sito demo "Galleria".
+# Netlify riconosce il monorepo: base directory = radice del repository, progetto = sites/galleria.
+# Il comando parte in sites/galleria; il percorso di pubblicazione invece si legge dalla radice.
+[build]
+  command = "npm run build"
+  publish = "sites/galleria/dist"
+
+[build.environment]
+  NODE_VERSION = "22.22.0"
+  NPM_FLAGS = "--include=dev"

@@ -1,0 +1,400 @@
+/* ==========================================================================
+   Galleria — P3 Scheda opera (pezzo 4): griglia della scheda, C14 Originale/Stampa, acquisto, dati, C20 figura in
+   scala, particolari, barra fissa in basso, opera precedente/successiva, C15 Lente, C16 «Vedi sulla tua parete»
+   (vestito dell'ArViewer del core), A3, A13. Riferimento: styleguide.html §05, ref SSENSE (3 colonne), Artsy.
+   Ogni :hover sta dentro @media (hover: hover); gli stati veri (aria-selected, aria-pressed) restano fuori.
+   ========================================================================== */
+
+/* ---------- griglia: una colonna sul telefono, l'ordine del DOM è quello di lettura ---------- */
+.sk {
+  container-type: inline-size;
+  /* titolo dell'opera: è un nome latino anche nelle pagine in cinese, quindi sempre con --fit */
+  --sk-tfs: min(clamp(3.5rem, 16vw, 19rem), calc(100cqw / var(--fit, 3)));
+  /* l'opera sta intera nella prima schermata sotto header, «← Opere» e titolo */
+  --sk-hmax: max(160px, min(78svh, calc(100svh - var(--header-h) - env(safe-area-inset-top) - var(--touch) - var(--sk-tfs) * 0.8 - 56px)));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: 'torna' 'titolo' 'opera' 'acq' 'dati' 'parti';
+  column-gap: var(--s-6);
+  align-items: start;
+  padding-top: var(--s-2);
+  padding-bottom: var(--s-8);
+}
+.sk__torna { grid-area: torna; justify-self: start; }
+.sk__titolo { grid-area: titolo; min-width: 0; }
+.sk__opera { grid-area: opera; min-width: 0; margin-top: var(--s-5); }
+.sk__acq { grid-area: acq; min-width: 0; margin-top: var(--s-6); }
+.sk__dati { grid-area: dati; min-width: 0; margin-top: var(--s-7); }
+.sk__parti { grid-area: parti; min-width: 0; margin-top: var(--s-7); }
+
+.sk__titolo > h1,
+:lang(zh) .sk__titolo > h1 {
+  font-size: var(--sk-tfs);
+  letter-spacing: -0.04em;
+  line-height: var(--lh-title);
+  margin-left: -0.05em;
+  padding-bottom: 0.04em;
+  word-break: normal;
+  white-space: nowrap;
+}
+
+/* ---------- opera: box con le proporzioni dell'immagine, mai ritagliata, intera nello schermo ---------- */
+.sk__box {
+  aspect-ratio: var(--ar);
+  width: min(100%, calc(var(--sk-hmax) * (var(--ar))));
+  margin-inline: auto;
+}
+.sk__box .isa-picture { display: block; width: 100%; height: 100%; background: var(--isa-dominant, var(--c-placeholder)) var(--isa-lqip, none) center / cover no-repeat; }
+.sk__box img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+/* ---------- acquisto ---------- */
+.acq { display: grid; gap: var(--s-4); align-content: start; }
+.acq__tabs { margin: calc(-1 * var(--s-2)) 0 0; }
+/* una sola opzione d'acquisto: un'intestazione semplice, non una fila di schede con una scheda sola (audit finale 1, #4) */
+.acq__solo { margin: 0; padding-bottom: var(--s-2); border-bottom: var(--line); font-size: var(--t-ui); font-weight: var(--w-strong); line-height: 1.3; }
+.sk__stato { display: none; }
+.acq__pan, .acq__form { display: grid; gap: var(--s-4); align-content: start; }
+.acq__prezzo {
+  margin: 0; font-size: var(--t-lead); font-weight: var(--w-strong); line-height: 1.1;
+}
+.acq__prezzo small {
+  display: block; margin-top: 6px; font-size: var(--t-small); font-weight: var(--w-text); line-height: var(--lh-text);
+  color: var(--c-mute);
+}
+.acq__rate { margin: calc(-1 * var(--s-2)) 0 0; font-size: var(--t-small); line-height: var(--lh-text); color: var(--c-mute); }
+.acq__nota {
+  margin: calc(-1 * var(--s-2)) 0 0; display: flex; flex-wrap: wrap; align-items: center; column-gap: var(--s-4);
+  font-size: var(--t-ui); color: var(--c-mute);
+}
+.acq__nota .lnk { color: var(--c-ink); }
+.acq__vend { display: grid; gap: var(--s-1); justify-items: start; }
+.acq__vend--stampa { margin-bottom: var(--s-1); }
+.acq__venduto { margin: 0; font-size: var(--t-ui); min-height: var(--s-6); display: flex; align-items: center; }
+.acq__azioni { display: flex; flex-direction: column; align-items: flex-start; }
+.acq__riga { margin: 0; font-size: var(--t-ui); line-height: 1.4; color: var(--c-mute); max-width: 34ch; }
+
+/* opzioni della stampa: colonne fisse (mai un formato da solo su una riga) */
+.opz { margin: 0; padding: 0; border: 0; min-width: 0; }
+.opz__l { padding: 0; margin-bottom: var(--s-2); font-size: var(--t-ui); color: var(--c-mute); }
+.opz__g { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.opz__v { position: relative; display: block; cursor: pointer; }
+.opz__v input { position: absolute; opacity: 0; inset: 0; margin: 0; width: 100%; height: 100%; cursor: inherit; }
+.opz__v span {
+  display: flex; align-items: center; min-height: var(--touch); padding: 0 var(--s-3);
+  font-size: var(--t-ui); line-height: 1.2; border: 1px solid var(--c-placeholder); white-space: nowrap;
+  transition: border-color var(--d-fast) var(--ease-out);
+}
+.opz__v input:checked + span { border-color: var(--c-ink); box-shadow: inset 0 0 0 1px var(--c-ink); font-weight: var(--w-strong); }
+.opz__v input:focus-visible + span { box-shadow: var(--focus-ring); }
+.opz__v input:checked:focus-visible + span { box-shadow: inset 0 0 0 1px var(--c-ink), var(--focus-ring); }
+.opz__v input:disabled + span { color: var(--c-mute); background: var(--c-placeholder); border-color: var(--c-placeholder); }
+.opz__v:has(input:disabled) { cursor: not-allowed; }
+@media (hover: hover) { .opz__v:hover input:not(:disabled):not(:checked) + span { border-color: var(--c-ink); } }
+
+/* ---------- dati ---------- */
+.dati { display: grid; gap: var(--s-5); align-content: start; font-size: var(--t-ui); line-height: 1.45; }
+.dati__dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px var(--s-4); margin: 0; }
+.dati__r { display: contents; }
+.dati__r dt { color: var(--c-mute); }
+.dati__r dd { margin: 0; }
+.dati__p { margin: 0; max-width: 34ch; }
+
+/* C20 figura in scala: alta 120 px, mai più larga della colonna */
+.scala { margin: var(--s-2) 0 0; display: flex; align-items: flex-end; gap: var(--s-2); }
+.scala__svg { height: 120px; width: auto; max-width: calc(100% - 56px); aspect-ratio: var(--scala-r); flex: none; overflow: visible; }
+.scala__bordo { fill: none; stroke: var(--c-ink); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.scala__persona, .scala__terra { fill: none; stroke: var(--c-ink); stroke-width: 1.2; vector-effect: non-scaling-stroke; stroke-linecap: square; }
+.scala__terra { stroke-width: 1; }
+.scala__dida { font-size: var(--t-small); color: var(--c-mute); white-space: nowrap; line-height: 1; }
+
+/* ---------- particolari: 3 in riga, sempre ---------- */
+.parti { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); padding: 0; }
+.parti__v { min-width: 0; }
+.parti__b { display: block; width: 100%; min-width: var(--touch); aspect-ratio: 1; background: var(--c-placeholder); cursor: zoom-in; }
+.parti__img, .parti__img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* firma: l'immagine ingrandita (--fz) e spostata (--fx, --fy) sulla firma di ogni opera (data/firme.json, lib/scheda.ts);
+   la finestra resta dentro la tela, mai sulla banda bianca dello scatto */
+.parti__b { overflow: hidden; }
+.parti__v--firma .parti__b { position: relative; }
+.parti__v--firma .parti__img img { position: absolute; left: var(--fx, 0%); top: var(--fy, 0%); width: var(--fz, 100%); height: var(--fz, 100%); max-width: none; object-fit: cover; }
+.parti__d { display: block; padding-top: 6px; font-size: var(--t-small); color: var(--c-mute); }
+/* riquadri sotto i 90 px (telefono in orizzontale con un verticale): le etichette non ci stanno, restano nei nomi dei bottoni */
+.sk__parti { container-type: inline-size; }
+@container (max-width: 280px) { .parti__d { display: none; } }
+
+/* ---------- barra fissa in basso (solo sotto 1024) ---------- */
+.barra {
+  /* sopra il banner cookie finché è aperto (audit finale 1, telefono #6) */
+  position: fixed; inset: auto 0 var(--ingombro-cookie, 0px); z-index: calc(var(--z-header) - 1);
+  display: flex; align-items: center; gap: var(--s-4);
+  padding: var(--s-3) max(var(--gutter), env(safe-area-inset-right)) calc(var(--s-3) + env(safe-area-inset-bottom)) max(var(--gutter), env(safe-area-inset-left));
+  background: var(--c-bg); border-top: var(--line);
+  transform: translateY(105%); visibility: hidden;
+  transition: transform var(--d-ui) var(--ease-out), visibility 0s linear var(--d-ui);
+}
+.barra[data-su] { transform: none; visibility: visible; transition: transform var(--d-ui) var(--ease-out), visibility 0s; }
+.barra__p { font-size: var(--t-lead); font-weight: var(--w-strong); line-height: 1.1; white-space: nowrap; }
+.barra__b { flex: 1 1 auto; min-width: 0; }
+/* il fondo della pagina non finisce sotto la barra (spazio fisso, niente salti) */
+@media (max-width: 1023.98px) {
+  body:has(.barra:not([hidden])) .ft { padding-bottom: calc(var(--s-6) + 72px + env(safe-area-inset-bottom)); }
+}
+@media (min-width: 1024px) { .barra { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .barra { transform: none; opacity: 0; transition: opacity var(--d-fast) linear, visibility 0s linear var(--d-fast); }
+  .barra[data-su] { opacity: 1; transition: opacity var(--d-fast) linear, visibility 0s; }
+}
+
+/* ---------- opera precedente / successiva (A3): due colonne fisse ---------- */
+/* la riga «Precedente · Successiva» chiude la pagina: il footer le sta vicino (prima 96 px di bianco) */
+body:has(.vicine) .ft { margin-top: var(--s-7); }
+.vicine {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4);
+  padding-top: var(--s-5); padding-bottom: 0; border-top: var(--line);
+  margin-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
+  padding-inline: 0;
+}
+.vicine__a { display: grid; gap: var(--s-2); align-content: start; min-width: 0; padding-block: var(--s-1); }
+.vicine__a--succ { justify-items: end; text-align: right; }
+.vicine__dir { display: inline-flex; align-items: center; gap: 6px; font-size: var(--t-ui); font-weight: var(--w-strong); min-height: 24px; }
+.vicine__t { font-size: var(--t-lead); font-weight: var(--w-strong); line-height: 1.15; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.vicine__t {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size var(--d-ui) var(--ease-out);
+}
+.vicine__a--succ .vicine__t { background-position: 100% 100%; }
+@media (hover: hover) { .vicine__a:hover .vicine__t { background-size: 100% 1px; } }
+
+/* ---------- 768–1023 e telefono in orizzontale: opera | acquisto + dati ---------- */
+@media (min-width: 768px) and (max-width: 1023.98px), (orientation: landscape) and (max-height: 500px) and (max-width: 1023.98px) {
+  .sk {
+    /* la colonna dell'opera è larga quanto l'opera (al massimo 7/12): niente vuoto fra un verticale basso e l'acquisto */
+    grid-template-columns: minmax(0, min(calc((100% - var(--s-6)) * 7 / 12), calc(var(--sk-hmax) * (var(--ar))))) minmax(0, 1fr);
+    /* i particolari stanno sotto l'opera anche quando acquisto + dati sono più alti (niente buco nella colonna) */
+    grid-template-areas: 'torna torna' 'titolo titolo' 'opera acq' 'parti acq' 'parti dati';
+    grid-template-rows: auto auto auto auto 1fr;
+  }
+  .sk__acq { margin-top: var(--s-5); }
+  .sk__dati { margin-top: var(--s-7); }
+  .sk__box { margin-inline: 0 auto; }
+  .sk--pano { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: 'torna torna' 'titolo titolo' 'opera opera' 'acq dati' 'parti parti'; grid-template-rows: none; }
+  .sk--pano .sk__box { margin-inline: auto; }
+  .sk--pano .sk__parti { max-width: 30rem; }
+}
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 1023.98px) {
+  .sk { --sk-tfs: min(clamp(3.5rem, 16vw, 19rem), calc(100cqw / var(--fit, 3)), 15svh); --sk-hmax: max(150px, calc(100svh - var(--header-h) - var(--touch) - var(--sk-tfs) * 0.8 - 40px)); padding-top: 0; }
+  .sk__opera { margin-top: var(--s-3); }
+  .sk__acq { margin-top: var(--s-3); }
+}
+
+/* ---------- da 1024: dati | opera | acquisto (3/6/3, SSENSE) ---------- */
+@media (min-width: 1024px) {
+  .sk {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 6fr) minmax(0, 3fr);
+    grid-template-areas: 'torna torna torna' 'titolo titolo titolo' 'dati opera acq' 'dati parti acq';
+    grid-template-rows: auto auto auto 1fr;
+  }
+  .sk__dati, .sk__acq { margin-top: var(--s-5); }
+  .sk__opera { margin-top: var(--s-5); }
+  .sk__parti { margin-top: var(--s-5); justify-self: center; width: min(100%, 30rem); }
+  .sk__dati { position: sticky; top: calc(var(--header-h) + var(--s-5)); }
+  .sk__acq { position: sticky; top: calc(var(--header-h) + var(--s-5)); }
+  .sk--pano { grid-template-areas: 'torna torna torna' 'titolo titolo titolo' 'opera opera opera' 'dati parti acq'; grid-template-rows: none; }
+  .sk--pano .sk__dati, .sk--pano .sk__acq { position: static; }
+  .sk--pano .sk__parti { margin-top: var(--s-5); }
+  /* panoramiche: opera allineata alla colonna 1 (come titolo e «←»), più bassa, e la riga di stato sotto il titolo */
+  .sk--pano { --sk-hmax: min(62svh, calc(100svh - var(--header-h) - var(--sk-tfs) - 150px)); }
+  .sk--pano .sk__box { margin-inline: 0 auto; }
+  .sk__stato { display: flex; margin-top: var(--s-2); font-size: var(--t-lead); font-weight: var(--w-strong); line-height: 1.2; }
+  .vicine { padding-top: var(--s-6); }
+}
+@media (min-width: 1920px) { .sk { column-gap: var(--s-7); } }
+
+/* ==========================================================================
+   C15 Lente (dialog a schermo intero)
+   ========================================================================== */
+.lente, .parete {
+  position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0;
+  border: 0; background: var(--c-bg); color: var(--c-ink); z-index: var(--z-dialog); overflow: hidden;
+}
+.lente:not([open]), .parete:not([open]) { display: none; }
+.lente::backdrop, .parete::backdrop { background: var(--c-bg); }
+.lente[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
+.lente__barra, .parete__barra {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s-4);
+  min-height: calc(var(--header-h) + env(safe-area-inset-top)); padding-top: env(safe-area-inset-top);
+  padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
+}
+.lente__t, .parete__t { margin: 0; font-size: var(--t-ui); font-weight: var(--w-strong); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lente__n { color: var(--c-mute); font-weight: var(--w-text); margin-left: var(--s-2); }
+.lente__btn, .parete__chiudi {
+  min-height: var(--touch); min-width: var(--touch); padding: 0 10px; margin-right: -10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: var(--t-ui); font-weight: var(--w-strong); white-space: nowrap; flex: none;
+}
+.lente__vista { position: relative; overflow: hidden; display: grid; place-items: center; min-height: 0; padding: var(--s-2) var(--gutter); }
+.lente__f { margin: 0; display: grid; place-items: center; width: 100%; height: 100%; min-height: 0; }
+.lente__f[hidden] { display: none; }
+.lente__zoom {
+  width: min(100%, 100cqh); aspect-ratio: 1; max-height: 100%; cursor: zoom-in; touch-action: pinch-zoom; transform-origin: 50% 50%;
+}
+.lente__vista { container-type: size; }
+.lente__zoom { width: min(100cqw - 2 * var(--gutter), 100cqh - var(--s-4)); }
+.lente[data-zoom] .lente__zoom { cursor: zoom-out; touch-action: none; }
+.lente__img, .lente__img img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.lente__img { background: var(--isa-dominant, var(--c-placeholder)) var(--isa-lqip, none) center / cover no-repeat; }
+.lente__comandi {
+  display: flex; justify-content: center; align-items: center; gap: var(--s-5);
+  padding: var(--s-1) var(--gutter) calc(var(--s-2) + env(safe-area-inset-bottom));
+}
+.lente__comandi .lente__btn { margin-right: 0; }
+.lente__btn--fr .freccia { width: 20px; height: 20px; }
+@media (hover: hover) {
+  .lente__btn:hover, .parete__chiudi:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+}
+
+/* A13: il riquadro vola a schermo intero */
+::view-transition-group(lente) { animation-duration: var(--d-reveal); animation-timing-function: var(--ease-out); }
+::view-transition-old(lente), ::view-transition-new(lente) { height: 100%; object-fit: cover; }
+html[data-vt-lente]::view-transition-old(root), html[data-vt-lente]::view-transition-new(root) { animation-duration: var(--d-ui); }
+
+/* ==========================================================================
+   C16 «Vedi sulla tua parete» (ArViewer del core vestito qui; le sue regole sono :where, queste vincono)
+   ========================================================================== */
+.parete[open] { display: grid; grid-template-rows: auto minmax(0, 1fr); }
+.parete__corpo { overflow-y: auto; overscroll-behavior: contain; padding: 0 max(var(--gutter), env(safe-area-inset-right)) calc(var(--s-6) + env(safe-area-inset-bottom)) max(var(--gutter), env(safe-area-inset-left)); }
+.parete__ar {
+  --isa-ar-sfondo: #fff; --isa-ar-altezza: max(240px, 46svh); --isa-ar-margine: 1.12;
+  --isa-ar-qr-lato: 144px; --isa-ar-qr-colore: #000; --isa-ar-qr-sfondo: #fff;
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); align-content: start;
+}
+.parete__ar .isa-ar__modello { order: 0; outline: none; }
+/* durante la tendina d'apertura il riquadro del core è fuori dallo schermo per il suo IntersectionObserver (il visore
+   3D si carica a tendina finita) e i suoi figli tornano esattamente dove sono: a schermo identico (parete-client.ts) */
+.parete[data-tendina] .parete__ar { translate: 0 -400vh; }
+.parete[data-tendina] .parete__ar > * { translate: 0 400vh; }
+/* finché model-viewer non è definito il poster sta nel riquadro come dopo (lì lo ritaglia il suo shadow DOM): la foto,
+   alta quanto vuole il reset delle immagini, non esce sotto il riquadro sopra i testi */
+.parete__ar model-viewer:not(:defined) { overflow: hidden; }
+/* anello del fuoco sull'anteprima 3D, solo da tastiera (audit finale 2, N4; data-fuoco-tastiera in parete-client.ts) */
+.parete__ar .isa-ar__modello:focus-visible, .parete__ar .isa-ar__modello[data-fuoco-tastiera] { box-shadow: var(--focus-ring); }
+.parete__testo { order: 1; display: grid; gap: var(--s-3); }
+.parete__ar .isa-ar__bottone { order: 2; }
+.parete__ar .isa-ar__qr { order: 3; }
+.parete__ar .isa-ar__avviso { order: 4; }
+.parete__scala { order: 5; }
+.parete__opera { margin: 0; font-size: var(--t-ui); font-weight: var(--w-strong); }
+.parete__misura { margin: 0; font-size: var(--t-tab); font-weight: var(--w-display); line-height: 1.05; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; text-wrap: balance; }
+:lang(zh) .parete__misura { letter-spacing: 0; word-break: keep-all; }
+.parete__passi { order: 1; margin: 0; padding: 0; list-style: none; counter-reset: passo; display: grid; gap: var(--s-2); font-size: var(--t-cap); line-height: 1.3; }
+.parete__passi li { counter-increment: passo; display: grid; grid-template-columns: 1.6em minmax(0, 1fr); }
+.parete__passi li::before { content: counter(passo); font-weight: var(--w-strong); font-variant-numeric: tabular-nums; }
+
+.parete__ar .isa-ar__bottone {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
+  min-height: 48px; padding: 0 var(--s-5); font-size: var(--t-ui); font-weight: var(--w-strong); line-height: 1;
+  background: var(--c-ink); color: var(--c-bg); border: var(--line);
+  transition: background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out);
+}
+@media (hover: hover) { .parete__ar .isa-ar__bottone:hover { background: var(--c-bg); color: var(--c-ink); } }
+.parete__ar .isa-ar__qr { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--s-1) var(--s-5); align-items: center; padding-top: var(--s-2); }
+.parete__ar .isa-ar__qr-titolo { grid-column: 2; grid-row: 1; align-self: end; margin: 0; font-size: var(--t-ui); font-weight: var(--w-strong); }
+.parete__ar .isa-ar__qr-codice { grid-column: 1; grid-row: 1 / span 2; outline: 1px solid var(--c-placeholder); outline-offset: 0; }
+.parete__ar .isa-ar__qr-testo { grid-column: 2; grid-row: 2; align-self: start; margin: 0; font-size: var(--t-small); color: var(--c-mute); max-width: 30ch; }
+.parete__ar .isa-ar__avviso { margin: 0; padding: var(--s-3) 0 var(--s-3) var(--s-4); border-left: 2px solid var(--c-ink); font-size: var(--t-ui); line-height: 1.4; max-width: 46ch; }
+
+/* i passi servono solo dove la AR si apre; la figura in scala solo dove non si apre */
+.parete__passi { display: none; }
+.parete__ar[data-ar='disponibile'] .parete__passi { display: grid; }
+@media (pointer: coarse) { .parete__ar[data-ar='attesa'] .parete__passi { display: grid; } }
+.parete__scala { display: none; }
+.parete__ar[data-ar='non-supportato'] .parete__scala, .parete__ar[data-ar='errore'] .parete__scala { display: flex; }
+/* computer: mentre model-viewer si prepara il riquadro del QR c'è già, così il codice compare al suo posto (Casa D25) */
+@media (pointer: fine) and (min-width: 768px) {
+  .parete__ar[data-ar='attesa'] .isa-ar__qr[hidden] { display: grid !important; }
+  .parete__ar[data-ar='attesa'] .isa-ar__qr-codice:empty { aspect-ratio: 1; }
+}
+/* senza WebGL (core: data-webgl="no"; prova di parete-client: data-no-webgl) la foto della tela, intera, al posto del
+   riquadro vuoto */
+.parete[data-no-webgl] .isa-ar__modello, .parete__ar[data-webgl='no'] .isa-ar__modello {
+  box-sizing: border-box; padding: 8%;
+  background: var(--tela) center / contain no-repeat content-box, #fff border-box;
+}
+.parete[data-no-webgl] .isa-ar__modello > *, .parete__ar[data-webgl='no'] .isa-ar__modello > * { visibility: hidden; }
+
+/* computer e telefono in orizzontale: anteprima a sinistra, misura e comandi a destra */
+@media (min-width: 768px), (orientation: landscape) and (max-height: 500px) {
+  .parete__ar { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: var(--s-7); row-gap: var(--s-4); --isa-ar-altezza: min(calc(100svh - var(--header-h) - 48px), 52rem); }
+  .parete__ar .isa-ar__modello { grid-column: 1; grid-row: 1 / span 6; }
+  .parete__ar > :not(.isa-ar__modello) { grid-column: 2; }
+  .parete__testo { align-self: end; padding-top: var(--s-6); }
+  .parete__ar .isa-ar__qr { grid-template-columns: 1fr; justify-items: start; gap: var(--s-3); }
+  .parete__ar .isa-ar__qr-titolo, .parete__ar .isa-ar__qr-codice, .parete__ar .isa-ar__qr-testo { grid-column: 1; grid-row: auto; }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .parete__ar { column-gap: var(--s-5); --isa-ar-altezza: calc(100svh - var(--header-h) - env(safe-area-inset-top) - 16px); }
+  .parete__testo { padding-top: 0; }
+  .parete__passi { gap: var(--s-1); }
+}
+
+/* ==========================================================================
+   A3: la scheda esce da una parte e la nuova entra dall'altra (view transition del ClientRouter)
+   ========================================================================== */
+#contenuto:has(> .sk) { view-transition-name: scheda; }
+html[data-a3] .hd { view-transition-name: gal-hd; }
+html[data-a3]::view-transition-group(gal-hd) { z-index: 2; animation: none; }
+html[data-a3]::view-transition-old(root), html[data-a3]::view-transition-new(root) { animation: none; }
+html[data-a3]::view-transition-group(scheda) { animation: none; }
+html[data-a3]::view-transition-image-pair(scheda) { isolation: auto; }
+html[data-a3='avanti']::view-transition-old(scheda) { animation: a3-via-sx var(--d-slide) var(--ease-zoom-in) both; }
+html[data-a3='avanti']::view-transition-new(scheda) { animation: a3-da-dx var(--d-slide) var(--ease-zoom-in) both; }
+html[data-a3='indietro']::view-transition-old(scheda) { animation: a3-via-dx var(--d-slide) var(--ease-zoom-in) both; }
+html[data-a3='indietro']::view-transition-new(scheda) { animation: a3-da-sx var(--d-slide) var(--ease-zoom-in) both; }
+::view-transition-old(scheda), ::view-transition-new(scheda) { height: auto; mix-blend-mode: normal; object-fit: none; object-position: top; }
+/* la vecchia scheda parte da dove la si stava guardando (--a3-y = -scroll, messo da scheda-client.ts) */
+@keyframes a3-via-sx { from { transform: translate(0, var(--a3-y, 0px)); } to { transform: translate(-100%, var(--a3-y, 0px)); } }
+@keyframes a3-da-dx { from { transform: translateX(100%); } }
+@keyframes a3-via-dx { from { transform: translate(0, var(--a3-y, 0px)); } to { transform: translate(100%, var(--a3-y, 0px)); } }
+@keyframes a3-da-sx { from { transform: translateX(-100%); } }
+@keyframes a3-esce { from { transform: translateY(var(--a3-y, 0px)); } to { opacity: 0; transform: translateY(var(--a3-y, 0px)); } }
+@keyframes a3-entra { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  html[data-a3]::view-transition-old(scheda) { animation: a3-esce 0.2s linear both !important; }
+  html[data-a3]::view-transition-new(scheda) { animation: a3-entra 0.2s linear both !important; }
+  ::view-transition-group(lente) { animation-duration: 0.2s; }
+}
+
+/* C14 schede Originale / Stampa (stesse regole delle schede di Opere, che stanno in opere.css) */
+.acq .tabs { display: flex; gap: 0.6em; align-items: baseline; font-size: var(--t-tab); }
+.acq .tabs__b {
+  font-weight: var(--w-display); font-size: var(--t-tab); line-height: var(--lh-tab); letter-spacing: -0.02em;
+  color: var(--c-inactive); min-height: var(--touch); display: inline-flex; align-items: center;
+  transition: color var(--d-fast) var(--ease-out);
+}
+.acq .tabs__b[aria-selected='true'] { color: var(--c-ink); }
+:lang(zh) .acq .tabs__b { letter-spacing: 0; }
+@media (hover: hover) { .acq .tabs__b:hover { color: var(--c-ink); } }
+
+/* telefono in orizzontale: titolo più piccolo, più altezza all'opera (audit finale 1, telefono #5) */
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 1023.98px) {
+  .sk { --sk-tfs: min(var(--t-title-min), calc(100cqw / var(--fit, 3)), 11svh); }
+}
+
+/* dati in vista Stampa: le misure sono dell'originale, la firma a mano pure (audit finale 1, telefono #14) */
+.dati__solo-s { display: none; }
+[data-vista='s'] .dati__solo-o { display: none; }
+[data-vista='s'] .dati__solo-s { display: inline; }
+[data-vista='s'] .dati__r[data-riga='firma'] { display: none; }
+/* la cornice è dell'originale: in vista Stampa non c'è (audit finale 2, N2) */
+[data-vista='s'] .dati__r[data-riga='cornice'] { display: none; }
+
+/* dialog «Vedi sulla tua parete» sul computer: i 3 passi (che cosa succede dopo il QR) e l'invito a girare l'anteprima
+   (audit finale 1, #7). L'invito solo col mouse e col 3D acceso. */
+.parete__ruota { display: none; margin: 0; font-size: var(--t-small); color: var(--c-mute); }
+@media (min-width: 1024px) and (pointer: fine) {
+  .parete__ar .parete__passi { display: grid; order: 4; }
+  .parete__ar .isa-ar__avviso { order: 5; }
+  .parete__scala { order: 6; }
+  .parete__ar:not([data-webgl='no']) .parete__ruota { display: block; }
+  .parete[data-no-webgl] .parete__ruota { display: none; }
+}

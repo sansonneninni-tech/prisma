@@ -1,0 +1,30 @@
+---
+/**
+ * "Oppure in 3 rate da X senza interessi" (DEMO: display only). Renders nothing if not eligible.
+ */
+import { calculateInstallments } from '../src/pricing/installments.ts';
+import { formatPrice, useTranslations, type Translator } from '../src/i18n/index.ts';
+import type { Locale } from '../src/types.ts';
+
+interface Props {
+  totalCents: number | null;
+  lang: Locale;
+  /** Short version: "Pagabile in 3 rate". */
+  short?: boolean;
+  /** Site translator (with the site's own texts); default `useTranslations(lang)`. */
+  t?: Translator;
+  class?: string;
+}
+
+const { totalCents, lang, short = false, t = useTranslations(lang), class: className } = Astro.props;
+const plan = totalCents === null ? null : calculateInstallments(totalCents);
+---
+
+{
+  plan?.eligible && (
+    <p class:list={['isa-installments', className]}>
+      {short ? t('etichette.rate_breve') : t('etichette.rate', { importo: formatPrice(plan.amounts[0] ?? 0, lang) })}{' '}
+      <span class="isa-installments__demo">({t('demo.etichetta')})</span>
+    </p>
+  )
+}

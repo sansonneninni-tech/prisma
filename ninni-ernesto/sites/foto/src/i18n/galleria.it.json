@@ -1,0 +1,370 @@
+{
+  "galleria": {
+    "meta": {
+      "descrizione": "Fotografie di Ninni e di Ernesto: stampe fine art ed edizioni limitate, firmate e numerate."
+    },
+    "nav": {
+      "principale": "Principale",
+      "home_aria": "Ninni & Ernesto, home",
+      "indice": "Indice",
+      "chiudi": "Chiudi",
+      "shop": "Shop",
+      "carrello": "Carrello",
+      "lingue": "Lingua",
+      "home": "Home",
+      "opere": "Foto",
+      "stampe": "Stampe",
+      "proposte": "Proposte di Isa",
+      "isabella": "Ernesto",
+      "altro": "Altro",
+      "commissione": "Su commissione",
+      "prossimamente": "Prossimamente",
+      "contatti": "Contatti",
+      "info": "Info",
+      "carrello_pagina": "Carrello",
+      "salta": "Vai al contenuto",
+      "ninni": "Ninni",
+      "ernesto": "Ernesto",
+      "carte": "Carte e cornici",
+      "chi_siamo": "Chi siamo",
+      "prisma": "Prisma"
+    },
+    "indice": {
+      "titolo": "Indice del sito",
+      "voci": "Pagine",
+      "luogo": "Italia",
+      "demo": "Sito dimostrativo"
+    },
+    "footer": {
+      "luogo": "Italia",
+      "instagram": "Instagram",
+      "spedizioni": "Spedizioni e resi",
+      "privacy": "Privacy",
+      "note_legali": "Note legali",
+      "demo": "Sito dimostrativo: nessun pagamento reale."
+    },
+    "home": {
+      "acquista": "Acquista",
+      "pausa": "Pausa",
+      "riprendi": "Riprendi",
+      "atelier": "Atelier",
+      "scrivimi": "Scrivici",
+      "seguimi": "Seguici",
+      "indirizzo": "Italia",
+      "ernesto_presto": "Presto",
+      "ernesto_avvisami": "Avvisami"
+    },
+    "opere": {
+      "descrizione": "Fotografie in vendita, con formati e prezzi.",
+      "schede": "Edizioni limitate o stampe",
+      "originali": "Edizioni limitate",
+      "stampe": "Stampe",
+      "filtra": "Filtra",
+      "filtra_n": "Filtra ({n})",
+      "colore": "Colore",
+      "formato": "Formato",
+      "prezzo": "Prezzo",
+      "forma": "Forma",
+      "disponibilita": "Disponibilità",
+      "colori": {
+        "rossi": "Rossi",
+        "ocra": "Caldi",
+        "verdi": "Verdi",
+        "blu": "Blu",
+        "neri": "Bianco e nero",
+        "grigi": "Chiari"
+      },
+      "formati": {
+        "piccoli": "Piccoli",
+        "medi": "Medi",
+        "grandi": "Grandi",
+        "panoramici": "Panoramici"
+      },
+      "formati_nota": {
+        "piccoli": "fino a 70 cm con la cornice",
+        "medi": "70–100 cm",
+        "grandi": "da 100 cm"
+      },
+      "prezzi": {
+        "fino-3500": "Fino a {p}",
+        "3500-5000": "{a}–{b}",
+        "oltre-5000": "Oltre {p}"
+      },
+      "forme": {
+        "verticali": "Verticali",
+        "orizzontali": "Orizzontali",
+        "quadrate": "Quadrate"
+      },
+      "solo_disponibili": "Solo disponibili",
+      "mostra": "Mostra {n} foto",
+      "mostra_1": "Mostra 1 foto",
+      "mostra_0": "Nessuna foto",
+      "mostra_stampe": "Mostra {n} stampe",
+      "mostra_stampe_1": "Mostra 1 stampa",
+      "mostra_stampe_0": "Nessuna stampa",
+      "conteggio": "{n} foto",
+      "conteggio_1": "1 foto",
+      "conteggio_0": "Nessuna foto",
+      "conteggio_stampe": "{n} stampe",
+      "conteggio_stampe_1": "1 stampa",
+      "conteggio_stampe_0": "Nessuna stampa",
+      "azzera": "Azzera",
+      "vuoto": "Nessuna foto con questi filtri.",
+      "vuoto_stampe": "Nessuna stampa con questi filtri.",
+      "azzera_filtri": "Azzera i filtri",
+      "togli": "Togli {nome}",
+      "stampa_da": "stampa da {prezzo}",
+      "chiudi": "Chiudi"
+    },
+    "scheda": {
+      "descrizione": "{titolo}, fotografia. {misure}.",
+      "acquisto": "Acquisto",
+      "schede": "Edizione limitata o stampa",
+      "originale": "Edizione limitata",
+      "stampa": "Stampa",
+      "dati": "Dati della foto",
+      "spedizione_inclusa": "spedizione in Italia inclusa",
+      "spedizione_stampe": "spedizione in Italia {prezzo}",
+      "parete": "Vedi sulla tua parete",
+      "venduto": "Originale venduto",
+      "simile": "Un quadro simile, su commissione",
+      "particolare": "Particolare",
+      "ingrandisci": "Ingrandisci: {nome}",
+      "scala": "In scala, accanto a una persona alta 170 cm",
+      "persona": "170 cm",
+      "nel_carrello_n": "Nel carrello: {n}",
+      "max_stampe": "Al massimo {n} stampe uguali.",
+      "demo": "demo",
+      "vicine": "Altre foto",
+      "precedente": "Precedente",
+      "successiva": "Successiva",
+      "fotografo": "Fotografia di",
+      "luogo": "Luogo",
+      "stampa_t": "Stampa",
+      "stampa_v": "Pigmenti su carta d’archivio, oltre 100 anni senza sbiadire",
+      "carta": "Carta",
+      "cornice": "Cornice",
+      "piu": "+ {prezzo}",
+      "spedizione_gratis_da": "spedizione gratuita in Italia da {prezzo}"
+    },
+    "ar": {
+      "titolo": "Sulla tua parete",
+      "apri": "Apri la fotocamera",
+      "misura": "Stampa {misure}, in scala reale",
+      "misura_cornice": "{misure} con la cornice, in scala reale",
+      "ruota": "Trascina l’anteprima per girarla.",
+      "passi": "Come si fa",
+      "passo_1": "Inquadra la parete",
+      "passo_2": "Tocca dove appenderla",
+      "passo_3": "Fatto: è alla misura vera.",
+      "qr_titolo": "Inquadra col telefono",
+      "qr_testo": "Inquadralo con l'app Fotocamera: sul telefono si apre questa pagina. Tocca «Apri la fotocamera» e punta una parete."
+    },
+    "lente": {
+      "titolo": "Particolari",
+      "precedente": "Particolare precedente",
+      "successivo": "Particolare successivo",
+      "zoom": "Ingrandisci",
+      "riduci": "Riduci",
+      "contatore": "{n} di {tot}"
+    },
+    "acquisto": {
+      "procedi": "Procedi",
+      "originale": "Edizione limitata",
+      "stampa_carta": "Stampa",
+      "stampa_tela": "Stampa",
+      "quantita_di": "Quantità di {titolo}",
+      "inclusa": "Inclusa",
+      "al_checkout": "al checkout",
+      "totale_senza": "Totale senza spedizione",
+      "iva_una": "",
+      "venduta": "{titolo} è andata esaurita nel frattempo: l’abbiamo tolta dal carrello.",
+      "vuoto": "Il carrello è vuoto.",
+      "paese": "Paese di consegna",
+      "paese_scegli": "Scegli il paese",
+      "consegna": "Consegna stimata: {date}",
+      "dazi": "Fuori dall'Unione Europea possono esserci dazi e imposte del paese di arrivo, a carico di chi riceve.",
+      "email_originale": "Hai scelto un’edizione limitata: la firmiamo, la numeriamo e la incorniciamo prima di spedirla.",
+      "riepilogo": "Riepilogo",
+      "contatto": "Contatto",
+      "indirizzo": "Indirizzo di consegna",
+      "passi": "Passi",
+      "passo_fatto": "{nome}, fatto: torna a questo passo",
+      "demo_carta": "Pagamento finto. Usa la carta 4242 4242 4242 4242.",
+      "carta_prova": "Usa la carta di prova",
+      "termini": "Termini di vendita",
+      "grazie": "Grazie",
+      "pagato_carta": "Pagato con la carta che finisce con {n}.",
+      "pagato_rate": "Prima rata da {importo} pagata con Scalapay.",
+      "email_titolo": "L'email di conferma",
+      "oggetto": "Oggetto",
+      "obbligatorio": "Da compilare."
+    },
+    "altro": {
+      "descrizione": "Carte e cornici, chi siamo, Prisma."
+    },
+    "isabella": {
+      "descrizione": "Ninni ed Ernesto: chi siamo e come scriverci.",
+      "sezioni": "Sezioni della pagina",
+      "bio_t": "Chi siamo",
+      "bio": "Siamo Ninni ed Ernesto. Facciamo video con Prisma e, quando la telecamera è spenta, fotografie.",
+      "ritratto_alt": "Ninni ed Ernesto in silhouette su fondo arancio.",
+      "atelier_t": "Atelier",
+      "atelier_testo": "Tutti i quadri di questo sito sono nati qui, in via Felice Orsini ad Andria.",
+      "atelier_alt1": "Un pennello sul pavimento a scacchi dell'atelier.",
+      "atelier_alt2": "La mano di Isabella con il pennello, contro la parete bianca.",
+      "mostre_t": "Mostre",
+      "contatti_t": "Contatti",
+      "whatsapp": "WhatsApp",
+      "facebook": "Facebook",
+      "modulo_t": "Scrivici qui",
+      "opera_msg": "Vorrei sapere di più su «{titolo}».",
+      "successo": "Grazie, {nome}. Ti rispondiamo presto.",
+      "invio": "Invio…",
+      "demo": "Demo: nessun messaggio viene inviato.",
+      "nuova_scheda": "si apre in una nuova scheda",
+      "bio_ninni": "Fiori, corpi, colori pieni. Cerca la luce che rende strano quello che è normale.",
+      "bio_ernesto": "Il suo catalogo arriva presto.",
+      "prisma": "Prisma, il nostro studio video"
+    },
+    "info": {
+      "descrizione": "Spedizioni e resi, termini di vendita, privacy, cookie e note legali di Ninni & Ernesto.",
+      "bozza": "Testi dimostrativi, da far verificare a un legale prima della pubblicazione.",
+      "sezioni": "Sezioni della pagina",
+      "termini_t": "Termini",
+      "privacy_t": "Privacy e cookie",
+      "sped_intro": "Ogni stampa la controlliamo e la imballiamo a mano. Senza cornice viaggia in un tubo rigido, con la cornice in una cassa. Il tracciamento arriva per email.",
+      "tab_nota": "Edizioni: a pezzo. Stampe: una volta per ordine. Giorni lavorativi dalla spedizione.",
+      "giorni": "{min}⁠–⁠{max} giorni",
+      "preparazione": "Prima della partenza: edizioni limitate {o} giorni lavorativi, stampe {s}.",
+      "resi": "Hai 14 giorni dal ricevimento per restituire una stampa: scrivici prima di spedirla e ti diciamo come imballarla.",
+      "esclusi": "Non si rendono i formati su misura.",
+      "termini": [
+        [
+          "Chi vende",
+          "Ninni & Ernesto, [ragione sociale e indirizzo da completare]."
+        ],
+        [
+          "Le foto",
+          "Le stampe sono a pigmenti su carta d’archivio. Le edizioni limitate hanno un numero fisso di copie, firmate e numerate a mano, con certificato. Sullo schermo i colori possono sembrare un po’ diversi."
+        ],
+        [
+          "Prezzi",
+          "In euro. La spedizione si vede nel carrello, prima di pagare."
+        ],
+        [
+          "Ordine e pagamento",
+          "Il contratto si conclude con l’email di conferma. Si paga con carta, tramite Stripe, oppure in 3 rate."
+        ],
+        [
+          "Disponibilità",
+          "Se una copia dell’edizione risulta già venduta dopo il tuo ordine, ti avvisiamo e ti rimborsiamo per intero."
+        ],
+        [
+          "Recesso",
+          "Hai 14 giorni dal ricevimento per recedere, senza dare un motivo. Non vale per i formati su misura."
+        ],
+        [
+          "Diritti d’autore",
+          "Chi compra una stampa non compra il diritto di riprodurla: resta all’autore della foto."
+        ]
+      ],
+      "privacy": [
+        [
+          "Titolare",
+          "Ninni & Ernesto, ciao@ninnieernesto.example."
+        ],
+        [
+          "Quali dati",
+          "Nome, contatti e indirizzo quando compri; quello che scrivi nei moduli; la tua email se chiedi un avviso."
+        ],
+        [
+          "Perché",
+          "Per gestire ordini, consegne e fatture e per rispondere ai tuoi messaggi."
+        ],
+        [
+          "Con chi",
+          "Solo con chi serve: corriere, Stripe, commercialista, fornitori del sito e dell’email."
+        ],
+        [
+          "Per quanto tempo",
+          "I dati degli ordini per il tempo chiesto dalla legge fiscale; gli altri finché non chiedi di cancellarli."
+        ],
+        [
+          "I tuoi diritti",
+          "Puoi vedere, correggere o cancellare i tuoi dati scrivendo a ciao@ninnieernesto.example, oppure rivolgerti al Garante per la protezione dei dati personali."
+        ]
+      ],
+      "cookie_t": "Cookie",
+      "cookie": "I cookie necessari fanno funzionare carrello, lingua e checkout. Quelli statistici partono solo se li accetti: in questa demo non ce ne sono.",
+      "scelta_tutti": "La tua scelta: tutti i cookie.",
+      "scelta_necessari": "La tua scelta: solo i necessari.",
+      "scelta_nessuna": "Non hai ancora scelto.",
+      "cambia": "Cambia la scelta",
+      "piva": "P.IVA [da completare]",
+      "paese": "Italia",
+      "diritti": "Foto e testi © Ninni & Ernesto: non si riproducono senza permesso.",
+      "demo": "Sito dimostrativo: nessun pagamento reale, nessun ordine, nessuna email inviata."
+    },
+    "cookie": {
+      "regione": "Cookie",
+      "testo": "Usiamo cookie tecnici per il carrello e, solo se ce lo permetti, cookie per sapere quali pagine vengono visitate.",
+      "info": "Privacy e cookie"
+    },
+    "nontrovata": {
+      "titolo": "Pagina non trovata",
+      "riga": "Questa pagina non c'è."
+    },
+    "cursore": {
+      "apri": "Apri",
+      "vedi": "Vedi",
+      "parete": "Parete",
+      "ingrandisci": "Ingrandisci"
+    },
+    "catalogo": {
+      "ninni_descrizione": "Le fotografie di Ninni: stampe fine art ed edizioni limitate firmate da Ninni.",
+      "ernesto_descrizione": "Le fotografie di Ernesto: il catalogo apre presto.",
+      "nota_edizioni": "Poche copie, firmate e numerate, incorniciate. Il prezzo sale man mano che l’edizione si esaurisce.",
+      "nota_stampe": "Su carte di cotone o giapponesi, in tre formati. Cornice a scelta."
+    },
+    "edizione": {
+      "restano": "Restano {n} di {di}",
+      "ultima": "Ultima copia",
+      "esaurita": "Esaurita",
+      "esaurita_nota": "Tutte le {n} copie sono state vendute. Resta la stampa.",
+      "numero": "N° {n} di {di}",
+      "sale_1": "Ultima copia a questo prezzo. La prossima costa {prezzo}.",
+      "sale_n": "Ancora {n} copie a questo prezzo, poi {prezzo}.",
+      "scaglioni": "Prezzi dell’edizione, copia per copia",
+      "venduti": "venduti",
+      "firma": "Firmata e numerata a mano da {autore}, con certificato",
+      "incluso": "cornice inclusa",
+      "aggiungi": "Prendi la n° {n}",
+      "etichetta": "Edizione",
+      "valore": "{n} copie + {pa} prove d’artista"
+    },
+    "carte": {
+      "descrizione": "Le carte fine art e le cornici che usiamo per stampe ed edizioni limitate, con i prezzi.",
+      "lead": "Stampiamo a pigmenti su carte di cotone e carte giapponesi. Ogni stampa la controlliamo noi prima che parta.",
+      "carte_t": "Carte",
+      "solo_edizioni": "solo edizioni",
+      "cornici_t": "Cornici",
+      "fascia_s": "fino a 45 cm",
+      "fascia_m": "fino a 60 cm",
+      "fascia_l": "fino a 90 cm",
+      "edizioni_t": "Edizioni limitate",
+      "ed_1": "Da 7 a 10 copie per foto, più 1 o 2 prove d’artista. Finite quelle, non se ne stampano altre.",
+      "ed_2": "Ogni copia è firmata e numerata a mano sul retro e ha il suo certificato.",
+      "ed_3": "Le prime copie costano meno: il prezzo sale a scaglioni man mano che l’edizione si vende.",
+      "ed_4": "Arriva incorniciata, pronta da appendere.",
+      "vai": "Vedi le edizioni"
+    },
+    "ernesto": {
+      "lead": "Il catalogo di Ernesto apre presto. Lascia l’email e ti scriviamo il giorno in cui esce, prima di tutti.",
+      "modulo": "Avvisami quando apre il catalogo di Ernesto",
+      "campo": "Email",
+      "bottone": "Avvisami",
+      "successo": "Fatto. Ti scriviamo a {email} il giorno dell’apertura."
+    }
+  }
+}

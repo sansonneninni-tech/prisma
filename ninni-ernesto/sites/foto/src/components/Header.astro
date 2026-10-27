@@ -1,0 +1,33 @@
+---
+/**
+ * C1 Header (DIREZIONE §4.1): fisso, bianco, senza filetto, non si nasconde scorrendo.
+ * Sinistra il logo (compatto 58 px < 768, orizzontale 172 px ≥ 768) → home.
+ * Destra: Shop (borsa → Opere, audit ninni 22/10) · Indice · Carrello (n) · IT EN 中文. «Indice» è un bottone che apre il dialog (C3) sotto 768 px
+ * e un link alla mappa (/[lang]/#indice) da 768: nel DOM ci sono entrambi, se ne vede uno.
+ * `ridotto` (checkout): niente Indice, per non perdere l'ordine; restano Carrello (n) e lingue.
+ */
+import Logo from './Logo.astro';
+import Lingue from './Lingue.astro';
+import ContaCarrello from './ContaCarrello.astro';
+import Shop from './Shop.astro';
+import { href, useT, type Locale } from '../lib/i18n';
+interface Props { lang: Locale; pathname: string; /** checkout (§6 P10): logo, Carrello (n) e lingue, niente Indice */ ridotto?: boolean }
+const { lang, pathname, ridotto = false } = Astro.props;
+const t = useT(lang);
+---
+<header class="hd wrap" data-hd>
+  <a class="hd__logo" href={href(lang, '/')} aria-label={t('galleria.nav.home_aria')}>
+    <Logo forma="orizzontale" class="hd__l-or" />
+    <Logo forma="compatto" class="hd__l-co" />
+  </a>
+  <nav class="hd__nav" aria-label={t('galleria.nav.principale')}>
+    {/* checkout: niente Shop, come niente Indice (non si perde l'ordine) */}
+    {!ridotto && <Shop lang={lang} pathname={pathname} />}
+    {!ridotto && <button class="hd__btn hd__idx-btn" type="button" aria-expanded="false" aria-controls="indice-menu" data-indice-apri>{t('galleria.nav.indice')}</button>}
+    {!ridotto && <a class="hd__btn hd__idx-link" href={`${href(lang, '/')}#indice`}>{t('galleria.nav.indice')}</a>}
+    {/* checkout: a ordine chiuso («Grazie») l'Indice torna, come link alla mappa (lib/checkout-client.ts) */}
+    {ridotto && <a class="hd__btn hd__idx-ck" href={`${href(lang, '/')}#indice`} data-hd-indice-ck hidden>{t('galleria.nav.indice')}</a>}
+    <ContaCarrello lang={lang} />
+    <Lingue lang={lang} pathname={pathname} ridotte={!ridotto} class="hd__lang" />
+  </nav>
+</header>

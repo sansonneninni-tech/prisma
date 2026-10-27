@@ -1,0 +1,9 @@
+{
+ "_leggimi": "Correzioni per singola opera, applicate sopra dati/opere.json. Campi: larghezza_cm, altezza_cm, profondita_cm, nota. Le chiavi che iniziano con _ sono ignorate.",
+ "09": {
+  "larghezza_cm": 90,
+  "altezza_cm": 90,
+  "profondita_cm": 4,
+  "nota": "misura con cornice (90x90): la foto include la cornice nera; tela 71x71"
+ }
+}

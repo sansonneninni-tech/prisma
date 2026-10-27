@@ -1,0 +1,162 @@
+/* ==========================================================================
+   Galleria — P2 Opere (pezzo 3): C9 titolo, C14 schede, riga dei filtri attivi, C8 masonry, C7 card,
+   C10 pannello dei filtri, stato vuoto. Riferimento: styleguide.html §04, ref/migliorie (SSENSE, YSL).
+   Ogni :hover sta dentro @media (hover: hover); gli stati veri (aria-selected, aria-pressed) restano fuori.
+   ========================================================================== */
+
+.op { padding-bottom: var(--s-8); }
+
+/* ---------- C9 titolo gigante + A5 ---------- */
+.tg { padding-top: var(--s-2); background: var(--c-bg); }
+/* A5 (opere-client.ts, solo senza riduci movimento): resta sotto l'header; il titolo scala e la striscia bianca a
+   tutta larghezza (.tg__fondo) si accorcia con lui. Solo transform: legati allo scorrimento in CSS dove si può
+   (animation-timeline, sul compositore), altrimenti scritti da opere-client.ts. */
+.tg__h { padding-bottom: 0.17em; } /* aria per il discendente della «p»: le schede non toccano il titolo */
+.tg--a5 { position: sticky; top: calc(var(--header-h) + env(safe-area-inset-top)); z-index: 3; background: none; }
+.tg--a5 .tg__h { transform-origin: 0 0; will-change: transform; }
+.tg__fondo { position: absolute; inset: 0; z-index: -1; background: var(--c-bg); transform-origin: 0 0; will-change: transform; pointer-events: none; }
+@keyframes a5-titolo { to { transform: scale(var(--a5-k, 1)); } }
+@keyframes a5-fondo { to { transform: scaleY(var(--a5-f, 1)); } }
+.tg--a5-css .tg__h { animation: a5-titolo linear both; }
+.tg--a5-css .tg__fondo { animation: a5-fondo linear both; }
+/* la linea del tempo in una regola a parte (più specifica, vince sul reset dello shorthand): il minificatore unirebbe
+   le due proprietà in uno shorthand `animation` con dentro la linea del tempo, che Chrome non accetta */
+.tg.tg--a5-css .tg__h, .tg.tg--a5-css .tg__fondo { animation-timeline: scroll(root block); animation-range: 0px 300px; }
+
+/* ---------- barra: C14 schede a sinistra, «Filtra (n)» a destra ---------- */
+.op-bar {
+  display: flex; justify-content: space-between; align-items: baseline; gap: var(--s-4);
+  margin-top: var(--s-1); margin-bottom: var(--s-4);
+}
+.tabs { display: flex; gap: 0.6em; align-items: baseline; font-size: var(--t-tab); }
+.tabs__b {
+  font-weight: var(--w-display); font-size: var(--t-tab); line-height: var(--lh-tab); letter-spacing: -0.02em;
+  color: var(--c-inactive); min-height: var(--touch); display: inline-flex; align-items: center;
+  transition: color var(--d-fast) var(--ease-out);
+}
+.tabs__b[aria-selected='true'] { color: var(--c-ink); }
+:lang(zh) .tabs__b { letter-spacing: 0; }
+.filtra {
+  font-size: var(--t-ui); font-weight: var(--w-strong); min-height: var(--touch);
+  display: inline-flex; align-items: center; padding-inline: 10px; margin-right: -10px; white-space: nowrap;
+}
+.filtra span {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat; padding-bottom: 2px;
+  transition: background-size var(--d-ui) var(--ease-out);
+}
+@media (hover: hover) {
+  .tabs__b:hover { color: var(--c-ink); }
+  .filtra:hover span { background-size: 0 1px; }
+}
+
+/* ---------- filtri attivi: «Rossi × Grandi ×  12 opere» ---------- */
+.attivi {
+  display: flex; flex-wrap: wrap; align-items: center; column-gap: var(--s-4);
+  margin: calc(-1 * var(--s-3)) 0 var(--s-4); font-size: var(--t-ui); color: var(--c-mute);
+}
+.attivi__lista { display: flex; flex-wrap: wrap; column-gap: var(--s-4); }
+.attivi__x {
+  min-height: var(--touch); display: inline-flex; align-items: center; gap: 6px;
+  color: var(--c-ink); font-weight: var(--w-strong); white-space: nowrap;
+}
+.attivi__per { font-size: 1.15em; line-height: 1; font-weight: var(--w-text); }
+.attivi__n { min-height: var(--touch); display: inline-flex; align-items: center; white-space: nowrap; }
+@media (hover: hover) { .attivi__x:hover span:first-child { text-decoration: underline; text-underline-offset: 0.2em; } }
+
+/* ---------- C8 masonry: una colonna per .mas__col (2, poi 3 da 1280), riempite «alla più corta» ---------- */
+.mas { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); column-gap: var(--gap); align-items: start; }
+/* un contenitore per colonna (non per card: 26 contenitori ricalcolati nel layout del montaggio di A1; correzioni di
+   fluidità n7, 1d). La card è larga quanto la colonna: la container query delle didascalie dà lo stesso risultato */
+.mas__col { display: flex; flex-direction: column; min-width: 0; container-type: inline-size; }
+
+/* ---------- C7 card ---------- */
+.card { display: block; padding-bottom: var(--gap-row); }
+.card__img { display: block; aspect-ratio: var(--ar); background: var(--c-placeholder); overflow: hidden; }
+.card__img .isa-picture, .card__img img { display: block; width: 100%; height: 100%; }
+.card__img img { object-fit: contain; }
+.card__cap { display: block; padding-top: var(--cap-gap); font-size: var(--t-cap); line-height: var(--lh-tight); }
+.card__t { display: block; font-weight: var(--w-strong); }
+.card__d { color: var(--c-mute); font-size: var(--t-ui); margin-top: 2px; }
+/* una riga quando la colonna è larga almeno 300 px (container query, non viewport) */
+@container (min-width: 300px) {
+  .card__cap { display: flex; gap: var(--s-3); align-items: baseline; }
+  .card__t { flex: 0 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .card__d { margin: 0 0 0 auto; flex: none; flex-wrap: nowrap; }
+}
+@media (hover: hover) {
+  .card:hover .card__t { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+}
+/* Passaggio del mouse (audit di ninni 22/10: «un passaggio del mouse e si aprirà l'ingrandimento»; vince su DIREZIONE
+   §8 che lo vietava): l'opera si ingrandisce un poco dentro la sua cornice, solo transform, 0,3 s. La didascalia sotto
+   non si muove. Solo mouse; con riduci movimento niente. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .card__img .isa-picture { transition: transform var(--d-ui) var(--ease-out); }
+  /* will-change durante il passaggio: a fine transizione l'opera ingrandita resta sul suo strato (prima tornava nella
+     pagina e si ridisegnava a 1,04, un piccolo scatto di nitidezza; lavoro «animazioni fluide» 22/10) */
+  .card:hover .card__img .isa-picture { transform: scale(1.04); will-change: transform; }
+}
+
+/* ---------- stato vuoto ---------- */
+.vuoto { padding: var(--s-6) 0 var(--s-8); }
+.vuoto__p { font-size: var(--t-lead); line-height: var(--lh-tight); margin-bottom: var(--s-2); }
+
+/* ---------- C10 pannello dei filtri: dialog a schermo intero, velo + pannello da destra (420 px) ---------- */
+.flt {
+  position: fixed; inset: 0; z-index: var(--z-drawer);
+  width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0;
+  border: 0; background: transparent; color: var(--c-ink); overflow: hidden;
+}
+.flt[open] { display: block; }
+.flt::backdrop { background: transparent; }
+.flt__velo { position: absolute; inset: 0; background: var(--c-veil); }
+.flt__pan {
+  position: absolute; top: 0; right: 0; bottom: 0; width: 100%;
+  display: flex; flex-direction: column; background: var(--c-bg);
+  padding-top: env(safe-area-inset-top);
+}
+@media (min-width: 768px) { .flt__pan { width: 420px; } }
+.flt__top {
+  flex: none; height: var(--header-h); display: flex; align-items: center; justify-content: space-between; gap: var(--s-4);
+  padding-inline: max(var(--s-5), env(safe-area-inset-left)) max(var(--s-5), env(safe-area-inset-right));
+}
+.flt__titolo { font-size: var(--t-ui); font-weight: var(--w-strong); line-height: 1.2; }
+.flt__tot { color: var(--c-mute); font-weight: var(--w-text); }
+.flt__chiudi {
+  min-height: var(--touch); padding-inline: 10px; margin-right: -10px;
+  font-size: var(--t-ui); font-weight: var(--w-strong); white-space: nowrap;
+}
+.flt__corpo {
+  flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+  padding: var(--s-2) max(var(--s-5), env(safe-area-inset-right)) var(--s-6) max(var(--s-5), env(safe-area-inset-left));
+}
+.flt__g { border: 0; margin: 0; padding: 0; min-width: 0; }
+.flt__g + .flt__g { margin-top: var(--s-5); }
+.flt__leg { padding: 0; margin-bottom: var(--s-1); font-size: var(--t-ui); font-weight: var(--w-strong); }
+.flt__voci--due { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-4); }
+.flt__op {
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: var(--touch);
+  font-size: var(--t-cap); line-height: var(--lh-tight); text-align: left;
+}
+.flt__box { width: 12px; height: 12px; border: 1px solid currentColor; flex: none; }
+.flt__op[aria-pressed='true'] .flt__box { background: currentColor; }
+.flt__op[aria-pressed='true'] .flt__nome { font-weight: var(--w-strong); }
+.flt__nome { min-width: 0; }
+.flt__n { color: var(--c-mute); font-variant-numeric: tabular-nums; font-weight: var(--w-text); }
+.flt__nota { margin-left: auto; padding-left: var(--s-2); color: var(--c-mute); font-size: var(--t-ui); white-space: nowrap; }
+.flt__op:disabled { color: var(--c-inactive); cursor: not-allowed; }
+.flt__op:disabled .flt__n, .flt__op:disabled .flt__nota { color: inherit; }
+@media (hover: hover) {
+  .flt__op:not(:disabled):hover .flt__nome { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+}
+.flt__piede {
+  flex: none; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-2);
+  padding: var(--s-4) max(var(--s-5), env(safe-area-inset-right)) calc(var(--s-4) + env(safe-area-inset-bottom)) max(var(--s-5), env(safe-area-inset-left));
+  border-top: var(--line-soft);
+}
+.flt__mostra { min-width: 0; }
+.flt__mostra span { overflow: hidden; text-overflow: ellipsis; }
+
+/* telefono in orizzontale e finestre basse: il titolo non si prende metà della prima schermata */
+@media (max-height: 500px) and (orientation: landscape) {
+  .tg { --t-title: min(clamp(3.5rem, 16vw, 19rem), 22svh); }
+}

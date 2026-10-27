@@ -1,0 +1,280 @@
+/* ==========================================================================
+   Galleria — home (pezzo 2): H1 apertura con la sequenza (C18), H2 mappa con i pannelli (C19).
+   DIREZIONE §6 P1, §8 A4. Riferimento: styleguide.html, ref/styleguide/sg_*_v1.png e sg_*_mappa.png.
+   ========================================================================== */
+
+/* Segnaposto delle immagini del core (ArtworkPicture): colore dominante + LQIP finché il file non arriva */
+.mappa .isa-picture { display: block; background: var(--isa-dominant, var(--c-placeholder)) var(--isa-lqip, none) center / cover no-repeat; }
+.mappa .isa-picture img { display: block; width: 100%; height: 100%; }
+
+/* ---------- H1 apertura ---------- */
+.ap {
+  position: relative;
+  /* col banner cookie aperto (pezzo 7) l'apertura si accorcia: il banner non copre mai l'opera né il nome */
+  height: calc(100svh - var(--ingombro-cookie, 0px)); min-height: 540px;
+  display: grid;
+  grid-template-rows: calc(var(--header-h) + env(safe-area-inset-top)) minmax(0, 1fr) auto;
+  container-type: inline-size;
+}
+/* fuori dalla home (styleguide) il main ha già lo spazio dell'header: l'apertura lo riprende */
+.main:not(.main--home) > .ap:first-child { margin-top: calc(-1 * (var(--header-h) + env(safe-area-inset-top))); }
+.seq { grid-row: 2; min-height: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto; }
+
+/* L'opera: box con le sue proporzioni, il più grande possibile nello spazio libero (container query sul figure).
+   Poggia in basso, sulla sua didascalia (come un cartellino a muro): il vuoto che cambia da un'opera all'altra
+   sta sopra, sotto l'header, mai fra l'opera e la riga. Il link riempie lo spazio e non cambia mai misura
+   (niente layout shift al cambio d'opera); è cliccabile solo l'opera (pointer-events) e il fuoco la abbraccia. */
+.seq__fig {
+  min-height: 0; container-type: size;
+  display: grid;
+  padding-block: var(--s-4) var(--s-2);
+}
+.seq__a { display: grid; place-items: end center; min-height: 0; pointer-events: none; }
+.seq__pic {
+  grid-area: 1 / 1;
+  width: min(100cqw, 100cqh * var(--ar));
+  aspect-ratio: var(--ar);
+  background: var(--isa-dominant, var(--c-placeholder));
+  pointer-events: auto;
+}
+.seq__pic img { width: 100%; height: 100%; object-fit: contain; }
+.seq__a:focus-visible { box-shadow: none; }
+.seq__a:focus-visible .seq__pic[data-on] { box-shadow: var(--focus-ring); }
+/* taglio: c'è solo l'opera corrente; dissolvenza: tutte nella stessa cella */
+.seq[data-modo='taglio'] .seq__pic:not([data-on]) { display: none; }
+/* la nuova entra sopra la vecchia, che resta piena finché la nuova non è arrivata (niente fotogramma «slavato») */
+.seq[data-modo='dissolvenza'] .seq__pic { opacity: 0; visibility: hidden; transition: opacity 0s linear 0.6s, visibility 0s linear 0.6s; }
+.seq[data-modo='dissolvenza'] .seq__pic[data-on] { z-index: 1; opacity: 1; visibility: visible; transition: opacity 0.6s var(--ease-out); }
+
+/* Riga sotto l'opera: «Titolo, misure» a sinistra, «01 / 06» e Pausa a destra. Alta 44 px anche con la
+   didascalia su 2 righe (telefono stretto), così il cambio d'opera non fa saltare nulla. */
+.seq__meta {
+  display: flex; justify-content: space-between; align-items: center; gap: var(--s-4);
+  min-height: var(--touch); padding-bottom: var(--s-2);
+  font-size: var(--t-ui); line-height: 1.2;
+  position: relative; z-index: 1; /* sopra le lettere del nome (interlinea 0,78: gli ascendenti salgono qui) */
+}
+.seq__cap { min-width: 0; }
+.seq__cap b { font-weight: var(--w-strong); }
+.seq__mis { white-space: nowrap; }
+/* Shop (audit ninni 22/10): prezzo grigio + «Acquista →», un gruppo che va a capo intero (niente separatori a inizio riga).
+   Il link resta piccolo nel testo; l'area di tocco di 44 px la dà un ::after (la riga non cambia altezza). */
+.seq__cap { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 12px; }
+.seq__acq { display: inline-flex; align-items: baseline; gap: 10px; white-space: nowrap; }
+.seq__acq[hidden] { display: none; }
+.seq__prezzo { color: var(--c-mute); }
+.seq__buy {
+  position: relative; display: inline-flex; align-items: center; gap: 4px; font-weight: var(--w-strong);
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px;
+}
+.seq__buy::after { content: ''; position: absolute; inset: -14px -6px; }
+.seq__buy .freccia { width: 0.85em; height: 0.85em; }
+@media (hover: hover) { .seq__buy:hover { text-decoration-thickness: 2px; } }
+.seq__ctrl { display: flex; align-items: center; gap: var(--s-4); flex: none; }
+.seq__ctrl[hidden] { display: none; }
+.seq__n { font-variant-numeric: tabular-nums; color: var(--c-mute); white-space: nowrap; }
+.seq__btn {
+  display: inline-flex; align-items: center; justify-content: flex-end;
+  min-height: var(--touch); min-width: var(--touch);
+  font-weight: var(--w-text); white-space: nowrap;
+  text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px;
+}
+@media (hover: hover) { .seq__btn:hover { text-decoration-thickness: 2px; } }
+
+/* Il nome: testo vivo che riempie ESATTAMENTE la larghezza (tokens: --mega-2r / --mega-1r) */
+.ap__nome-c { grid-row: 3; container-type: inline-size; }
+.ap__nome {
+  font-family: 'Inter Tight', var(--f-sans);
+  font-weight: var(--w-display);
+  font-size: min(calc(100cqw / var(--mega-2r)), clamp(2.25rem, 9vw, 4rem));
+  line-height: 0.95;
+  letter-spacing: var(--ls-mega);
+  white-space: nowrap;
+  margin-left: -0.04em;
+  padding-bottom: calc(var(--s-4) + env(safe-area-inset-bottom));
+}
+.ap__nome span { display: block; }
+/* una riga: da 1024 e su ogni schermo largo almeno 4/5 dell'altezza (finestre basse, telefono in orizzontale) */
+@media (min-width: 1024px), (min-aspect-ratio: 4/5) {
+  .ap__nome { font-size: clamp(2.5rem, 4.6vw, 5rem); }
+  .ap__nome span { display: inline; }
+}
+/* Telefono piccolo in verticale (320 × 568) col banner cookie aperto: l'apertura scende sotto i 540 px e il nome va su
+   una riga, così opera, riga e nome restano tutti sopra il banner. Alla scelta il nome torna su due righe. */
+@media (orientation: portrait) and (max-height: 640px) {
+  html[data-cookie-aperto] .ap { min-height: 360px; }
+  html[data-cookie-aperto] .ap__nome { font-size: clamp(2.5rem, 4.6vw, 5rem); }
+  html[data-cookie-aperto] .ap__nome span { display: inline; }
+}
+/* Telefono in orizzontale e finestre molto basse: opera + riga riempiono la prima schermata, il nome viene sotto */
+@media (orientation: landscape) and (max-height: 500px) {
+  .ap {
+    height: auto; min-height: 0;
+    grid-template-rows: calc(var(--header-h) + env(safe-area-inset-top)) calc(100svh - var(--header-h) - env(safe-area-inset-top) - var(--ingombro-cookie, 0px)) auto;
+  }
+  .seq__fig { padding-block: var(--s-2) var(--s-1); }
+  .seq__meta { padding-bottom: 0; }
+  .ap__nome { padding-top: var(--s-3); }
+}
+
+/* ---------- H2 mappa ---------- */
+.mappa {
+  position: relative; isolation: isolate;
+  min-height: 100svh;
+  display: grid; place-items: center;
+  padding-block: calc(var(--header-h) + env(safe-area-inset-top) + var(--s-5)) calc(var(--s-6) + env(safe-area-inset-bottom));
+  background: var(--c-bg);
+  /* «Indice» su computer porta qui: la stanza parte dal bordo alto (annulla lo scroll-padding dell'header) */
+  scroll-margin-top: calc(-1 * (var(--header-h) + env(safe-area-inset-top) + var(--s-4)));
+}
+.mappa__sfondo { position: absolute; inset: 0; z-index: -1; }
+.mappa__sfondo img { object-fit: cover; object-position: var(--sfondo-pos, 50% 50%); }
+.mappa__tav { width: 100%; display: grid; gap: var(--s-5); container-type: inline-size; }
+.tav { display: grid; gap: var(--s-5); }
+
+/* Pannello (C19) */
+.pan {
+  position: relative; display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden;
+  padding: 10px; background: var(--c-bg); color: var(--c-ink);
+}
+/* velo bianco dello zoom A1/A2 (lib/movimento.ts lo anima in opacity): già nel markup, così al clic non nasce niente */
+.pan__velo { position: absolute; inset: 0; z-index: 0; background: var(--c-bg); opacity: 0; pointer-events: none; }
+.pan:focus-visible { box-shadow: 0 0 0 3px var(--c-bg), 0 0 0 6px var(--c-ink); z-index: 1; }
+.pan__t {
+  position: relative; z-index: 1; /* sopra il velo dello zoom (pan__velo) */
+  display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s-2);
+  /* 0,17em: la «p» di «Opere» scende sotto la riga (come nei titoli giganti, padding-bottom 0,17em); poi 6 px come
+     fra le opere, così il discendente non tocca la cornice della prima opera */
+  margin-bottom: calc(0.17em + 6px); flex: none;
+  font-weight: var(--w-display); font-size: calc(100cqw / 4.4);
+  line-height: var(--lh-title); letter-spacing: var(--ls-title); white-space: nowrap;
+}
+.pan__t span { margin-left: -0.05em; }
+.pan__t .freccia { width: 0.42em; height: 0.42em; margin-top: 0.12em; }
+:lang(zh) .pan__t span { margin-left: 0; }
+/* cinese: 4 ideogrammi larghi 1 em più la freccia devono stare nella riga */
+:lang(zh) .pan__t { font-size: calc(100cqw / 6.2); }
+.pan__corpo { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+@media (hover: hover) {
+  .pan:hover .pan__t span { text-decoration: underline; text-decoration-thickness: 0.04em; text-underline-offset: 0.08em; }
+}
+
+/* Opere: masonry (calcolato sul server, 2 o 3 colonne), proporzioni vere. In ogni colonna si vedono solo le opere
+   che ci stanno intere (lista di blocco 4: mai ritagliate): colonna flex a capo, quelle che non stanno passano in una
+   seconda colonna fuori dal riquadro (nascosta). */
+.pan__mas { flex: 1; min-height: 0; overflow: hidden; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; }
+.pan__mas--3 { display: none; }
+.pan__col { display: flex; flex-direction: column; flex-wrap: wrap; row-gap: 6px; column-gap: 0; min-height: 0; overflow: hidden; }
+.pan__op { width: 100%; }
+.pan__op .isa-picture { aspect-ratio: var(--isa-aspect); }
+
+/* Isabella: ritratto in bianco e nero + le 3 etichette */
+.pan__ritratto { flex: 1; min-height: 0; }
+.pan__ritratto img { object-fit: cover; object-position: 50% 36%; }
+.pan__mini {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px 10px;
+  padding-top: 8px; flex: none;
+  font-size: var(--t-small); font-weight: var(--w-strong); line-height: 1.25; white-space: nowrap;
+}
+
+/* Altro: l'elenco delle pagine in alto a sinistra (leggibile: mai sotto i 14 px), un'opera intera in basso a destra */
+.pan__al { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr); gap: 12px; }
+.pan__voci {
+  align-self: start;
+  font-weight: var(--w-display); font-size: max(var(--t-ui), calc(100cqw / 16)); line-height: 1.12; letter-spacing: -0.015em;
+}
+.pan__voci li { white-space: nowrap; }
+:lang(zh) .pan__voci { letter-spacing: 0; line-height: 1.25; font-weight: 500; }
+.pan__al-img { min-height: 0; container-type: size; display: flex; align-items: flex-end; justify-content: flex-end; }
+.pan__al-op { width: min(100cqw, 100cqh * var(--ar)); }
+.pan__al-op .isa-picture { aspect-ratio: var(--isa-aspect); }
+
+/* Telefono in verticale: pannelli impilati nell'ordine del DOM, Opere per primo e più alto (audit ninni 22/10),
+   Isabella e Altro più bassi. */
+/* 183vw: ci stanno intere 2 colonne da 3 opere (home.json) da 320 a 430 (180vw prima che il titolo avesse l'aria per
+   la «p», 22/10) */
+.pan--opere { height: 183vw; }
+.pan--isabella, .pan--altro { height: min(92vw, 460px); }
+/* Altro: l'elenco sopra a tutta larghezza, l'opera sotto a destra (in diagonale con l'elenco) */
+@media (max-width: 767.98px) {
+  .pan__al { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); gap: 14px; }
+}
+
+/* Riga sotto la tavola: bianca come i pannelli */
+.mappa__piede {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--s-2) var(--s-5);
+  min-height: var(--touch); padding: 0 10px; background: var(--c-bg);
+  font-size: var(--t-small); line-height: 1.3; color: var(--c-mute);
+}
+.mappa__riga { display: none; }
+.mappa__demo--lunga { display: none; }
+.mappa__lnk {
+  display: inline-flex; align-items: center; min-height: var(--touch); min-width: var(--touch);
+  font-size: var(--t-ui); font-weight: var(--w-strong); color: var(--c-ink); white-space: nowrap;
+}
+@media (hover: hover) {
+  .mappa__lnk:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+}
+
+/* Bianco pieno al posto della foto (home.json, §12 D2): i pannelli si staccano con un filetto */
+.mappa--bianca .pan, .mappa--bianca .mappa__piede { outline: var(--line-soft); }
+
+/* Da 768 e col telefono in orizzontale: la tavola. Opere a sinistra a tutta altezza (55%), a destra Isabella sopra e
+   Altro sotto, metà altezza ciascuno; pannelli uniti, separati da un filetto. */
+@media (min-width: 768px), (orientation: landscape) and (max-height: 500px) {
+  .mappa__riga { display: flex; gap: var(--s-5); }
+  .mappa__luogo { display: none; }
+  .mappa__tav { gap: 0; }
+  .tav { grid-template-columns: minmax(0, 55fr) minmax(0, 45fr); grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); gap: 0; }
+  .pan, .pan--opere, .pan--isabella, .pan--altro { height: auto; }
+  .pan--opere { grid-column: 1; grid-row: 1 / 3; }
+  .pan--isabella { grid-column: 2; grid-row: 1; border-left: var(--line-soft); }
+  .pan--altro { grid-column: 2; grid-row: 2; border-left: var(--line-soft); border-top: var(--line-soft); }
+  .mappa__piede { border-top: var(--line-soft); }
+  .mappa--bianca .tav { outline: var(--line-soft); }
+  .mappa--bianca .pan { outline: 0; }
+}
+
+/* Tablet in verticale (768–1023): tavola alta quanto lo schermo libero; Opere a 2 colonne */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .tav { height: min(calc(100svh - var(--header-h) - 164px), 125vw); min-height: 560px; }
+  .pan__t { font-size: calc(100cqw / 10); }
+  :lang(zh) .pan__t { font-size: calc(100cqw / 13); }
+  .pan__voci { font-size: max(var(--t-ui), calc(100cqw / 36)); }
+  .pan__ritratto img { object-position: 50% 28%; }
+}
+
+/* Computer: tavola 2:1 alta quanto lo schermo meno 120 px; Opere a 3 colonne */
+@media (min-width: 1024px) {
+  .mappa { padding-block: calc(var(--header-h) + var(--s-5)) var(--s-5); }
+  .mappa__tav { width: min(100%, calc((100svh - var(--header-h) - 164px) * 2)); }
+  .tav { aspect-ratio: 2 / 1; }
+  .pan__t, :lang(zh) .pan__t { font-size: 5.4cqw; }
+  .pan__mas--2 { display: none; }
+  .pan__mas--3 { display: grid; }
+  .pan__voci { font-size: max(var(--t-ui), 1.75cqw); }
+  .mappa__demo--breve { display: none; }
+  .mappa__demo--lunga { display: inline; }
+}
+@media (min-width: 1920px) {
+  .pan { padding: 14px; }
+}
+
+/* Telefono in orizzontale (audit finale 1, telefono #4): la mappa resta una mappa, come sul computer, in una tavola
+   2:1 che sta nella schermata sotto l'header; Opere a 3 colonne (con le stesse proporzioni del computer ci stanno
+   intere le stesse 6 opere). */
+@media (orientation: landscape) and (max-height: 500px) and (max-width: 1023.98px) {
+  .mappa { padding-block: calc(var(--header-h) + env(safe-area-inset-top) + var(--s-2)) calc(var(--s-2) + env(safe-area-inset-bottom)); }
+  .mappa__tav { width: min(100%, calc((100svh - var(--header-h) - env(safe-area-inset-top) - var(--touch) - 2 * var(--s-2) - env(safe-area-inset-bottom)) * 2)); display: block; }
+  .tav { width: 100%; height: auto; min-height: 0; aspect-ratio: 2 / 1; }
+  .pan { padding: 8px; }
+  .pan__t, :lang(zh) .pan__t { font-size: 5.4cqw; margin-bottom: calc(0.17em + 4px); }
+  .pan__mas--2 { display: none; }
+  .pan__mas--3 { display: grid; }
+  .pan__mini { gap: 4px 6px; padding-top: 6px; }
+  .pan__voci { font-size: var(--t-ui); font-weight: var(--w-strong); line-height: 1.4; letter-spacing: 0; }
+  .pan__al { gap: 8px; }
+}
+@media (orientation: landscape) and (max-height: 500px) and (min-width: 768px) and (max-width: 1023.98px) {
+  .mappa__demo { display: none; } /* la riga dei link occupa la fascia; «Sito dimostrativo» resta nel piè di pagina */
+}

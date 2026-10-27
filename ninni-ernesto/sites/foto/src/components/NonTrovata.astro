@@ -1,0 +1,46 @@
+---
+/**
+ * P12 404 (DIREZIONE §6 P12, pezzo 7). «404» gigante che riempie la larghezza (come il nome in home: 100cqw / --fit,
+ * mai più alto del 66% dello schermo), una riga e due link: Opere →, Home →. In cifre in tutte le lingue.
+ * Su Netlify public/_redirects manda qui /<lingua>/*; la radice usa /404.html in italiano.
+ */
+import Base from '../layouts/Base.astro';
+import Freccia from './Freccia.astro';
+import { fit } from '../lib/fit';
+import { href, useT, type Locale } from '../lib/i18n';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useT(lang);
+const f = fit('404', -0.045);
+---
+<Base lang={lang} title={t('galleria.nontrovata.titolo')} noindex>
+  <section class="wrap nf" aria-labelledby="nf-h">
+    <div class="nf__box" style={`--fit:${f}`}><h1 class="nf__h" id="nf-h"><span aria-hidden="true">404</span><span class="vh">{t('galleria.nontrovata.titolo')}</span></h1></div>
+    <div class="nf__sotto">
+      <p class="nf__riga">{t('galleria.nontrovata.riga')}</p>
+      <ul class="nf__link">
+        <li><a class="lnk" href={href(lang, '/opere/')}>{t('galleria.nav.opere')}<Freccia /></a></li>
+        <li><a class="lnk" href={href(lang, '/')}>{t('galleria.nav.home')}<Freccia /></a></li>
+      </ul>
+    </div>
+  </section>
+</Base>
+<style>
+  .nf {
+    display: flex; flex-direction: column; justify-content: flex-end; gap: var(--s-5);
+    min-height: calc(100svh - var(--header-h) - env(safe-area-inset-top) - 180px);
+    padding-block: var(--s-6) var(--s-8);
+  }
+  .nf__box { container-type: inline-size; }
+  .nf__h {
+    font-weight: var(--w-display); letter-spacing: var(--ls-mega); line-height: var(--lh-mega);
+    font-size: min(calc(100cqw / var(--fit)), 66svh);
+    margin-left: max(-0.055em, calc(2px - var(--gutter))); font-variant-numeric: lining-nums;
+  }
+  .nf__sotto { display: grid; gap: var(--s-3); border-top: var(--line); padding-top: var(--s-3); }
+  .nf__riga { font-size: var(--t-lead); font-weight: var(--w-strong); line-height: var(--lh-tight); }
+  .nf__link { display: flex; gap: var(--s-6); }
+  @media (min-width: 768px) {
+    .nf__sotto { grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+  }
+</style>

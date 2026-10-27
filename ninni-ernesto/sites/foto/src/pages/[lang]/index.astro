@@ -1,0 +1,17 @@
+---
+/**
+ * Home (DIREZIONE §6 P1): apertura + mappa e basta. Niente footer (Base `home`), niente frasi (§12 D3).
+ * La nota «Sito dimostrativo» sta nella riga bianca sotto la mappa (components/home/Mappa.astro).
+ * Configurazione (opere della sequenza, taglio/dissolvenza, foto dietro la mappa): src/data/home.json.
+ */
+import Base from '../../layouts/Base.astro';
+import Apertura from '../../components/home/Apertura.astro';
+import Mappa from '../../components/home/Mappa.astro';
+import { localeStaticPaths, type Locale } from '@ne/core/i18n';
+export const getStaticPaths = () => localeStaticPaths();
+const lang = Astro.params.lang as Locale;
+---
+<Base lang={lang} home>
+  <Apertura lang={lang} />
+  <Mappa lang={lang} />
+</Base>

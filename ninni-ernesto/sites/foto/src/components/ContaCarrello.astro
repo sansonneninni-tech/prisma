@@ -1,0 +1,15 @@
+---
+/**
+ * «Carrello (n)» (C1). Il numero lo scrive lib/struttura-client.ts da $cartCount del core (A10: la cifra vecchia esce
+ * in alto, la nuova entra dal basso). Markup proprio al posto di CartCount del core: il suo script si aggancia una
+ * volta sola e con il ClientRouter le pagine successive restavano a 0.
+ * Porta alla pagina carrello; il cassetto (C11, pezzo 5) intercetterà il clic con `data-carrello`.
+ */
+import { href, useT, type Locale } from '../lib/i18n';
+interface Props { lang: Locale; class?: string }
+const { lang, class: cls } = Astro.props;
+const t = useT(lang);
+---
+<a class:list={['hd__btn', 'conta', cls]} href={href(lang, '/carrello/')} data-carrello
+  >{t('galleria.nav.carrello')}<span class="conta__n">{lang === 'zh' ? '（' : '('}<span class="conta__c" data-conta><span>0</span></span>{lang === 'zh' ? '）' : ')'}</span></a
+>

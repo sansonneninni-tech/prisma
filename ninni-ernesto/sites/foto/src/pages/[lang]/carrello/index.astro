@@ -1,0 +1,85 @@
+---
+/**
+ * P9 Carrello (DIREZIONE §6, pezzo 5): «← Opere», titolo gigante, righe C12 a sinistra (8 colonne), riepilogo a destra
+ * (4 colonne, sticky) con paese, spedizione, IVA, totale, consegna stimata, rate, «Procedi». Vuoto: una riga e due porte.
+ * Stato e conti: store del core; markup proprio (CartView del core si aggancia una volta sola e con il ClientRouter
+ * le pagine dopo restavano senza ascoltatori). Comportamento in lib/carrello-pagina.ts.
+ */
+import Base from '../../../layouts/Base.astro';
+import Torna from '../../../components/Torna.astro';
+import Freccia from '../../../components/Freccia.astro';
+import { localeStaticPaths } from '@ne/core/i18n';
+import { fit } from '../../../lib/fit';
+import { href, type Locale } from '../../../lib/i18n';
+import { testiBrowser, catalogoCarrello, paesi, CHIAVI_RIGHE, useTAcquisto } from '../../../lib/acquisto';
+
+export const getStaticPaths = () => localeStaticPaths();
+const lang = Astro.params.lang as Locale;
+const t = useTAcquisto(lang);
+const titolo = t('galleria.nav.carrello_pagina');
+const f = fit(titolo);
+const testi = testiBrowser(t, [
+  ...CHIAVI_RIGHE, 'galleria.acquisto.consegna', 'etichette.rate', 'core.cart.totale_aggiornato',
+]);
+---
+<Base lang={lang} title={titolo} noindex acquisto="carrello">
+  <section
+    class="car wrap"
+    data-carrello-pagina
+    data-carrello-zona
+    data-lang={lang}
+    data-i18n={JSON.stringify(testi)}
+    data-catalogo={JSON.stringify(catalogoCarrello())}
+    data-simile={href(lang, '/su-commissione/')}
+  >
+    <Torna href={href(lang, '/opere/')}>{t('galleria.nav.opere')}</Torna>
+    <div class="titolo" style={f ? `--fit:${f}` : undefined}><h1 id="car-titolo" tabindex="-1">{titolo}</h1></div>
+
+    <div class="avvisi" data-car-avvisi hidden></div>
+
+    <div class="car__corpo" data-car-corpo hidden>
+      <ul class="righe" role="list" aria-labelledby="car-titolo" data-car-righe></ul>
+      <aside class="car__riep" aria-labelledby="car-riep">
+        <h2 class="car__h" id="car-riep">{t('galleria.acquisto.riepilogo')}</h2>
+        <div class="sel">
+          <label class="sel__l" for="car-paese">{t('galleria.acquisto.paese')}</label>
+          <select id="car-paese" name="country" autocomplete="country" data-car-paese>
+            <option value="">{t('galleria.acquisto.paese_scegli')}</option>
+            {paesi(lang).map((p) => <option value={p.value}>{p.label}</option>)}
+          </select>
+        </div>
+        <dl class="conto" data-car-conto></dl>
+        <p class="car__nota" data-car-consegna hidden></p>
+        <p class="car__nota" data-car-dazi hidden>{t('galleria.acquisto.dazi')}</p>
+        <p class="car__nota" data-car-rate hidden></p>
+        <a class="btn btn--largo" href={href(lang, '/checkout/')} data-car-procedi>{t('galleria.acquisto.procedi')}</a>
+        <p class="vh" role="status" aria-live="polite" data-car-live></p>
+      </aside>
+    </div>
+
+    <div class="car__vuoto vuoto" data-car-vuoto hidden>
+      <p class="vuoto__t">{t('galleria.acquisto.vuoto')}</p>
+      <ul class="porte" role="list">
+        <li><a class="porta" href={href(lang, '/opere/')}><span>{t('galleria.opere.originali')}</span><Freccia sottile /></a></li>
+        <li><a class="porta" href={href(lang, '/opere/?vista=stampe')}><span>{t('galleria.opere.stampe')}</span><Freccia sottile /></a></li>
+      </ul>
+    </div>
+  </section>
+  <!-- prima del primo disegno: righe o carrello vuoto, mai un lampo dell'altro stato -->
+  <script is:inline data-astro-rerun>
+    (function () {
+      var n = 0;
+      try { var c = JSON.parse(localStorage.getItem('isa:cart:v1') || '[]'); n = Array.isArray(c) ? c.length : 0; } catch (e) {}
+      var r = document.querySelector('[data-carrello-pagina]');
+      if (!r) return;
+      r.querySelector(n ? '[data-car-corpo]' : '[data-car-vuoto]').hidden = false;
+    })();
+  </script>
+</Base>
+
+<script>
+  import { initCarrello } from '../../../lib/carrello-pagina';
+  let spegni: (() => void) | null = null;
+  document.addEventListener('astro:page-load', () => { spegni?.(); spegni = initCarrello(); });
+  document.addEventListener('astro:before-swap', () => { spegni?.(); spegni = null; });
+</script>

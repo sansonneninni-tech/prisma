@@ -1,0 +1,47 @@
+---
+/**
+ * Link to the cart with a live item count. Put your icon/text in the default slot.
+ * Markup: <a class="isa-cart-count" data-count="2"><slot/><span class="isa-cart-count__n">2</span></a>
+ * Style the empty state with `.isa-cart-count[data-count="0"]`.
+ */
+import { localizePath, pickStrings, useTranslations } from '../src/i18n/index.ts';
+import type { Locale } from '../src/types.ts';
+
+interface Props {
+  lang: Locale;
+  /** Cart path without language. */
+  href?: string;
+  class?: string;
+}
+const { lang, href = '/carrello', class: className } = Astro.props;
+const t = useTranslations(lang);
+const strings = pickStrings(t, ['core.cart.conteggio_aria']);
+---
+
+<a
+  class:list={['isa-cart-count', className]}
+  href={localizePath(href, lang)}
+  data-isa-cart-count
+  data-count="0"
+  data-lang={lang}
+  data-i18n={JSON.stringify(strings)}
+  aria-label={t('core.cart.conteggio_aria', { n: 0 })}
+>
+  <slot>{t('nav.carrello')}</slot>
+  <span class="isa-cart-count__n" aria-hidden="true">0</span>
+</a>
+
+<script>
+  import { $cartCount } from '../src/cart/store.ts';
+  import { readTranslator } from '../src/ui/dom.ts';
+
+  document.querySelectorAll<HTMLElement>('[data-isa-cart-count]').forEach((link) => {
+    const t = readTranslator(link);
+    const n = link.querySelector<HTMLElement>('.isa-cart-count__n');
+    $cartCount.subscribe((count) => {
+      link.dataset.count = String(count);
+      link.setAttribute('aria-label', t('core.cart.conteggio_aria', { n: count }));
+      if (n) n.textContent = String(count);
+    });
+  });
+</script>

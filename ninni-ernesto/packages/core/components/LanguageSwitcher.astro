@@ -1,0 +1,56 @@
+---
+/**
+ * Language switcher: links to the same page in it / en / zh.
+ * Markup: <nav class="isa-lang"><ul><li><a class="isa-lang__link" aria-current="true">…
+ */
+import { LOCALES, LOCALE_NAMES, switchLocalePath, useTranslations } from '../src/i18n/index.ts';
+import type { Locale } from '../src/types.ts';
+
+interface Props {
+  lang: Locale;
+  /** Current pathname (`Astro.url.pathname`). */
+  currentPath?: string;
+  /** Show short codes (IT · EN · 中文) instead of full names. */
+  short?: boolean;
+  class?: string;
+}
+
+const { lang, currentPath = Astro.url.pathname, short = false, class: className } = Astro.props;
+const t = useTranslations(lang);
+const base = import.meta.env.BASE_URL ?? '/';
+const shortNames: Record<Locale, string> = { it: 'IT', en: 'EN', zh: '中文' };
+---
+
+<nav class:list={['isa-lang', className]} aria-label={t('nav.lingua')}>
+  <ul class="isa-lang__list">
+    {
+      LOCALES.map((l) => (
+        <li class="isa-lang__item">
+          <a
+            class="isa-lang__link"
+            href={switchLocalePath(currentPath, l, base === '/' ? '' : base)}
+            hreflang={l === 'zh' ? 'zh-Hans' : l}
+            lang={l === 'zh' ? 'zh-Hans' : l}
+            aria-current={l === lang ? 'true' : undefined}
+            data-locale={l}
+          >
+            {short ? <abbr title={LOCALE_NAMES[l]}>{shortNames[l]}</abbr> : LOCALE_NAMES[l]}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<script>
+  // Remember an explicit choice (used by LocaleRedirect on the root page).
+  document.querySelectorAll<HTMLAnchorElement>('.isa-lang__link').forEach((a) => {
+    a.addEventListener('click', () => {
+      try {
+        localStorage.setItem('isa:lang', a.dataset.locale ?? '');
+      } catch {
+        /* storage unavailable */
+      }
+    });
+  });
+</script>

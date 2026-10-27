@@ -1,0 +1,423 @@
+---
+/**
+ * Demo checkout in 4 steps: details → shipping → payment (DEMO) → confirmation.
+ * Nothing leaves the browser. Logic: `createCheckout` from `@ne/core/checkout`.
+ *
+ * Slots: `confirmation` (e.g. <OrderEmailPreview/>), `payment-note` (extra text above the payment form).
+ * Root state: `data-step="details|shipping|payment|confirmation"`, `data-processing`, `data-empty`.
+ * Classes: isa-checkout, __steps, __step (aria-current="step"), __panel, __heading, __progress, __form,
+ * __actions, __next, __back, __summary, isa-error-summary, isa-checkout__demo.
+ * After a successful order the root dispatches `isa:order-confirmed` (detail: Order) on `document`.
+ */
+import { SHIPPABLE_COUNTRIES } from '../src/config/shipping.ts';
+import { EMAIL_TEXT_KEYS } from '../src/email/order-email.ts';
+import { countryName, localizePath, pickStrings, useTranslations } from '../src/i18n/index.ts';
+import type { Locale } from '../src/types.ts';
+import Field from './Field.astro';
+
+interface Props {
+  lang: Locale;
+  continueHref?: string;
+  /** Terms/privacy page paths (without language) linked in the payment step. */
+  termsHref?: string;
+  privacyHref?: string;
+  class?: string;
+}
+
+const { lang, continueHref = '/opere', termsHref = '/termini', privacyHref = '/privacy', class: className } = Astro.props;
+const t = useTranslations(lang);
+const id = 'isa-checkout';
+const collator = new Intl.Collator(lang);
+const countries = [...SHIPPABLE_COUNTRIES]
+  .map((code) => ({ value: code, label: countryName(code, lang) }))
+  .sort((a, b) => (a.value === 'IT' ? -1 : b.value === 'IT' ? 1 : collator.compare(a.label, b.label)));
+
+const steps = [
+  { id: 'details', label: t('checkout.passo_dati') },
+  { id: 'shipping', label: t('checkout.passo_spedizione') },
+  { id: 'payment', label: t('checkout.passo_pagamento') },
+  { id: 'confirmation', label: t('checkout.passo_conferma') },
+] as const;
+
+const strings = pickStrings(t, [
+  ...EMAIL_TEXT_KEYS,
+  'errori.obbligatorio', 'errori.email', 'errori.telefono', 'errori.cap', 'errori.paese_non_servito', 'errori.carta_numero',
+  'errori.carta_scadenza', 'errori.carta_cvc', 'errori.carta_rifiutata', 'errori.carta_demo', 'errori.termini', 'errori.generico',
+  'core.checkout.errori_riepilogo', 'core.checkout.carrello_vuoto', 'core.checkout.rate_non_disponibili', 'core.checkout.carta_rifiutata_senza_rate', 'core.checkout.passo_n',
+  'core.cart.consegna_giorni', 'core.cart.assicurazione', 'carrello.subtotale', 'carrello.spedizione', 'carrello.totale', 'carrello.iva_inclusa',
+  'carrello.nota_extra_ue', 'checkout.paga', 'checkout.paga_demo', 'checkout.successo_titolo', 'checkout.successo_testo', 'checkout.elaborazione',
+  'etichette.consegna_stimata',
+]);
+---
+
+<div
+  class:list={['isa-checkout', className]}
+  data-isa-checkout
+  data-step="details"
+  data-lang={lang}
+  data-i18n={JSON.stringify(strings)}
+  data-countries={JSON.stringify(Object.fromEntries(countries.map((c) => [c.value, c.label])))}
+>
+  <nav class="isa-checkout__nav" aria-label={t('checkout.titolo')}>
+    <ol class="isa-checkout__steps">
+      {steps.map((s, i) => (
+        <li class="isa-checkout__step" data-step-item={s.id}>
+          <span class="isa-checkout__step-n">{i + 1}</span> <span class="isa-checkout__step-label">{s.label}</span>
+        </li>
+      ))}
+    </ol>
+  </nav>
+
+  <div class="isa-checkout__empty" data-checkout-empty hidden>
+    <p>{t('core.checkout.carrello_vuoto')}</p>
+    <a href={localizePath(continueHref, lang)}>{t('bottoni.continua')}</a>
+  </div>
+
+  <div class="isa-checkout__main" data-checkout-main>
+    <!-- 1. Details -->
+    <section class="isa-checkout__panel" data-step-panel="details" aria-labelledby={`${id}-h-details`}>
+      <h2 class="isa-checkout__heading" id={`${id}-h-details`} tabindex="-1">{t('checkout.passo_dati')}</h2>
+      <p class="isa-checkout__progress">{t('core.checkout.passo_n', { n: 1, totale: 4 })}</p>
+      <form class="isa-checkout__form" data-form="details" novalidate>
+        <div class="isa-error-summary" role="alert" data-error-summary hidden></div>
+        <div class="isa-checkout__group isa-checkout__group--name">
+          <Field idPrefix={id} name="firstName" label={t('checkout.campo_nome')} required autocomplete="given-name" />
+          <Field idPrefix={id} name="lastName" label={t('checkout.campo_cognome')} required autocomplete="family-name" />
+        </div>
+        <Field idPrefix={id} name="email" type="email" label={t('checkout.campo_email')} hint={t('checkout.campo_email_aiuto')} required autocomplete="email" inputmode="email" />
+        <Field idPrefix={id} name="phone" type="tel" label={t('checkout.campo_telefono')} hint={t('checkout.campo_telefono_aiuto')} required autocomplete="tel" inputmode="tel" />
+        <Field idPrefix={id} name="country" as="select" label={t('checkout.campo_paese')} required autocomplete="country" options={[{ value: '', label: '—' }, ...countries]} />
+        <Field idPrefix={id} name="address1" label={t('checkout.campo_indirizzo')} required autocomplete="address-line1" />
+        <Field idPrefix={id} name="address2" label={t('checkout.campo_indirizzo2')} autocomplete="address-line2" />
+        <div class="isa-checkout__group isa-checkout__group--city">
+          <Field idPrefix={id} name="postalCode" label={t('checkout.campo_cap')} required autocomplete="postal-code" />
+          <Field idPrefix={id} name="city" label={t('checkout.campo_citta')} required autocomplete="address-level2" />
+          <Field idPrefix={id} name="province" label={t('checkout.campo_provincia')} autocomplete="address-level1" />
+        </div>
+        <Field idPrefix={id} name="notes" as="textarea" rows={3} label={t('checkout.campo_note')} maxlength={500} />
+        <Field idPrefix={id} name="wantsInvoice" type="checkbox" label={t('checkout.fattura_check')} />
+        <div class="isa-checkout__invoice" data-invoice-fields hidden>
+          <Field idPrefix={id} name="taxCode" label={t('checkout.campo_cf_piva')} />
+          <Field idPrefix={id} name="sdiOrPec" label={t('checkout.campo_sdi')} />
+        </div>
+        <div class="isa-checkout__actions">
+          <button type="submit" class="isa-checkout__next">{t('bottoni.avanti')}</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 2. Shipping -->
+    <section class="isa-checkout__panel" data-step-panel="shipping" aria-labelledby={`${id}-h-shipping`} hidden>
+      <h2 class="isa-checkout__heading" id={`${id}-h-shipping`} tabindex="-1">{t('checkout.passo_spedizione')}</h2>
+      <p class="isa-checkout__progress">{t('core.checkout.passo_n', { n: 2, totale: 4 })}</p>
+      <div class="isa-checkout__address">
+        <h3 class="isa-checkout__subheading">{t('core.checkout.riepilogo_dati')}</h3>
+        <p class="isa-checkout__address-text" data-address></p>
+        <button type="button" class="isa-checkout__edit" data-go="details">{t('checkout.modifica')}</button>
+      </div>
+      <dl class="isa-checkout__shipping" data-shipping-info></dl>
+      <p class="isa-checkout__duties" data-duties hidden>{t('carrello.nota_extra_ue')}</p>
+      <form class="isa-checkout__form" data-form="shipping" novalidate>
+        <Field idPrefix={id} name="isGift" type="checkbox" label={t('checkout.regalo_check')} />
+        <div class="isa-checkout__gift" data-gift-fields hidden>
+          <Field idPrefix={id} name="giftMessage" as="textarea" rows={3} maxlength={500} label={t('checkout.regalo_biglietto')} hint={t('checkout.regalo_aiuto')} />
+        </div>
+        <div class="isa-checkout__actions">
+          <button type="button" class="isa-checkout__back" data-go="details">{t('bottoni.indietro')}</button>
+          <button type="submit" class="isa-checkout__next">{t('bottoni.avanti')}</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 3. Payment (DEMO) -->
+    <section class="isa-checkout__panel" data-step-panel="payment" aria-labelledby={`${id}-h-payment`} hidden>
+      <h2 class="isa-checkout__heading" id={`${id}-h-payment`} tabindex="-1">{t('checkout.passo_pagamento')}</h2>
+      <p class="isa-checkout__progress">{t('core.checkout.passo_n', { n: 3, totale: 4 })}</p>
+      <div class="isa-checkout__demo" data-demo-note>
+        <p><strong class="isa-checkout__demo-badge">{t('demo.etichetta')}</strong> {t('demo.banner')}</p>
+        <p>{t('core.checkout.carta_prova_suggerimento')}</p>
+      </div>
+      <slot name="payment-note" />
+      <form class="isa-checkout__form" data-form="payment" novalidate>
+        <div class="isa-error-summary" role="alert" data-error-summary hidden></div>
+        <fieldset class="isa-checkout__methods">
+          <legend class="isa-checkout__legend">{t('checkout.metodo_titolo')}</legend>
+          <label class="isa-checkout__method">
+            <input type="radio" name="method" value="card" checked />
+            <span>{t('checkout.metodo_carta')}</span>
+          </label>
+          <label class="isa-checkout__method">
+            <input type="radio" name="method" value="installments" />
+            <span>{t('checkout.metodo_rate')}</span>
+            <span class="isa-checkout__method-detail" data-installments-detail></span>
+          </label>
+        </fieldset>
+        <div class="isa-checkout__card" data-card-fields>
+          <!-- autocomplete off on purpose: this is a demo, browsers must not save or offer real cards -->
+          <Field idPrefix={id} name="number" label={t('checkout.campo_carta_numero')} inputmode="numeric" autocomplete="off" maxlength={23} />
+          <div class="isa-checkout__group isa-checkout__group--card">
+            <Field idPrefix={id} name="expiry" label={t('checkout.campo_carta_scadenza')} inputmode="numeric" autocomplete="off" maxlength={7} placeholder="MM/AA" />
+            <Field idPrefix={id} name="cvc" label={t('checkout.campo_carta_cvc')} inputmode="numeric" autocomplete="off" maxlength={4} />
+          </div>
+          <Field idPrefix={id} name="holder" label={t('checkout.campo_carta_titolare')} autocomplete="off" />
+          <p class="isa-checkout__security">{t('checkout.sicurezza')}</p>
+        </div>
+        <p class="isa-checkout__installments-note" data-installments-note hidden>{t('demo.rate_finte')}</p>
+        <Field idPrefix={id} name="acceptTerms" type="checkbox" label={t('checkout.termini_check')} required />
+        <p class="isa-checkout__privacy">
+          {t('checkout.privacy_nota')} <a href={localizePath(termsHref, lang)}>{t('legale.termini.titolo')}</a> · <a href={localizePath(privacyHref, lang)}>{t('legale.privacy.titolo')}</a>
+        </p>
+        <p class="isa-checkout__form-error" role="alert" data-form-error hidden></p>
+        <div class="isa-checkout__actions">
+          <button type="button" class="isa-checkout__back" data-go="shipping">{t('bottoni.indietro')}</button>
+          <button type="submit" class="isa-checkout__next isa-checkout__pay" data-pay>{t('checkout.paga_demo')}</button>
+        </div>
+        <p class="isa-checkout__processing" role="status" aria-live="polite" data-processing></p>
+      </form>
+    </section>
+
+    <!-- 4. Confirmation -->
+    <section class="isa-checkout__panel" data-step-panel="confirmation" aria-labelledby={`${id}-h-confirmation`} hidden>
+      <h2 class="isa-checkout__heading" id={`${id}-h-confirmation`} tabindex="-1" data-confirmation-title>{t('checkout.passo_conferma')}</h2>
+      <p class="isa-checkout__order-number" data-order-number></p>
+      <p class="isa-checkout__confirmation-text" data-confirmation-text></p>
+      <p class="isa-checkout__confirmation-demo"><strong>{t('demo.etichetta')}</strong> {t('checkout.successo_demo')}</p>
+      <h3 class="isa-checkout__subheading">{t('checkout.prossimi_passi_titolo')}</h3>
+      <ol class="isa-checkout__next-steps">
+        {(t.raw<string[]>('checkout.prossimi_passi') ?? []).map((s) => <li>{s}</li>)}
+      </ol>
+      <slot name="confirmation" />
+    </section>
+  </div>
+
+  <aside class="isa-checkout__summary" aria-labelledby={`${id}-summary-title`}>
+    <h2 class="isa-checkout__summary-title" id={`${id}-summary-title`}>{t('checkout.riepilogo_titolo')}</h2>
+    <ul class="isa-checkout__summary-lines" data-summary-lines></ul>
+    <dl class="isa-checkout__summary-totals" data-summary-totals></dl>
+  </aside>
+</div>
+
+<script>
+  import { $cart, $cartTotals } from '../src/cart/store.ts';
+  import { checkoutErrorKey, createCheckout } from '../src/checkout/store.ts';
+  import type { CheckoutStep, Order } from '../src/checkout/types.ts';
+  import { describeLine } from '../src/email/order-email.ts';
+  import { addBusinessDays, formatDate, formatPrice } from '../src/i18n/format.ts';
+  import { INSTALLMENTS } from '../src/config/installments.ts';
+  import { calculateInstallments } from '../src/pricing/installments.ts';
+  import type { CartLine, CartTotals, Locale } from '../src/types.ts';
+  import { formToObject, readJsonData, readTranslator, showFieldErrors } from '../src/ui/dom.ts';
+
+  const STEPS: CheckoutStep[] = ['details', 'shipping', 'payment', 'confirmation'];
+
+  document.querySelectorAll<HTMLElement>('[data-isa-checkout]').forEach((root) => {
+    const t = readTranslator(root);
+    const lang = (root.dataset.lang ?? 'it') as Locale;
+    const countries = readJsonData<Record<string, string>>(root, 'countries') ?? {};
+    const price = (c: number) => formatPrice(c, lang);
+    const checkout = createCheckout({ lang });
+    const q = <T extends Element = HTMLElement>(sel: string) => root.querySelector<T>(sel)!;
+
+    const forms = {
+      details: q<HTMLFormElement>('form[data-form="details"]'),
+      shipping: q<HTMLFormElement>('form[data-form="shipping"]'),
+      payment: q<HTMLFormElement>('form[data-form="payment"]'),
+    };
+
+    // ── prefill from the draft ──
+    const draft = checkout.$state.get();
+    for (const [name, value] of Object.entries(draft.customer)) {
+      const field = forms.details.elements.namedItem(name);
+      if (field instanceof HTMLInputElement && field.type === 'checkbox') field.checked = Boolean(value);
+      else if (field instanceof HTMLInputElement || field instanceof HTMLSelectElement || field instanceof HTMLTextAreaElement) field.value = String(value ?? '');
+    }
+    (forms.shipping.elements.namedItem('isGift') as HTMLInputElement).checked = draft.shipping.isGift;
+    (forms.shipping.elements.namedItem('giftMessage') as HTMLTextAreaElement).value = draft.shipping.giftMessage;
+
+    // ── conditional fields ──
+    const toggle = (form: HTMLFormElement, checkbox: string, target: string) => {
+      const box = form.elements.namedItem(checkbox) as HTMLInputElement;
+      const area = q(target);
+      const sync = () => (area.hidden = !box.checked);
+      box.addEventListener('change', sync);
+      sync();
+    };
+    toggle(forms.details, 'wantsInvoice', '[data-invoice-fields]');
+    toggle(forms.shipping, 'isGift', '[data-gift-fields]');
+
+    const syncMethod = () => {
+      const method = (forms.payment.querySelector<HTMLInputElement>('input[name="method"]:checked')?.value ?? 'card') as 'card' | 'installments';
+      checkout.setMethod(method);
+      q('[data-card-fields]').hidden = method !== 'card';
+      q('[data-installments-note]').hidden = method !== 'installments';
+    };
+    forms.payment.addEventListener('change', (e) => {
+      if ((e.target as HTMLInputElement).name === 'method') syncMethod();
+    });
+
+    // ── navigation ──
+    root.querySelectorAll<HTMLButtonElement>('[data-go]').forEach((b) => b.addEventListener('click', () => checkout.goTo(b.dataset.go as CheckoutStep)));
+
+    forms.details.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!checkout.submitDetails(new FormData(forms.details))) showFieldErrors(forms.details, checkout.$state.get().errors, t);
+      else showFieldErrors(forms.details, {}, t, { focus: false });
+    });
+    forms.shipping.addEventListener('submit', (e) => {
+      e.preventDefault();
+      checkout.submitShipping(new FormData(forms.shipping));
+    });
+    forms.payment.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = formToObject(forms.payment);
+      const ok = await checkout.pay({
+        acceptTerms: data.acceptTerms === 'on',
+        card: { number: String(data.number ?? ''), expiry: String(data.expiry ?? ''), cvc: String(data.cvc ?? ''), holder: String(data.holder ?? '') },
+      });
+      const state = checkout.$state.get();
+      if (!ok && state.step === 'payment') showFieldErrors(forms.payment, state.errors, t, { focus: !state.formError });
+      if (!ok && state.step === 'details') showFieldErrors(forms.details, state.errors, t);
+      if (ok) forms.payment.reset();
+    });
+
+    // ── rendering ──
+    let lastStep: CheckoutStep | null = null;
+
+    const renderSummary = (lines: readonly CartLine[], totals: CartTotals) => {
+      const list = q<HTMLUListElement>('[data-summary-lines]');
+      list.replaceChildren(
+        ...lines.map((l) => {
+          const li = document.createElement('li');
+          li.className = 'isa-checkout__summary-line';
+          const title = document.createElement('span');
+          title.className = 'isa-checkout__summary-line-title';
+          title.textContent = `${l.title}${l.quantity > 1 ? ` × ${l.quantity}` : ''}`;
+          const detail = document.createElement('span');
+          detail.className = 'isa-checkout__summary-line-detail';
+          detail.textContent = describeLine(l, t);
+          const amount = document.createElement('span');
+          amount.className = 'isa-checkout__summary-line-price';
+          amount.textContent = price(l.unitPriceCents * l.quantity);
+          li.append(title, detail, amount);
+          return li;
+        }),
+      );
+      const rows: [string, string, string][] = [['subtotal', t('carrello.subtotale'), price(totals.subtotalCents)]];
+      if (totals.shipping) {
+        rows.push(['shipping', `${t('carrello.spedizione')} · ${t(`core.zone.${totals.shipping.zone}`)}`, totals.shipping.totalCents === 0 ? t('carrello.spedizione_gratis') : price(totals.shipping.totalCents)]);
+      }
+      rows.push(['total', t('carrello.totale'), price(totals.totalCents)]);
+      if (totals.vatExempt) rows.push(['vat', t('core.cart.iva_esente'), '']);
+      else if (totals.vat.length) rows.push(['vat', t('carrello.iva_inclusa'), price(totals.vatTotalCents)]);
+      for (const v of totals.vat) rows.push(['vat-detail', v.kind === 'original' ? t('carrello.iva_dettaglio_originali') : t('carrello.iva_dettaglio_stampe'), price(v.vatCents)]);
+      q('[data-summary-totals]').replaceChildren(
+        ...rows.map(([kind, label, value]) => {
+          const div = document.createElement('div');
+          div.className = `isa-checkout__summary-row isa-checkout__summary-row--${kind}`;
+          const dt = document.createElement('dt');
+          dt.textContent = label;
+          const dd = document.createElement('dd');
+          dd.textContent = value;
+          div.append(dt, dd);
+          return div;
+        }),
+      );
+    };
+
+    const renderShippingStep = (totals: CartTotals) => {
+      const c = checkout.$state.get().customer;
+      const address = q('[data-address]');
+      address.replaceChildren();
+      [`${c.firstName ?? ''} ${c.lastName ?? ''}`, c.address1, c.address2, `${c.postalCode ?? ''} ${c.city ?? ''}${c.province ? ` (${c.province})` : ''}`, countries[c.country ?? ''] ?? c.country, c.email, c.phone]
+        .filter((x) => x && String(x).trim())
+        .forEach((line, i) => {
+          if (i > 0) address.append(document.createElement('br'));
+          address.append(String(line));
+        });
+      const info = q('[data-shipping-info]');
+      info.replaceChildren();
+      const s = totals.shipping;
+      if (s) {
+        const add = (label: string, value: string) => {
+          const dt = document.createElement('dt');
+          dt.textContent = label;
+          const dd = document.createElement('dd');
+          dd.textContent = value;
+          info.append(dt, dd);
+        };
+        add(`${t('carrello.spedizione')} · ${t(`core.zone.${s.zone}`)}`, s.totalCents === 0 ? t('carrello.spedizione_gratis') : price(s.totalCents));
+        if (s.insuranceCents) add(t('core.cart.assicurazione'), price(s.insuranceCents));
+        const now = new Date();
+        add(
+          t('etichette.consegna_stimata', {
+            data_da: formatDate(addBusinessDays(now, s.deliveryDays.min), lang, { day: 'numeric', month: 'short' }),
+            data_a: formatDate(addBusinessDays(now, s.deliveryDays.max), lang, { day: 'numeric', month: 'short' }),
+          }),
+          t('core.cart.consegna_giorni', { min: s.deliveryDays.min, max: s.deliveryDays.max }),
+        );
+      }
+      q('[data-duties]').hidden = !s?.dutiesMayApply;
+    };
+
+    const renderPaymentStep = (totals: CartTotals) => {
+      const plan = calculateInstallments(totals.totalCents);
+      const instRadio = forms.payment.querySelector<HTMLInputElement>('input[value="installments"]')!;
+      instRadio.disabled = !plan.eligible;
+      q('[data-installments-detail]').textContent = plan.eligible
+        ? t('checkout.metodo_rate_dettaglio', { importo: price(plan.amounts[0] ?? 0) })
+        : t('core.checkout.rate_non_disponibili', { min: price(INSTALLMENTS.minCents), max: price(INSTALLMENTS.maxCents) });
+      const payButton = q<HTMLButtonElement>('[data-pay]');
+      payButton.textContent = checkout.provider.isDemo ? t('checkout.paga_demo') : t('checkout.paga', { totale: price(totals.totalCents) });
+      q('[data-demo-note]').hidden = !checkout.provider.isDemo;
+    };
+
+    const renderConfirmation = (order: Order) => {
+      q('[data-confirmation-title]').textContent = t('checkout.successo_titolo', { nome: order.customer.firstName });
+      q('[data-order-number]').textContent = t('checkout.numero_ordine', { numero: order.number });
+      q('[data-confirmation-text]').textContent = t('checkout.successo_testo', { email: order.customer.email });
+      renderSummary(order.lines, order.totals);
+    };
+
+    checkout.$state.subscribe((state) => {
+      root.dataset.step = state.step;
+      root.dataset.processing = String(state.processing);
+      const empty = $cart.get().length === 0 && state.step !== 'confirmation';
+      root.dataset.empty = String(empty);
+      q('[data-checkout-empty]').hidden = !empty;
+      q('[data-checkout-main]').hidden = empty;
+
+      root.querySelectorAll<HTMLElement>('[data-step-panel]').forEach((panel) => (panel.hidden = panel.dataset.stepPanel !== state.step));
+      const current = STEPS.indexOf(state.step);
+      root.querySelectorAll<HTMLElement>('[data-step-item]').forEach((li) => {
+        const i = STEPS.indexOf(li.dataset.stepItem as CheckoutStep);
+        li.dataset.status = i < current ? 'done' : i === current ? 'current' : 'todo';
+        if (i === current) li.setAttribute('aria-current', 'step');
+        else li.removeAttribute('aria-current');
+      });
+
+      const totals = $cartTotals.get();
+      if (state.step === 'shipping') renderShippingStep(totals);
+      if (state.step === 'payment') renderPaymentStep(totals);
+      if (state.step === 'confirmation' && state.order) renderConfirmation(state.order);
+
+      const payButton = q<HTMLButtonElement>('[data-pay]');
+      payButton.disabled = state.processing;
+      payButton.setAttribute('aria-busy', String(state.processing));
+      q('[data-processing]').textContent = state.processing ? t('checkout.elaborazione') : '';
+      const formError = q('[data-form-error]');
+      formError.textContent = state.formError ? t(checkoutErrorKey(state, t) ?? state.formError, { min: price(INSTALLMENTS.minCents), max: price(INSTALLMENTS.maxCents) }) : '';
+      formError.hidden = !state.formError;
+
+      if (lastStep !== null && lastStep !== state.step) {
+        q(`#isa-checkout-h-${state.step}`).focus();
+        if (state.step === 'confirmation' && state.order) document.dispatchEvent(new CustomEvent('isa:order-confirmed', { detail: state.order }));
+      }
+      lastStep = state.step;
+    });
+
+    $cartTotals.subscribe((totals) => {
+      if (checkout.$state.get().step !== 'confirmation') renderSummary($cart.get(), totals);
+    });
+    syncMethod();
+  });
+</script>
