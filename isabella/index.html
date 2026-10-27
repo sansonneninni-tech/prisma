@@ -5,85 +5,85 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Isabella Pistillo — Caso studio PRISMA</title>
   <meta name="description" content="Una giornata di riprese, 14 contenuti pronti, 24 in riserva, 12 settimane di pubblicazione. Il sistema contenuti PRISMA per l'artista Isabella Pistillo." />
-  <meta name="theme-color" content="#050203" />
+  <meta name="theme-color" content="#E6DEDE" />
   <link rel="icon" href="/img/brand/logotipo.svg" type="image/svg+xml" />
-  <link rel="preload" href="/fonts/schabo-xcondensed.woff2" as="font" type="font/woff2" crossorigin />
 </head>
-<body class="case">
-  <header class="hdr hdr--case" data-hdr>
-    <a class="hdr__logo" href="/" data-transition aria-label="PRISMA, home">
+<body class="is-case">
+  <header class="top">
+    <a class="top__logo" href="/" data-transition aria-label="PRISMA, home">
       <svg viewBox="315 429.8 450 220.4" aria-hidden="true"><use href="#wordmark" /></svg>
     </a>
-    <div class="hdr__end">
-      <a class="hdr__back" href="/#lavori" data-transition>← <span data-i18n="cs.back">Tutti i lavori</span></a>
+    <nav class="top__nav" aria-label="Sezioni">
+      <a href="/#lavori" data-transition class="is-active"><span class="n">01</span><span data-i18n="nav.lavori">Lavori</span></a>
+      <a href="/#formati" data-transition><span class="n">02</span><span data-i18n="nav.formati">Formati</span></a>
+      <a href="/#studio" data-transition><span class="n">03</span><span data-i18n="nav.studio">Studio</span></a>
+    </nav>
+    <div class="top__end">
       <div class="lang" role="group" aria-label="Lingua / Language">
-        <button type="button" data-lang="it" aria-pressed="true">IT</button>
-        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang="it" aria-pressed="true">IT</button><span>/</span><button type="button" data-lang="en" aria-pressed="false">EN</button>
       </div>
     </div>
   </header>
 
-  <main>
-    <section class="cs-hero">
-      <video class="cs-hero__v" src="/media/isabella-editoriale/web.mp4" poster="/media/isabella-editoriale/poster.jpg" muted playsinline loop autoplay></video>
-      <div class="cs-hero__in">
-        <p class="eyebrow" data-i18n="cs.eyebrow">Caso studio · Artista</p>
-        <h1 class="display cs-hero__t" data-i18n-html="cs.title">Isabella<br />Pistillo</h1>
-      </div>
-    </section>
+  <main class="cs">
+    <figure class="cs__film">
+      <video data-film src="/media/isabella-editoriale/preview.mp4" poster="/media/isabella-editoriale/poster.jpg" muted playsinline loop autoplay></video>
+      <button type="button" class="cs__play mono" data-play-film><span data-i18n="cs.ed">Manifesto · 52″</span> ▶</button>
+    </figure>
 
-    <section class="cs-kpi">
-      <p class="cs-lead" data-i18n="cs.lead">Un’artista pugliese aveva bisogno di una presenza costante, non di un video. Abbiamo girato un giorno.</p>
-      <dl class="cs-kpi__row">
-        <div><dt data-count="1">1</dt><dd data-i18n="cs.k1">giornata di riprese</dd></div>
-        <div><dt data-count="14">14</dt><dd data-i18n="cs.k2">contenuti consegnati</dd></div>
-        <div><dt data-count="24">24</dt><dd data-i18n="cs.k3">in riserva</dd></div>
-        <div><dt data-count="12">12</dt><dd data-i18n="cs.k4">settimane di post</dd></div>
+    <div class="cs__body">
+      <div class="vhead">
+        <h1 class="vhead__t">Isabella Pistillo</h1>
+        <a class="vhead__note mono" href="/#lavori" data-transition>← <span data-i18n="cs.back">Tutti i lavori</span></a>
+      </div>
+      <p class="label" data-i18n="cs.label">Caso studio · Artista</p>
+      <p class="cs__lead" data-i18n="cs.lead">Un’artista aveva bisogno di una presenza costante, non di un video. Abbiamo girato un giorno.</p>
+
+      <dl class="cs__kpi">
+        <div><dt>1</dt><dd data-i18n="cs.k1">giornata di riprese</dd></div>
+        <div><dt>14</dt><dd data-i18n="cs.k2">contenuti consegnati</dd></div>
+        <div><dt class="is-res">24</dt><dd data-i18n="cs.k3">in riserva</dd></div>
+        <div><dt>12</dt><dd data-i18n="cs.k4">settimane di post</dd></div>
       </dl>
-    </section>
 
-    <section class="cs-block cs-block--ed">
-      <div class="cs-ed__media"><video src="/media/isabella-editoriale/web.mp4" poster="/media/isabella-editoriale/poster.jpg" muted playsinline loop preload="none" data-autoplay></video></div>
-      <div class="cs-ed__text">
-        <p class="cs-n">01</p>
-        <h2 class="display display--md" data-i18n="cs.ed.t">Il manifesto</h2>
-        <p data-i18n="cs.ed.d">52 secondi. Il raggio di luce da cui nasce tutto il resto.</p>
-        <a class="btn btn--line btn--sm" href="/originali/isabella-editoriale.mp4" download><span data-i18n="pl.dl">Scarica originale</span></a>
+      <div class="cs__row">
+        <p class="mono"><b>5</b> <span data-i18n="cs.sh">Video brevi</span></p>
+        <div class="cs__thumbs cs__thumbs--5" data-thumbs="short" data-n="5"></div>
       </div>
-    </section>
+      <div class="cs__row">
+        <p class="mono"><b>8</b> <span data-i18n="cs.mi">Micro</span></p>
+        <div class="cs__thumbs cs__thumbs--8" data-thumbs="micro" data-n="8"></div>
+      </div>
 
-    <section class="cs-block">
-      <div class="cs-head"><p class="cs-n">02</p><h2 class="display display--md" data-i18n="cs.sh.t">Cinque video brevi</h2><p class="cs-head__d" data-i18n="cs.sh.d">Satelliti del manifesto: opere, dettagli, processo.</p></div>
-      <div class="cs-row cs-row--5" data-tiles="short" data-n="5"></div>
-    </section>
+      <div class="cs__res">
+        <div class="cs__bar" data-res-bar aria-hidden="true"></div>
+        <p class="mono" data-i18n="cs.res">Riserva: 24 contenuti già girati, si attivano quando servono.</p>
+      </div>
 
-    <section class="cs-block">
-      <div class="cs-head"><p class="cs-n">03</p><h2 class="display display--md" data-i18n="cs.mi.t">Otto micro</h2><p class="cs-head__d" data-i18n="cs.mi.d">Basi in movimento per le sue parole. Lei aggiunge il testo, l’identità resta nostra.</p></div>
-      <div class="cs-row cs-row--4" data-tiles="micro" data-n="8"></div>
-    </section>
-
-    <section class="cs-res">
-      <div class="cs-head"><p class="cs-n">04</p><h2 class="display display--md" data-i18n="cs.res.t">La riserva</h2></div>
-      <div class="cs-res__bar" data-res-bar aria-hidden="true"></div>
-      <p class="cs-res__d" data-i18n="cs.res.d">Il girato vale più di quello che consegniamo subito. Altri 24 contenuti sono già girati e si attivano quando servono, per 12 mesi.</p>
-    </section>
-
-    <section class="cs-cta">
-      <a href="/#formati" data-transition class="cs-cta__a">
-        <span class="display" data-i18n="cs.cta.t">Vuoi lo stesso sistema?</span>
-        <span class="btn btn--grad" data-i18n="cs.cta.b">Vedi formati e prezzi</span>
+      <a class="cs__cta" href="/#formati" data-transition>
+        <span data-i18n="cs.cta">Lo stesso sistema, per te</span>
+        <span class="send"><span data-i18n="cs.cta.b">Formati e prezzi</span> →</span>
       </a>
-    </section>
+    </div>
   </main>
 
-  <footer class="ftr">
-    <svg class="ftr__mark" viewBox="315 429.8 450 220.4" aria-hidden="true"><use href="#wordmark" /></svg>
-    <div class="ftr__row"><p>© <span data-year></span> PRISMA · Puglia</p><p><a href="/" data-transition>prisma</a></p></div>
-  </footer>
+  <div class="shard" aria-hidden="true"><i></i></div>
 
-  <div class="cursor" aria-hidden="true"><span class="cursor__label"></span></div>
-  <div class="wipe" aria-hidden="true"></div>
-  <!-- Wordmark PR/SMA del brand manual -->
+  <!-- Lettore video a schermo intero -->
+  <div class="player" data-player hidden role="dialog" aria-modal="true" aria-label="Video">
+    <video class="player__v" playsinline controls preload="none"></video>
+    <div class="player__bar">
+      <p class="player__t mono" data-pl-title></p>
+      <div class="player__act">
+        <a class="mono" data-pl-dl href="#" download><span data-i18n="pl.dl">Scarica originale</span> ↓</a>
+        <a class="mono" data-pl-case href="#" hidden><span data-i18n="pl.case">Apri il caso</span> →</a>
+        <button type="button" class="mono" data-pl-prev aria-label="Precedente">←</button>
+        <button type="button" class="mono" data-pl-next aria-label="Successivo">→</button>
+        <button type="button" class="mono" data-pl-close><span data-i18n="pl.close">Chiudi</span> ✕</button>
+      </div>
+    </div>
+  </div>
+
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
       <linearGradient id="wmGrad" x1="454.68" y1="539.93" x2="542.21" y2="539.93" gradientUnits="userSpaceOnUse">
