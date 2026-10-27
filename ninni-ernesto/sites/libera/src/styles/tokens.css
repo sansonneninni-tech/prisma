@@ -1,0 +1,170 @@
+/* ==========================================================================
+   Ninni & Ernesto — token (base: Galleria di Isabella Pistillo, con il colore preso dalle foto)
+   Fonte di verità: siti/direzioni/galleria/tokens.css
+   Il sito ne tiene una copia identica in sites/galleria/src/styles/tokens.css
+   (si cambia qui e si ricopia, mai il contrario).
+   Regola: l'interfaccia è solo bianco e nero. Il colore lo mettono i quadri.
+   ========================================================================== */
+
+/* I @font-face stanno in fonts/fonts.css (stessa cartella dei woff2): il sito copia fonts/ in public/fonts/
+   e carica /fonts/fonts.css prima di questo file. */
+
+:root {
+  /* --- Colori ----------------------------------------------------------- */
+  --c-bg: #ffffff;          /* fondo di tutto */
+  --c-ink: #000000;         /* testo, titoli, bottoni, filetti */
+  --c-mute: #6b6b6b;        /* testo secondario piccolo (5,3:1 su bianco) */
+  --c-inactive: #949494;    /* SOLO voci inattive grandi (≥ 24 px): schede. 3,0:1 = minimo WCAG per testo grande (il #B0B0B0 di Atlason è 2,1:1) */
+  --c-placeholder: #e3e3e3; /* segnaposto immagini, campi disattivati */
+  --c-veil: rgb(0 0 0 / 0.32); /* velo sotto cassetto e filtri */
+  --c-sold: #c8102e;        /* unica eccezione: "Venduta" ed errori dei moduli (5,9:1) */
+  --c-focus: #000000;       /* anello focus: 2 px nero + 2 px bianco (vedi --focus-ring) */
+
+  /* --- Tipografia -------------------------------------------------------- */
+  --f-sans: "Inter Tight", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --f-zh: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Source Han Sans SC",
+    "Microsoft YaHei", "Heiti SC", sans-serif;
+
+  /* Scala a due salti: GIGANTE (mega, titolo, lista) e PICCOLO (12–22 px). Niente in mezzo,
+     tranne --t-tab per le schede Originali/Stampe. Tutte le misure fluide stanno in clamp(). */
+  /* Nome in home: riempie ESATTAMENTE la larghezza del contenitore (container-type: inline-size).
+     Larghezze misurate con Inter Tight 560, tracking -0,045em: "Ninni & Ernesto" = 6,08em,
+     "Ernesto" = 3,12em (la riga più lunga delle due). */
+  --mega-1r: 6.1; /* una riga, da 1024 */
+  --mega-2r: 3.15; /* due righe, sotto 1024 */
+  --t-mega: calc(100cqw / var(--mega-2r));
+  /* Titolo di pagina: 16vw, ma mai più largo del contenitore. --fit = larghezza della parola in em
+     (tabella fit-larghezze.json, calcolata sul font): font-size = min(--t-title, 100cqw / --fit). */
+  --t-title: clamp(3.5rem, 16vw, 19rem);     /* "Opere", "Isabella" */
+  --t-title-min: clamp(2rem, 5.6vw, 6rem);   /* titolo ridotto dopo lo scorrimento (A5) */
+  --t-list: clamp(2.5rem, 7.2vw, 8.5rem);    /* elenchi grandi: Altro, Indice telefono, Prossimamente */
+  --t-tab: clamp(1.5rem, 2.5vw, 2.25rem);    /* Originali / Stampe, Originale / Stampa */
+  --t-lead: clamp(1.125rem, 1.45vw, 1.5rem); /* bio di 3 righe, frase d'autore, prezzo in scheda */
+  --t-cap: clamp(0.9375rem, 1.1vw, 1.125rem); /* didascalie, voci del modulo */
+  --t-ui: 0.875rem;   /* 14 px: header, bottoni, filtri, piè di pagina */
+  --t-small: 0.75rem; /* 12 px: note legali, "Sito dimostrativo", etichetta cursore */
+
+  --lh-mega: 0.78;
+  --lh-title: 0.8;
+  --lh-list: 0.9;
+  --lh-tab: 0.95;
+  --lh-tight: 1.15;
+  --lh-text: 1.35;
+
+  --w-display: 560;  /* titoli giganti (variabile: niente "bold" finto) */
+  --w-strong: 560;   /* titolo opera in didascalia, voce attiva */
+  --w-text: 420;     /* testo corrente */
+
+  --ls-mega: -0.045em;
+  --ls-title: -0.04em;
+  --ls-list: -0.03em;
+  --ls-text: 0.005em;  /* Inter Tight è stretta: piccolissima apertura sotto i 16 px */
+
+  /* Cinese: gli ideogrammi a 16vw diventano macchie → scala ridotta */
+  --t-title-zh: clamp(3rem, 12vw, 13rem);
+  --t-list-zh: clamp(2rem, 5.6vw, 6.5rem);
+
+  /* --- Spaziature (base 4) ----------------------------------------------- */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --s-10: 144px;
+
+  /* margine laterale della pagina e gap della griglia */
+  --gutter: 16px;
+  --gap: 8px;            /* fra colonne di opere */
+  --gap-row: 20%;        /* vuoto sotto ogni opera: % della LARGHEZZA della colonna (Atlason) */
+  --cap-gap: 8px;        /* immagine → didascalia */
+
+  /* --- Griglia ----------------------------------------------------------- */
+  --cols: 4;             /* 4 colonne < 768, 8 da 768, 12 da 1024 */
+  --col-gap: 8px;
+  --cols-works: 2;       /* masonry opere: 2, poi 3 da 1280 */
+  --max-text: 34rem;     /* larghezza massima dei paragrafi */
+
+  /* --- Header ------------------------------------------------------------ */
+  --header-h: 48px;
+  --touch: 44px;         /* area di tocco minima */
+
+  /* --- Forme ------------------------------------------------------------- */
+  --radius: 0;
+  --shadow: none;
+  --line: 1px solid var(--c-ink);
+  --line-soft: 1px solid var(--c-placeholder);
+  --focus-ring: 0 0 0 2px var(--c-bg), 0 0 0 4px var(--c-focus);
+
+  /* --- Movimento --------------------------------------------------------- */
+  --ease-zoom-in: cubic-bezier(0.54, 0.15, 0.15, 1);   /* mappa → pagina, pagine sorelle */
+  --ease-zoom-out: cubic-bezier(0.54, 0.15, 0.15, 1); /* ritorno alla mappa: dal 22/10 come A1 (prima .65,0,.35,1, lenta a partire) */
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);       /* tutto il resto */
+  --d-page: 0.65s;     /* A1/A2 (22/10: era 1 s) */
+  --d-slide: 0.8s;
+  --d-reveal: 0.6s;
+  --d-panel: 0.45s;
+  --d-ui: 0.3s;
+  --d-fast: 0.2s;
+  --seq-step: 2.5s;      /* sequenza di opere in home */
+
+  /* --- Livelli ----------------------------------------------------------- */
+  --z-header: 50;
+  --z-veil: 60;
+  --z-drawer: 70;
+  --z-index: 80;         /* Indice a schermo intero */
+  --z-dialog: 90;        /* AR, lente */
+  --z-cursor: 100;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --cols: 8;
+    --gutter: 20px;
+    --header-h: 56px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --cols: 12;
+    --gap: 12px;
+    --col-gap: 12px;
+  }
+}
+@media (min-width: 1280px) {
+  :root {
+    --cols-works: 3;
+  }
+}
+@media (min-width: 1920px) {
+  :root {
+    --gutter: 28px;
+    --gap: 16px;
+  }
+}
+
+/* Lingua cinese: stessa struttura, misure dei titoli ridotte, font di sistema */
+:root:lang(zh),
+:root:lang(zh-CN) {
+  --f-sans: "Inter Tight", var(--f-zh);
+  --t-title: var(--t-title-zh);
+  --t-list: var(--t-list-zh);
+  --ls-title: 0;
+  --ls-list: 0;
+  --lh-title: 1;
+  --lh-list: 1.05;
+}
+
+/* Riduci movimento: le durate lunghe diventano dissolvenze brevi */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --d-page: 0.2s;
+    --d-slide: 0.2s;
+    --d-reveal: 0s;
+    --d-panel: 0.2s;
+    --d-ui: 0s;
+  }
+}

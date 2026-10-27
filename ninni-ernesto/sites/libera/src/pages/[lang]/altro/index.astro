@@ -1,0 +1,56 @@
+---
+/**
+ * /[lang]/altro/ — P4 Altro (DIREZIONE §6 P4, A12). È la pagina del pannello «Altro» della mappa.
+ * Titolo gigante, poi un elenco gigante (--t-list): nome + freccia, filetto sotto. Solo i nomi, nessuna frase.
+ * A12 (solo CSS, styles/altro.css): da 1024, con mouse e senza riduci movimento, al passaggio (o col fuoco da tastiera)
+ * a destra dell'elenco compare la miniatura della voce, con clip-path dal basso a destra.
+ * «Mostre e stampa» non c'è finché mancano i dati (§12 D8, come nel pannello Altro della home): src/data/altro.json.
+ */
+import Base from '../../../layouts/Base.astro';
+import TitoloGigante from '../../../components/opere/TitoloGigante.astro';
+import Freccia from '../../../components/Freccia.astro';
+import ArtworkPicture from '@ne/core/components/ArtworkPicture.astro';
+import { getArtwork } from '@ne/core/catalog';
+import { localeStaticPaths } from '@ne/core/i18n';
+import { href, useT, type Locale } from '../../../lib/i18n';
+import { fitMisto } from '../../../lib/fit';
+import dati from '../../../data/altro.json' with { type: 'json' };
+import '../../../styles/altro.css';
+
+export const getStaticPaths = () => localeStaticPaths();
+const lang = Astro.params.lang as Locale;
+const t = useT(lang);
+
+import { VOCI_ALTRO as PERCORSI } from '../../../lib/home';
+const voci = dati.voci.map(({ voce, mini }) => {
+  const path = (PERCORSI as Record<string, string>)[voce];
+  if (!path) throw new Error(`[altro.json] voce sconosciuta "${voce}"`);
+  const nome = t(`galleria.nav.${voce}`);
+  const opera = /^\d+$/.test(mini) ? getArtwork(mini) : undefined;
+  if (/^\d+$/.test(mini) && !opera) throw new Error(`[altro.json] opera sconosciuta "${mini}"`);
+  return { voce, nome, href: /^https?:/.test(path) ? path : href(lang, path), esterno: /^https?:/.test(path), fit: fitMisto(nome), opera, foto: opera ? undefined : mini };
+});
+const titolo = t('galleria.nav.altro');
+---
+<Base lang={lang} title={titolo} description={t('galleria.altro.descrizione')}>
+  <section class="wrap al" aria-labelledby="al-h">
+    <TitoloGigante testo={titolo} id="al-h" />
+    <div class="al__corpo">
+      <ul class="al__lista">
+        {voci.map((v) => (
+          <li class="al__v">
+            <a class="al__a" href={v.href} target={v.esterno ? '_blank' : undefined} rel={v.esterno ? 'noopener' : undefined}>
+              <span class="al__nome" style={`--fit:${v.fit}`}><span>{v.nome}</span></span>
+              <Freccia class="al__fr" />
+            </a>
+            <span class="al__mini" aria-hidden="true">
+              {v.opera
+                ? <ArtworkPicture artwork={v.opera} lang={lang} alt="" width={420} sizes="25vw" />
+                : <ArtworkPicture photoId={v.foto} lang={lang} alt="" width={420} sizes="25vw" />}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>

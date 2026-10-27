@@ -1,0 +1,55 @@
+---
+/**
+ * C7 CardOpera: un solo link con l'opera intera (ArtworkPicture del core, `contain`, mai ritagliata) in un box con le
+ * proporzioni dell'immagine e la didascalia sotto. Didascalia con container query (opere.css): una riga se la colonna
+ * è larga almeno 300 px (titolo a sinistra, misure · prezzo a destra), altrimenti due (titolo / misure · prezzo).
+ * Prezzo in grigio (D7); venduta → ■ «Venduta» in rosso al posto del prezzo. Stampa: «stampa da 109,80 €».
+ * Gli attributi data-* servono al motore dei filtri (opere-motore.js).
+ */
+import ArtworkPicture from '@ne/core/components/ArtworkPicture.astro';
+import { altezzaCard, type CardDati } from '../../lib/opere';
+import { hrefOpera } from '../../lib/opera-link';
+import { useT, type Locale } from '../../lib/i18n';
+
+interface Props { card: CardDati; lang: Locale; eager?: boolean }
+const { card, lang, eager = false } = Astro.props;
+const t = useT(lang);
+const { art } = card;
+const stampa = card.tipo === 'stampa';
+const link = hrefOpera(lang, art) + (stampa && hrefOpera(lang, art).includes(art.slug) ? '?v=stampa' : '');
+const id = `${stampa ? 's' : 'o'}-${art.id}`;
+---
+<a
+  class="card"
+  href={link}
+  data-card
+  data-id={art.id}
+  data-colore={card.colori.join(' ')}
+  data-formato={card.formato ?? undefined}
+  data-prezzo={card.fascia ?? undefined}
+  data-forma={card.forma}
+  data-stato={card.venduta ? 'sold' : 'available'}
+  data-ordine={card.ordine}
+  data-h={altezzaCard(art)}
+  aria-labelledby={`${id}-t ${id}-d`}
+>
+  <span class="card__img" style={`--ar:${art.images.canvas?.width ?? 1}/${art.images.canvas?.height ?? 1}`}>
+    <ArtworkPicture artwork={art} lang={lang} alt="" sizes="(min-width: 1280px) 32vw, 49vw" loading={eager ? 'eager' : 'lazy'} />
+  </span>
+  <span class="card__cap">
+    <span class="card__t" id={`${id}-t`}>{art.title}</span>
+    <span class="card__d sep-riga" id={`${id}-d`}>
+      {stampa ? (
+        <span>{t('galleria.opere.stampa_da', { prezzo: card.prezzo ?? '' })}</span>
+      ) : (
+        <>
+          {card.misure && <span>{card.misure}</span>}
+          {card.venduta ? <span><span class="venduta">{t('galleria.edizione.esaurita')}</span></span> : card.prezzo && <span>{card.prezzo}</span>}
+        </>
+      )}
+    </span>
+    {!stampa && card.restano && !card.venduta && (
+      <span class="card__ed">{t('galleria.edizione.restano', { n: card.restano.n, di: card.restano.di })}</span>
+    )}
+  </span>
+</a>

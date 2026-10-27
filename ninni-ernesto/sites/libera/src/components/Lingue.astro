@@ -1,0 +1,26 @@
+---
+/**
+ * Lingue IT · EN · 中文 (C1). Markup proprio al posto di LanguageSwitcher del core: il suo script si aggancia ai link
+ * una volta sola e con il ClientRouter i link delle pagine successive restavano senza (stessa scelta di Casa).
+ * Il clic salva la scelta in `isa:lang` (letta da LocaleRedirect del core) e porta con sé ?query e #àncora
+ * (lib/struttura-client.ts). `ridotte`: sotto 375 px resta solo la lingua corrente (DIREZIONE §12 D9).
+ */
+import { LOCALES, LANG_LABEL, LANG_NOME, LANG_TAG, hrefLingua, useT, type Locale } from '../lib/i18n';
+interface Props { lang: Locale; pathname: string; ridotte?: boolean; class?: string }
+const { lang, pathname, ridotte = false, class: cls } = Astro.props;
+const t = useT(lang);
+---
+<ul class:list={['lingue', ridotte && 'lingue--ridotte', cls]} aria-label={t('galleria.nav.lingue')}>
+  {LOCALES.map((l) => (
+    <li class:list={['lingue__li', l === lang && 'lingue__li--corrente']}>
+      <a
+        class="lingue__a"
+        href={hrefLingua(pathname, l)}
+        hreflang={LANG_TAG[l]}
+        lang={LANG_TAG[l]}
+        data-lingua={l}
+        aria-current={l === lang ? 'true' : undefined}
+      ><span aria-hidden="true">{LANG_LABEL[l]}</span><span class="vh">{LANG_LABEL[l]} {LANG_NOME[l]}</span></a>
+    </li>
+  ))}
+</ul>

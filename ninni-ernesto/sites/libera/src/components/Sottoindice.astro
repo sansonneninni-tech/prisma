@@ -1,0 +1,48 @@
+---
+/**
+ * Sottoindice di pagina (pezzo 7: Isabella P8, Info P11). Link 14 px alle àncore della pagina; quello della sezione
+ * che si sta leggendo è nero (aria-current="location"), gli altri grigi (lib/sottoindice-client.ts).
+ * Resta attaccato sotto l'header mentre si scorre (`fisso`); con `fisso="computer"` solo da 768 (Info: sotto 768 le
+ * 4 voci stanno in 2 × 2 e una barra fissa di due righe ruberebbe troppo schermo).
+ * Le sezioni senza dati non ci sono e quindi non entrano nell'elenco (Mostre).
+ */
+interface Props { voci: { id: string; nome: string }[]; label: string; fisso?: 'sempre' | 'computer'; lang?: string }
+const { voci, label, fisso = 'sempre' } = Astro.props;
+---
+<nav class:list={['si', `si--${fisso}`, voci.length > 3 && 'si--quattro']} aria-label={label} data-si>
+  <ul class="si__l">
+    {voci.map((v) => <li><a class="si__a" href={`#${v.id}`} data-si-a={v.id}>{v.nome}</a></li>)}
+  </ul>
+</nav>
+<script>
+  import '../lib/sottoindice-client';
+</script>
+<style>
+  .si { background: var(--c-bg); z-index: 4; }
+  .si__l { display: flex; flex-wrap: wrap; column-gap: var(--s-5); }
+  .si__a {
+    display: inline-flex; align-items: center; min-height: var(--touch); min-width: var(--touch);
+    font-size: var(--t-ui); font-weight: var(--w-strong); line-height: 1.2; color: var(--c-mute);
+    transition: color var(--d-fast) var(--ease-out);
+  }
+  .si__a[aria-current] { color: var(--c-ink); }
+  .si__a[aria-current]::before { content: ''; width: 0.5em; height: 0.5em; margin-right: 6px; background: currentColor; flex: none; }
+  @media (hover: hover) { .si__a:hover { color: var(--c-ink); } }
+  /* attaccato sotto l'header: la striscia bianca copre la pagina che scorre sotto, filetto solo quando è staccata */
+  .si--sempre, .si--computer {
+    position: sticky; top: calc(var(--header-h) + env(safe-area-inset-top));
+    margin-inline: calc(-1 * max(var(--gutter), env(safe-area-inset-left))) calc(-1 * max(var(--gutter), env(safe-area-inset-right)));
+    padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
+    border-bottom: 1px solid transparent;
+  }
+  .si[data-staccato] { border-bottom-color: var(--c-placeholder); }
+  /* 4 voci sul telefono: 2 × 2, ferme (niente barra di due righe) */
+  @media (max-width: 767.98px) {
+    .si--computer { position: static; border-bottom: 0; }
+    .si--quattro .si__l { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-4); }
+    /* fermo in cima: è solo un elenco di àncore, tutte nere (grigie sembravano spente; audit finale 1, telefono #15) */
+    .si--computer .si__a { color: var(--c-ink); }
+    .si--computer .si__a[aria-current]::before { content: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .si__a { transition: none; } }
+</style>

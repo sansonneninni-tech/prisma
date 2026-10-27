@@ -1,0 +1,15 @@
+---
+/**
+ * «Shop» nell'header (audit di ninni 22/10: «appena apro il sito devo capire che è uno shop»): icona borsa a filo
+ * + parola, porta alle Opere (/[lang]/opere/). Distinto da «Carrello (n)». `aria-current="page"` sulle Opere.
+ * Sotto 375 px resta solo l'icona (area 44 × 44, nome accessibile dal testo nascosto): l'header non va a capo.
+ */
+import { href, useT, type Locale } from '../lib/i18n';
+interface Props { lang: Locale; pathname: string }
+const { lang, pathname } = Astro.props;
+const t = useT(lang);
+const qui = new RegExp(`^/${lang}/ninni/?$`).test(pathname);
+---
+<a class="hd__btn hd__shop" href={href(lang, '/ninni/')} aria-current={qui ? 'page' : undefined}
+  ><svg class="hd__borsa" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3.8 7.2h12.4l-.9 10.3H4.7z" /><path d="M7.3 7.2V5.6a2.7 2.7 0 0 1 5.4 0v1.6" /></svg><span class="hd__shop-t">{t('galleria.nav.shop')}</span></a
+>
