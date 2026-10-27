@@ -1,0 +1,55 @@
+---
+/**
+ * Root page (`src/pages/index.astro`): sends the visitor to /it, /en or /zh according to the browser
+ * language (Italian by default) and remembers an explicit choice. Works without JS via links.
+ */
+import { DEFAULT_LOCALE, LOCALES, LOCALE_NAMES } from '../src/i18n/config.ts';
+import { TRAILING_SLASH } from '../src/i18n/routing.ts';
+
+interface Props {
+  title?: string;
+}
+const { title = 'Ninni & Ernesto' } = Astro.props;
+const base = (import.meta.env.BASE_URL ?? '/').replace(/\/$/, '');
+const slash = TRAILING_SLASH === 'never' ? '' : '/';
+---
+
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>{title}</title>
+    <link rel="canonical" href={`${base}/${DEFAULT_LOCALE}${slash}`} />
+    {LOCALES.map((l) => <link rel="alternate" hreflang={l === 'zh' ? 'zh-Hans' : l} href={`${base}/${l}${slash}`} />)}
+    <script is:inline define:vars={{ locales: [...LOCALES], fallback: DEFAULT_LOCALE, base, slash }}>
+      (function () {
+        var chosen = null;
+        try {
+          chosen = localStorage.getItem('isa:lang');
+        } catch (e) {}
+        var langs = navigator.languages || [navigator.language || ''];
+        var pick = locales.indexOf(chosen) >= 0 ? chosen : null;
+        for (var i = 0; !pick && i < langs.length; i++) {
+          var p = String(langs[i]).toLowerCase().split('-')[0];
+          if (locales.indexOf(p) >= 0) pick = p;
+        }
+        location.replace(base + '/' + (pick || fallback) + slash);
+      })();
+    </script>
+    <noscript><meta http-equiv="refresh" content={`0; url=${base}/${DEFAULT_LOCALE}/`} /></noscript>
+  </head>
+  <body>
+    <ul class="isa-lang-choice">
+      {
+        LOCALES.map((l) => (
+          <li>
+            <a href={`${base}/${l}${slash}`} hreflang={l} lang={l}>
+              {LOCALE_NAMES[l]}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </body>
+</html>

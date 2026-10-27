@@ -1,0 +1,50 @@
+---
+/**
+ * "Modalità demo: nessun pagamento reale" banner. Dismissible (remembered for the session).
+ * Classes: isa-demo-banner, isa-demo-banner__text, isa-demo-banner__detail, isa-demo-banner__close.
+ */
+import { useTranslations } from '../src/i18n/index.ts';
+import type { Locale } from '../src/types.ts';
+
+interface Props {
+  lang: Locale;
+  /** Show the long explanation with the test card. */
+  detail?: boolean;
+  /** Allow closing it. */
+  dismissible?: boolean;
+  class?: string;
+}
+const { lang, detail = true, dismissible = true, class: className } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class:list={['isa-demo-banner', className]} aria-label={t('demo.etichetta')} data-isa-demo-banner>
+  <p class="isa-demo-banner__text"><strong>{t('demo.banner')}</strong></p>
+  {detail && <p class="isa-demo-banner__detail">{t('demo.banner_dettaglio')}</p>}
+  {
+    dismissible && (
+      <button type="button" class="isa-demo-banner__close" data-isa-demo-close>
+        {t('demo.banner_chiudi')}
+      </button>
+    )
+  }
+</section>
+
+<script>
+  const KEY = 'isa:demo-banner-closed';
+  document.querySelectorAll<HTMLElement>('[data-isa-demo-banner]').forEach((banner) => {
+    try {
+      if (sessionStorage.getItem(KEY) === '1' && banner.querySelector('[data-isa-demo-close]')) banner.hidden = true;
+    } catch {
+      /* storage unavailable */
+    }
+    banner.querySelector('[data-isa-demo-close]')?.addEventListener('click', () => {
+      banner.hidden = true;
+      try {
+        sessionStorage.setItem(KEY, '1');
+      } catch {
+        /* storage unavailable */
+      }
+    });
+  });
+</script>

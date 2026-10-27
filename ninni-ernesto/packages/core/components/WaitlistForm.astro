@@ -1,0 +1,60 @@
+---
+/**
+ * "Mettiti in lista" for the coming-soon categories. DEMO: nothing is sent.
+ */
+import { getComingSoon } from '../src/catalog/index.ts';
+import { pickStrings, useTranslations } from '../src/i18n/index.ts';
+import type { Locale } from '../src/types.ts';
+import Field from './Field.astro';
+
+interface Props {
+  lang: Locale;
+  /** Pre-checked category id. */
+  interest?: string;
+  class?: string;
+}
+const { lang, interest, class: className } = Astro.props;
+const t = useTranslations(lang);
+const id = 'isa-waitlist';
+const strings = pickStrings(t, ['errori.obbligatorio', 'errori.email', 'core.checkout.errori_riepilogo', 'prossimamente.lista_attesa.successo']);
+---
+
+<form class:list={['isa-form', 'isa-form--waitlist', className]} id={id} data-isa-form="waitlist" data-lang={lang} data-i18n={JSON.stringify(strings)} novalidate>
+  <div class="isa-error-summary" role="alert" data-error-summary hidden></div>
+  <Field idPrefix={id} name="email" type="email" label={t('prossimamente.lista_attesa.campo_email')} required autocomplete="email" inputmode="email" />
+  <fieldset class="isa-form__choices">
+    <legend class="isa-form__legend">{t('prossimamente.lista_attesa.campo_interesse')}</legend>
+    {
+      getComingSoon().map((c) => (
+        <label class="isa-form__choice">
+          <input type="checkbox" name="interests" value={c.id} checked={c.id === interest} />
+          <span>{t(`prossimamente.voci[${c.textIndex}].nome`)}</span>
+        </label>
+      ))
+    }
+  </fieldset>
+  <p class="isa-form__privacy">{t('prossimamente.lista_attesa.privacy')}</p>
+  <button type="submit" class="isa-form__submit">{t('prossimamente.lista_attesa.bottone')}</button>
+</form>
+<p class="isa-form__success" id={`${id}-success`} role="status" tabindex="-1" hidden></p>
+
+<script>
+  import { validateWaitlist } from '../src/forms/forms.ts';
+  import { readTranslator, showFieldErrors } from '../src/ui/dom.ts';
+
+  document.querySelectorAll<HTMLFormElement>('form[data-isa-form="waitlist"]').forEach((form) => {
+    const t = readTranslator(form);
+    const success = document.getElementById(`${form.id}-success`);
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const result = validateWaitlist(new FormData(form));
+      if (showFieldErrors(form, result.errors as Record<string, string>, t) > 0) return;
+      form.hidden = true;
+      if (success) {
+        success.textContent = t('prossimamente.lista_attesa.successo', { email: result.data.email });
+        success.hidden = false;
+        success.focus();
+      }
+    });
+  });
+</script>

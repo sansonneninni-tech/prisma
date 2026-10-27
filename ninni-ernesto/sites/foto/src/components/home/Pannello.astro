@@ -1,0 +1,19 @@
+---
+/**
+ * C19 Pannello della mappa (DIREZIONE §6 P1): un unico link per pannello, nome accessibile = titolo
+ * (`aria-labelledby`), dentro un'anteprima vera della pagina (slot). Immagini interne con alt="".
+ * Zoom A1/A2 (pezzo 8, lib/movimento.ts): `data-zoom` dice quale pagina è; la mappa fa da camera e si avvicina al
+ * pannello finché copre lo schermo, il titolo resta e diventa l'h1 della pagina (FLIP a montaggio fatto).
+ * È la stessa mappa a cui porta «Indice» su computer (/[lang]/#indice).
+ * `.pan__velo`: il velo bianco che durante lo zoom copre le immagini e lascia il titolo (A1/A2, 22/10).
+ */
+import Freccia from '../Freccia.astro';
+interface Props { nome: 'isabella' | 'opere' | 'altro'; href: string; titolo: string; lang?: string }
+const { nome, href, titolo, lang } = Astro.props;
+const id = `pan-${nome}`;
+---
+<a class:list={['pan', `pan--${nome}`]} href={href} aria-labelledby={id} data-zoom={nome}>
+  <h3 class="pan__t"><span id={id} lang={lang}>{titolo}</span><Freccia sottile /></h3>
+  <div class="pan__corpo"><slot /></div>
+  <span class="pan__velo" aria-hidden="true"></span>
+</a>

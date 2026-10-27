@@ -1,0 +1,59 @@
+---
+/**
+ * C11 Cassetto (DIREZIONE §6 P9, styleguide §07): dialog da destra, 420 px (telefono: 100%), velo 32%.
+ * Intestazione «Carrello (n)» + «Chiudi», righe C12, in fondo fissi spedizione, totale, «Procedi», nota demo.
+ * Vuoto: una riga e due porte, Originali e Stampe. Si apre dai link `[data-carrello]` (header, «Nel carrello»,
+ * «Vai al carrello» della scheda) su ogni pagina tranne carrello e checkout, dove quei link portano alla pagina.
+ * Comportamento in lib/cassetto-client.ts (A9, focus intrappolato, Esc, velo, ritorno del fuoco). Un solo cassetto
+ * per pagina, messo da Base.astro.
+ */
+import Freccia from '../Freccia.astro';
+import { href, type Locale } from '../../lib/i18n';
+import { testiBrowser, catalogoCarrello, CHIAVI_RIGHE, useTAcquisto } from '../../lib/acquisto';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTAcquisto(lang);
+const testi = testiBrowser(t, [...CHIAVI_RIGHE]);
+---
+<dialog
+  class="cas"
+  data-cassetto
+  data-carrello-zona
+  aria-labelledby="cas-titolo"
+  data-lang={lang}
+  data-i18n={JSON.stringify(testi)}
+  data-catalogo={JSON.stringify(catalogoCarrello())}
+  data-simile={href(lang, '/su-commissione/')}
+>
+  <div class="cas__velo" data-cas-chiudi aria-hidden="true"></div>
+  <div class="cas__pan" data-cas-pan>
+    <div class="cas__top">
+      <h2 class="cas__titolo" id="cas-titolo" tabindex="-1" data-cas-titolo>{t('galleria.nav.carrello')}</h2>
+      <button class="cas__chiudi" type="button" data-cas-chiudi>{t('bottoni.chiudi')}</button>
+    </div>
+    <div class="cas__corpo">
+      <div class="avvisi" data-cas-avvisi hidden></div>
+      <ul class="righe" role="list" data-cas-righe></ul>
+      <div class="vuoto" data-cas-vuoto hidden>
+        <p class="vuoto__t">{t('galleria.acquisto.vuoto')}</p>
+        <ul class="porte" role="list">
+          <li><a class="porta" href={href(lang, '/ninni/')}><span>{t('galleria.opere.originali')}</span><Freccia /></a></li>
+          <li><a class="porta" href={href(lang, '/ninni/?vista=stampe')}><span>{t('galleria.opere.stampe')}</span><Freccia /></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="cas__piede" data-cas-piede hidden>
+      <dl class="conto conto--breve" data-cas-conto></dl>
+      <a class="btn btn--largo" href={href(lang, '/checkout/')}>{t('galleria.acquisto.procedi')}</a>
+      <p class="cas__sotto">
+        <a class="lnk" href={href(lang, '/carrello/')}>{t('bottoni.vai_carrello')}</a>
+        <span class="cas__demo">{t('galleria.footer.demo')}</span>
+      </p>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  import '../../lib/cassetto-client';
+</script>

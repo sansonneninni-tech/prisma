@@ -1,0 +1,706 @@
+{
+  "meta": {
+    "lingua": "zh",
+    "codice_lingua": "zh-Hans",
+    "nome_lingua": "简体中文",
+    "stato": "草稿 — 待伊莎贝拉确认（机器翻译，需母语者审校）",
+    "versione": "0.2 — 2026/10/19",
+    "nota": "草稿文案。[方括号] = 待补充的信息。{花括号} = 网站自动填入的数值（不要翻译）。"
+  },
+
+  "nav": {
+    "home": "首页",
+    "opere": "作品",
+    "proposte": "伊莎的搭配",
+    "stampe": "版画",
+    "atelier": "工作室",
+    "bio": "伊莎贝拉",
+    "commissioni": "定制",
+    "prossimamente": "即将推出",
+    "mostre": "展览与媒体",
+    "contatti": "联系",
+    "carrello": "购物车",
+    "carrello_conteggio": "购物车（{n}）",
+    "cerca": "搜索",
+    "cerca_placeholder": "搜索作品、颜色或尺寸…",
+    "lingua": "语言",
+    "menu_apri": "打开菜单",
+    "menu_chiudi": "关闭菜单",
+    "salta_contenuto": "跳到正文"
+  },
+
+  "footer": {
+    "firma": "伊莎贝拉·皮斯蒂洛 — 画家。工作室位于意大利安德里亚的费利切·奥尔西尼路。",
+    "colonna_opere": "作品",
+    "colonna_isabella": "伊莎贝拉",
+    "colonna_info": "信息",
+    "colonna_contatti": "联系",
+    "indirizzo": "Via Felice Orsini 69A, 76123 Andria (BT), Italia（意大利）",
+    "email": "info@isabellapistillo.com",
+    "telefono": "+39 376 0426 212",
+    "instagram": "Instagram",
+    "facebook": "Facebook",
+    "whatsapp": "通过 WhatsApp 联系我",
+    "newsletter_titolo": "新作诞生时",
+    "newsletter_testo": "每完成一幅新画或有展览时，我会写信告诉您。每年不超过 [N] 封。",
+    "newsletter_placeholder": "您的邮箱",
+    "newsletter_bottone": "订阅",
+    "newsletter_successo": "已订阅。下一封信会寄到 {email}。",
+    "link_termini": "销售条款",
+    "link_spedizioni": "配送与退货",
+    "link_privacy": "隐私",
+    "link_cookie": "Cookie",
+    "link_preferenze_cookie": "Cookie 偏好设置",
+    "copyright": "© {anno} Isabella Pistillo。所有作品均受版权保护。",
+    "dati_fiscali": "Pistillo Isabella — 增值税号 [增值税号]",
+    "credito": "网站：[工作室名称/ninni]"
+  },
+
+  "bottoni": {
+    "aggiungi_carrello": "加入购物车",
+    "aggiunta_carrello": "已在购物车中",
+    "acquista": "购买",
+    "richiedi_info": "咨询伊莎贝拉",
+    "visualizza_stanza": "在您的房间里预览",
+    "vai_carrello": "查看购物车",
+    "vai_checkout": "去结账",
+    "continua": "继续浏览",
+    "vedi_opera": "查看作品",
+    "vedi_tutte": "全部作品",
+    "vedi_proposte": "伊莎的搭配",
+    "vedi_atelier": "走进工作室",
+    "vedi_stampe": "查看版画",
+    "inizia_conversazione": "我们聊聊吧",
+    "invia": "发送",
+    "invia_messaggio": "发送留言",
+    "iscriviti_lista": "通知我",
+    "rimuovi": "移除",
+    "chiudi": "关闭",
+    "indietro": "返回",
+    "avanti": "下一步",
+    "precedente": "上一幅",
+    "successiva": "下一幅",
+    "ingrandisci": "放大",
+    "leggi_tutto": "继续阅读",
+    "torna_home": "返回首页",
+    "anteprima_email": "查看确认邮件",
+    "carica_foto": "上传您墙面的照片",
+    "riprova": "重试"
+  },
+
+  "etichette": {
+    "venduta": "已售出",
+    "venduta_nota": "这幅画已经有了归宿。如果您喜欢，我可以按同样的感觉再画一幅：请看“定制”。",
+    "disponibile": "可购买",
+    "riservata": "已预留",
+    "nuova": "新作",
+    "prossimamente": "即将推出",
+    "esemplare_unico": "原作，仅此一幅",
+    "prezzo_su_richiesta": "价格请咨询",
+    "prezzo_da": "{prezzo} 起",
+    "misure": "尺寸",
+    "misure_valore": "{base}\u00a0×\u00a0{altezza}\u00a0厘米",
+    "misure_nota": "宽 × 高，仅画布，不含画框",
+    "tecnica": "材质与技法",
+    "tecnica_default": "布面丙烯，画笔与刮刀",
+    "anno": "年份",
+    "anno_mancante": "[年份]",
+    "firma": "签名",
+    "firma_valore": "正面手写签名",
+    "cornice": "画框",
+    "cornice_inclusa": "含画框",
+    "senza_cornice": "无画框",
+    "certificato": "附签名真品证书 [待确认]",
+    "orientamento": "版式",
+    "verticale": "竖幅",
+    "orizzontale": "横幅",
+    "quadrato": "方形",
+    "colori": "颜色",
+    "iva_originali": "含 5% 增值税",
+    "iva_stampe": "含 22% 增值税",
+    "iva_nota_originali": "手绘并签名的原作适用意大利 5% 的优惠增值税率。",
+    "iva_nota_stampe": "版画适用意大利 22% 的标准增值税率。",
+    "spedizione": "运费",
+    "spedizione_calcolata": "运费在结账时按国家计算",
+    "spedizione_zone": "意大利 {italia} · 欧洲 {europa} · 其他国家和地区 {mondo}",
+    "tempi_originale": "5 个工作日内可发货，在工作室手工包装",
+    "tempi_stampa": "3 个工作日内印制并发货",
+    "consegna_stimata": "预计送达：{data_da}–{data_a}",
+    "rate": "或通过 Scalapay 分 3 期免息支付，每期 {importo}",
+    "rate_breve": "可分 3 期支付",
+    "quantita": "数量",
+    "formato_stampa": "尺寸",
+    "supporto_stampa": "材质",
+    "carta_fotografica": "相纸",
+    "tela": "画布",
+    "con_telaio": "装裱在内框上",
+    "in_tubo": "卷起装入纸筒",
+    "cm": "厘米"
+  },
+
+  "catalogo": {
+    "titolo": "作品",
+    "intro": "原创画作，一幅一幅陈列。每幅画下面都写着尺寸，您马上就能知道它是否适合您的墙面。",
+    "filtro_tutte": "全部",
+    "filtro_disponibili": "可购买",
+    "filtro_vendute": "已售出",
+    "filtro_formato": "版式",
+    "filtro_colore": "颜色",
+    "filtro_misura": "尺寸",
+    "misura_piccola": "60 厘米以内",
+    "misura_media": "60–100 厘米",
+    "misura_grande": "100 厘米以上",
+    "ordina": "排序",
+    "ordina_recenti": "最新",
+    "ordina_prezzo_su": "价格从低到高",
+    "ordina_prezzo_giu": "价格从高到低",
+    "conteggio": "{n} 幅作品",
+    "nessun_risultato": "没有符合这些条件的作品。试着去掉一个筛选条件，或者请我为您定制一幅。",
+    "hover_suggerimento": "点击查看详情"
+  },
+
+  "scheda_opera": {
+    "sezione_descrizione": "关于作品",
+    "sezione_dettagli": "详细信息",
+    "sezione_spedizione": "配送与退货",
+    "sezione_firma": "签名",
+    "sezione_materia": "近看",
+    "materia_didascalia": "画面局部：可以看到刮刀留下的痕迹。",
+    "descrizione_segnaposto": "[伊莎贝拉对这幅画的两三句话：她当时在看什么，想留住什么。]",
+    "spedizione_testo": "每幅原作都在工作室手工包装，四角加固，并购买运输保险。发货后我会立即把物流单号发给您。",
+    "domanda_titolo": "对这幅作品有疑问？",
+    "domanda_testo": "给我写信：我可以发更多照片、画面表面的视频，或含画框的准确尺寸。",
+    "proposte_titolo": "伊莎建议与它搭配",
+    "proposte_testo": "颜色相同的作品，由我挑选，适合挂在同一面墙上。",
+    "stanza_titolo": "在您的房间里预览",
+    "stanza_testo": "选择一个房间，或上传您墙面的照片。画作会按真实尺寸等比例显示。",
+    "stanza_soggiorno": "客厅",
+    "stanza_camera": "卧室",
+    "stanza_ingresso": "玄关",
+    "stanza_tua": "您的墙面",
+    "stanza_larghezza": "墙面宽度（厘米）",
+    "stanza_istruzioni_foto": "正对墙面拍一张照片，然后告诉我墙有多宽（厘米）。",
+    "stanza_nota": "预览仅供参考：屏幕上的光线和颜色与实物会有差异。",
+    "stanza_privacy": "照片只保存在您的设备上，不会上传到任何服务器。"
+  },
+
+  "stampe": {
+    "titolo": "版画",
+    "intro": "有些画我也做成了版画。原作只有一幅；版画价格更低，还有多种尺寸可选。",
+    "differenza_titolo": "原作还是版画？",
+    "differenza_testo": "原作是我亲手画的画布，颜料有凸起的肌理，并有手写签名。版画把图像复制在相纸或画布上，尺寸见下方。",
+    "formati_titolo": "可选尺寸",
+    "telaio_nota": "在意大利境内，布面版画装裱在内框上寄出，大尺寸除外，大尺寸卷起装入纸筒寄送。寄往国外的一律不带内框。[请按现行配送规则核实]"
+  },
+
+  "home": {
+    "hero": {
+      "A": {
+        "stile": "标语 A — 温暖、居家（灵感来自 Lulu and Georgia）",
+        "occhiello": "伊莎贝拉·皮斯蒂洛的原创画作",
+        "titolo": "装扮一面墙，就像装扮自己。",
+        "sottotitolo": "像挑衣服一样挑一幅画，从颜色开始。然后我来建议旁边放什么：一幅版画、一只花瓶、一支蜡烛。",
+        "cta_primaria": "伊莎的搭配",
+        "cta_secondaria": "全部作品"
+      },
+      "B": {
+        "stile": "标语 B — 安静、画廊感",
+        "occhiello": "伊莎贝拉·皮斯蒂洛",
+        "titolo": "我的艺术，我的世界。",
+        "sottotitolo": "布面丙烯。女性的面孔与身体。工作室位于意大利安德里亚。",
+        "cta_primaria": "查看作品",
+        "cta_secondaria": "伊莎贝拉"
+      },
+      "C": {
+        "stile": "标语 C — 大胆、杂志感",
+        "occhiello": "伊莎贝拉·皮斯蒂洛 — 画家，安德里亚",
+        "titolo": "画画是一场游戏。我认真对待它。",
+        "sottotitolo": "以立体主义的方式拆解女性面孔，用丙烯和刮刀完成。每幅画我都先在脑海里画好，再落到画布上。",
+        "cta_primaria": "走进工作室",
+        "cta_secondaria": "查看作品"
+      }
+    },
+    "opere_titolo": "最新作品",
+    "opere_testo": "每幅画下面都写着尺寸。看到喜欢的就点开：里面有画面肌理的特写和签名。",
+    "citazione": "我站在一块空白的画布前，凝视它，观察它，先画出线稿，再加上颜料。",
+    "citazione_autrice": "伊莎贝拉·皮斯蒂洛",
+    "proposte_titolo": "伊莎的搭配",
+    "proposte_testo": "一幅画、一幅版画、一件器物，颜色相同。是我亲手搭配的，就像给一条裙子配上合适的外套。",
+    "atelier_titolo": "在工作室",
+    "atelier_testo": "安德里亚，费利切·奥尔西尼路。一块空白画布在这里分五步变成一张面孔。",
+    "commissioni_titolo": "为某一面墙画的画",
+    "commissioni_testo": "告诉我房间的样子和住在里面的人。我给您看草图。20 到 30 天后画作完成。",
+    "bio_titolo": "伊莎贝拉",
+    "bio_testo": "我 1969 年出生在普利亚。画画是我早上醒来的第一个念头，也是晚上睡前的最后一个。",
+    "prossimamente_titolo": "工作室新品，即将推出",
+    "prossimamente_testo": "花瓶、The Moon 蜡烛、手绘服装。订阅后第一时间知道。",
+    "fiducia_spedizione": "可寄往意大利、欧洲及世界其他地区",
+    "fiducia_firma": "每幅原作都有手写签名",
+    "fiducia_rate": "可分 3 期支付"
+  },
+
+  "bio": {
+    "titolo": "伊莎贝拉",
+    "breve": "伊莎贝拉·皮斯蒂洛 1969 年生于意大利南部的普利亚。她在安德里亚费利切·奥尔西尼路的工作室里，用画笔和刮刀创作布面丙烯画。她的作品以女性的面孔和身体为中心，借鉴了立体主义和二十世纪绘画。她的画挂在意大利和海外的家中，最远到了纽约。",
+    "lunga": [
+      "我 1969 年出生在普利亚，至今仍在这里画画。我的工作室在安德里亚的费利切·奥尔西尼路：这个网站上的每一幅画都诞生在那里。",
+      "对我来说，画画是一场游戏。它是我早上的第一个念头，也是睡前的最后一个。",
+      "我几乎只画女性。同一时刻从正面和侧面看到的脸，由黑色线条和大块平涂构成的身体：红色、赭黄、祖母绿、午夜蓝，有时还有金色。我从立体主义和二十世纪的画家那里学到很多：他们让我明白，一张脸可以拆开再重新组合，而依然能被认出来。",
+      "我用丙烯在画布上作画。用画笔起稿，用刮刀堆出肌理，我希望您能看见它，甚至几乎能摸到它。",
+      "除了绘画，我也做过版画、布面作品和服装，并与 [建筑事务所 / 待列出的项目] 合作过。[学历、主要展览、奖项：待补充。]",
+      "我的作品挂在意大利和海外的家中。其中一幅寄到了纽约。"
+    ],
+    "citazione": "要让人爱上它。",
+    "dati_titolo": "简介",
+    "dato_nascita": "1969 年生于意大利普利亚",
+    "dato_atelier": "工作室：安德里亚，费利切·奥尔西尼路 69A 号",
+    "dato_tecnica": "布面丙烯，画笔与刮刀",
+    "dato_soggetto": "女性的面孔与身体",
+    "dato_formazione": "[学历]",
+    "foto_didascalia": "伊莎贝拉在费利切·奥尔西尼路的工作室。摄影：[摄影师]，2026。"
+  },
+
+  "statement": {
+    "titolo": "我为什么画女性",
+    "paragrafi": [
+      "我几乎总是画女性的面孔，而且几乎从不只用一个视角。在同一张脸上，我放进正面看到的眼睛和侧面看到的鼻子。",
+      "这是我看立体主义和二十世纪绘画学到的。我把面孔拆开，再用几根黑线和大块平涂的颜色重新组合。[伊莎贝拉：这些面孔是真实的人还是想象的？请补一句。]",
+      "画先在脑海里诞生。等我走到画布前，我已经知道目光落在哪里、红色放在哪里、哪里留出空白的底色。然后我用刮刀铺开又刮去颜料，有时画面会改变方向。所以我说，画画是一场游戏。",
+      "有些颜色会在一幅又一幅画里反复出现：镉红、赭黄、祖母绿、石油蓝，还有轮廓的黑色。常常还有一处金色。"
+    ]
+  },
+
+  "atelier": {
+    "titolo": "一幅画是怎样诞生的",
+    "intro": "每幅画都经过同样的五个步骤，都在安德里亚费利切·奥尔西尼路的同一间工作室里完成。需要几天，有时几周。",
+    "passi": [
+      {
+        "numero": "01",
+        "titolo": "空白的画布",
+        "testo": "我站在空白的画布前，凝视它，观察它。首先我用加了大量水的稀丙烯打底，再用白色晕开：这样能去掉画布表面的那层膜，让颜色附着得更牢。"
+      },
+      {
+        "numero": "02",
+        "titolo": "线稿",
+        "testo": "这幅画已经完整地在我脑海里。我用线稿把它搬到画布上：脸的线条、侧影、手的位置。没有线稿，我不会加任何东西。"
+      },
+      {
+        "numero": "03",
+        "titolo": "颜料",
+        "testo": "接着是颜色，大块平涂：红、赭黄、绿、午夜蓝，还有轮廓的黑。一层又一层，直到背景和人物彼此支撑。"
+      },
+      {
+        "numero": "04",
+        "titolo": "刮刀",
+        "testo": "我用刮刀铺开颜料，也刮去颜料。它留下画笔画不出的痕迹，画面有了起伏：在侧光下能看到颜料的棱脊。"
+      },
+      {
+        "numero": "05",
+        "titolo": "签名",
+        "testo": "当再也没有什么可以去掉时，我签名，在右下角，手写。然后为这幅画拍摄全景、两张局部特写和签名：这就是您在作品页面看到的图片。"
+      }
+    ],
+    "chiusura": "每幅作品的页面都有两张画面局部特写和签名：放大查看，就能看到刮刀的痕迹。",
+    "visite_titolo": "参观工作室",
+    "visite_testo": "[需预约参观：待与伊莎贝拉确认。] 给我写信，我们约一天。",
+    "didascalia_foto": "[工作室照片说明]"
+  },
+
+  "proposte": {
+    "titolo": "伊莎的搭配",
+    "intro": "布置一个房间有点像穿衣服：一件单品本身很美，找到和它相配的东西才算对了。我从颜色出发，把适合挂在同一面墙上的画作、版画和器物放在了一起。",
+    "nota_unici": "原作都是孤品：每组搭配可以整组购买，也可以只买其中几件。如果某件已售出，我会推荐另一件。",
+    "set": [
+      {
+        "id": "rosso-notte",
+        "nome": "红与夜",
+        "colori": "镉红、深黑、一丝金色",
+        "testo": "适合深色墙面、玄关或黑色沙发后的墙。红色是主色，金色出现在细节里。",
+        "pezzi": ["[作品 NN] — 原作", "[作品 NN] — 版画", "[器物：花瓶 / 蜡烛]"]
+      },
+      {
+        "id": "ocra-mezzogiorno",
+        "nome": "正午赭黄",
+        "colori": "赭黄、芥末黄、黑、象牙白",
+        "testo": "暖色调，适合浅色木头、亚麻和白墙。",
+        "pezzi": ["[作品 NN] — 原作", "[作品 NN] — 版画", "[器物：花瓶 / 蜡烛]"]
+      },
+      {
+        "id": "smeraldo-oro",
+        "nome": "祖母绿与金",
+        "colori": "祖母绿、橙色、金色",
+        "testo": "适合有丝绒、黄铜或深色木头的房间。晚上，画里的金色会映出灯光。",
+        "pezzi": ["[作品 NN] — 原作", "[作品 NN] — 版画", "[器物：花瓶 / 蜡烛]"]
+      },
+      {
+        "id": "petrolio-avorio",
+        "nome": "石油蓝与象牙白",
+        "colori": "石油蓝、午夜蓝、象牙白、肉粉色",
+        "testo": "最安静的一组：冷色调，对比很少。适合卧室或书房。",
+        "pezzi": ["[作品 NN] — 原作", "[作品 NN] — 版画", "[器物：花瓶 / 蜡烛]"]
+      }
+    ],
+    "cta_set": "查看这组作品",
+    "cta_parla": "想为您的房间做一组搭配？给我发一张照片。"
+  },
+
+  "commissioni": {
+    "titolo": "定制",
+    "sottotitolo": "为您的墙面画的画。",
+    "intro": "有时候，合适的那幅画还不存在。那我就把它画出来。我们从一次谈话开始：房间、光线、住在里面的人；其余的在草图上一起决定。",
+    "fasi": [
+      {
+        "titolo": "认识",
+        "testo": "您先给我写几句话，然后我们通电话、视频，或者在安德里亚的工作室见面。您跟我说说房子、光线和家里已有的颜色。"
+      },
+      {
+        "titolo": "倾听",
+        "testo": "我会问您几个问题，并请您拍一张墙面的照片。我也想知道每天会看着这幅画的人是谁。"
+      },
+      {
+        "titolo": "草图",
+        "testo": "我会把标有尺寸和颜色的草图发给您。我们一起讨论，需要时一起修改。等您满意了，我才开始画。"
+      },
+      {
+        "titolo": "绘制",
+        "testo": "根据尺寸，需要 20 到 30 天。您愿意的话，我会在画的过程中给您发几张照片。"
+      },
+      {
+        "titolo": "交付",
+        "testo": "签好名的画在工作室手工包装并投保后寄出。寄往意大利、欧洲或更远的地方。"
+      }
+    ],
+    "prezzo_titolo": "费用",
+    "prezzo_testo": "取决于尺寸和工作量。开始之前，我会随草图给您一个明确的价格。[定金：待定，例如草图确认时支付 30%。]",
+    "modulo": {
+      "titolo": "跟我说说",
+      "intro": "不需要什么都想好。写下您的想法，哪怕只是一个念头：我会在 [N] 天内回复。",
+      "campo_nome": "您的名字",
+      "campo_email": "邮箱",
+      "campo_telefono": "电话（如果您更想通话）",
+      "campo_citta": "您住在哪里",
+      "campo_stanza": "这幅画会挂在哪里？",
+      "campo_stanza_aiuto": "例如：“客厅沙发上方，墙长约 3 米，光从左边来”。",
+      "campo_messaggio": "说说您的想法",
+      "campo_messaggio_aiuto": "您喜欢的颜色、您喜欢的我的某幅画、这幅画送给谁。都有帮助。",
+      "campo_foto": "墙面照片（可选）",
+      "campo_quando": "有您在意的日期吗？",
+      "campo_quando_aiuto": "生日、搬家、纪念日。",
+      "consenso_privacy": "我已阅读隐私声明，同意伊莎贝拉就此请求与我联系。",
+      "invia": "发送给伊莎贝拉",
+      "successo_titolo": "谢谢，我收到了。",
+      "successo_testo": "我会仔细阅读，并在 [N] 天内回复到 {email}。在此期间，想到什么都可以再写给我。"
+    }
+  },
+
+  "prossimamente": {
+    "titolo": "即将推出",
+    "intro": "除了绘画，我正在工作室准备四样新东西，有些快完成了。如果您想要，就加入等候名单：上架之前我会先告诉您。",
+    "voci": [
+      {
+        "id": "fabric-art",
+        "nome": "Fabric Art 布面艺术",
+        "testo": "把我画的面孔带到布料上。[请说明具体是什么：布面画、挂板、丝巾？] [每件都有签名吗？]",
+        "stato": "首批作品已可咨询购买"
+      },
+      {
+        "id": "vasi",
+        "nome": "花瓶",
+        "testo": "陶瓷和陶土，手工绘制，用的是和画作相同的颜色。我正在完成它们：还差最后一道保护涂层。",
+        "stato": "制作中"
+      },
+      {
+        "id": "candele-the-moon",
+        "nome": "The Moon 蜡烛",
+        "testo": "由我的女儿弗朗切斯卡手工制作，模具[也由她设计？]。这是我们母女两人的合作，使用她的品牌 The Moon。",
+        "stato": "即将到货"
+      },
+      {
+        "id": "abiti-dipinti",
+        "nome": "手绘服装",
+        "testo": "我把旧夹克和套装重新拿出来，用布料颜料作画。限量版：数量很少，每件都不同。[有签名吗？]",
+        "stato": "限量版：[件数]"
+      }
+    ],
+    "lista_attesa": {
+      "titolo": "加入等候名单",
+      "testo": "留下您的邮箱，选择您感兴趣的。准备好时我只写一封信。",
+      "campo_email": "邮箱",
+      "campo_interesse": "您感兴趣的",
+      "bottone": "通知我",
+      "successo": "已加入。准备好后我会写信到 {email}。",
+      "privacy": "您的邮箱只用于这次通知。可随时取消。"
+    }
+  },
+
+  "mostre": {
+    "titolo": "展览与媒体",
+    "intro": "我的画去过哪里，谁写过它们。",
+    "mostre_titolo": "展览",
+    "mostre_vuoto": "展览列表正在整理中。",
+    "mostre_elenco": [
+      { "anno": "[年份]", "titolo": "[展览名称]", "luogo": "[场馆，城市]", "tipo": "[个展 / 群展]" },
+      { "anno": "[年份]", "titolo": "[展览名称]", "luogo": "[场馆，城市]", "tipo": "[个展 / 群展]" },
+      { "anno": "[年份]", "titolo": "[展览名称]", "luogo": "[场馆，城市]", "tipo": "[个展 / 群展]" }
+    ],
+    "stampa_titolo": "媒体报道",
+    "stampa_elenco": [
+      { "testata": "[媒体名称]", "titolo": "[文章标题]", "data": "[日期]", "link": "[URL]" },
+      { "testata": "[媒体名称]", "titolo": "[文章标题]", "data": "[日期]", "link": "[URL]" }
+    ],
+    "prossimo_titolo": "下一次活动",
+    "prossimo_testo": "[计划中的活动、日期和地点：例如春季的手绘服装活动，待确认。]",
+    "contatto_stampa_titolo": "媒体联络",
+    "contatto_stampa_testo": "高清照片、简历和作品图片：请写信至 info@isabellapistillo.com。"
+  },
+
+  "contatti": {
+    "titolo": "联系",
+    "intro": "关于某幅作品、定制，或者只是想告诉我您的看法。我会亲自回复。",
+    "atelier_titolo": "工作室",
+    "indirizzo": "Via Felice Orsini 69A\n76123 Andria (BT)\nItalia（意大利）",
+    "orari": "[开放时间 / 需预约]",
+    "mappa": "在地图中打开",
+    "email_titolo": "邮箱",
+    "telefono_titolo": "电话与 WhatsApp",
+    "social_titolo": "也可以在这里找到我",
+    "modulo_titolo": "给我写信",
+    "campo_nome": "姓名",
+    "campo_email": "邮箱",
+    "campo_telefono": "电话（可选）",
+    "campo_argomento": "您想聊什么",
+    "argomento_opera": "某一幅作品",
+    "argomento_commissione": "定制画作",
+    "argomento_ordine": "订单",
+    "argomento_stampa": "媒体或展览",
+    "argomento_altro": "其他",
+    "campo_messaggio": "留言",
+    "consenso_privacy": "我已阅读隐私声明。",
+    "consenso_newsletter": "有新画时写信告诉我（可选）。",
+    "successo": "谢谢您，{nome}。我会在 [N] 个工作日内回复。"
+  },
+
+  "carrello": {
+    "titolo": "购物车",
+    "vuoto_titolo": "购物车是空的",
+    "vuoto_testo": "看到喜欢的画，就会出现在这里。",
+    "aggiunto": "{titolo} 已加入购物车。",
+    "rimosso": "{titolo} 已从购物车移除。",
+    "subtotale": "小计",
+    "iva_inclusa": "其中增值税",
+    "iva_dettaglio_originali": "原作 5% 增值税",
+    "iva_dettaglio_stampe": "版画 22% 增值税",
+    "spedizione": "运费",
+    "spedizione_scegli_paese": "选择收货国家",
+    "zona_italia": "意大利",
+    "zona_europa": "欧洲（欧盟）",
+    "zona_mondo": "其他国家和地区",
+    "spedizione_gratis": "免费",
+    "nota_extra_ue": "寄往欧盟以外的包裹可能需要缴纳目的国的关税和税费，由收件人承担。[待与会计师核实]",
+    "totale": "合计",
+    "tempi_titolo": "何时送达",
+    "tempi_italia": "意大利：发货后 [2–3] 个工作日",
+    "tempi_europa": "欧洲：发货后 [5–8] 个工作日",
+    "tempi_mondo": "其他国家和地区：发货后 [7–12] 个工作日",
+    "originale_unico": "这是原作：只有一幅。它在您的购物车里，但付款完成后才真正属于您。",
+    "originale_quantita": "原作只能购买一次。",
+    "venduta_nel_frattempo": "{titolo} 在您的购物车中时已被售出。很抱歉，我已将它移除。如果您愿意，我可以画一幅类似的。",
+    "rate_nota": "结账时可以选择分 3 期支付。"
+  },
+
+  "demo": {
+    "banner": "演示模式：不会产生真实付款",
+    "banner_dettaglio": "这是一个演示网站。您可以用测试卡 4242 4242 4242 4242、任意未来日期和任意 CVC 模拟购买：不会扣款，不会生成真实订单，也不会发送邮件。",
+    "banner_chiudi": "知道了",
+    "etichetta": "演示",
+    "rate_finte": "演示中的分期付款为模拟：不会发出任何请求。",
+    "email_finta": "预览：在正式网站上，这封邮件会发到您的邮箱。"
+  },
+
+  "checkout": {
+    "titolo": "结账",
+    "passo_dati": "您的信息",
+    "passo_spedizione": "配送",
+    "passo_pagamento": "付款",
+    "passo_conferma": "确认",
+    "campo_nome": "名",
+    "campo_cognome": "姓",
+    "campo_email": "邮箱",
+    "campo_email_aiuto": "订单确认和物流单号会发到这里。",
+    "campo_telefono": "电话",
+    "campo_telefono_aiuto": "快递员送货时需要。",
+    "campo_indirizzo": "地址",
+    "campo_indirizzo2": "楼栋、门牌、门铃（可选）",
+    "campo_cap": "邮编",
+    "campo_citta": "城市",
+    "campo_provincia": "省 / 州",
+    "campo_paese": "国家",
+    "campo_note": "配送备注（可选）",
+    "fattura_check": "我需要发票",
+    "campo_cf_piva": "税号或增值税号",
+    "campo_sdi": "收件代码或认证邮箱（仅限意大利）",
+    "regalo_check": "这是一份礼物",
+    "regalo_biglietto": "伊莎贝拉手写卡片（可选）",
+    "regalo_aiuto": "写下您的留言：我会亲手抄写，包裹里不会放价格。",
+    "metodo_titolo": "您想怎样付款",
+    "metodo_carta": "信用卡或借记卡",
+    "metodo_rate": "通过 Scalapay 分 3 期免息",
+    "metodo_rate_dettaglio": "3 期，每期 {importo}：第一期今天支付，其余每 30 天一期。",
+    "campo_carta_numero": "卡号",
+    "campo_carta_scadenza": "有效期（MM/YY）",
+    "campo_carta_cvc": "CVC",
+    "campo_carta_titolare": "持卡人姓名",
+    "sicurezza": "付款由 Stripe 处理。卡片信息不经过本网站。",
+    "riepilogo_titolo": "您的订单",
+    "modifica": "修改",
+    "termini_check": "我接受销售条款以及配送与退货条件。",
+    "privacy_nota": "您的信息只用于这笔订单。",
+    "paga": "支付 {totale}",
+    "paga_demo": "确认测试订单",
+    "elaborazione": "请稍候，正在记录您的订单…",
+    "successo_titolo": "谢谢您，{nome}。",
+    "successo_testo": "您的订单已到达工作室。我已把确认信发到 {email}。我会亲手包装，发货时再写信给您。",
+    "successo_demo": "这是一笔测试订单：没有发生任何付款。",
+    "numero_ordine": "订单号 {numero}",
+    "prossimi_passi_titolo": "接下来会怎样",
+    "prossimi_passi": [
+      "包装前，我会再检查一遍作品。",
+      "我亲手包装，四角加固，并购买运输保险。",
+      "一发货，我就把物流单号发给您。"
+    ]
+  },
+
+  "email_conferma": {
+    "oggetto": "您的订单 {numero} — Isabella Pistillo",
+    "preheader": "我已收到您的订单。以下是订单摘要。",
+    "saluto": "{nome}，您好：",
+    "corpo": "谢谢您。您的订单已到达工作室，从现在起由我亲自处理。下面是订单摘要：请保留，日后给我写信时会用到。",
+    "corpo_originale": "您选择了一幅原作。寄出之前，我会再检查一遍，在背面签名 [待确认]，并亲手包装。",
+    "riepilogo_titolo": "订单摘要",
+    "colonna_opera": "作品",
+    "colonna_prezzo": "价格",
+    "riga_subtotale": "小计",
+    "riga_spedizione": "运费（{zona}）",
+    "riga_iva": "其中增值税",
+    "riga_totale": "实付金额",
+    "riga_metodo": "付款方式",
+    "spedizione_titolo": "收货地址",
+    "tempi_titolo": "何时发货",
+    "tempi_testo": "原作在 5 个工作日内寄出，版画在 3 个工作日内寄出。发货时我会再写信告诉您物流单号。",
+    "domande": "有任何问题，直接回复这封邮件，或通过 WhatsApp 联系我：+39 376 0426 212。",
+    "chiusura": "期待再联系，",
+    "firma": "伊莎贝拉",
+    "ps": "附言：画挂好以后，如果您愿意，给我发一张照片吧。我喜欢知道它住在哪里。",
+    "footer": "Isabella Pistillo · Via Felice Orsini 69A, 76123 Andria (BT), Italia · info@isabellapistillo.com",
+    "footer_demo": "演示预览：这封邮件并未发送。"
+  },
+
+  "errori": {
+    "obbligatorio": "此项为必填，请填写后继续。",
+    "email": "这个邮箱地址似乎不完整。请检查是否包含 @ 和域名（例如 name@email.com）。",
+    "telefono": "请填写带国家区号的号码，例如 +86 138 0000 0000。",
+    "cap": "请检查邮编：与所选国家不符。",
+    "paese_non_servito": "这个国家我还没有设定运费。给我写信，我们一起想办法。",
+    "carta_numero": "卡号无效。请检查数字。",
+    "carta_scadenza": "这张卡已过期。请使用有效期在未来的卡。",
+    "carta_cvc": "CVC 是卡背面的 3 位数字（American Express 为 4 位）。",
+    "carta_rifiutata": "银行拒绝了这笔付款。请换一张卡，或选择分期付款。",
+    "carta_demo": "演示模式下只能使用测试卡 4242 4242 4242 4242。",
+    "consenso": "发送前请同意隐私声明。",
+    "termini": "完成购买前请同意销售条款。",
+    "messaggio_breve": "请再多写几句：这样我能更好地回复您。",
+    "file_formato": "可以上传 JPG、PNG 或 HEIC 格式的照片。",
+    "file_peso": "照片太大：最大 10 MB。",
+    "invio": "留言没有发送成功。请检查网络后重试；如果仍然不行，请写信至 info@isabellapistillo.com。",
+    "rete": "您似乎已断网。重新连接后再试：您填写的内容还保留在这里。",
+    "pagina_non_trovata_titolo": "这个页面不存在",
+    "pagina_non_trovata_testo": "作品可能已移动，或链接有误。其他作品都在这里。",
+    "generico": "我们这边出了点问题。请一分钟后再试。"
+  },
+
+  "cookie_banner": {
+    "titolo": "Cookie",
+    "testo": "我使用技术性 Cookie 让购物车正常运作；只有在您允许时，才会使用统计 Cookie 了解哪些页面被访问。[草稿：需与实际 Cookie 清单核对]",
+    "accetta": "全部接受",
+    "rifiuta": "仅必要",
+    "personalizza": "自行选择"
+  },
+
+  "legale": {
+    "banner_bozza": "草稿：临时文本，发布前需由律师或会计师审核。",
+    "aggiornamento": "最后更新：[日期]",
+    "termini": {
+      "titolo": "销售条款",
+      "sezioni": [
+        { "titolo": "卖方", "testo": "作品由 Pistillo Isabella 出售，地址：via Felice Orsini 69A, 76123 Andria (BT), Italia，增值税号 [号码]，邮箱 info@isabellapistillo.com。" },
+        { "titolo": "作品", "testo": "原作为手工绘制并签名，仅此一件。照片拍摄认真，但颜色和肌理在不同屏幕上可能显示不同。版画按所示尺寸复制原作。" },
+        { "titolo": "价格与增值税", "testo": "价格以欧元计，含增值税：原作 5%，版画及其他产品 22%。运费在付款前于购物车中显示。[欧盟以外的销售：需核实增值税制度和关税。]" },
+        { "titolo": "订单与付款", "testo": "收到订单确认邮件时合同成立。付款方式为通过 Stripe 刷卡，或通过 Scalapay 分期，适用服务商的条款。" },
+        { "titolo": "库存", "testo": "如果您下单后发现原作已售出，我会通知您，并在 [N] 天内全额退款。" },
+        { "titolo": "定制作品", "testo": "定制作品依据客户的个人要求制作，因此不适用撤销权（意大利《消费者法典》第 59 条 c 款）。价格、尺寸、时间和定金在草图确认时以书面形式约定。[待核实]" },
+        { "titolo": "撤销权", "testo": "网上购买的商品，您可在收货后 14 天内无理由撤销。详见“配送与退货”页面。" },
+        { "titolo": "版权", "testo": "购买作品不转让复制权，复制权仍归伊莎贝拉·皮斯蒂洛所有。" },
+        { "titolo": "适用法律", "testo": "适用意大利法律。消费者保留在其居住地法院起诉的权利。[待核实]" }
+      ]
+    },
+    "spedizioni": {
+      "titolo": "配送与退货",
+      "intro": "每件作品都在工作室手工包装，并通过 [快递：Poste Italiane / GLS / 其他] 投保寄出。发货后我会立即把物流单号发给您。",
+      "zone_titolo": "各区域运费",
+      "zone": [
+        { "zona": "意大利", "originali": "[€ XX]", "stampe": "[€ XX — 满 € XX 免运费]", "tempi": "[2–3] 个工作日" },
+        { "zona": "欧洲（欧盟）", "originali": "[€ XX]", "stampe": "[€ XX]", "tempi": "[5–8] 个工作日" },
+        { "zona": "其他国家和地区", "originali": "[€ XX]", "stampe": "[€ XX]", "tempi": "[7–12] 个工作日" }
+      ],
+      "colonna_zona": "区域",
+      "colonna_originali": "原作",
+      "colonna_stampe": "版画",
+      "colonna_tempi": "送达时间",
+      "preparazione": "备货时间：现货原作 5 个工作日；版画 3 个工作日；定制作品 20–30 天。",
+      "extra_ue": "寄往欧盟以外时，收件人可能需要缴纳进口关税和税费。[待核实]",
+      "danni_titolo": "如果包裹到达时已损坏",
+      "danni_testo": "请在拆开前拍下包裹照片，并“有保留地”签收。在 48 小时内带照片写信至 info@isabellapistillo.com：我来和快递公司处理。",
+      "resi_titolo": "退货",
+      "resi_testo": "收货后 14 天内可退回作品。寄回前请先写信给我：我会告诉您如何包装。作品须完好无损并使用原包装寄回。退货运费由退货方承担 [待定]。作品回到工作室后 14 天内退款。",
+      "esclusi_titolo": "不可退货的情况",
+      "esclusi_testo": "定制作品和个性化作品。[其他情况：待定]"
+    },
+    "privacy": {
+      "titolo": "隐私声明",
+      "sezioni": [
+        { "titolo": "数据控制者", "testo": "Pistillo Isabella，via Felice Orsini 69A, 76123 Andria (BT), Italia，info@isabellapistillo.com。" },
+        { "titolo": "收集哪些数据", "testo": "购买时的姓名、联系方式、收货地址和开票信息；您在表单中填写的内容；订阅来信或等候名单时的邮箱。银行卡信息由 Stripe 处理，不经过本网站。" },
+        { "titolo": "用途", "testo": "处理订单、配送和发票；回复您的留言；仅在您要求时给您寄送来信。" },
+        { "titolo": "与谁共享", "testo": "仅限必要的对象：快递公司、Stripe、Scalapay、会计师、网站和邮件服务商。[服务商清单待补充]" },
+        { "titolo": "保存多久", "testo": "订单数据按税法要求的期限保存；订阅联系人保存至您取消订阅为止。" },
+        { "titolo": "您的权利", "testo": "您可以写信至 info@isabellapistillo.com，要求查看、更正或删除您的数据。您也可以向意大利个人数据保护局（Garante per la protezione dei dati personali）投诉。" }
+      ]
+    },
+    "cookie": {
+      "titolo": "Cookie",
+      "sezioni": [
+        { "titolo": "必要 Cookie", "testo": "用于购物车、语言和结账功能，无法关闭。" },
+        { "titolo": "统计 Cookie", "testo": "仅在您同意后使用：以匿名方式告诉我哪些页面被访问。[工具：待定]" },
+        { "titolo": "营销 Cookie", "testo": "[如使用 Facebook/Meta 像素，须在此说明，并仅在获得同意后启用。]" },
+        { "titolo": "更改选择", "testo": "您可以随时通过页面底部的“Cookie 偏好设置”链接更改选择。" }
+      ]
+    }
+  },
+
+  "seo": {
+    "home_titolo": "伊莎贝拉·皮斯蒂洛 — 原创布面丙烯画",
+    "home_descrizione": "在意大利安德里亚的工作室里，用丙烯、画笔和刮刀绘制的女性面孔与身体。签名原作、版画和定制作品，可寄往全球。",
+    "opere_titolo": "原创画作 — 伊莎贝拉·皮斯蒂洛",
+    "opere_descrizione": "签名原创画作，附尺寸和画面肌理特写。含 5% 增值税。",
+    "proposte_titolo": "伊莎的搭配 — 伊莎贝拉·皮斯蒂洛",
+    "proposte_descrizione": "伊莎贝拉按颜色搭配的画作、版画和器物，适合同一面墙。",
+    "atelier_titolo": "一幅画是怎样诞生的 — 伊莎贝拉·皮斯蒂洛",
+    "atelier_descrizione": "从空白画布到签名：安德里亚费利切·奥尔西尼路工作室里的五个步骤。",
+    "bio_titolo": "伊莎贝拉·皮斯蒂洛 — 简介",
+    "bio_descrizione": "1969 年生于意大利普利亚的画家。布面丙烯，女性的面孔与身体，立体主义与二十世纪绘画。",
+    "commissioni_titolo": "定制画作 — 伊莎贝拉·皮斯蒂洛",
+    "commissioni_descrizione": "为您的墙面画一幅画：沟通、草图、20–30 天绘制、投保配送。",
+    "contatti_titolo": "联系 — 伊莎贝拉·皮斯蒂洛",
+    "contatti_descrizione": "工作室地址：意大利安德里亚费利切·奥尔西尼路 69A 号。邮箱、电话和 WhatsApp。"
+  }
+}

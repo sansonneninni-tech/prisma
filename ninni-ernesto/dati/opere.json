@@ -1,0 +1,308 @@
+[
+ {
+  "id": "01",
+  "titolo": "Tulipano",
+  "titolo_en": "Tulip",
+  "autore": "ninni",
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "stampa_max_cm": 90,
+  "edizione": {
+   "esemplari": 7,
+   "prove_artista": 1,
+   "vendute": 4,
+   "larghezza_cm": 60,
+   "altezza_cm": 90,
+   "carta": "rag",
+   "cornice": "walnut",
+   "scaglioni": [
+    {
+     "fino": 3,
+     "eur": 990
+    },
+    {
+     "fino": 5,
+     "eur": 1190
+    },
+    {
+     "fino": 6,
+     "eur": 1390
+    },
+    {
+     "fino": 7,
+     "eur": 1690
+    }
+   ]
+  },
+  "campi_mancanti": [
+   "titolo da confermare con Ninni",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo provvisorio scelto dal sito: da confermare."
+ },
+ {
+  "id": "02",
+  "titolo": "Alstroemeria",
+  "titolo_en": "Alstroemeria",
+  "autore": "ninni",
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "stampa_max_cm": 90,
+  "edizione": {
+   "esemplari": 10,
+   "prove_artista": 2,
+   "vendute": 6,
+   "larghezza_cm": 40,
+   "altezza_cm": 60,
+   "carta": "bizan",
+   "cornice": "oak",
+   "scaglioni": [
+    {
+     "fino": 4,
+     "eur": 690
+    },
+    {
+     "fino": 7,
+     "eur": 790
+    },
+    {
+     "fino": 9,
+     "eur": 950
+    },
+    {
+     "fino": 10,
+     "eur": 1190
+    }
+   ]
+  },
+  "campi_mancanti": [
+   "titolo da confermare con Ninni",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo provvisorio scelto dal sito: da confermare."
+ },
+ {
+  "id": "03",
+  "titolo": "Volto",
+  "titolo_en": "Face",
+  "autore": "ninni",
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "stampa_max_cm": 90,
+  "edizione": {
+   "esemplari": 7,
+   "prove_artista": 1,
+   "vendute": 2,
+   "larghezza_cm": 60,
+   "altezza_cm": 90,
+   "carta": "baryta",
+   "cornice": "walnut",
+   "scaglioni": [
+    {
+     "fino": 3,
+     "eur": 990
+    },
+    {
+     "fino": 5,
+     "eur": 1190
+    },
+    {
+     "fino": 6,
+     "eur": 1390
+    },
+    {
+     "fino": 7,
+     "eur": 1690
+    }
+   ]
+  },
+  "campi_mancanti": [
+   "titolo da confermare con Ninni",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo provvisorio scelto dal sito: da confermare."
+ },
+ {
+  "id": "04",
+  "titolo": "Negativo",
+  "titolo_en": "Negative",
+  "autore": "ninni",
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "stampa_max_cm": 70,
+  "edizione": {
+   "esemplari": 10,
+   "prove_artista": 2,
+   "vendute": 3,
+   "larghezza_cm": 50,
+   "altezza_cm": 50,
+   "carta": "baryta",
+   "cornice": "oak",
+   "scaglioni": [
+    {
+     "fino": 4,
+     "eur": 590
+    },
+    {
+     "fino": 7,
+     "eur": 690
+    },
+    {
+     "fino": 9,
+     "eur": 850
+    },
+    {
+     "fino": 10,
+     "eur": 1050
+    }
+   ]
+  },
+  "campi_mancanti": [
+   "titolo da confermare con Ninni",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo provvisorio scelto dal sito: da confermare."
+ },
+ {
+  "id": "05",
+  "titolo": "Pugno",
+  "titolo_en": "Fist",
+  "autore": "ninni",
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "stampa_max_cm": 30,
+  "edizione": null,
+  "campi_mancanti": [
+   "titolo da confermare con Ninni",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo provvisorio scelto dal sito: da confermare."
+ },
+ {
+  "id": "06",
+  "titolo": "Arancia",
+  "titolo_en": "Orange",
+  "autore": "ninni",
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "stampa_max_cm": 60,
+  "edizione": null,
+  "campi_mancanti": [
+   "titolo da confermare con Ninni",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo provvisorio scelto dal sito: da confermare."
+ },
+ {
+  "id": "07",
+  "titolo": "Croce rossa",
+  "titolo_en": "Red cross",
+  "autore": "ninni",
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "stampa_max_cm": 45,
+  "edizione": null,
+  "campi_mancanti": [
+   "titolo da confermare con Ninni",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo provvisorio scelto dal sito: da confermare."
+ },
+ {
+  "id": "08",
+  "titolo": "Due",
+  "titolo_en": "Two",
+  "autore": "ninni",
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "stampa_max_cm": 80,
+  "edizione": {
+   "esemplari": 10,
+   "prove_artista": 2,
+   "vendute": 1,
+   "larghezza_cm": 45,
+   "altezza_cm": 60,
+   "carta": "bizan",
+   "cornice": "oak",
+   "scaglioni": [
+    {
+     "fino": 4,
+     "eur": 690
+    },
+    {
+     "fino": 7,
+     "eur": 790
+    },
+    {
+     "fino": 9,
+     "eur": 950
+    },
+    {
+     "fino": 10,
+     "eur": 1190
+    }
+   ]
+  },
+  "campi_mancanti": [
+   "titolo da confermare con Ninni",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo provvisorio scelto dal sito: da confermare."
+ }
+]

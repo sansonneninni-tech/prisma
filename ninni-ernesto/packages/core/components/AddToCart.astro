@@ -1,0 +1,167 @@
+---
+/**
+ * "Aggiungi al carrello" for an original (`product`) or a print with format + material choice (`printOf`).
+ * Works without a framework; state is shared through the cart store.
+ *
+ *   <AddToCart product={toCartProduct(art, lang, { path: `/opere/${art.slug}` })} lang={lang} />
+ *   <AddToCart printOf={art} lang={lang} />
+ *
+ * Classes: isa-add-to-cart, __options, __legend, __option, __price, __button, __go, __note.
+ * State: `data-state="idle|in-cart"` on the form.
+ */
+import { toPrintCartProducts } from '../src/catalog/index.ts';
+import { formatPrice, localizePath, pickStrings, useTranslations } from '../src/i18n/index.ts';
+import type { Artwork, CartProduct, Locale } from '../src/types.ts';
+
+interface Props {
+  lang: Locale;
+  /** Original painting (from `toCartProduct`). `null`/undefined + no `printOf` → renders nothing. */
+  product?: CartProduct | null;
+  /** Artwork whose prints are offered. */
+  printOf?: Artwork;
+  /** Product page path without language (for the cart link back). */
+  path?: string;
+  /** Print formats: `'standard'` (default, 4) or `'all'` (the 8 of the price list). */
+  printFormats?: 'standard' | 'all';
+  cartHref?: string;
+  /** Override the button label. */
+  label?: string;
+  class?: string;
+}
+
+const { lang, product, printOf, path, printFormats, cartHref = '/carrello', label, class: className } = Astro.props;
+const t = useTranslations(lang);
+const uid = `isa-atc-${Math.random().toString(36).slice(2, 8)}`;
+
+const variants = printOf ? toPrintCartProducts(printOf, lang, { ...(path ? { path } : {}), formats: printFormats }) : [];
+const formats = [...new Map(variants.map((v) => [v.format.id, v.format])).values()];
+const firstVariant = variants[0];
+const products: Record<string, CartProduct> = {};
+for (const v of variants) products[`${v.format.id}:${v.material}`] = v.product;
+if (product) products.original = product;
+
+const prices: Record<string, string> = {};
+for (const [k, p] of Object.entries(products)) prices[k] = formatPrice(p.unitPriceCents, lang);
+
+const strings = pickStrings(t, ['bottoni.aggiungi_carrello', 'bottoni.aggiunta_carrello', 'carrello.originale_quantita', 'carrello.aggiunto']);
+const render = Boolean(product) || variants.length > 0;
+---
+
+{
+  render && (
+    <form
+      class:list={['isa-add-to-cart', printOf ? 'isa-add-to-cart--print' : 'isa-add-to-cart--original', className]}
+      data-isa-add-to-cart
+      data-state="idle"
+      data-lang={lang}
+      data-products={JSON.stringify(products)}
+      data-prices={JSON.stringify(prices)}
+      data-i18n={JSON.stringify(strings)}
+      data-label={label ?? ''}
+    >
+      {printOf && firstVariant && (
+        <>
+          <fieldset class="isa-add-to-cart__options isa-add-to-cart__options--format">
+            <legend class="isa-add-to-cart__legend">{t('etichette.formato_stampa')}</legend>
+            {formats.map((f, i) => (
+              <label class="isa-add-to-cart__option">
+                <input type="radio" name="format" value={f.id} checked={i === 0} />
+                <span>{t('etichette.misure_valore', { base: f.widthCm, altezza: f.heightCm })}</span>
+              </label>
+            ))}
+          </fieldset>
+          <fieldset class="isa-add-to-cart__options isa-add-to-cart__options--material">
+            <legend class="isa-add-to-cart__legend">{t('etichette.supporto_stampa')}</legend>
+            <label class="isa-add-to-cart__option">
+              <input type="radio" name="material" value="paper" checked={firstVariant.material === 'paper'} />
+              <span>{t('etichette.carta_fotografica')}</span>
+            </label>
+            <label class="isa-add-to-cart__option">
+              <input type="radio" name="material" value="canvas" checked={firstVariant.material === 'canvas'} />
+              <span>{t('etichette.tela')}</span>
+            </label>
+          </fieldset>
+          <p class="isa-add-to-cart__price">
+            <output name="price" for={uid} aria-live="polite">
+              {prices[`${firstVariant.format.id}:${firstVariant.material}`]}
+            </output>{' '}
+            <span class="isa-add-to-cart__vat">{t('etichette.iva_stampe')}</span>
+          </p>
+        </>
+      )}
+      <button type="submit" class="isa-add-to-cart__button" id={uid}>
+        {label ?? t('bottoni.aggiungi_carrello')}
+      </button>
+      <a class="isa-add-to-cart__go" href={localizePath(cartHref, lang)} hidden>
+        {t('bottoni.vai_carrello')}
+      </a>
+      <!-- visual note only: screen readers are informed by CartLiveRegion -->
+      <p class="isa-add-to-cart__note"></p>
+    </form>
+  )
+}
+
+<script>
+  import { $cart, addToCart, lineKey } from '../src/cart/store.ts';
+  import type { CartProduct } from '../src/types.ts';
+  import { readJsonData, readTranslator } from '../src/ui/dom.ts';
+
+  document.querySelectorAll<HTMLFormElement>('form[data-isa-add-to-cart]').forEach((form) => {
+    const t = readTranslator(form);
+    const products = readJsonData<Record<string, CartProduct>>(form, 'products') ?? {};
+    const prices = readJsonData<Record<string, string>>(form, 'prices') ?? {};
+    const button = form.querySelector<HTMLButtonElement>('.isa-add-to-cart__button');
+    const go = form.querySelector<HTMLAnchorElement>('.isa-add-to-cart__go');
+    const note = form.querySelector<HTMLElement>('.isa-add-to-cart__note');
+    const output = form.querySelector<HTMLOutputElement>('output[name="price"]');
+    const customLabel = form.dataset.label;
+
+    const selectedKey = (): string => {
+      if (products.original) return 'original';
+      const format = form.querySelector<HTMLInputElement>('input[name="format"]:checked')?.value;
+      const material = form.querySelector<HTMLInputElement>('input[name="material"]:checked')?.value;
+      return `${format}:${material}`;
+    };
+
+    /** Disable materials that do not exist for the chosen format (e.g. 40×60 on canvas). */
+    const syncOptions = () => {
+      if (products.original) return;
+      const format = form.querySelector<HTMLInputElement>('input[name="format"]:checked')?.value;
+      const materials = [...form.querySelectorAll<HTMLInputElement>('input[name="material"]')];
+      for (const input of materials) input.disabled = !products[`${format}:${input.value}`];
+      if (materials.find((m) => m.checked)?.disabled) {
+        const firstEnabled = materials.find((m) => !m.disabled);
+        if (firstEnabled) firstEnabled.checked = true;
+      }
+      if (output) output.value = prices[selectedKey()] ?? '';
+    };
+
+    const render = () => {
+      const product = products[selectedKey()];
+      const inCart = product ? $cart.get().some((l) => l.key === lineKey(product)) : false;
+      form.dataset.state = inCart ? 'in-cart' : 'idle';
+      if (go) go.hidden = !inCart;
+      if (button && product?.kind === 'original') {
+        button.textContent = inCart ? t('bottoni.aggiunta_carrello') : customLabel || t('bottoni.aggiungi_carrello');
+      }
+    };
+
+    form.addEventListener('change', () => {
+      syncOptions();
+      render();
+      if (note) note.textContent = '';
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const product = products[selectedKey()];
+      if (!product) return;
+      const result = addToCart(product);
+      if (note) note.textContent = result.ok ? t('carrello.aggiunto', { titolo: product.title }) : result.reason === 'max-quantity' && product.kind === 'original' ? t('carrello.originale_quantita') : '';
+      render();
+    });
+
+    syncOptions();
+    $cart.subscribe(render);
+  });
+</script>

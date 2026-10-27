@@ -1,0 +1,23 @@
+---
+/**
+ * Casella del consenso privacy con il link all'informativa nell'etichetta (pezzo 7, regola di Casa).
+ * Stesso markup del <Field type="checkbox"> del core (id, name, aria-describedby, box d'errore `data-error-for`):
+ * validateCommission/validateContact e showFieldErrors del core funzionano uguali. Il link apre /info/#privacy in una
+ * scheda nuova, così il modulo non perde quello che si è scritto.
+ */
+import { href, useT, type Locale } from '../../lib/i18n';
+
+interface Props { idPrefix: string; label: string; lang: Locale }
+const { idPrefix, label, lang } = Astro.props;
+const t = useT(lang);
+const id = `${idPrefix}-privacy`;
+const errorId = `${id}-error`;
+// le parole che diventano link, nelle tre lingue; se non ci sono, il link va su tutta la frase
+const m = /informativa (sulla )?privacy|privacy (notice|policy)|隐私(声明|政策)/i.exec(label);
+const [prima, parola, dopo] = m ? [label.slice(0, m.index), m[0], label.slice(m.index + m[0].length)] : ['', label, ''];
+---
+<div class="isa-field isa-field--check isa-field--checkbox" data-field="privacy">
+  <input class="isa-field__check" id={id} name="privacy" type="checkbox" value="on" required aria-describedby={errorId} />
+  <label class="isa-field__label" for={id}>{prima}<a class="consenso__link" href={href(lang, '/info/#privacy')} target="_blank" rel="noopener">{parola}<span class="vh"> ({t('galleria.isabella.nuova_scheda')})</span></a>{dopo}</label>
+  <p class="isa-field__error" id={errorId} data-error-for="privacy" hidden></p>
+</div>

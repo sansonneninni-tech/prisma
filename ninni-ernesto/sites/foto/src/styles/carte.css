@@ -1,0 +1,23 @@
+/* Carte e cornici: elenco numerato, tabella dei sovrapprezzi, passi dell'edizione. */
+.cc { padding-bottom: var(--s-9); }
+.cc__lead { font-size: var(--t-lead); line-height: var(--lh-tight); max-width: 34rem; margin: var(--s-5) 0 var(--s-8); }
+.cc__sez { border-top: var(--line); padding-top: var(--s-4); margin-top: var(--s-8); }
+.cc__h2 { font-size: var(--t-tab); line-height: var(--lh-tab); font-weight: var(--w-display); letter-spacing: var(--ls-list); margin-bottom: var(--s-6); }
+.cc__lista { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s-6); }
+@media (min-width: 768px) { .cc__lista { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-7); } }
+@media (min-width: 1280px) { .cc__lista { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.cc__v { display: grid; gap: var(--s-2); align-content: start; }
+.cc__n { font-size: var(--t-small); color: var(--c-mute); }
+.cc__nome { font-size: var(--t-lead); font-weight: var(--w-strong); line-height: var(--lh-tight); display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: baseline; }
+.cc__tag { font-size: var(--t-small); font-weight: var(--w-text); padding: 2px 6px; background: var(--c-accento-chiaro, #f3ece2); color: var(--c-ink); }
+.cc__t { font-size: var(--t-cap); line-height: var(--lh-text); color: var(--c-mute); max-width: 30rem; }
+.cc__griglia { display: grid; gap: var(--s-6); }
+@media (min-width: 1024px) { .cc__griglia { grid-template-columns: 2fr 1fr; align-items: start; } }
+.cc__tab { width: 100%; border-collapse: collapse; font-size: var(--t-cap); }
+.cc__tab th, .cc__tab td { text-align: left; padding: var(--s-3) var(--s-2) var(--s-3) 0; border-bottom: var(--line-soft); vertical-align: top; }
+.cc__tab thead th { font-size: var(--t-small); color: var(--c-mute); font-weight: var(--w-text); }
+.cc__tab tbody th b { display: block; font-weight: var(--w-strong); }
+.cc__tab tbody th small { display: block; font-weight: var(--w-text); color: var(--c-mute); font-size: var(--t-small); margin-top: 2px; max-width: 22rem; }
+.cc__tab td { white-space: nowrap; }
+.cc__fig img { width: 100%; height: auto; display: block; }
+.cc__passi { padding-left: 1.2em; list-style: decimal; display: grid; gap: var(--s-3); font-size: var(--t-lead); line-height: var(--lh-tight); max-width: 40rem; margin-bottom: var(--s-6); }

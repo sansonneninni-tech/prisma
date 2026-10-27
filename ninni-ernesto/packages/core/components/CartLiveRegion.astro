@@ -1,0 +1,58 @@
+---
+/**
+ * Screen-reader announcements for cart changes (aria-live="polite"). Put it once in the layout.
+ * Visually hidden by default; pass `visible` to also use it as a small toast (style `.isa-cart-live`).
+ */
+import { pickStrings, useTranslations } from '../src/i18n/index.ts';
+import type { Locale } from '../src/types.ts';
+
+interface Props {
+  lang: Locale;
+  visible?: boolean;
+  class?: string;
+}
+const { lang, visible = false, class: className } = Astro.props;
+const t = useTranslations(lang);
+const strings = pickStrings(t, ['carrello.aggiunto', 'carrello.rimosso', 'carrello.originale_quantita', 'core.cart.quantita_aggiornata', 'carrello.vuoto_titolo']);
+---
+
+<div
+  class:list={['isa-cart-live', !visible && 'isa-visually-hidden', className]}
+  role="status"
+  aria-live="polite"
+  aria-atomic="true"
+  data-isa-cart-live
+  data-lang={lang}
+  data-i18n={JSON.stringify(strings)}
+>
+</div>
+
+<script>
+  import { $cartEvent } from '../src/cart/store.ts';
+  import { announce, readTranslator } from '../src/ui/dom.ts';
+
+  document.querySelectorAll<HTMLElement>('[data-isa-cart-live]').forEach((region) => {
+    const t = readTranslator(region);
+    $cartEvent.listen((event) => {
+      if (!event) return;
+      let message = '';
+      if (event.type === 'added') message = t('carrello.aggiunto', { titolo: event.title });
+      else if (event.type === 'removed') message = t('carrello.rimosso', { titolo: event.title });
+      else if (event.type === 'quantity') message = t('core.cart.quantita_aggiornata', { titolo: event.title, n: event.quantity });
+      else if (event.type === 'max-quantity') message = event.kind === 'original' ? t('carrello.originale_quantita') : '';
+      else if (event.type === 'cleared') message = t('carrello.vuoto_titolo');
+      if (message) announce(region, message);
+    });
+  });
+</script>
+
+<style is:global>
+  .isa-visually-hidden:not(:focus):not(:active) {
+    clip-path: inset(50%);
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+  }
+</style>

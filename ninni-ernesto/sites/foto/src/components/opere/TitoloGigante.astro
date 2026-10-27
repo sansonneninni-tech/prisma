@@ -1,0 +1,15 @@
+---
+/**
+ * C9 TitoloGigante: h1 che sta sempre nella riga (`--fit` calcolato sul server da fit-larghezze.json, lib/fit.ts).
+ * A5 (opere-client.ts): scorrendo i primi 300 px scala fino a --t-title-min e resta in alto (sticky sotto l'header,
+ * con una striscia bianca a tutta larghezza che si accorcia con lui: solo transform, legati allo scorrimento in CSS dove
+ * il browser li ha). Con riduci movimento resta fermo e scorre via.
+ */
+import { fit } from '../../lib/fit';
+interface Props { testo: string; class?: string; id?: string }
+const { testo, class: cls, id } = Astro.props;
+const f = fit(testo);
+---
+<div class:list={['tg', cls]} data-tg>
+  <div class="titolo" style={f ? `--fit:${f}` : undefined}><h1 class="tg__h" id={id} data-tg-h>{testo}</h1></div>
+</div>

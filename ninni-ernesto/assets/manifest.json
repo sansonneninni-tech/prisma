@@ -1,0 +1,1553 @@
+{
+ "versione": 1,
+ "opere": [
+  {
+   "id": "01",
+   "slug": "foto-01",
+   "aspect_ratio": 0.6679,
+   "orientamento": "verticale",
+   "tela_px": [
+    2832,
+    4240
+   ],
+   "colore_dominante": "#f1d3b2",
+   "palette": [
+    {
+     "hex": "#f1d3b2",
+     "share": 0.262
+    },
+    {
+     "hex": "#134b82",
+     "share": 0.252
+    },
+    {
+     "hex": "#173a5e",
+     "share": 0.218
+    },
+    {
+     "hex": "#7f6b72",
+     "share": 0.176
+    },
+    {
+     "hex": "#434f7e",
+     "share": 0.091
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRpAAAABXRUJQVlA4IIQAAACwBACdASoNABQAPu1iqU2ppaQiMAgBMB2JbACdMoRwJoADqc4I0Wxkv1SuxnIAAP7i2V+qmEZSLMBwYB+NSdBC271rzModEN4Rd+68T6c1tpAtESCUg3t2OHP+BLq8i2huZprEGqe3vKNOf+vAtYsfq5MGu32OS7WtZ9nqhK0qGkOsXAA=",
+   "alt": "Tulipano bianco aperto su un cielo blu",
+   "immagini": {
+    "tela": {
+     "w": 2400,
+     "h": 3593,
+     "avif": [
+      {
+       "w": 480,
+       "h": 719,
+       "file": "opere/01/foto-01_tela_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1437,
+       "file": "opere/01/foto-01_tela_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2395,
+       "file": "opere/01/foto-01_tela_1600.avif"
+      },
+      {
+       "w": 2400,
+       "h": 3593,
+       "file": "opere/01/foto-01_tela_2400.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 719,
+       "file": "opere/01/foto-01_tela_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1437,
+       "file": "opere/01/foto-01_tela_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2395,
+       "file": "opere/01/foto-01_tela_1600.webp"
+      },
+      {
+       "w": 2400,
+       "h": 3593,
+       "file": "opere/01/foto-01_tela_2400.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1600,
+      "h": 2395,
+      "file": "opere/01/foto-01_tela_1600.jpg"
+     },
+     "src": "_DSC1926.jpg",
+     "aspect_ratio": 0.6679
+    },
+    "miniatura": {
+     "w": 800,
+     "h": 1000,
+     "avif": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/01/foto-01_miniatura_400.avif"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/01/foto-01_miniatura_800.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/01/foto-01_miniatura_400.webp"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/01/foto-01_miniatura_800.webp"
+      }
+     ],
+     "jpg": {
+      "w": 800,
+      "h": 1000,
+      "file": "opere/01/foto-01_miniatura_800.jpg"
+     }
+    },
+    "dettaglio-1": {
+     "w": 906,
+     "h": 906,
+     "avif": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/01/foto-01_dettaglio-1_480.avif"
+      },
+      {
+       "w": 906,
+       "h": 906,
+       "file": "opere/01/foto-01_dettaglio-1_906.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/01/foto-01_dettaglio-1_480.webp"
+      },
+      {
+       "w": 906,
+       "h": 906,
+       "file": "opere/01/foto-01_dettaglio-1_906.webp"
+      }
+     ],
+     "jpg": {
+      "w": 906,
+      "h": 906,
+      "file": "opere/01/foto-01_dettaglio-1_906.jpg"
+     }
+    },
+    "dettaglio-2": {
+     "w": 849,
+     "h": 849,
+     "avif": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/01/foto-01_dettaglio-2_480.avif"
+      },
+      {
+       "w": 849,
+       "h": 849,
+       "file": "opere/01/foto-01_dettaglio-2_849.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/01/foto-01_dettaglio-2_480.webp"
+      },
+      {
+       "w": 849,
+       "h": 849,
+       "file": "opere/01/foto-01_dettaglio-2_849.webp"
+      }
+     ],
+     "jpg": {
+      "w": 849,
+      "h": 849,
+      "file": "opere/01/foto-01_dettaglio-2_849.jpg"
+     }
+    }
+   }
+  },
+  {
+   "id": "02",
+   "slug": "foto-02",
+   "aspect_ratio": 0.6679,
+   "orientamento": "verticale",
+   "tela_px": [
+    2832,
+    4240
+   ],
+   "colore_dominante": "#a39c8a",
+   "palette": [
+    {
+     "hex": "#a39c8a",
+     "share": 0.327
+    },
+    {
+     "hex": "#005840",
+     "share": 0.217
+    },
+    {
+     "hex": "#615537",
+     "share": 0.214
+    },
+    {
+     "hex": "#01513a",
+     "share": 0.183
+    },
+    {
+     "hex": "#438169",
+     "share": 0.058
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAACQAwCdASoNABQAPu1iqk2ppaQiMAgBMB2JZgCdAB5HlFa/r3QAAP1Qmg9qwPMNc6MVU+vLFgDoeWhbzIBKQR/0Lx1K59xuTSHaF/eMrq7HMt6IL4AAAA==",
+   "alt": "Fiori rosa in un bicchiere su una tovaglia verde",
+   "immagini": {
+    "tela": {
+     "w": 2400,
+     "h": 3593,
+     "avif": [
+      {
+       "w": 480,
+       "h": 719,
+       "file": "opere/02/foto-02_tela_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1437,
+       "file": "opere/02/foto-02_tela_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2395,
+       "file": "opere/02/foto-02_tela_1600.avif"
+      },
+      {
+       "w": 2400,
+       "h": 3593,
+       "file": "opere/02/foto-02_tela_2400.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 719,
+       "file": "opere/02/foto-02_tela_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1437,
+       "file": "opere/02/foto-02_tela_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2395,
+       "file": "opere/02/foto-02_tela_1600.webp"
+      },
+      {
+       "w": 2400,
+       "h": 3593,
+       "file": "opere/02/foto-02_tela_2400.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1600,
+      "h": 2395,
+      "file": "opere/02/foto-02_tela_1600.jpg"
+     },
+     "src": "_DSC3124.jpg",
+     "aspect_ratio": 0.6679
+    },
+    "miniatura": {
+     "w": 800,
+     "h": 1000,
+     "avif": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/02/foto-02_miniatura_400.avif"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/02/foto-02_miniatura_800.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/02/foto-02_miniatura_400.webp"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/02/foto-02_miniatura_800.webp"
+      }
+     ],
+     "jpg": {
+      "w": 800,
+      "h": 1000,
+      "file": "opere/02/foto-02_miniatura_800.jpg"
+     }
+    },
+    "dettaglio-1": {
+     "w": 849,
+     "h": 849,
+     "avif": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/02/foto-02_dettaglio-1_480.avif"
+      },
+      {
+       "w": 849,
+       "h": 849,
+       "file": "opere/02/foto-02_dettaglio-1_849.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/02/foto-02_dettaglio-1_480.webp"
+      },
+      {
+       "w": 849,
+       "h": 849,
+       "file": "opere/02/foto-02_dettaglio-1_849.webp"
+      }
+     ],
+     "jpg": {
+      "w": 849,
+      "h": 849,
+      "file": "opere/02/foto-02_dettaglio-1_849.jpg"
+     }
+    },
+    "dettaglio-2": {
+     "w": 849,
+     "h": 849,
+     "avif": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/02/foto-02_dettaglio-2_480.avif"
+      },
+      {
+       "w": 849,
+       "h": 849,
+       "file": "opere/02/foto-02_dettaglio-2_849.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/02/foto-02_dettaglio-2_480.webp"
+      },
+      {
+       "w": 849,
+       "h": 849,
+       "file": "opere/02/foto-02_dettaglio-2_849.webp"
+      }
+     ],
+     "jpg": {
+      "w": 849,
+      "h": 849,
+      "file": "opere/02/foto-02_dettaglio-2_849.jpg"
+     }
+    }
+   }
+  },
+  {
+   "id": "03",
+   "slug": "foto-03",
+   "aspect_ratio": 0.6709,
+   "orientamento": "verticale",
+   "tela_px": [
+    3392,
+    5056
+   ],
+   "colore_dominante": "#141210",
+   "palette": [
+    {
+     "hex": "#141210",
+     "share": 0.255
+    },
+    {
+     "hex": "#4c473e",
+     "share": 0.241
+    },
+    {
+     "hex": "#90897b",
+     "share": 0.209
+    },
+    {
+     "hex": "#b9b3a4",
+     "share": 0.178
+    },
+    {
+     "hex": "#cfcabd",
+     "share": 0.117
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRpYAAABXRUJQVlA4IIoAAAAQBACdASoNABQAPu1iqU2ppaOiMAgBMB2JZwDCgBbcXlKxJgaluTpiAAD+SYjLwXinkEP7t7bqZVEjCZONSJMUYkhkoT6mR8LMJP0w1f0Eaangr1K8rS2CuEvQgCgf60LkQAJCXIsXrvkFKAgNGdpVRPu5bUJzpIAvMgTLlmmF1KTahSnih/gxAAA=",
+   "alt": "Volto di statua in bianco e nero, occhi bianchi",
+   "immagini": {
+    "tela": {
+     "w": 2400,
+     "h": 3577,
+     "avif": [
+      {
+       "w": 480,
+       "h": 715,
+       "file": "opere/03/foto-03_tela_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1431,
+       "file": "opere/03/foto-03_tela_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2385,
+       "file": "opere/03/foto-03_tela_1600.avif"
+      },
+      {
+       "w": 2400,
+       "h": 3577,
+       "file": "opere/03/foto-03_tela_2400.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 715,
+       "file": "opere/03/foto-03_tela_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1431,
+       "file": "opere/03/foto-03_tela_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2385,
+       "file": "opere/03/foto-03_tela_1600.webp"
+      },
+      {
+       "w": 2400,
+       "h": 3577,
+       "file": "opere/03/foto-03_tela_2400.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1600,
+      "h": 2385,
+      "file": "opere/03/foto-03_tela_1600.jpg"
+     },
+     "src": "1.jpg",
+     "aspect_ratio": 0.6709
+    },
+    "miniatura": {
+     "w": 800,
+     "h": 1000,
+     "avif": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/03/foto-03_miniatura_400.avif"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/03/foto-03_miniatura_800.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/03/foto-03_miniatura_400.webp"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/03/foto-03_miniatura_800.webp"
+      }
+     ],
+     "jpg": {
+      "w": 800,
+      "h": 1000,
+      "file": "opere/03/foto-03_miniatura_800.jpg"
+     }
+    },
+    "dettaglio-1": {
+     "w": 1017,
+     "h": 1017,
+     "avif": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/03/foto-03_dettaglio-1_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 960,
+       "file": "opere/03/foto-03_dettaglio-1_960.avif"
+      },
+      {
+       "w": 1017,
+       "h": 1017,
+       "file": "opere/03/foto-03_dettaglio-1_1017.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/03/foto-03_dettaglio-1_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 960,
+       "file": "opere/03/foto-03_dettaglio-1_960.webp"
+      },
+      {
+       "w": 1017,
+       "h": 1017,
+       "file": "opere/03/foto-03_dettaglio-1_1017.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1017,
+      "h": 1017,
+      "file": "opere/03/foto-03_dettaglio-1_1017.jpg"
+     }
+    },
+    "dettaglio-2": {
+     "w": 1017,
+     "h": 1017,
+     "avif": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/03/foto-03_dettaglio-2_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 960,
+       "file": "opere/03/foto-03_dettaglio-2_960.avif"
+      },
+      {
+       "w": 1017,
+       "h": 1017,
+       "file": "opere/03/foto-03_dettaglio-2_1017.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/03/foto-03_dettaglio-2_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 960,
+       "file": "opere/03/foto-03_dettaglio-2_960.webp"
+      },
+      {
+       "w": 1017,
+       "h": 1017,
+       "file": "opere/03/foto-03_dettaglio-2_1017.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1017,
+      "h": 1017,
+      "file": "opere/03/foto-03_dettaglio-2_1017.jpg"
+     }
+    }
+   }
+  },
+  {
+   "id": "04",
+   "slug": "foto-04",
+   "aspect_ratio": 1.0,
+   "orientamento": "quadrato",
+   "tela_px": [
+    2299,
+    2299
+   ],
+   "colore_dominante": "#956266",
+   "palette": [
+    {
+     "hex": "#956266",
+     "share": 0.285
+    },
+    {
+     "hex": "#8b4a48",
+     "share": 0.244
+    },
+    {
+     "hex": "#751b29",
+     "share": 0.23
+    },
+    {
+     "hex": "#a08093",
+     "share": 0.122
+    },
+    {
+     "hex": "#bfaab5",
+     "share": 0.118
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAACwBACdASoUABQAPu1iqk2ppaQiMBgMATAdiWIAgkkB4qx79wsGwMY9qdv8ESUAAPnWjMpAZBbW328H2YMD6erOGVFf52K2aYUjikiYsHV3OhHeFdrgR4fEC6U8JpRmsFFzwoKvSzTlQmWhmVb9QXooQAWmhsAA",
+   "alt": "Costa in negativo sotto un cielo rosso",
+   "immagini": {
+    "tela": {
+     "w": 2299,
+     "h": 2299,
+     "avif": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/04/foto-04_tela_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 960,
+       "file": "opere/04/foto-04_tela_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 1600,
+       "file": "opere/04/foto-04_tela_1600.avif"
+      },
+      {
+       "w": 2299,
+       "h": 2299,
+       "file": "opere/04/foto-04_tela_2299.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/04/foto-04_tela_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 960,
+       "file": "opere/04/foto-04_tela_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 1600,
+       "file": "opere/04/foto-04_tela_1600.webp"
+      },
+      {
+       "w": 2299,
+       "h": 2299,
+       "file": "opere/04/foto-04_tela_2299.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1600,
+      "h": 1600,
+      "file": "opere/04/foto-04_tela_1600.jpg"
+     },
+     "src": "25x25.jpg",
+     "aspect_ratio": 1.0
+    },
+    "miniatura": {
+     "w": 800,
+     "h": 1000,
+     "avif": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/04/foto-04_miniatura_400.avif"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/04/foto-04_miniatura_800.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/04/foto-04_miniatura_400.webp"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/04/foto-04_miniatura_800.webp"
+      }
+     ],
+     "jpg": {
+      "w": 800,
+      "h": 1000,
+      "file": "opere/04/foto-04_miniatura_800.jpg"
+     }
+    },
+    "dettaglio-1": {
+     "w": 689,
+     "h": 689,
+     "avif": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/04/foto-04_dettaglio-1_480.avif"
+      },
+      {
+       "w": 689,
+       "h": 689,
+       "file": "opere/04/foto-04_dettaglio-1_689.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/04/foto-04_dettaglio-1_480.webp"
+      },
+      {
+       "w": 689,
+       "h": 689,
+       "file": "opere/04/foto-04_dettaglio-1_689.webp"
+      }
+     ],
+     "jpg": {
+      "w": 689,
+      "h": 689,
+      "file": "opere/04/foto-04_dettaglio-1_689.jpg"
+     }
+    },
+    "dettaglio-2": {
+     "w": 689,
+     "h": 689,
+     "avif": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/04/foto-04_dettaglio-2_480.avif"
+      },
+      {
+       "w": 689,
+       "h": 689,
+       "file": "opere/04/foto-04_dettaglio-2_689.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/04/foto-04_dettaglio-2_480.webp"
+      },
+      {
+       "w": 689,
+       "h": 689,
+       "file": "opere/04/foto-04_dettaglio-2_689.webp"
+      }
+     ],
+     "jpg": {
+      "w": 689,
+      "h": 689,
+      "file": "opere/04/foto-04_dettaglio-2_689.jpg"
+     }
+    }
+   }
+  },
+  {
+   "id": "05",
+   "slug": "foto-05",
+   "aspect_ratio": 0.669,
+   "orientamento": "verticale",
+   "tela_px": [
+    968,
+    1447
+   ],
+   "colore_dominante": "#d8f2f8",
+   "palette": [
+    {
+     "hex": "#d8f2f8",
+     "share": 0.297
+    },
+    {
+     "hex": "#e4b997",
+     "share": 0.273
+    },
+    {
+     "hex": "#e4f8fc",
+     "share": 0.216
+    },
+    {
+     "hex": "#f4fbfa",
+     "share": 0.123
+    },
+    {
+     "hex": "#dadcd8",
+     "share": 0.091
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAwCdASoNABQAPu1oqk6ppiQiMAgBMB2JaAC7MoADTqO7aAqfB4IAAP7vwBIBH3KtX7HvbEEkrlJhMCvJ2uynBr+nZeBFTUSVAAAA",
+   "alt": "Pugno che stringe un fiore rosa contro il cielo",
+   "immagini": {
+    "tela": {
+     "w": 968,
+     "h": 1447,
+     "avif": [
+      {
+       "w": 480,
+       "h": 718,
+       "file": "opere/05/foto-05_tela_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1435,
+       "file": "opere/05/foto-05_tela_960.avif"
+      },
+      {
+       "w": 968,
+       "h": 1447,
+       "file": "opere/05/foto-05_tela_968.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 718,
+       "file": "opere/05/foto-05_tela_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1435,
+       "file": "opere/05/foto-05_tela_960.webp"
+      },
+      {
+       "w": 968,
+       "h": 1447,
+       "file": "opere/05/foto-05_tela_968.webp"
+      }
+     ],
+     "jpg": {
+      "w": 968,
+      "h": 1447,
+      "file": "opere/05/foto-05_tela_968.jpg"
+     },
+     "src": "_DSC3028.jpg",
+     "aspect_ratio": 0.669
+    },
+    "miniatura": {
+     "w": 800,
+     "h": 1000,
+     "avif": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/05/foto-05_miniatura_400.avif"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/05/foto-05_miniatura_800.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/05/foto-05_miniatura_400.webp"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/05/foto-05_miniatura_800.webp"
+      }
+     ],
+     "jpg": {
+      "w": 800,
+      "h": 1000,
+      "file": "opere/05/foto-05_miniatura_800.jpg"
+     }
+    },
+    "dettaglio-1": {
+     "w": 435,
+     "h": 435,
+     "avif": [
+      {
+       "w": 435,
+       "h": 435,
+       "file": "opere/05/foto-05_dettaglio-1_435.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 435,
+       "h": 435,
+       "file": "opere/05/foto-05_dettaglio-1_435.webp"
+      }
+     ],
+     "jpg": {
+      "w": 435,
+      "h": 435,
+      "file": "opere/05/foto-05_dettaglio-1_435.jpg"
+     }
+    },
+    "dettaglio-2": {
+     "w": 435,
+     "h": 435,
+     "avif": [
+      {
+       "w": 435,
+       "h": 435,
+       "file": "opere/05/foto-05_dettaglio-2_435.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 435,
+       "h": 435,
+       "file": "opere/05/foto-05_dettaglio-2_435.webp"
+      }
+     ],
+     "jpg": {
+      "w": 435,
+      "h": 435,
+      "file": "opere/05/foto-05_dettaglio-2_435.jpg"
+     }
+    }
+   }
+  },
+  {
+   "id": "06",
+   "slug": "foto-06",
+   "aspect_ratio": 0.6676,
+   "orientamento": "verticale",
+   "tela_px": [
+    1848,
+    2768
+   ],
+   "colore_dominante": "#fee4f6",
+   "palette": [
+    {
+     "hex": "#fee4f6",
+     "share": 0.304
+    },
+    {
+     "hex": "#f6564e",
+     "share": 0.26
+    },
+    {
+     "hex": "#fc885e",
+     "share": 0.257
+    },
+    {
+     "hex": "#fee5f7",
+     "share": 0.146
+    },
+    {
+     "hex": "#fed6dd",
+     "share": 0.033
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAABwBACdASoNABQAPu1iqU2ppaQiMAgBMB2JbACdMoMYAEmWRn/oLxfSpUkRQAD+788anRB+nbGXGwOK+Xmr+HZnJ1Af8IWEQgJilDC5VeQlm++0HKNrPEowe7A6L+mP7vyF3NsgQz44IVY4OeqHaHDp3/EP2/q9O04G2DlUtOeAAA==",
+   "alt": "Forma arancione tenuta da dita su fondo rosa",
+   "immagini": {
+    "tela": {
+     "w": 1848,
+     "h": 2768,
+     "avif": [
+      {
+       "w": 480,
+       "h": 719,
+       "file": "opere/06/foto-06_tela_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1438,
+       "file": "opere/06/foto-06_tela_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2397,
+       "file": "opere/06/foto-06_tela_1600.avif"
+      },
+      {
+       "w": 1848,
+       "h": 2768,
+       "file": "opere/06/foto-06_tela_1848.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 719,
+       "file": "opere/06/foto-06_tela_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1438,
+       "file": "opere/06/foto-06_tela_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2397,
+       "file": "opere/06/foto-06_tela_1600.webp"
+      },
+      {
+       "w": 1848,
+       "h": 2768,
+       "file": "opere/06/foto-06_tela_1848.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1600,
+      "h": 2397,
+      "file": "opere/06/foto-06_tela_1600.jpg"
+     },
+     "src": "_DSC4714.jpg",
+     "aspect_ratio": 0.6676
+    },
+    "miniatura": {
+     "w": 800,
+     "h": 1000,
+     "avif": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/06/foto-06_miniatura_400.avif"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/06/foto-06_miniatura_800.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/06/foto-06_miniatura_400.webp"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/06/foto-06_miniatura_800.webp"
+      }
+     ],
+     "jpg": {
+      "w": 800,
+      "h": 1000,
+      "file": "opere/06/foto-06_miniatura_800.jpg"
+     }
+    },
+    "dettaglio-1": {
+     "w": 646,
+     "h": 646,
+     "avif": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/06/foto-06_dettaglio-1_480.avif"
+      },
+      {
+       "w": 646,
+       "h": 646,
+       "file": "opere/06/foto-06_dettaglio-1_646.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/06/foto-06_dettaglio-1_480.webp"
+      },
+      {
+       "w": 646,
+       "h": 646,
+       "file": "opere/06/foto-06_dettaglio-1_646.webp"
+      }
+     ],
+     "jpg": {
+      "w": 646,
+      "h": 646,
+      "file": "opere/06/foto-06_dettaglio-1_646.jpg"
+     }
+    },
+    "dettaglio-2": {
+     "w": 646,
+     "h": 646,
+     "avif": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/06/foto-06_dettaglio-2_480.avif"
+      },
+      {
+       "w": 646,
+       "h": 646,
+       "file": "opere/06/foto-06_dettaglio-2_646.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/06/foto-06_dettaglio-2_480.webp"
+      },
+      {
+       "w": 646,
+       "h": 646,
+       "file": "opere/06/foto-06_dettaglio-2_646.webp"
+      }
+     ],
+     "jpg": {
+      "w": 646,
+      "h": 646,
+      "file": "opere/06/foto-06_dettaglio-2_646.jpg"
+     }
+    }
+   }
+  },
+  {
+   "id": "07",
+   "slug": "foto-07",
+   "aspect_ratio": 0.6665,
+   "orientamento": "verticale",
+   "tela_px": [
+    1333,
+    2000
+   ],
+   "colore_dominante": "#8f0a05",
+   "palette": [
+    {
+     "hex": "#8f0a05",
+     "share": 0.371
+    },
+    {
+     "hex": "#8c0704",
+     "share": 0.19
+    },
+    {
+     "hex": "#96110a",
+     "share": 0.163
+    },
+    {
+     "hex": "#ae352a",
+     "share": 0.154
+    },
+    {
+     "hex": "#cf7b70",
+     "share": 0.121
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAAAQBACdASoNABQAPu1iqU2ppaQiMAgBMB2JYgCdMoADTrMpueDLU5qTAAD+6MV/pW/KnMwJkaod1cIiAvK0lKfbv6u9ius0vlybzOpbcp3okaroVcUx6quLAAA=",
+   "alt": "Palo coperto di rami bianchi su fondo rosso",
+   "immagini": {
+    "tela": {
+     "w": 1333,
+     "h": 2000,
+     "avif": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/07/foto-07_tela_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/07/foto-07_tela_960.avif"
+      },
+      {
+       "w": 1333,
+       "h": 2000,
+       "file": "opere/07/foto-07_tela_1333.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/07/foto-07_tela_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/07/foto-07_tela_960.webp"
+      },
+      {
+       "w": 1333,
+       "h": 2000,
+       "file": "opere/07/foto-07_tela_1333.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1333,
+      "h": 2000,
+      "file": "opere/07/foto-07_tela_1333.jpg"
+     },
+     "src": "croce rossa.jpg",
+     "aspect_ratio": 0.6665
+    },
+    "miniatura": {
+     "w": 800,
+     "h": 1000,
+     "avif": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/07/foto-07_miniatura_400.avif"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/07/foto-07_miniatura_800.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/07/foto-07_miniatura_400.webp"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/07/foto-07_miniatura_800.webp"
+      }
+     ],
+     "jpg": {
+      "w": 800,
+      "h": 1000,
+      "file": "opere/07/foto-07_miniatura_800.jpg"
+     }
+    },
+    "dettaglio-1": {
+     "w": 466,
+     "h": 466,
+     "avif": [
+      {
+       "w": 466,
+       "h": 466,
+       "file": "opere/07/foto-07_dettaglio-1_466.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 466,
+       "h": 466,
+       "file": "opere/07/foto-07_dettaglio-1_466.webp"
+      }
+     ],
+     "jpg": {
+      "w": 466,
+      "h": 466,
+      "file": "opere/07/foto-07_dettaglio-1_466.jpg"
+     }
+    },
+    "dettaglio-2": {
+     "w": 466,
+     "h": 466,
+     "avif": [
+      {
+       "w": 466,
+       "h": 466,
+       "file": "opere/07/foto-07_dettaglio-2_466.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 466,
+       "h": 466,
+       "file": "opere/07/foto-07_dettaglio-2_466.webp"
+      }
+     ],
+     "jpg": {
+      "w": 466,
+      "h": 466,
+      "file": "opere/07/foto-07_dettaglio-2_466.jpg"
+     }
+    }
+   }
+  },
+  {
+   "id": "08",
+   "slug": "foto-08",
+   "aspect_ratio": 0.75,
+   "orientamento": "verticale",
+   "tela_px": [
+    3024,
+    4032
+   ],
+   "colore_dominante": "#bbbfb9",
+   "palette": [
+    {
+     "hex": "#bbbfb9",
+     "share": 0.262
+    },
+    {
+     "hex": "#cbd3cb",
+     "share": 0.215
+    },
+    {
+     "hex": "#576169",
+     "share": 0.189
+    },
+    {
+     "hex": "#d4d9cf",
+     "share": 0.168
+    },
+    {
+     "hex": "#d1d5cb",
+     "share": 0.166
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAACwAwCdASoPABQAPu1iqU2ppaOiMAgBMB2JZwDE2BuDRJlcjnQtAAD+3ufUgVo0cp0mXTmKYEZ/XW/sPXLk8ls8bZbNVq2ZoAA=",
+   "alt": "Macchia scura sfocata su fondo bianco",
+   "immagini": {
+    "tela": {
+     "w": 2400,
+     "h": 3200,
+     "avif": [
+      {
+       "w": 480,
+       "h": 640,
+       "file": "opere/08/foto-08_tela_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1280,
+       "file": "opere/08/foto-08_tela_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2133,
+       "file": "opere/08/foto-08_tela_1600.avif"
+      },
+      {
+       "w": 2400,
+       "h": 3200,
+       "file": "opere/08/foto-08_tela_2400.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 640,
+       "file": "opere/08/foto-08_tela_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1280,
+       "file": "opere/08/foto-08_tela_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2133,
+       "file": "opere/08/foto-08_tela_1600.webp"
+      },
+      {
+       "w": 2400,
+       "h": 3200,
+       "file": "opere/08/foto-08_tela_2400.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1600,
+      "h": 2133,
+      "file": "opere/08/foto-08_tela_1600.jpg"
+     },
+     "src": "due.jpg",
+     "aspect_ratio": 0.75
+    },
+    "miniatura": {
+     "w": 800,
+     "h": 1000,
+     "avif": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/08/foto-08_miniatura_400.avif"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/08/foto-08_miniatura_800.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/08/foto-08_miniatura_400.webp"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/08/foto-08_miniatura_800.webp"
+      }
+     ],
+     "jpg": {
+      "w": 800,
+      "h": 1000,
+      "file": "opere/08/foto-08_miniatura_800.jpg"
+     }
+    },
+    "dettaglio-1": {
+     "w": 1058,
+     "h": 1058,
+     "avif": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/08/foto-08_dettaglio-1_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 960,
+       "file": "opere/08/foto-08_dettaglio-1_960.avif"
+      },
+      {
+       "w": 1058,
+       "h": 1058,
+       "file": "opere/08/foto-08_dettaglio-1_1058.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/08/foto-08_dettaglio-1_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 960,
+       "file": "opere/08/foto-08_dettaglio-1_960.webp"
+      },
+      {
+       "w": 1058,
+       "h": 1058,
+       "file": "opere/08/foto-08_dettaglio-1_1058.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1058,
+      "h": 1058,
+      "file": "opere/08/foto-08_dettaglio-1_1058.jpg"
+     }
+    },
+    "dettaglio-2": {
+     "w": 907,
+     "h": 907,
+     "avif": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/08/foto-08_dettaglio-2_480.avif"
+      },
+      {
+       "w": 907,
+       "h": 907,
+       "file": "opere/08/foto-08_dettaglio-2_907.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 480,
+       "file": "opere/08/foto-08_dettaglio-2_480.webp"
+      },
+      {
+       "w": 907,
+       "h": 907,
+       "file": "opere/08/foto-08_dettaglio-2_907.webp"
+      }
+     ],
+     "jpg": {
+      "w": 907,
+      "h": 907,
+      "file": "opere/08/foto-08_dettaglio-2_907.jpg"
+     }
+    }
+   }
+  }
+ ],
+ "foto": [
+  {
+   "id": "ninni-ernesto-ritratto",
+   "src": "ninni-ernesto-ritratto.png",
+   "gruppo": "ritratti",
+   "soggetto": "Ninni ed Ernesto in silhouette su fondo arancio",
+   "aspect_ratio": 0.6667,
+   "colore_dominante": "#c83102",
+   "lqip": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAACwAwCdASoNABQAPu1iqU2ppaOiMAgBMB2JbAC7ACKRLeI+6qkO/AD+44cQxWxc9ELiBnssj0HkxAlUouaeJhSRS4ButNoBxGbv4PNzmCSg9wm+u9bXD+KOgtT7TyO4o32Tmh/66PkSE+vZLSgjm8AA",
+   "avif": [
+    {
+     "w": 480,
+     "h": 720,
+     "file": "foto/ninni-ernesto-ritratto_480.avif"
+    },
+    {
+     "w": 960,
+     "h": 1440,
+     "file": "foto/ninni-ernesto-ritratto_960.avif"
+    },
+    {
+     "w": 1600,
+     "h": 2400,
+     "file": "foto/ninni-ernesto-ritratto_1600.avif"
+    }
+   ],
+   "webp": [
+    {
+     "w": 480,
+     "h": 720,
+     "file": "foto/ninni-ernesto-ritratto_480.webp"
+    },
+    {
+     "w": 960,
+     "h": 1440,
+     "file": "foto/ninni-ernesto-ritratto_960.webp"
+    },
+    {
+     "w": 1600,
+     "h": 2400,
+     "file": "foto/ninni-ernesto-ritratto_1600.webp"
+    }
+   ],
+   "jpg": {
+    "w": 1200,
+    "h": 1800,
+    "file": "foto/ninni-ernesto-ritratto_1200.jpg"
+   }
+  }
+ ]
+}

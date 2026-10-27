@@ -1,0 +1,67 @@
+---
+/**
+ * Banner cookie (pezzo 7, DIREZIONE §6 P11, regola di Casa): «Accetta tutti» e «Solo necessari» con la STESSA evidenza
+ * (stessa variante e misura), più il link a Info → Privacy e cookie. Fisso in basso, bianco con filetto nero sopra.
+ * Compare finché non c'è una scelta in localStorage (`galleria:cookie:v1`, lo stesso formato che usa scripts/qa.mjs).
+ * Si riapre da Info («Cambia la scelta»: evento `galleria:cookie-apri`). Comportamento in lib/cookie-client.ts.
+ * `transition:persist` per lingua: cambiando pagina col ClientRouter il banner non si rifà né si rianima.
+ */
+import { href, useT, type Locale } from '../lib/i18n';
+import { CHIAVI } from '../lib/storage';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useT(lang);
+---
+<section class="ck" role="region" aria-label={t('galleria.cookie.regione')} data-cookie hidden transition:persist={`cookie-${lang}`}>
+  <div class="wrap ck__in">
+    <p class="ck__t">{t('galleria.cookie.testo')} <a class="ck__lnk" href={href(lang, '/info/#cookie')}>{t('galleria.cookie.info')}</a></p>
+    <div class="ck__b">
+      <button class="btn btn--linea" type="button" data-cookie-scelta="tutti">{t('cookie_banner.accetta')}</button>
+      <button class="btn btn--linea" type="button" data-cookie-scelta="necessari">{t('cookie_banner.rifiuta')}</button>
+    </div>
+  </div>
+</section>
+{/* Subito dopo il banner, prima del primo disegno: se non c'è ancora una scelta lo mostra e scrive la sua altezza
+     (--ingombro-cookie) e data-cookie-aperto su <html>. Così l'apertura della home nasce già accorciata e non salta
+     quando arriva cookie-client (prima: CLS 0,16 a 375 al primo arrivo). Idempotente: con il ClientRouter riparte. */}
+<script is:inline define:vars={{ kCookie: CHIAVI.cookie }}>
+  (function () {
+    var el = document.querySelector('[data-cookie]');
+    var scelta = null;
+    try { scelta = localStorage.getItem(kCookie); } catch (e) {}
+    if (!el || scelta) return;
+    if (el.hidden) { el.hidden = false; el.setAttribute('data-entra', ''); }
+    var html = document.documentElement;
+    html.setAttribute('data-cookie-aperto', '');
+    html.style.setProperty('--ingombro-cookie', Math.ceil(el.getBoundingClientRect().height) + 'px');
+  })();
+</script>
+<script>
+  import '../lib/cookie-client';
+</script>
+<style>
+  .ck {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: calc(var(--z-header) + 5);
+    background: var(--c-bg); border-top: var(--line);
+    padding-block: var(--s-4) calc(var(--s-4) + env(safe-area-inset-bottom));
+    max-height: 100svh; overflow-y: auto;
+  }
+  .ck[data-entra] { animation: ck-su var(--d-ui) var(--ease-out); }
+  @keyframes ck-su { from { transform: translateY(100%); } }
+  .ck__in { display: grid; gap: var(--s-3); }
+  .ck__t { font-size: var(--t-ui); line-height: var(--lh-text); max-width: 62rem; }
+  .ck__lnk { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; white-space: nowrap; }
+  .ck__b { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-2); }
+  .ck__b .btn { padding-inline: var(--s-3); }
+  @media (min-width: 768px) {
+    .ck__in { grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: var(--s-7); }
+    .ck__b { grid-template-columns: repeat(2, minmax(10rem, auto)); }
+  }
+  /* telefono in orizzontale: una riga sola, il banner resta basso */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .ck { padding-block: var(--s-2) calc(var(--s-2) + env(safe-area-inset-bottom)); }
+    .ck__in { grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: var(--s-5); }
+    .ck__b { grid-template-columns: repeat(2, auto); }
+  }
+  @media (prefers-reduced-motion: reduce) { .ck[data-entra] { animation: ck-in var(--d-fast) linear; } @keyframes ck-in { from { opacity: 0; } } }
+</style>

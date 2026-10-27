@@ -1,0 +1,371 @@
+{
+  "galleria": {
+    "meta": {
+      "descrizione": "Photographs by Ninni and by Ernesto: fine art prints and signed, numbered limited editions."
+    },
+    "nav": {
+      "principale": "Main",
+      "home_aria": "Ninni & Ernesto, home",
+      "indice": "Index",
+      "chiudi": "Close",
+      "shop": "Shop",
+      "carrello": "Cart",
+      "lingue": "Language",
+      "home": "Home",
+      "opere": "Photographs",
+      "stampe": "Prints",
+      "proposte": "Isa’s Pairings",
+      "isabella": "Ernesto",
+      "altro": "More",
+      "commissione": "Commissions",
+      "prossimamente": "Coming soon",
+      "contatti": "Contact",
+      "info": "Info",
+      "carrello_pagina": "Cart",
+      "salta": "Skip to content",
+      "ninni": "Ninni",
+      "ernesto": "Ernesto",
+      "carte": "Papers and frames",
+      "chi_siamo": "About",
+      "prisma": "Prisma"
+    },
+    "indice": {
+      "titolo": "Site index",
+      "voci": "Pages",
+      "luogo": "Italy",
+      "demo": "Demo site"
+    },
+    "footer": {
+      "luogo": "Italy",
+      "instagram": "Instagram",
+      "spedizioni": "Shipping and returns",
+      "privacy": "Privacy",
+      "note_legali": "Legal notice",
+      "demo": "Demo site: no real payments."
+    },
+    "home": {
+      "acquista": "Buy",
+      "pausa": "Pause",
+      "riprendi": "Resume",
+      "atelier": "Studio",
+      "scrivimi": "Write to us",
+      "seguimi": "Follow us",
+      "indirizzo": "Italy",
+      "ernesto_presto": "Soon",
+      "ernesto_avvisami": "Notify me"
+    },
+    "opere": {
+      "descrizione": "Photographs for sale, with sizes and prices.",
+      "schede": "Limited editions or prints",
+      "originali": "Limited editions",
+      "stampe": "Prints",
+      "filtra": "Filter",
+      "filtra_n": "Filter ({n})",
+      "colore": "Color",
+      "formato": "Size",
+      "prezzo": "Price",
+      "forma": "Shape",
+      "disponibilita": "Availability",
+      "colori": {
+        "rossi": "Reds",
+        "ocra": "Warm",
+        "verdi": "Greens",
+        "blu": "Blues",
+        "neri": "Black and white",
+        "grigi": "Light"
+      },
+      "formati": {
+        "piccoli": "Small",
+        "medi": "Medium",
+        "grandi": "Large",
+        "panoramici": "Panoramic"
+      },
+      "formati_nota": {
+        "piccoli": "up to 70 cm framed",
+        "medi": "70–100 cm",
+        "grandi": "from 100 cm"
+      },
+      "prezzi": {
+        "fino-3500": "Up to {p}",
+        "3500-5000": "{a}–{b}",
+        "oltre-5000": "Over {p}"
+      },
+      "forme": {
+        "verticali": "Portrait",
+        "orizzontali": "Landscape",
+        "quadrate": "Square"
+      },
+      "solo_disponibili": "Available only",
+      "mostra": "Show {n} photographs",
+      "mostra_1": "Show 1 photograph",
+      "mostra_0": "No photographs",
+      "mostra_stampe": "Show {n} prints",
+      "mostra_stampe_1": "Show 1 print",
+      "mostra_stampe_0": "No prints",
+      "conteggio": "{n} photographs",
+      "conteggio_1": "1 photograph",
+      "conteggio_0": "No photographs",
+      "conteggio_stampe": "{n} prints",
+      "conteggio_stampe_1": "1 print",
+      "conteggio_stampe_0": "No prints",
+      "azzera": "Clear",
+      "vuoto": "No photographs with these filters.",
+      "vuoto_stampe": "No prints match these filters.",
+      "azzera_filtri": "Clear filters",
+      "togli": "Remove {nome}",
+      "stampa_da": "print from {prezzo}",
+      "chiudi": "Close"
+    },
+    "scheda": {
+      "descrizione": "{titolo}, photograph. {misure}.",
+      "acquisto": "Buy",
+      "schede": "Limited edition or print",
+      "originale": "Edition",
+      "stampa": "Print",
+      "dati": "About the photograph",
+      "spedizione_inclusa": "free shipping in Italy",
+      "spedizione_stampe": "shipping in Italy {prezzo}",
+      "parete": "See it on your wall",
+      "venduto": "Original sold",
+      "simile": "A similar painting, on commission",
+      "particolare": "Detail",
+      "ingrandisci": "Enlarge: {nome}",
+      "scala": "To scale, next to a person 170 cm tall",
+      "persona": "170 cm",
+      "nel_carrello_n": "In your cart: {n}",
+      "max_stampe": "Up to {n} identical prints.",
+      "demo": "demo",
+      "vicine": "More photographs",
+      "precedente": "Previous",
+      "successiva": "Next",
+      "fotografo": "Photograph by",
+      "luogo": "Place",
+      "stampa_t": "Print",
+      "stampa_v": "Pigment on archival paper, over 100 years without fading",
+      "carta": "Paper",
+      "cornice": "Frame",
+      "piu": "+ {prezzo}",
+      "spedizione_gratis_da": "free shipping in Italy over {prezzo}"
+    },
+    "ar": {
+      "titolo": "On your wall",
+      "apri": "Open the camera",
+      "misura": "{misure} print, true scale",
+      "misura_cornice": "{misure} framed, true scale",
+      "ruota": "Drag the preview to turn it.",
+      "passi": "How it works",
+      "passo_1": "Point at the wall",
+      "passo_2": "Tap where to hang it",
+      "passo_3": "Done: it is at its real size.",
+      "qr_titolo": "Scan with your phone",
+      "qr_testo": "Scan it with the Camera app: this page opens on your phone. Tap “Open the camera” and point at a wall."
+    },
+    "lente": {
+      "titolo": "Details",
+      "precedente": "Previous detail",
+      "successivo": "Next detail",
+      "zoom": "Zoom in",
+      "riduci": "Zoom out",
+      "contatore": "{n} of {tot}"
+    },
+    "acquisto": {
+      "procedi": "Check out",
+      "originale": "Limited edition",
+      "stampa_carta": "Print",
+      "stampa_tela": "Print",
+      "quantita_di": "Quantity of {titolo}",
+      "inclusa": "Included",
+      "al_checkout": "at checkout",
+      "totale_senza": "Total before shipping",
+      "iva_una": "",
+      "venduta": "{titolo} sold out in the meantime: we removed it from your cart.",
+      "vuoto": "Your cart is empty.",
+      "paese": "Ship to",
+      "paese_scegli": "Choose a country",
+      "consegna": "Estimated delivery: {date}",
+      "dazi": "Outside the European Union, the destination country may charge duties and taxes, paid by the recipient.",
+      "email_originale": "You chose a limited edition: we sign, number and frame it before it ships.",
+      "riepilogo": "Summary",
+      "contatto": "Contact",
+      "indirizzo": "Shipping address",
+      "passi": "Steps",
+      "passo_fatto": "{nome}, done: go back to this step",
+      "demo_carta": "Fake payment. Use the card 4242 4242 4242 4242.",
+      "carta_prova": "Use the test card",
+      "termini": "Terms of sale",
+      "grazie": "Thank you",
+      "pagato_carta": "Paid with the card ending in {n}.",
+      "pagato_rate": "First installment of {importo} paid with Scalapay.",
+      "email_titolo": "The confirmation email",
+      "oggetto": "Subject",
+      "obbligatorio": "Required."
+    },
+    "altro": {
+      "descrizione": "Papers and frames, about us, Prisma."
+    },
+    "isabella": {
+      "descrizione": "Ninni and Ernesto: who we are and how to reach us.",
+      "sezioni": "Page sections",
+      "bio_t": "About",
+      "bio": "We are Ninni and Ernesto. We make films with Prisma and, when the camera is off, photographs.",
+      "ritratto_alt": "Ninni and Ernesto in silhouette on an orange background.",
+      "atelier_t": "Studio",
+      "atelier_testo": "Every painting on this site was made here, in Via Felice Orsini in Andria.",
+      "atelier_alt1": "A brush on the checkered floor of the studio.",
+      "atelier_alt2": "Isabella's hand holding a brush against the white wall.",
+      "mostre_t": "Exhibitions",
+      "contatti_t": "Contact",
+      "whatsapp": "WhatsApp",
+      "facebook": "Facebook",
+      "modulo_t": "Write to us",
+      "opera_msg": "I would like to know more about “{titolo}”.",
+      "successo": "Thank you, {nome}. We will reply soon.",
+      "invio": "Sending…",
+      "demo": "Demo: no message is sent.",
+      "nuova_scheda": "opens in a new tab",
+      "bio_ninni": "Flowers, bodies, full color. Looking for the light that makes ordinary things strange.",
+      "bio_ernesto": "His catalog is coming soon.",
+      "prisma": "Prisma, our film studio"
+    },
+    "info": {
+      "descrizione": "Shipping and returns, terms of sale, privacy, cookies and legal notes of Ninni & Ernesto.",
+      "bozza": "Demo texts: a lawyer must review them before the site goes live.",
+      "sezioni": "Page sections",
+      "termini_t": "Terms",
+      "privacy_t": "Privacy and cookies",
+      "sped_intro": "We check and pack every print by hand. Unframed prints travel in a rigid tube, framed ones in a crate. Tracking arrives by email.",
+      "tab_nota": "Editions: per piece. Prints: once per order. Business days from shipping.",
+      "giorni": "{min}⁠–⁠{max} days",
+      "preparazione": "Before shipping: limited editions {o} business days, prints {s}.",
+      "resi": "You have 14 days from delivery to return a print: write to us before shipping it and we will tell you how to pack it.",
+      "esclusi": "Custom sizes cannot be returned.",
+      "termini": [
+        [
+          "Seller",
+          "Ninni & Ernesto, [company name and address to complete]."
+        ],
+        [
+          "The photographs",
+          "Prints are pigment on archival paper. Limited editions have a fixed number of copies, signed and numbered by hand, with a certificate. Colors on screen may look slightly different."
+        ],
+        [
+          "Prices",
+          "In euro. Shipping shows in the cart before you pay."
+        ],
+        [
+          "Order and payment",
+          "The contract is concluded with the confirmation email. Payment by card through Stripe, or in 3 installments."
+        ],
+        [
+          "Availability",
+          "If a copy of the edition turns out to be already sold after your order, we tell you and refund you in full."
+        ],
+        [
+          "Withdrawal",
+          "You have 14 days from delivery to withdraw without giving a reason. It does not apply to custom sizes."
+        ],
+        [
+          "Copyright",
+          "Buying a print does not include the right to reproduce it: that stays with the photographer."
+        ]
+      ],
+      "privacy": [
+        [
+          "Controller",
+          "Ninni & Ernesto, ciao@ninnieernesto.example."
+        ],
+        [
+          "What data",
+          "Name, contacts and address when you buy; what you write in the forms; your email if you ask to be notified."
+        ],
+        [
+          "Why",
+          "To handle orders, deliveries and invoices, and to answer your messages."
+        ],
+        [
+          "With whom",
+          "Only those who need it: courier, Stripe, accountant, website and email providers."
+        ],
+        [
+          "How long",
+          "Order data for as long as tax law requires; the rest until you ask us to delete it."
+        ],
+        [
+          "Your rights",
+          "You can see, correct or delete your data by writing to ciao@ninnieernesto.example, or contact the Italian data protection authority."
+        ]
+      ],
+      "cookie_t": "Cookies",
+      "cookie": "Necessary cookies make the cart, language and checkout work. Statistics cookies only start if you accept them: this demo has none.",
+      "scelta_tutti": "Your choice: all cookies.",
+      "scelta_necessari": "Your choice: necessary only.",
+      "scelta_nessuna": "You haven't chosen yet.",
+      "cambia": "Change your choice",
+      "piva": "VAT no. [to complete]",
+      "paese": "Italy",
+      "diritti": "Photographs and texts © Ninni & Ernesto: no reproduction without permission.",
+      "demo": "Demo site: no real payments, no orders, no emails sent."
+    },
+    "cookie": {
+      "regione": "Cookies",
+      "testo": "We use technical cookies for the cart and, only if you allow it, cookies to see which pages are visited.",
+      "info": "Privacy and cookies"
+    },
+    "nontrovata": {
+      "titolo": "Page not found",
+      "riga": "This page isn't here."
+    },
+    "cursore": {
+      "apri": "Open",
+      "vedi": "View",
+      "parete": "Wall",
+      "ingrandisci": "Zoom"
+    },
+    "catalogo": {
+      "ninni_descrizione": "Photographs by Ninni: fine art prints and limited editions signed by Ninni.",
+      "ernesto_descrizione": "Photographs by Ernesto: the catalog opens soon.",
+      "nota_edizioni": "A few copies, signed, numbered and framed. The price rises as the edition sells.",
+      "nota_stampe": "On cotton or Japanese papers, in three sizes. Frame optional."
+    },
+    "edizione": {
+      "restano": "{n} of {di} left",
+      "ultima": "Last copy",
+      "esaurita": "Sold out",
+      "esaurita_nota": "All {n} copies are sold. The print is still available.",
+      "numero": "No. {n} of {di}",
+      "sale_1": "Last copy at this price. The next one costs {prezzo}.",
+      "sale_n": "{n} more copies at this price, then {prezzo}.",
+      "scaglioni": "Edition prices, copy by copy",
+      "venduti": "sold",
+      "firma": "Signed and numbered by hand by {autore}, with certificate",
+      "incluso": "frame included",
+      "aggiungi": "Take no. {n}",
+      "etichetta": "Edition",
+      "valore": "{n} copies + {pa} artist’s proofs",
+      "valore_1": "{n} copies + 1 artist’s proof"
+    },
+    "carte": {
+      "descrizione": "The fine art papers and frames we use for prints and limited editions, with prices.",
+      "lead": "We print with pigment inks on cotton and Japanese papers. We check every print ourselves before it leaves.",
+      "carte_t": "Papers",
+      "solo_edizioni": "editions only",
+      "cornici_t": "Frames",
+      "fascia_s": "up to 45 cm",
+      "fascia_m": "up to 60 cm",
+      "fascia_l": "up to 90 cm",
+      "edizioni_t": "Limited editions",
+      "ed_1": "7 to 10 copies per photograph, plus 1 or 2 artist’s proofs. When they are gone, no more are printed.",
+      "ed_2": "Each copy is signed and numbered by hand on the back and comes with its certificate.",
+      "ed_3": "The first copies cost less: the price rises in steps as the edition sells.",
+      "ed_4": "It arrives framed, ready to hang.",
+      "vai": "See the editions"
+    },
+    "ernesto": {
+      "lead": "Ernesto’s catalog opens soon. Leave your email and we will write to you on the day it opens, before anyone else.",
+      "modulo": "Notify me when Ernesto’s catalog opens",
+      "campo": "Email",
+      "bottone": "Notify me",
+      "successo": "Done. We will write to {email} on opening day."
+    }
+  }
+}

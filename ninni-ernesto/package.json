@@ -1,0 +1,19 @@
+{
+  "name": "ninni-ernesto-sito",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Ninni & Ernesto: negozio di stampe fotografiche (Astro). Base comune in packages/core, sito in sites/foto.",
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "sites/*"
+  ],
+  "engines": {
+    "node": ">=22.22.0"
+  },
+  "scripts": {
+    "dev": "npm run dev -w sites/foto",
+    "build": "npm run build -w sites/foto",
+    "test": "npm run test -w packages/core"
+  }
+}

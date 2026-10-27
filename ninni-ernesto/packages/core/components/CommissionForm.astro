@@ -1,0 +1,65 @@
+---
+/**
+ * Commission request ("Su commissione"): open, narrative questions — no configurator.
+ * DEMO: validated in the browser, then a confirmation message; nothing is sent.
+ * Classes: isa-form, isa-form--commission, isa-form__success, isa-error-summary (+ Field classes).
+ */
+import { pickStrings, useTranslations } from '../src/i18n/index.ts';
+import type { Locale } from '../src/types.ts';
+import Field from './Field.astro';
+
+interface Props {
+  lang: Locale;
+  /** Pre-filled idea, e.g. "Vorrei un quadro come Emerald" from an artwork page. */
+  prefill?: string;
+  class?: string;
+}
+const { lang, prefill, class: className } = Astro.props;
+const t = useTranslations(lang);
+const id = 'isa-commission';
+const strings = pickStrings(t, [
+  'errori.obbligatorio', 'errori.email', 'errori.telefono', 'errori.messaggio_breve', 'errori.consenso', 'errori.file_formato', 'errori.file_peso',
+  'core.checkout.errori_riepilogo', 'commissioni.modulo.successo_testo',
+]);
+---
+
+<form class:list={['isa-form', 'isa-form--commission', className]} id={id} data-isa-form="commission" data-lang={lang} data-i18n={JSON.stringify(strings)} novalidate>
+  <div class="isa-error-summary" role="alert" data-error-summary hidden></div>
+  <Field idPrefix={id} name="name" label={t('commissioni.modulo.campo_nome')} required autocomplete="name" />
+  <Field idPrefix={id} name="email" type="email" label={t('commissioni.modulo.campo_email')} required autocomplete="email" inputmode="email" />
+  <Field idPrefix={id} name="phone" type="tel" label={t('commissioni.modulo.campo_telefono')} autocomplete="tel" inputmode="tel" />
+  <Field idPrefix={id} name="city" label={t('commissioni.modulo.campo_citta')} autocomplete="address-level2" />
+  <Field idPrefix={id} name="room" as="textarea" rows={3} label={t('commissioni.modulo.campo_stanza')} hint={t('commissioni.modulo.campo_stanza_aiuto')} />
+  <Field idPrefix={id} name="message" as="textarea" rows={6} required label={t('commissioni.modulo.campo_messaggio')} hint={t('commissioni.modulo.campo_messaggio_aiuto')} value={prefill} />
+  <Field idPrefix={id} name="photo" type="file" accept="image/jpeg,image/png,image/heic,.heic" label={t('commissioni.modulo.campo_foto')} />
+  <Field idPrefix={id} name="when" label={t('commissioni.modulo.campo_quando')} hint={t('commissioni.modulo.campo_quando_aiuto')} />
+  <Field idPrefix={id} name="privacy" type="checkbox" required label={t('commissioni.modulo.consenso_privacy')} />
+  <p class="isa-form__demo">{t('core.form.demo_nota')}</p>
+  <button type="submit" class="isa-form__submit">{t('commissioni.modulo.invia')}</button>
+</form>
+<div class="isa-form__success" id={`${id}-success`} role="status" tabindex="-1" hidden>
+  <p class="isa-form__success-title">{t('commissioni.modulo.successo_titolo')}</p>
+  <p class="isa-form__success-text" data-success-text></p>
+</div>
+
+<script>
+  import { validateCommission } from '../src/forms/forms.ts';
+  import { readTranslator, showFieldErrors } from '../src/ui/dom.ts';
+
+  document.querySelectorAll<HTMLFormElement>('form[data-isa-form="commission"]').forEach((form) => {
+    const t = readTranslator(form);
+    const success = document.getElementById(`${form.id}-success`);
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const result = validateCommission(new FormData(form));
+      if (showFieldErrors(form, result.errors as Record<string, string>, t) > 0) return;
+      // DEMO: nothing is sent. A real site would POST to a form backend here.
+      form.hidden = true;
+      if (success) {
+        success.querySelector('[data-success-text]')!.textContent = t('commissioni.modulo.successo_testo', { email: result.data.email });
+        success.hidden = false;
+        success.focus();
+      }
+    });
+  });
+</script>

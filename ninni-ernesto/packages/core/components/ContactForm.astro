@@ -1,0 +1,67 @@
+---
+/**
+ * Contact form. DEMO: validated in the browser, then a confirmation message; nothing is sent.
+ */
+import { CONTACT_TOPICS } from '../src/forms/forms.ts';
+import { pickStrings, useTranslations } from '../src/i18n/index.ts';
+import type { Locale } from '../src/types.ts';
+import Field from './Field.astro';
+
+interface Props {
+  lang: Locale;
+  /** Pre-selected topic. */
+  topic?: (typeof CONTACT_TOPICS)[number];
+  /** Pre-filled message (e.g. "Vorrei sapere di più su Strong"). */
+  prefill?: string;
+  class?: string;
+}
+const { lang, topic = 'opera', prefill, class: className } = Astro.props;
+const t = useTranslations(lang);
+const id = 'isa-contact';
+const topicLabels: Record<(typeof CONTACT_TOPICS)[number], string> = {
+  opera: t('contatti.argomento_opera'),
+  commissione: t('contatti.argomento_commissione'),
+  ordine: t('contatti.argomento_ordine'),
+  stampa: t('contatti.argomento_stampa'),
+  altro: t('contatti.argomento_altro'),
+};
+const strings = pickStrings(t, ['errori.obbligatorio', 'errori.email', 'errori.telefono', 'errori.messaggio_breve', 'errori.consenso', 'core.checkout.errori_riepilogo', 'contatti.successo']);
+---
+
+<form class:list={['isa-form', 'isa-form--contact', className]} id={id} data-isa-form="contact" data-lang={lang} data-i18n={JSON.stringify(strings)} novalidate>
+  <div class="isa-error-summary" role="alert" data-error-summary hidden></div>
+  <Field idPrefix={id} name="name" label={t('contatti.campo_nome')} required autocomplete="name" />
+  <Field idPrefix={id} name="email" type="email" label={t('contatti.campo_email')} required autocomplete="email" inputmode="email" />
+  <Field idPrefix={id} name="phone" type="tel" label={t('contatti.campo_telefono')} autocomplete="tel" inputmode="tel" />
+  <Field idPrefix={id} name="topic" as="select" label={t('contatti.campo_argomento')} value={topic} options={CONTACT_TOPICS.map((v) => ({ value: v, label: topicLabels[v] }))} />
+  <Field idPrefix={id} name="message" as="textarea" rows={6} required label={t('contatti.campo_messaggio')} value={prefill} />
+  <Field idPrefix={id} name="privacy" type="checkbox" required label={t('contatti.consenso_privacy')} />
+  <Field idPrefix={id} name="newsletter" type="checkbox" label={t('contatti.consenso_newsletter')} />
+  <p class="isa-form__demo">{t('core.form.demo_nota')}</p>
+  <button type="submit" class="isa-form__submit">{t('bottoni.invia_messaggio')}</button>
+</form>
+<div class="isa-form__success" id={`${id}-success`} role="status" tabindex="-1" hidden>
+  <p class="isa-form__success-text" data-success-text></p>
+</div>
+
+<script>
+  import { validateContact } from '../src/forms/forms.ts';
+  import { readTranslator, showFieldErrors } from '../src/ui/dom.ts';
+
+  document.querySelectorAll<HTMLFormElement>('form[data-isa-form="contact"]').forEach((form) => {
+    const t = readTranslator(form);
+    const success = document.getElementById(`${form.id}-success`);
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const result = validateContact(new FormData(form));
+      if (showFieldErrors(form, result.errors as Record<string, string>, t) > 0) return;
+      // DEMO: nothing is sent.
+      form.hidden = true;
+      if (success) {
+        success.querySelector('[data-success-text]')!.textContent = t('contatti.successo', { nome: result.data.name });
+        success.hidden = false;
+        success.focus();
+      }
+    });
+  });
+</script>

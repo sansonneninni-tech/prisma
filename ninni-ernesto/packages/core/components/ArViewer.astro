@@ -1,0 +1,174 @@
+---
+/**
+ * ArViewer — anteprima 3D + "Visualizza nella stanza" (realta' aumentata vera).
+ *
+ * - Android: Scene Viewer (o WebXR) con il file .glb, quadro sulla PARETE, scala fissa.
+ * - iPhone/iPad: AR Quick Look con il file .usdz (ancorato a parete), scala fissa.
+ * - iPhone/iPad dove model-viewer non offre la AR (es. WebGL disattivato): link <a rel="ar"> diretto al .usdz.
+ * - Desktop (finestra larga almeno 768 px, puntatore preciso): QR code che apre questa stessa pagina sul telefono.
+ * - Dispositivi senza AR: messaggio chiaro, l'anteprima 3D resta.
+ *
+ * Nessuno stile imposto: solo classi (BEM "isa-ar__*"), attributo di stato
+ * data-ar="attesa|disponibile|qr|non-supportato|errore" (piu' data-modello="caricato", data-webgl="no",
+ * data-quick-look="diretto") e variabili CSS
+ * (--isa-ar-altezza, --isa-ar-sfondo, --isa-ar-margine, --isa-ar-qr-colore, --isa-ar-qr-sfondo, --isa-ar-qr-lato).
+ * Guida completa: packages/core/AR.md
+ */
+import { TESTI_AR, testiAr, type LinguaAr, type TestiAr } from '../src/ar/index.ts';
+import { sep } from '../src/i18n/format.ts';
+import type { Translator } from '../src/i18n/translate.ts';
+
+interface Props {
+  /** URL del modello .glb (Android + anteprima 3D) */
+  glb: string;
+  /** URL del modello .usdz (iPhone/iPad). Senza, su iOS la AR non parte. */
+  usdz?: string;
+  /** Testo alternativo dell'anteprima (es. titolo dell'opera) */
+  alt: string;
+  /** Immagine mostrata finche' il 3D non e' pronto (consigliata: la tela) */
+  poster?: string;
+  /** Titolo mostrato da Scene Viewer su Android */
+  titolo?: string;
+  lingua?: LinguaAr;
+  /** Traduttore del sito (es. `useTranslations(lang, …)`): legge i testi `core.ar.*`, cosi' valgono le sovrascritture del sito. Lingua = `t.lang`. */
+  t?: Translator;
+  /** Sovrascrive uno o piu' testi predefiniti della lingua (vince anche su `t`) */
+  testi?: Partial<TestiAr>;
+  /** Indirizzo assoluto nel QR code. Default: la pagina corrente + `#id` (calcolata nel browser). Vince su `hashQr`. */
+  urlQr?: string;
+  /** Ancora del QR: pagina corrente (calcolata nel browser) + questo hash, es. `"#stanza-ar"`. Default: `#id` del viewer. */
+  hashQr?: string;
+  /** Nasconde la barra di caricamento di model-viewer quando il modello e' pronto (default true). */
+  nascondiBarra?: boolean;
+  /** Ordine delle modalita' AR di model-viewer */
+  arModes?: string;
+  /** 'pigro' (default): carica il 3D quando il riquadro si avvicina allo schermo */
+  caricamento?: 'pigro' | 'subito';
+  /** Mostra il QR code su desktop (default true) */
+  qr?: boolean;
+  id?: string;
+  class?: string;
+}
+
+const {
+  glb,
+  usdz,
+  alt,
+  poster,
+  titolo,
+  t: traduttore,
+  lingua = traduttore?.lang ?? 'it',
+  testi: personalizzati = {},
+  urlQr,
+  hashQr,
+  nascondiBarra = true,
+  arModes = 'scene-viewer webxr quick-look',
+  caricamento = 'pigro',
+  qr = true,
+  id,
+  class: classe,
+} = Astro.props;
+
+const daSito = traduttore
+  ? Object.fromEntries(
+      (Object.keys(TESTI_AR.it) as (keyof TestiAr)[])
+        .map((k) => [k, traduttore.raw(`core.ar.${k}`)] as const)
+        .filter(([, v]) => typeof v === 'string'),
+    )
+  : {};
+const t = testiAr(lingua, { ...daSito, ...personalizzati });
+// Scene Viewer legge il parametro "title" dall'URL del modello.
+const src = titolo ? `${glb}${glb.includes('?') ? '&' : '?'}title=${encodeURIComponent(titolo)}` : glb;
+const idViewer = id ?? `ar-${glb.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').slice(-40)}`;
+---
+
+<isa-ar-viewer
+  id={idViewer}
+  class:list={['isa-ar', classe]}
+  data-ar="attesa"
+  data-caricamento={caricamento}
+  data-qr={qr ? 'si' : 'no'}
+  data-url-qr={urlQr}
+  data-hash-qr={hashQr}
+  data-barra={nascondiBarra ? 'nascondi' : undefined}
+>
+  <model-viewer
+    class="isa-ar__modello"
+    src={src}
+    ios-src={usdz}
+    alt={`${t.etichetta3d}${sep(lingua).dp}${alt}`}
+    ar
+    ar-modes={arModes}
+    ar-placement="wall"
+    ar-scale="fixed"
+    camera-controls
+    disable-zoom
+    disable-pan
+    touch-action="pan-y"
+    interaction-prompt="none"
+    camera-orbit="0deg 90deg auto"
+    min-camera-orbit="-55deg 55deg auto"
+    max-camera-orbit="55deg 125deg auto"
+    environment-image="neutral"
+    shadow-intensity="0"
+    exposure="1"
+    loading="eager"
+    reveal="auto"
+  >
+    {poster && (
+      <div slot="poster" class="isa-ar__poster">
+        <img src={poster} alt="" loading="lazy" decoding="async" />
+      </div>
+    )}
+    <!-- il bottone AR e' fuori da model-viewer, cosi' ogni sito lo mette dove vuole -->
+    <span slot="ar-button" hidden></span>
+  </model-viewer>
+
+  <button type="button" class="isa-ar__bottone" hidden>
+    <slot name="icona" />
+    <span class="isa-ar__bottone-testo">{t.bottone}</span>
+  </button>
+
+  <div class="isa-ar__qr" hidden>
+    <p class="isa-ar__qr-titolo">{t.qrTitolo}</p>
+    <div class="isa-ar__qr-codice" role="img" aria-label={t.qrTitolo}></div>
+    <p class="isa-ar__qr-testo">{t.qrTesto}</p>
+  </div>
+
+  <p class="isa-ar__avviso" role="status" hidden
+    data-non-supportato={t.nonSupportato}
+    data-errore={t.errore}
+    data-errore-modello={t.erroreModello}></p>
+
+  <slot />
+</isa-ar-viewer>
+
+<style is:global>
+  /* Base minima a specificita' zero (:where): ogni sito la sovrascrive liberamente. */
+  :where(isa-ar-viewer) { display: block; position: relative; }
+  :where(isa-ar-viewer .isa-ar__modello) {
+    display: block;
+    width: 100%;
+    height: var(--isa-ar-altezza, 26rem);
+    background: var(--isa-ar-sfondo, transparent);
+    --poster-color: transparent;
+  }
+  :where(isa-ar-viewer .isa-ar__poster) { width: 100%; height: 100%; }
+  :where(isa-ar-viewer .isa-ar__poster img) { width: 100%; height: 100%; object-fit: contain; }
+  :where(isa-ar-viewer .isa-ar__qr-codice) {
+    width: var(--isa-ar-qr-lato, 9rem);
+    color: var(--isa-ar-qr-colore, #000);
+    background: var(--isa-ar-qr-sfondo, #fff);
+  }
+  :where(isa-ar-viewer .isa-ar__qr-codice svg) { display: block; width: 100%; height: auto; }
+  isa-ar-viewer [hidden] { display: none !important; }
+  /* la barra di model-viewer resta visibile (2 px) anche dopo il caricamento: la togliamo a modello pronto */
+  isa-ar-viewer[data-barra='nascondi'][data-modello='caricato'] model-viewer::part(default-progress-bar) { display: none; }
+  /* prima che model-viewer sia caricato, si vede solo il poster */
+  isa-ar-viewer model-viewer:not(:defined) > :not([slot='poster']) { display: none; }
+</style>
+
+<script>
+  import { avviaArViewer } from '../src/ar/client.ts';
+  avviaArViewer();
+</script>

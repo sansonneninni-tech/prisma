@@ -1,0 +1,41 @@
+---
+/**
+ * Contenuto dell'Indice a schermo intero (C3, telefono). Usato dal dialog (Indice.astro) e, finto, dalla styleguide.
+ * Riga in alto identica all'header con «Chiudi» al posto di «Indice» e tutte e tre le lingue (sotto 375 px le lingue
+ * scendono in una riga subito sotto: in 288 px non stanno con il carrello). Poi 4 voci giganti numerate, filetto,
+ * 3 voci a 22 px; sopra le voci «Home» (22 px); in fondo «Andria, Puglia» e «Sito dimostrativo». Voce corrente: aria-current + ■.
+ */
+import Logo from './Logo.astro';
+import Lingue from './Lingue.astro';
+import ContaCarrello from './ContaCarrello.astro';
+import Shop from './Shop.astro';
+import { href, useT, type Locale } from '../lib/i18n';
+import { INDICE_PRINCIPALE, INDICE_SECONDARIO, corrente, hrefVoce } from '../lib/nav';
+interface Props { lang: Locale; pathname: string }
+const { lang, pathname } = Astro.props;
+const t = useT(lang);
+// «Home» sempre in cima alle voci (lezione della committente: la strada di casa si deve vedere)
+const home = /^\/(it|en|zh)\/?$/.test(pathname);
+---
+<div class="idx__top">
+  <a class="hd__logo" href={href(lang, '/')} aria-label={t('galleria.nav.home_aria')}><Logo forma="compatto" class="hd__l-co" /></a>
+  <div class="hd__nav">
+    <Shop lang={lang} pathname={pathname} />
+    <button class="hd__btn" type="button" data-indice-chiudi>{t('galleria.nav.chiudi')}</button>
+    <ContaCarrello lang={lang} />
+    <Lingue lang={lang} pathname={pathname} class="hd__lang idx__lang-alto" />
+  </div>
+</div>
+<Lingue lang={lang} pathname={pathname} class="idx__lang-riga" />
+<nav class="idx__nav" aria-label={t('galleria.indice.voci')}>
+  <a class="idx__home" href={href(lang, '/')} aria-current={home ? 'page' : undefined}>{t('galleria.nav.home')}</a>
+  <ol class="idx__ol">
+    {INDICE_PRINCIPALE.map((v) => (
+      <li class="idx__li"><a class="idx__a" href={hrefVoce(lang, v)} aria-current={corrente(pathname, lang, v)} data-vista={v.vista}>{t(v.chiave)}</a></li>
+    ))}
+    {INDICE_SECONDARIO.map((v, i) => (
+      <li class:list={['idx__li', 'idx__li--sec', i === 0 && 'idx__li--primo-sec']}><a class="idx__a" href={hrefVoce(lang, v)} aria-current={corrente(pathname, lang, v)}>{t(v.chiave)}</a></li>
+    ))}
+  </ol>
+</nav>
+<p class="idx__piede"><span>{t('galleria.indice.luogo')}</span><span>{t('galleria.indice.demo')}</span></p>
