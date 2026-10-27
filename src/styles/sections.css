@@ -367,3 +367,9 @@ body:not(.is-loading) .loader { pointer-events: none; }
 
 /* Reveal di base */
 [data-reveal] { overflow: hidden; padding-top: .1em; margin-top: -.1em; }
+
+/* ============ Pulsante WhatsApp fisso ============ */
+.fab { position: fixed; right: 16px; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 90; display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 18px 0 14px; border-radius: 999px; background: var(--ink); color: var(--bg); font-size: .76rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; box-shadow: 0 14px 30px -12px rgba(5,2,3,.5); transform: translateY(calc(100% + 60px)); transition: transform .6s var(--ease); }
+.fab svg { width: 20px; height: 20px; fill: currentColor; }
+.fab.is-on { transform: none; }
+@media (min-width: 900px) { .fab { right: var(--gut); bottom: 28px; } }

@@ -502,7 +502,7 @@ ORIGINAL.forEach((o, i) => {
    --------------------------------------------------------- */
 function fillContacts() {
   const msg = encodeURIComponent(lang === 'en' ? 'Hi PRISMA, I’d like to talk about a project.' : 'Ciao PRISMA, vorrei parlarvi di un progetto.')
-  const wa = $('[data-wa]'); wa.href = `https://wa.me/${CONTATTI.whatsapp}?text=${msg}`; $('[data-wa-label]').textContent = CONTATTI.whatsappLabel
+  $$('[data-wa]').forEach(a => { a.href = `https://wa.me/${CONTATTI.whatsapp}?text=${msg}` }); $('[data-wa-label]').textContent = CONTATTI.whatsappLabel
   const ml = $('[data-mail]'); ml.href = `mailto:${CONTATTI.email}`; $('[data-mail-label]').textContent = CONTATTI.email
   const ig = $('[data-ig]'); ig.href = `https://instagram.com/${CONTATTI.instagram}`; $('[data-ig-label]').textContent = '@' + CONTATTI.instagram
   $$('[data-site-foto]').forEach(a => { a.href = CONTATTI.sitoFoto })
@@ -551,6 +551,9 @@ function setLang(l) {
 }
 $$('[data-lang]').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)))
 setLang(lang)
+
+/* Pulsante WhatsApp: appare dopo l'apertura, sparisce sui contatti */
+ScrollTrigger.create({ trigger: '[data-hero]', start: 'bottom 60%', endTrigger: '#contatti', end: 'top 80%', onToggle: st => $('[data-fab]').classList.toggle('is-on', st.isActive) })
 
 /* Header chiaro sulle sezioni scure */
 $$('.system, .contact, .ftr').forEach(sec => ScrollTrigger.create({
