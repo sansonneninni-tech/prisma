@@ -1,0 +1,226 @@
+/* ==========================================================================
+   Versione ispirata a Luke & Nik (lukeandnik.co.uk/?c=158), dal teardown in docs/teardown-lukeandnik.md.
+   - un solo font (Host Grotesk 400 al posto di ABC Monument Grotesk), tutto a 1rem, interlinea 1.2, +0.02em;
+     l'unico testo grande è l'Indice (4.5vw, 8.5vw sul telefono, -0.02em);
+   - fondo pieno scelto da chi guarda (quadratino in alto a destra), testo bianco o nero secondo la luminosità;
+   - interfaccia fissa in mix-blend-mode: difference, sopra le foto e sopra qualsiasi colore;
+   - un solo punto di rottura a 1000 px; curva principale cubic-bezier(.5,0,.5,1).
+   Caricato per ultimo da Base.astro: i selettori partono da :root per vincere sugli stili delle pagine.
+   ========================================================================== */
+:root {
+  --c-bg: var(--ln-bg, rgb(115 12 192));
+  --c-ink: var(--ln-fg, #fff);
+  --c-mute: var(--ln-mute, rgb(255 255 255 / 0.66));
+  --c-inactive: var(--ln-mute, rgb(255 255 255 / 0.66));
+  --c-placeholder: color-mix(in srgb, var(--c-ink) 10%, var(--c-bg));
+  --c-focus: var(--c-ink);
+  --c-veil: rgb(0 0 0 / 0.4);
+  --f-sans: "Host Grotesk", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --ease-ln: cubic-bezier(0.5, 0, 0.5, 1);
+
+  --t-ln: 1rem;
+  --t-ln-big: 8.5vw;
+  --t-ui: var(--t-ln);
+  --t-cap: var(--t-ln);
+  --t-lead: var(--t-ln);
+  --t-small: 0.8125rem;
+  --t-tab: var(--t-ln);
+  --t-title: var(--t-ln-big);
+  --t-title-min: var(--t-ln-big);
+  --t-list: var(--t-ln-big);
+  --t-mega: var(--t-ln-big);
+  --t-title-zh: var(--t-ln-big);
+  --t-list-zh: var(--t-ln-big);
+  --w-display: 400;
+  --w-strong: 400;
+  --w-text: 400;
+  --ls-mega: -0.02em;
+  --ls-title: -0.02em;
+  --ls-list: -0.02em;
+  --ls-text: 0.02em;
+  --lh-mega: 1;
+  --lh-title: 1;
+  --lh-list: 1;
+  --lh-tab: 1.2;
+  --lh-tight: 1.2;
+  --lh-text: 1.2;
+  --line: 1px solid var(--c-ink);
+  --line-soft: 1px solid var(--ln-line, rgb(255 255 255 / 0.22));
+  --header-h: 64px;
+  --gutter: 16px;
+}
+@media (min-width: 1000px) {
+  :root { --t-ln-big: 4.5vw; --header-h: 72px; --gutter: 20px; }
+}
+/* il fondo è uno solo: la tinta delle foto non lo cambia */
+:root[style*='--tinta'] { --c-bg: var(--ln-bg, rgb(115 12 192)); --c-placeholder: color-mix(in srgb, var(--c-ink) 10%, var(--c-bg)); }
+:root body { background: var(--c-bg); color: var(--c-ink); letter-spacing: 0.02em; line-height: 1.2; font-weight: 400; transition: background-color 0.2s linear, color 0.2s linear; }
+:root ::selection { background: var(--c-ink); color: var(--c-bg); }
+:root :is(h1, h2, h3, h4, strong, b, th) { font-weight: 400; font-synthesis: none; }
+
+/* ---------- Header: tutto fisso, in differenza ---------- */
+:root .hd {
+  background: none; color: #fff; mix-blend-mode: difference;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: start;
+  padding: calc(14px + env(safe-area-inset-top)) var(--gutter) 0; height: auto; pointer-events: none;
+}
+:root .hd > * { pointer-events: auto; }
+:root .hd a, :root .hd button { color: inherit; }
+:root .hd__logo { grid-column: 2; grid-row: 1; justify-self: center; min-height: 30px; }
+:root .hd__logo .logo { font-family: var(--f-sans); font-weight: 500; font-size: 1.25rem; letter-spacing: -0.02em; line-height: 1; }
+@media (min-width: 1000px) { :root .hd__logo .logo { font-size: 1.5625rem; } }
+:root .hd__sx { grid-column: 1; grid-row: 1; justify-self: start; display: grid; gap: 1.2em; font-size: 1rem; line-height: 1.2; }
+:root .hd__frase { max-width: 24em; display: none; }
+:root .hd__nav { display: flex; flex-wrap: wrap; gap: 0 1em; font-size: 1rem; font-weight: 400; }
+:root .hd__btn, :root .hd .lingue__a { min-height: 0; min-width: 0; padding: 0; line-height: 1.2; font-size: 1rem; font-weight: 400; color: inherit; }
+:root .hd__btn::after { content: ''; position: absolute; inset: -12px -6px; } /* area di tocco da 44 px senza spostare il testo */
+:root .hd__btn, :root .hd .lingue__a { position: relative; }
+:root .hd__idx-btn { display: inline-flex; }
+:root .hd__idx-link { display: none; }
+:root .hd__sec { display: none; }
+:root .hd__dx { grid-column: 3; grid-row: 1; justify-self: end; display: flex; align-items: flex-start; gap: 1em; }
+:root .hd__lang { margin: 0; gap: 0.6em; }
+:root .hd .lingue__a { color: rgb(255 255 255 / 0.4); }
+:root .hd .lingue__a[aria-current] { color: #fff; text-decoration: none; }
+@media (hover: hover) {
+  :root .hd__btn:hover, :root .hd .lingue__a:hover { text-decoration: underline; text-decoration-thickness: 0.05em; text-underline-offset: 0.1125em; color: #fff; }
+}
+@media (min-width: 1000px) {
+  :root .hd__frase { display: block; }
+  :root .hd__sec { display: inline-flex; }
+}
+/* il telefono: «Indice» e il carrello in alto a sinistra a piena luce, come «Info / Index» di Luke & Nik */
+@media (max-width: 999.98px) {
+  :root .hd__sx { gap: 0; }
+  :root .hd__nav { flex-direction: column; gap: 0; margin-top: -10px; }
+  /* voci una sotto l'altra: l'area di tocco è il padding, così non si coprono */
+  :root .hd__nav .hd__btn { padding: 10px 12px 10px 0; }
+  :root .hd__nav .hd__btn::after { content: none; }
+}
+
+/* quadratino del colore di fondo: 20 × 20, si apre in una barra da 200 px */
+:root .fondo { position: relative; display: flex; align-items: center; gap: 10px; }
+:root .fondo__q {
+  width: 20px; height: 20px; flex: none; background: #fff; position: relative;
+  transition: transform 0.3s var(--ease-ln);
+}
+:root .fondo__q::after { content: ''; position: absolute; inset: -12px; }
+:root .fondo__q[aria-expanded='true'] { transform: rotate(45deg) scale(0.7); }
+:root .fondo__barra {
+  position: absolute; right: 30px; top: 0; width: min(200px, 50vw); height: 20px; display: flex; align-items: center;
+}
+:root .fondo__barra[hidden] { display: none; }
+:root .fondo__in {
+  -webkit-appearance: none; appearance: none; width: 100%; height: 20px; margin: 0; background: transparent; cursor: ew-resize;
+}
+:root .fondo__in::-webkit-slider-runnable-track { height: 1px; background: #fff; }
+:root .fondo__in::-moz-range-track { height: 1px; background: #fff; }
+:root .fondo__in::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; margin-top: -5.5px; background: #fff; border: 0; border-radius: 0; }
+:root .fondo__in::-moz-range-thumb { width: 12px; height: 12px; background: #fff; border: 0; border-radius: 0; }
+:root .fondo__in:focus-visible { outline: 1px solid #fff; outline-offset: 4px; }
+
+/* lo spazio sotto l'header: il nome e due righe di voci */
+:root .main { padding-top: calc(var(--header-h) + 40px + env(safe-area-inset-top)); }
+:root .main--home { padding-top: 0; }
+@media (min-width: 1000px) { :root .main { padding-top: calc(var(--header-h) + 64px + env(safe-area-inset-top)); } }
+
+/* ---------- Testo: niente gerarchia di pesi, solo misura ---------- */
+:root .btn {
+  border-radius: 0; font-weight: 400; letter-spacing: 0.02em; font-size: 1rem;
+  background: var(--c-ink); color: var(--c-bg); border-color: var(--c-ink);
+}
+:root .lnk, :root a.lnk { text-decoration-thickness: 0.05em; text-underline-offset: 0.1125em; }
+:root .titolo > h1, :root .titolo > h2, :root .tg__h { font-weight: 400; letter-spacing: -0.02em; line-height: 1; }
+:root .card__t, :root .card__cap, :root .card__ed { font-size: 1rem; font-weight: 400; }
+:root .card__img { background: var(--c-placeholder); }
+:root .card__ed, :root .op__nota, :root .ft__demo { color: var(--c-mute); }
+:root .tabs__b { font-size: 1rem; font-weight: 400; color: var(--c-mute); }
+:root .tabs__b[aria-selected='true'] { color: var(--c-ink); text-decoration: underline; text-decoration-thickness: 0.05em; text-underline-offset: 0.1125em; }
+:root .acq__prezzo { font-weight: 400; }
+:root .ft { border-top: var(--line-soft); font-size: 1rem; }
+:root input, :root select, :root textarea { color: var(--c-ink); }
+@media (hover: hover) {
+  :root a:not(.btn):not(.card):not([class*='ln-']):hover { text-decoration-thickness: 0.05em; text-underline-offset: 0.1125em; }
+}
+
+/* ---------- Indice: sale dal basso e copre tutto, a ogni larghezza ---------- */
+:root .idx {
+  display: none; background: var(--c-bg); color: var(--c-ink);
+  padding: calc(14px + env(safe-area-inset-top)) var(--gutter) calc(var(--s-6) + env(safe-area-inset-bottom));
+}
+:root .idx[open] { display: flex; flex-direction: column; }
+
+:root .ln-it {
+  height: auto; flex: none; display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: start; gap: 1em;
+  font-size: 1rem; line-height: 1.2;
+}
+:root .ln-it__nome { justify-self: start; }
+:root .ln-it__filtri { display: flex; gap: 1em; justify-self: center; }
+:root .ln-it__f, :root .ln-it__chiudi { position: relative; color: var(--c-mute); }
+:root .ln-it__f::after, :root .ln-it__chiudi::after { content: ''; position: absolute; inset: -12px -6px; }
+:root .ln-it__f[aria-pressed='true'] { color: var(--c-ink); }
+:root .ln-it__chiudi { justify-self: end; }
+@media (max-width: 999.98px) {
+  /* telefono: il nome lascia il posto ai filtri */
+  :root .ln-it { grid-template-columns: minmax(0, 1fr) auto; }
+  :root .ln-it__nome { display: none; }
+  :root .ln-it__filtri { justify-self: start; }
+}
+:root .ln-idx { margin-top: clamp(40px, 9vh, 96px); }
+:root .ln-idx__ol { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 0.12em; }
+@media (min-width: 1000px) { :root .ln-idx__ol { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); } }
+:root .ln-idx__li { padding-left: min(var(--sp), 18vw); }
+:root .ln-idx__li--fuori { visibility: hidden; }
+:root .ln-idx__a {
+  display: inline-grid; grid-template-columns: auto auto; align-items: start; column-gap: 0.35em;
+  font-size: var(--t-ln-big); line-height: 1; letter-spacing: -0.02em; font-weight: 400; min-height: 0; padding: 0.04em 0;
+}
+:root .ln-idx__a::before, :root .ln-idx__a::after { content: none; }
+:root .ln-idx__n { position: relative; font-size: 1rem; letter-spacing: 0.02em; line-height: 1.2; padding-top: 0.3em; min-width: 2.2em; }
+:root .ln-idx__img {
+  position: absolute; left: 0; top: 0.3em; width: 80px; height: 100px; opacity: 0; pointer-events: none; z-index: 1;
+  background: var(--c-placeholder);
+}
+:root .ln-idx__img img { width: 100%; height: 100%; object-fit: cover; }
+:root .ln-idx__s { grid-column: 2; font-size: 1rem; letter-spacing: 0.02em; line-height: 1.2; color: var(--c-mute); padding-top: 0.25em; }
+:root .ln-idx__a:visited { color: var(--c-mute); }
+:root .ln-idx__a[aria-current] .ln-idx__t { text-decoration: underline; text-decoration-thickness: 0.05em; text-underline-offset: 0.1125em; }
+@media (hover: hover) {
+  :root .ln-idx__a:hover .ln-idx__t { text-decoration: underline; text-decoration-thickness: 0.05em; text-underline-offset: 0.1125em; }
+  :root .ln-idx__a:hover .ln-idx__img { opacity: 1; }
+  :root .ln-idx__a:hover .ln-idx__num { opacity: 0; }
+}
+@media (max-width: 999.98px) { :root .ln-idx__s { display: none; } }
+:root .ln-idx__pag { display: flex; flex-wrap: wrap; gap: 0.6em 1.4em; margin-top: clamp(40px, 8vh, 80px); font-size: 1rem; }
+:root .ln-idx__pag a { position: relative; display: inline-block; }
+:root .ln-idx__pag a::after { content: ''; position: absolute; inset: -12px -4px; }
+:root .ln-idx__pag a[aria-current] { text-decoration: underline; text-decoration-thickness: 0.05em; text-underline-offset: 0.1125em; }
+:root .ln-idx__pag .hd__btn { min-height: 0; min-width: 0; padding: 0; font-size: 1rem; font-weight: 400; }
+:root .ln-idx__piede { display: flex; justify-content: space-between; align-items: center; gap: 1em; margin-top: auto; padding-top: 40px; font-size: 1rem; color: var(--c-mute); }
+:root .ln-idx__lingue .lingue__a { min-width: 0; min-height: 0; padding: 0 0.6em 0 0; font-size: 1rem; font-weight: 400; color: var(--c-mute); }
+:root .ln-idx__lingue .lingue__a[aria-current] { color: var(--c-ink); text-decoration: none; }
+
+/* scheda: il titolo alla misura grande di Luke & Nik, non gigante; la foto sale nella prima schermata */
+:root .sk__titolo > h1 { font-size: var(--t-ln-big); letter-spacing: -0.02em; line-height: 1; white-space: normal; }
+@media (max-width: 999.98px) {
+  :root .hd__nav { align-items: flex-start; }
+}
+/* barra del colore aperta: le lingue si tolgono di mezzo */
+:root .hd__dx:has([data-fondo-apri][aria-expanded='true']) .hd__lang { visibility: hidden; }
+:root .cc__tag { background: var(--c-ink); color: var(--c-bg); }
+
+/* fuori dalla home la pagina scorre sotto l'header: lì l'header ha il fondo pieno e il colore del testo, niente
+   differenza (sul testo che scorre la differenza diventava illeggibile) */
+html:not([data-home]) .hd {
+  mix-blend-mode: normal; color: var(--c-ink); background: var(--c-bg); padding-bottom: 12px;
+  transition: background-color 0.2s linear, color 0.2s linear;
+}
+html:not([data-home]) .hd .lingue__a { color: var(--c-mute); }
+html:not([data-home]) .hd .lingue__a[aria-current], html:not([data-home]) .hd__btn:hover { color: var(--c-ink); }
+html:not([data-home]) .fondo__q { background: var(--c-ink); }
+html:not([data-home]) .fondo__in::-webkit-slider-runnable-track { background: var(--c-ink); }
+html:not([data-home]) .fondo__in::-moz-range-track { background: var(--c-ink); }
+html:not([data-home]) .fondo__in::-webkit-slider-thumb { background: var(--c-ink); }
+html:not([data-home]) .fondo__in::-moz-range-thumb { background: var(--c-ink); }
+:root .ed__s-p { font-size: min(1rem, 1.25vw); white-space: nowrap; }
+@media (max-width: 767.98px) { :root .ed__s-p { font-size: min(1rem, 3.9vw); } }

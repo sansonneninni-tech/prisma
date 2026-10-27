@@ -1,0 +1,61 @@
+/* ==========================================================================
+   Galleria — P4 Altro (pezzo 6): elenco gigante (--t-list) con freccia e filetto, A12 miniatura al passaggio.
+   Ogni :hover sta dentro @media (hover: hover).
+   ========================================================================== */
+
+.al { padding-bottom: var(--s-9); }
+.al .tg { padding-top: var(--s-2); }
+.al .tg__h { padding-bottom: 0.17em; }
+
+.al__corpo { position: relative; margin-top: var(--s-6); }
+.al__lista { border-top: var(--line); }
+.al__v { border-bottom: var(--line); }
+.al__a {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: var(--s-3);
+  min-height: var(--touch);
+  padding: clamp(10px, 1.3vw, 22px) 0 clamp(12px, 1.5vw, 26px);
+}
+/* il nome sta sempre nella riga: --fit = larghezza in em (lib/fit.ts → fitMisto), 100cqw = spazio accanto alla freccia */
+.al__nome { container-type: inline-size; min-width: 0; }
+.al__nome > span {
+  display: block; width: max-content; max-width: 100%;
+  font-weight: var(--w-display); line-height: var(--lh-list); letter-spacing: var(--ls-list);
+  font-size: min(var(--t-list), calc(100cqw / var(--fit, 8)));
+  margin-left: -0.04em;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat;
+  transition: background-size var(--d-ui) var(--ease-out);
+}
+:lang(zh) .al__nome > span { font-size: min(var(--t-list-zh), calc(100cqw / var(--fit, 6))); letter-spacing: 0; line-height: 1.1; margin-left: 0; word-break: keep-all; }
+.al__fr { width: clamp(22px, 2.6vw, 44px); height: clamp(22px, 2.6vw, 44px); stroke-width: 1.4; }
+
+/* A12: miniatura a destra dell'elenco (solo computer con mouse, da 1024, senza riduci movimento) */
+.al__mini { display: none; }
+@media (min-width: 1024px) {
+  .al__lista { width: calc(100% * 8 / 12); }
+}
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .al__mini {
+    display: flex; align-items: flex-end; justify-content: flex-end;
+    position: absolute; top: 0; bottom: 0; right: 0; width: calc(100% * 3 / 12);
+    pointer-events: none;
+  }
+  /* si scopre dall'angolo in basso a destra con due trasformazioni opposte, solo transform (lavoro «animazioni
+     fluide» 22/10; prima clip-path inset(100% 0 0 100%) → inset(0) sul riquadro, stesso aspetto, durata e curva): la
+     cornice (.isa-picture, che ritaglia) arriva dall'angolo, la foto va nel verso opposto e resta ferma; .al__mini
+     ritaglia tutto al suo riquadro */
+  .al__mini { overflow: hidden; }
+  .al__mini .isa-picture {
+    display: flex; align-items: flex-end; justify-content: flex-end; width: 100%; height: 100%; overflow: hidden;
+    container-type: size; /* la foto si sposta della misura della cornice (100cqw, 100cqh), non della sua */
+    background: none; translate: 100% 100%; transition: translate var(--d-ui) var(--ease-out);
+  }
+  .al__mini img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; translate: -100cqw -100cqh; transition: translate var(--d-ui) var(--ease-out); }
+  .al__v:hover .al__mini .isa-picture, .al__a:focus-visible + .al__mini .isa-picture,
+  .al__v:hover .al__mini img, .al__a:focus-visible + .al__mini img { translate: 0 0; }
+}
+@media (hover: hover) {
+  .al__a:hover .al__nome > span { background-size: 100% 2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .al__nome > span { transition: none; }
+}

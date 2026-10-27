@@ -1,0 +1,20 @@
+# Galleria — rinvii (DIREZIONE §5). Così i link del core (termsHref, privacyHref) e quelli di Casa restano validi.
+# Netlify: le regole senza "!" non toccano i file che esistono; :lang vale it, en, zh.
+/:lang/stampe/:slug/          /:lang/opere/:slug/?v=stampa     301
+/:lang/stampe/                /:lang/opere/?vista=stampe       301
+/:lang/contatti/              /:lang/isabella/#contatti        301
+/:lang/atelier/               /:lang/isabella/#atelier         301
+# Mostre: finché src/data/mostre.json è vuoto la sezione #mostre non c'è → si arriva in cima a Isabella.
+# Con i dati: /:lang/mostre-e-stampa/  /:lang/isabella/#mostre  301
+/:lang/mostre-e-stampa/       /:lang/isabella/                 301
+/:lang/proposte/:set/         /:lang/proposte/#:set            301
+/:lang/prossimamente/:voce/   /:lang/prossimamente/#:voce      301
+/:lang/spedizioni-e-resi/     /:lang/info/#spedizioni          301
+/:lang/termini/               /:lang/info/#termini             301
+/:lang/privacy/               /:lang/info/#privacy             301
+/:lang/cookie/                /:lang/info/#cookie              301
+/:lang/note-legali/           /:lang/info/#note-legali         301
+# pagine che non esistono: 404 nella loro lingua (la radice usa /404.html, italiano)
+/en/*  /en/404/  404
+/zh/*  /zh/404/  404
+/it/*  /it/404/  404

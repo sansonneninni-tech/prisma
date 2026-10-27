@@ -1,0 +1,174 @@
+---
+/**
+ * Home della versione libera: «la parete».
+ * 1. Apertura: a sinistra nome, una riga e due porte; a destra il tulipano incorniciato (passe-partout bianco, cornice
+ *    sottile, ombra da parete) con il suo cartellino da museo (titolo, edizione, copie rimaste, prezzo).
+ * 2. La parete: tutte le foto di Ninni in fila orizzontale (scroll-snap, trascinabile), ognuna col suo cartellino.
+ * 3. Il mestiere: carta, cornice, firma.
+ * 4. Ernesto: il catalogo che apre più avanti.
+ * 5. Indice (#indice): le pagine del sito in grande, è anche la destinazione di «Indice» nell'header.
+ * Stili in styles/libera-home.css.
+ */
+import ArtworkPicture from '@ne/core/components/ArtworkPicture.astro';
+import { getArtworks, getPrintOptions, type Artwork } from '@ne/core/catalog';
+import { formatDimensions, formatPrice } from '@ne/core/i18n';
+import Freccia from '../Freccia.astro';
+import { HOME } from '../../lib/home';
+import { href, useT, type Locale } from '../../lib/i18n';
+import { hrefOpera } from '../../lib/opera-link';
+import { tintaOpera } from '../../lib/colori';
+import '../../styles/libera-home.css';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useT(lang);
+
+const primo = HOME.sequenza.opere[0]!;
+const parete = getArtworks().filter((a) => a.author === 'ninni');
+
+function cartellino(a: Artwork) {
+  const ed = a.edition;
+  const daStampa = getPrintOptions(a)?.fromCents ?? null;
+  return {
+    titolo: a.title,
+    misure: a.dimensions ? formatDimensions(a.dimensions, lang) : '',
+    edizione: ed ? t('galleria.libera.ed_restano', { n: ed.remaining, di: ed.size }) : t('galleria.libera.solo_stampe'),
+    ultime: !!ed && ed.remaining <= 3,
+    prezzo: ed && a.status === 'available' && a.priceCents !== null
+      ? formatPrice(a.priceCents, lang)
+      : daStampa !== null ? t('galleria.libera.stampa_da', { prezzo: formatPrice(daStampa, lang) }) : '',
+  };
+}
+const c0 = cartellino(primo);
+const n = (i: number) => String(i + 1).padStart(2, '0');
+const indice = [
+  { label: t('galleria.nav.ninni'), sub: t('galleria.libera.indice_ninni'), path: '/ninni/' },
+  { label: t('galleria.nav.stampe'), sub: t('galleria.libera.indice_stampe'), path: '/ninni/?vista=stampe' },
+  { label: t('galleria.nav.ernesto'), sub: t('galleria.libera.indice_ernesto'), path: '/ernesto/' },
+  { label: t('galleria.nav.carte'), sub: t('galleria.libera.indice_carte'), path: '/carte-e-cornici/' },
+  { label: t('galleria.nav.chi_siamo'), sub: t('galleria.libera.indice_chi'), path: '/chi-siamo/' },
+  { label: t('galleria.nav.info'), sub: t('galleria.libera.indice_info'), path: '/info/' },
+];
+const mestiere = ['carta', 'cornice', 'firma'] as const;
+---
+<section class="lh-ap wrap" aria-labelledby="lh-nome" style={`--tinta-opera:${tintaOpera(primo)}`}>
+  <div class="lh-ap__testo">
+    <p class="lh-occhiello">{t('galleria.libera.occhiello')}</p>
+    <h1 class="lh-ap__nome" id="lh-nome" translate="no">Ninni <em>&amp;</em> Ernesto</h1>
+    <p class="lh-ap__lead">{t('galleria.libera.lead')}</p>
+    <div class="lh-ap__porte">
+      <a class="lh-btn" href={href(lang, '/ninni/')}>{t('galleria.libera.cta_foto')}<Freccia /></a>
+      <a class="lh-lnk" href={href(lang, '/carte-e-cornici/')}>{t('galleria.libera.cta_carte')}</a>
+    </div>
+  </div>
+  <figure class="lh-ap__opera">
+    <a class="lh-cornice" href={hrefOpera(lang, primo)} style={`--ar:${primo.aspectRatio}`}>
+      <ArtworkPicture artwork={primo} lang={lang} alt="" width={720} sizes="(min-width: 900px) 34vw, 78vw" loading="eager" fetchpriority="high" />
+    </a>
+    <figcaption class="lh-cart">
+      <span class="lh-cart__t">{c0.titolo}</span>
+      <span class="lh-cart__m">{c0.misure}</span>
+      <span class:list={['lh-cart__e', c0.ultime && 'lh-cart__e--ultime']}>{c0.edizione}</span>
+      <span class="lh-cart__p">{c0.prezzo}</span>
+    </figcaption>
+  </figure>
+</section>
+
+<section class="lh-parete" aria-labelledby="lh-parete-t">
+  <div class="wrap lh-sez-testa">
+    <h2 class="lh-sez-t" id="lh-parete-t">{t('galleria.libera.parete_t')}</h2>
+    <p class="lh-sez-s">{t('galleria.libera.parete_s')}</p>
+    <div class="lh-parete__frecce" data-parete-frecce hidden>
+      <button type="button" class="lh-freccia" data-parete-prec aria-label={t('galleria.libera.precedente')}><Freccia dir="sinistra" /></button>
+      <button type="button" class="lh-freccia" data-parete-succ aria-label={t('galleria.libera.successiva')}><Freccia /></button>
+    </div>
+  </div>
+  <ol class="lh-parete__fila" data-parete tabindex="0" aria-label={t('galleria.libera.parete_t')}>
+    {parete.map((a, i) => {
+      const c = cartellino(a);
+      return (
+        <li class="lh-parete__voce" style={`--ar:${a.aspectRatio};--tinta-opera:${tintaOpera(a)}`}>
+          <a class="lh-parete__a" href={hrefOpera(lang, a)}>
+            <span class="lh-cornice lh-cornice--piccola">
+              <ArtworkPicture artwork={a} lang={lang} alt="" width={420} sizes="(min-width: 900px) 22vw, 62vw" />
+            </span>
+            <span class="lh-cart">
+              <span class="lh-cart__n">{n(i)}</span>
+              <span class="lh-cart__t">{c.titolo}</span>
+              <span class:list={['lh-cart__e', c.ultime && 'lh-cart__e--ultime']}>{c.edizione}</span>
+              <span class="lh-cart__p">{c.prezzo}</span>
+            </span>
+          </a>
+        </li>
+      );
+    })}
+  </ol>
+</section>
+
+<section class="lh-mestiere wrap" aria-labelledby="lh-mestiere-t">
+  <h2 class="lh-sez-t" id="lh-mestiere-t">{t('galleria.libera.mestiere_t')}</h2>
+  <ol class="lh-mestiere__lista">
+    {mestiere.map((k, i) => (
+      <li class="lh-mestiere__voce">
+        <span class="lh-mestiere__n">{n(i)}</span>
+        <h3 class="lh-mestiere__h">{t(`galleria.libera.${k}_t`)}</h3>
+        <p class="lh-mestiere__p">{t(`galleria.libera.${k}_p`)}</p>
+      </li>
+    ))}
+  </ol>
+  <a class="lh-lnk" href={href(lang, '/carte-e-cornici/')}>{t('galleria.libera.mestiere_cta')}<Freccia /></a>
+</section>
+
+<section class="lh-ernesto wrap" aria-labelledby="lh-ernesto-t">
+  <p class="lh-occhiello">{t('galleria.libera.ernesto_occhiello')}</p>
+  <h2 class="lh-ernesto__t" id="lh-ernesto-t">{t('galleria.libera.ernesto_t')}</h2>
+  <p class="lh-ernesto__p">{t('galleria.libera.ernesto_p')}</p>
+  <a class="lh-btn lh-btn--vuoto" href={href(lang, '/ernesto/')}>{t('galleria.libera.ernesto_cta')}<Freccia /></a>
+</section>
+
+<section class="lh-indice wrap" id="indice" aria-labelledby="lh-indice-t">
+  <h2 class="lh-occhiello" id="lh-indice-t">{t('galleria.libera.indice_t')}</h2>
+  <ol class="lh-indice__lista">
+    {indice.map((v, i) => (
+      <li><a class="lh-indice__a" href={href(lang, v.path)}><span class="lh-indice__n">{n(i)}</span><span class="lh-indice__l">{v.label}</span><span class="lh-indice__s">{v.sub}</span></a></li>
+    ))}
+  </ol>
+</section>
+
+<script>
+  // La parete: frecce da 768 px in su (sul telefono si scorre col dito), trascinamento col mouse.
+  function avvia() {
+    const fila = document.querySelector<HTMLElement>('[data-parete]');
+    if (!fila || fila.dataset.pronta) return;
+    fila.dataset.pronta = '1';
+    const frecce = document.querySelector<HTMLElement>('[data-parete-frecce]');
+    const passo = () => Math.max(240, fila.clientWidth * 0.7);
+    const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const vai = (d: number) => fila.scrollBy({ left: d * passo(), behavior: rm ? 'auto' : 'smooth' });
+    document.querySelector('[data-parete-prec]')?.addEventListener('click', () => vai(-1));
+    document.querySelector('[data-parete-succ]')?.addEventListener('click', () => vai(1));
+    if (frecce) frecce.hidden = false;
+    // trascinamento col mouse (non col tocco: lì scorre già)
+    let x0 = 0, s0 = 0, giu = false, mosso = false;
+    fila.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      giu = true; mosso = false; x0 = e.clientX; s0 = fila.scrollLeft;
+    });
+    addEventListener('pointermove', (e) => {
+      if (!giu) return;
+      const dx = e.clientX - x0;
+      if (Math.abs(dx) > 4) { mosso = true; fila.classList.add('lh-parete__fila--trascina'); }
+      if (mosso) fila.scrollLeft = s0 - dx;
+    });
+    addEventListener('pointerup', () => {
+      if (!giu) return;
+      giu = false;
+      fila.classList.remove('lh-parete__fila--trascina');
+    });
+    // dopo un trascinamento il clic non apre la foto
+    fila.addEventListener('click', (e) => { if (mosso) { e.preventDefault(); mosso = false; } }, true);
+    fila.addEventListener('dragstart', (e) => e.preventDefault());
+  }
+  avvia();
+  document.addEventListener('astro:page-load', avvia);
+</script>

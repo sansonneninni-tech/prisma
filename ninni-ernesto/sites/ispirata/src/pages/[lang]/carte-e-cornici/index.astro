@@ -1,0 +1,80 @@
+---
+/**
+ * /[lang]/carte-e-cornici/ — le carte e le cornici, i formati e come funziona un'edizione limitata.
+ * Prezzi letti dal listino del core (config/prints.ts): la tabella è sempre uguale a quella della scheda.
+ */
+import Base from '../../../layouts/Base.astro';
+import TitoloGigante from '../../../components/opere/TitoloGigante.astro';
+import ArtworkPicture from '@ne/core/components/ArtworkPicture.astro';
+import { formatPrice } from '@ne/core';
+import { FRAMES, FRAME_PRICES, PRINT_MATERIALS } from '@ne/core/config';
+import { requireArtwork } from '@ne/core/catalog';
+import { localeStaticPaths } from '@ne/core/i18n';
+import { href, useT, type Locale } from '../../../lib/i18n';
+import '../../../styles/carte.css';
+
+export const getStaticPaths = () => localeStaticPaths();
+const lang = Astro.params.lang as Locale;
+const t = useT(lang);
+const k = (c: string, p?: Record<string, string | number>) => t(`galleria.carte.${c}`, p);
+const titolo = t('galleria.nav.carte');
+const fasce = [k('fascia_s'), k('fascia_m'), k('fascia_l')];
+const carte = PRINT_MATERIALS.map((id) => ({ id, nome: t(`carte.${id}.nome`), testo: t(`carte.${id}.testo`) }));
+const bizan = { id: 'bizan', nome: t('carte.bizan.nome'), testo: t('carte.bizan.testo') };
+const cornici = FRAMES.filter((f) => f !== 'none').map((id) => ({
+  id, nome: t(`cornici.${id}.nome`), testo: t(`cornici.${id}.testo`),
+  prezzi: FRAME_PRICES[id as Exclude<typeof id, 'none'>].map((c) => formatPrice(c, lang)),
+}));
+const dettaglio = requireArtwork('02');
+---
+<Base lang={lang} title={titolo} description={k('descrizione')}>
+  <article class="wrap cc" aria-labelledby="cc-h">
+    <TitoloGigante testo={titolo} id="cc-h" />
+    <p class="cc__lead">{k('lead')}</p>
+
+    <section class="cc__sez" aria-labelledby="cc-carte">
+      <h2 class="cc__h2" id="cc-carte">{k('carte_t')}</h2>
+      <ul class="cc__lista" role="list">
+        {[...carte, bizan].map((c, i) => (
+          <li class="cc__v">
+            <span class="cc__n num">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="cc__nome">{c.nome}{c.id === 'bizan' && <span class="cc__tag">{k('solo_edizioni')}</span>}</h3>
+            <p class="cc__t">{c.testo}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="cc__sez cc__sez--img" aria-labelledby="cc-cornici">
+      <h2 class="cc__h2" id="cc-cornici">{k('cornici_t')}</h2>
+      <div class="cc__griglia">
+        <table class="cc__tab">
+          <caption class="vh">{k('cornici_t')}</caption>
+          <thead><tr><th scope="col"></th>{fasce.map((f) => <th scope="col" class="num">{f}</th>)}</tr></thead>
+          <tbody>
+            {cornici.map((c) => (
+              <tr>
+                <th scope="row"><b>{c.nome}</b><small>{c.testo}</small></th>
+                {c.prezzi.map((p) => <td class="num">+ {p}</td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <figure class="cc__fig">
+          <ArtworkPicture artwork={dettaglio} variant="detail1" lang={lang} alt="" sizes="(min-width: 1024px) 30vw, 100vw" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="cc__sez" aria-labelledby="cc-ed">
+      <h2 class="cc__h2" id="cc-ed">{k('edizioni_t')}</h2>
+      <ol class="cc__passi">
+        <li>{k('ed_1')}</li>
+        <li>{k('ed_2')}</li>
+        <li>{k('ed_3')}</li>
+        <li>{k('ed_4')}</li>
+      </ol>
+      <a class="lnk" href={href(lang, '/ninni/')}>{k('vai')}</a>
+    </section>
+  </article>
+</Base>

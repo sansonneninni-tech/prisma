@@ -1,0 +1,16 @@
+---
+/**
+ * C8 Masonry: card disposte sul server «alla più corta» con le proporzioni note (2 colonne, lib/opere.ts → colonne()).
+ * Niente JS per il disegno; opere-motore.js ridispone solo se cambiano filtri o numero di colonne (3 da 1280 px).
+ */
+import CardOpera from './CardOpera.astro';
+import { altezzaCard, colonne, type CardDati } from '../../lib/opere';
+import type { Locale } from '../../lib/i18n';
+interface Props { cards: CardDati[]; lang: Locale; eager?: number }
+const { cards, lang, eager = 0 } = Astro.props;
+const cols = colonne(cards, 2, (c) => altezzaCard(c.art));
+const primi = new Set(cards.slice(0, eager));
+---
+<div class="mas" data-griglia data-colonne="2">
+  {cols.map((col) => <div class="mas__col">{col.map((c) => <CardOpera card={c} lang={lang} eager={primi.has(c)} />)}</div>)}
+</div>

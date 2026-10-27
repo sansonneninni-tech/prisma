@@ -1,0 +1,106 @@
+/* ==========================================================================
+   Versione libera — «la parete». Carta calda, serif da catalogo d'arte, foto col passe-partout e la loro ombra,
+   cartellini da museo. Caricato per ultimo da Base.astro; i selettori partono da :root per vincere sugli stili delle
+   pagine (che arrivano dopo nel bundle). Stesse funzioni della versione attuale, cambia la pelle.
+   ========================================================================== */
+:root {
+  --c-paper: #f3eee4;
+  --c-bg: var(--c-paper);
+  --c-ink: #1d1b17;
+  --c-mute: #6c655a;           /* 5,0:1 sulla carta */
+  --c-inactive: #8d8579;
+  --c-placeholder: #e4dccd;
+  --c-line: rgb(29 27 23 / 0.16);
+  --c-mat: #fbf9f4;            /* passe-partout */
+  --c-accent: #b4432a;         /* terracotta: solo «ultime copie» e piccoli segni */
+  --f-sans: "Instrument Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --f-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --w-display: 400;
+  --w-strong: 600;
+  --w-text: 420;
+  --ls-title: -0.012em;
+  --ls-list: -0.008em;
+  --ls-mega: -0.015em;
+  --ls-text: 0;
+  --lh-title: 0.92;
+  --t-title: clamp(3.25rem, 11vw, 12rem);
+  --t-title-min: clamp(2rem, 4.6vw, 4.5rem);
+  --t-list: clamp(2.25rem, 6vw, 6.5rem);
+  --t-tab: clamp(1.6rem, 2.6vw, 2.4rem);
+  --line: 1px solid var(--c-ink);
+  --line-soft: 1px solid var(--c-line);
+  --ombra-quadro: 0 1px 1px rgb(40 30 15 / 0.08), 0 6px 12px -4px rgb(40 30 15 / 0.14), 0 28px 48px -22px rgb(40 30 15 / 0.38);
+  --raggio-btn: 999px;
+}
+/* la tinta della foto si posa sulla carta, non la sostituisce */
+html[style*='--tinta'] {
+  --c-bg: color-mix(in oklab, var(--tinta) 38%, var(--c-paper));
+  --c-placeholder: color-mix(in oklab, var(--tinta) 30%, #d9cfbd);
+}
+:root ::selection { background: var(--c-ink); color: var(--c-paper); }
+
+/* ---------- Titoli: serif, mai in neretto finto ---------- */
+:root h1, :root h2, :root h3, :root .tg__h, :root .titolo > h1, :root .titolo > h2 {
+  font-family: var(--f-serif);
+  font-weight: 400;
+  font-synthesis: none;
+}
+:root .titolo > h1, :root .titolo > h2, :root .tg__h { letter-spacing: var(--ls-title); line-height: var(--lh-title); }
+:root em { font-style: italic; }
+
+/* occhielli: restano in sans maiuscolo anche se sono titoli */
+:root .lh-occhiello { font-family: var(--f-sans); font-weight: 500; }
+
+/* ---------- Header: nome in serif corsivo, voci piccole ---------- */
+:root .hd { background: color-mix(in oklab, var(--c-bg) 88%, transparent); backdrop-filter: blur(10px) saturate(1.2); -webkit-backdrop-filter: blur(10px) saturate(1.2); border-bottom: 1px solid transparent; }
+:root .hd__logo .logo { font-family: var(--f-serif); font-weight: 400; letter-spacing: -0.005em; }
+:root .hd__l-or { font-size: 30px; line-height: 1; }
+:root .hd__l-co { font-size: 21px; line-height: 0.92; }
+:root .hd__nav { font-weight: 500; font-size: 0.875rem; }
+:root .lingue__a { font-weight: 500; }
+/* Indice: su ogni schermo il link porta all'indice della home (in fondo), sotto 768 resta il dialog */
+
+/* ---------- Bottoni e link ---------- */
+:root .btn { border-radius: var(--raggio-btn); font-weight: 500; letter-spacing: 0.005em; }
+:root .lnk { text-underline-offset: 0.22em; }
+
+/* ---------- Le foto: passe-partout, cornice sottile, ombra da parete ---------- */
+:root .card__img {
+  background: var(--c-mat);
+  padding: clamp(10px, 7%, 28px);
+  box-shadow: 0 0 0 1px rgb(29 27 23 / 0.9), var(--ombra-quadro);
+  aspect-ratio: auto;
+}
+:root .card__img picture, :root .card__img img { width: 100%; height: auto; }
+:root .card { gap: 14px; }
+:root .card__cap { font-size: 0.9375rem; }
+:root .card__t { font-family: var(--f-serif); font-size: 1.375rem; font-weight: 400; line-height: 1.05; }
+:root .card__ed { color: var(--c-accent); font-weight: 500; }
+@media (hover: hover) {
+  :root .card__img { transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out); }
+  :root .card:hover .card__img { transform: translateY(-4px); box-shadow: 0 0 0 1px rgb(29 27 23 / 0.9), 0 2px 2px rgb(40 30 15 / 0.08), 0 12px 20px -6px rgb(40 30 15 / 0.18), 0 44px 60px -26px rgb(40 30 15 / 0.42); }
+}
+@media (prefers-reduced-motion: reduce) { :root .card__img { transition: none; } :root .card:hover .card__img { transform: none; } }
+
+/* catalogo: schede Edizioni / Stampe come titoli corsivi */
+:root .tabs__b { font-family: var(--f-serif); font-weight: 400; letter-spacing: 0; }
+:root .tabs__b[aria-selected='true'] { font-style: italic; }
+:root .op__nota { font-size: 0.9375rem; color: var(--c-mute); max-width: 44rem; }
+
+/* ---------- Scheda: titolo serif, immagine col passe-partout ---------- */
+:root .sk__opera { --mat: clamp(14px, 2.2vw, 34px); padding: calc(var(--mat) + 4px); }
+/* il passe-partout è un'ombra piena: non cambia la misura della foto (lente e AR restano uguali) */
+:root .sk__box {
+  box-shadow: 0 0 0 var(--mat) var(--c-mat), 0 0 0 calc(var(--mat) + 1px) rgb(29 27 23 / 0.9),
+    0 0 0 calc(var(--mat) + 4px) #23201b, 0 calc(var(--mat) + 30px) 50px -18px rgb(40 30 15 / 0.38);
+}
+:root .vicine__t { font-family: var(--f-serif); font-weight: 400; font-size: clamp(1.75rem, 2.6vw, 2.5rem); }
+:root .acq__prezzo { font-family: var(--f-serif); font-weight: 400; font-size: clamp(2rem, 2.6vw, 2.6rem); line-height: 1; }
+
+/* ---------- Footer ---------- */
+:root .ft { border-top: var(--line-soft); }
+
+/* ---------- Indice a schermo intero (telefono) ---------- */
+:root .idx__a { font-family: var(--f-serif); font-weight: 400; }
+:root .idx__a[aria-current] { font-style: italic; }
+:root .acq__prezzo small { font-family: var(--f-sans); font-size: 0.8125rem; line-height: 1.3; }

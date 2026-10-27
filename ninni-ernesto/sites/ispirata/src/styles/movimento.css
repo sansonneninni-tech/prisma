@@ -1,0 +1,65 @@
+/* ==========================================================================
+   Galleria — movimento (pezzo 8, DIREZIONE §8): cambi pagina e cursore A7. Comportamento in lib/movimento.ts.
+   A1/A2 (zoom mappa ↔ pagina) li anima lib/movimento.ts sulla home vera (camera sulla mappa, velo del pannello) e
+   sull'h1 della pagina (FLIP): qui la view transition diventa un taglio. A3 (scheda → opera vicina) e A13 (lente)
+   sono in scheda.css.
+   ========================================================================== */
+
+/* L'header e il banner cookie restano fermi a ogni cambio pagina: sono uguali sulle due pagine e non si animano. */
+[data-hd] { view-transition-name: gal-hd; }
+[data-cookie]:not([hidden]) { view-transition-name: gal-ck; }
+::view-transition-group(gal-hd), ::view-transition-group(gal-ck) { z-index: 2; animation: none; }
+
+/* Cambio pagina normale: dissolvenza breve (0,3 s, --ease-out). */
+@keyframes gal-esce { to { opacity: 0; } }
+@keyframes gal-entra { from { opacity: 0; } }
+::view-transition-old(root) { animation: gal-esce var(--d-ui) var(--ease-out) both; }
+::view-transition-new(root) { animation: gal-entra var(--d-ui) var(--ease-out) both; }
+
+/* A1 «dentro» (mappa → pagina) e A2 «fuori» (pagina → mappa): la corsa della camera la fa movimento.ts sulla home
+   vera (A1 prima del cambio pagina, A2 subito dopo); la view transition è solo un taglio fra due immagini uguali
+   (bianco col titolo grande). A1: niente dissolvenza (darebbe due titoli per 0,15 s): l'h1 della pagina parte dal
+   titolo del pannello e va al suo posto, il resto compare dal bianco (movimento.ts, titoloAlSuoPosto). A2: l'istantanea
+   della pagina lasciata resta a schermo due fotogrammi mentre la mappa si prepara (movimento.ts, prontiFuori). */
+html[data-zoom] #contenuto { view-transition-name: none !important; }
+html[data-zoom]::view-transition-image-pair(root) { isolation: auto; }
+html[data-zoom]::view-transition-old(root),
+html[data-zoom]::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+
+/* il velo bianco della corsa è `.pan__velo` (Pannello.astro, styles/home.css): sotto il titolo, solo opacity. Durante la
+   corsa il titolo del pannello non ha la sottolineatura del passaggio del mouse (la pagina non ce l'ha). */
+html[data-zoom] .pan .pan__t span { text-decoration: none; }
+/* A1 sul telefono l'h1 parte più grande del suo posto (scala fino a ~2): la sua scatola trasformata non deve allargare la
+   pagina (sul telefono una pagina più larga dello schermo si rimpicciolisce e sposta l'header) */
+html[data-zoom] .main { overflow-x: clip; }
+
+/* Riduci movimento: solo dissolvenze di 0,2 s (Astro toglie tutte le animazioni delle view transition con
+   !important; qui si rimette la dissolvenza della pagina). A3 e la lente hanno la loro in scheda.css. */
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-a3])::view-transition-old(root) { animation: gal-esce 0.2s linear both !important; }
+  html:not([data-a3])::view-transition-new(root) { animation: gal-entra 0.2s linear both !important; }
+}
+
+/* A7 cursore con etichetta (solo puntatore fine e senza riduci movimento: lo accende lib/cursore.ts). Senza GSAP:
+   la posizione la scrive lib/cursore.ts in `translate`, comparsa e scomparsa sono questa transizione. */
+.cur {
+  position: fixed; left: 0; top: 0; z-index: var(--z-cursor);
+  pointer-events: none; opacity: 0; scale: 0.6;
+  translate: -100px -100px;
+  transform-origin: 0 0;
+  /* si sposta a ogni movimento del mouse: sempre sul suo strato, nessun ridisegno (lavoro «animazioni fluide» 22/10) */
+  will-change: translate, scale, opacity;
+  transition: opacity var(--d-fast) var(--ease-out), scale var(--d-fast) var(--ease-out);
+}
+.cur[data-on] { opacity: 1; scale: 1; }
+.cur[data-subito] { transition: none; }
+.cur span {
+  display: block; padding: 6px 10px;
+  background: var(--c-ink); color: var(--c-bg);
+  font-family: var(--f-sans); font-size: 12px; font-weight: var(--w-strong); line-height: 1; letter-spacing: 0;
+  white-space: nowrap;
+}
+:lang(zh) .cur span { font-family: var(--f-zh); }
+@media not ((hover: hover) and (pointer: fine)) { .cur { display: none; } }
+@media (prefers-reduced-motion: reduce) { .cur { display: none; } }
+@media print { .cur { display: none; } }

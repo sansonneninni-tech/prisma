@@ -1,0 +1,39 @@
+/* Home della versione ispirata a Luke & Nik (components/home/HomeLN.astro, lib/palco-client.ts) */
+html.ln-blocca, html.ln-blocca body { overflow: hidden; overscroll-behavior: none; height: 100%; }
+
+.ln-palco { position: relative; }
+.ln-palco__ol { list-style: none; margin: 0; padding: 0; }
+
+/* in movimento: un palco fisso a tutto schermo, le voci posizionate da JS con transform */
+.ln-palco:not(.ln-palco--statico) { position: fixed; inset: 0; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; }
+.ln-palco--trascina { cursor: grabbing; }
+.ln-palco:not(.ln-palco--statico) .ln-v { position: absolute; left: 0; top: 0; will-change: transform; contain: layout paint; }
+.ln-v--fuori { visibility: hidden; }
+.ln-v__a { display: block; width: 100%; height: 100%; -webkit-tap-highlight-color: transparent; }
+.ln-v__a:focus-visible { outline: 2px solid var(--c-ink); outline-offset: 4px; }
+.ln-v .isa-picture, .ln-v img { display: block; width: 100%; height: 100%; }
+.ln-v img { object-fit: cover; -webkit-user-drag: none; }
+.ln-v__crop { display: block; width: 100%; height: 100%; overflow: hidden; }
+.ln-v__crop .isa-picture { transform: scale(var(--z)); transform-origin: var(--cx) var(--cy); }
+.ln-v__crop img { object-position: var(--cx) var(--cy); }
+.ln-palco--apre { cursor: default; }
+
+/* senza JS o con riduci movimento: le foto in griglia, la pagina scorre */
+.ln-palco--statico { padding: calc(var(--header-h) + 48px) var(--gutter) 120px; }
+.ln-palco--statico .ln-palco__ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px var(--gutter); align-items: center; }
+@media (min-width: 1000px) { .ln-palco--statico .ln-palco__ol { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.ln-palco--statico .ln-v { aspect-ratio: var(--ar); }
+.ln-palco--statico .ln-v[data-dett] { display: none; }
+
+/* didascalia in basso, fissa e in differenza come l'header */
+.ln-dida {
+  position: fixed; inset: auto 0 0; z-index: var(--z-header); pointer-events: none;
+  display: flex; justify-content: space-between; align-items: end; gap: 1em;
+  padding: 0 var(--gutter) calc(14px + env(safe-area-inset-bottom));
+  color: #fff; mix-blend-mode: difference; font-size: 1rem; line-height: 1.2;
+}
+.ln-dida__sx { display: grid; max-width: 60%; }
+.ln-dida__r { color: rgb(255 255 255 / 0.6); min-height: 1.2em; }
+.ln-dida__dx { display: grid; justify-items: end; text-align: right; color: rgb(255 255 255 / 0.6); }
+.ln-dida__dx > span:first-child { color: #fff; font-variant-numeric: tabular-nums; min-height: 1.2em; }
+.ln-palco--statico ~ .ln-dida { position: static; mix-blend-mode: normal; color: var(--c-ink); padding-bottom: 40px; }

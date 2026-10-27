@@ -1,0 +1,118 @@
+---
+/**
+ * /[lang]/chi-siamo/ — Ninni & Ernesto: chi sono (ritratto e due righe ciascuno), contatti (email, telefono, WhatsApp,
+ * Instagram) e il modulo. «Chiedi informazioni» della scheda arriva qui con ?opera=slug#contatti.
+ * Contatti SEGNAPOSTO in lib/nav.ts.
+ */
+import Base from '../../../layouts/Base.astro';
+import Sottoindice from '../../../components/Sottoindice.astro';
+import Freccia from '../../../components/Freccia.astro';
+import Consenso from '../../../components/moduli/Consenso.astro';
+import ArtworkPicture from '@ne/core/components/ArtworkPicture.astro';
+import Field from '@ne/core/components/Field.astro';
+import { getArtworks } from '@ne/core/catalog';
+import { CONTACT_TOPICS } from '@ne/core/forms';
+import { localeStaticPaths, pickStrings } from '@ne/core/i18n';
+import { useT, type Locale } from '../../../lib/i18n';
+import { fit } from '../../../lib/fit';
+import { EMAIL, INSTAGRAM, PRISMA, TELEFONO, WHATSAPP } from '../../../lib/nav';
+import '../../../styles/core.css';
+import '../../../styles/moduli.css';
+import '../../../styles/isabella.css';
+
+export const getStaticPaths = () => localeStaticPaths();
+const lang = Astro.params.lang as Locale;
+const t = useT(lang);
+const k = (c: string, p?: Record<string, string | number>) => t(`galleria.isabella.${c}`, p);
+const titolo = t('galleria.nav.chi_siamo');
+const f = fit(titolo);
+
+const voci = [
+  { id: 'bio', nome: k('bio_t') },
+  { id: 'contatti', nome: k('contatti_t') },
+];
+const argomenti = CONTACT_TOPICS.map((v) => ({ value: v, label: t(`contatti.argomento_${v}`) }));
+const titoli = Object.fromEntries(getArtworks().map((a) => [a.slug, a.title]));
+const id = 'ct';
+const i18n = JSON.stringify({
+  ...pickStrings(t, [
+    'errori.email', 'errori.telefono', 'errori.consenso', 'errori.messaggio_breve',
+    'core.checkout.errori_riepilogo', 'core.checkout.campi_da_compilare',
+    'galleria.isabella.successo', 'galleria.isabella.opera_msg', 'galleria.isabella.invio',
+  ]),
+  'errori.obbligatorio': t('galleria.acquisto.obbligatorio'),
+});
+const est = { target: '_blank', rel: 'noopener' };
+---
+<Base lang={lang} title={titolo} description={k('descrizione')}>
+  <article class="wrap is" aria-labelledby="is-h">
+    <div class="titolo is__tit" style={f ? `--fit:${f}` : undefined}><h1 id="is-h">{titolo}</h1></div>
+    <Sottoindice voci={voci} label={k('sezioni')} />
+
+    <section class="is__sez is__bio" id="bio" aria-labelledby="bio-h">
+      <h2 class="vh" id="bio-h">{k('bio_t')}</h2>
+      <figure class="is__ritratto">
+        <ArtworkPicture photoId="ninni-ernesto-ritratto" lang={lang} alt={k('ritratto_alt')} sizes="(min-width: 1024px) 48vw, (min-width: 768px) 60vw, 100vw" loading="eager" fetchpriority="high" />
+      </figure>
+      <div class="is__testo">
+        <p class="is__bio-t">{k('bio')}</p>
+        <dl class="is__due">
+          <div><dt>Ninni</dt><dd>{k('bio_ninni')}</dd></div>
+          <div><dt>Ernesto</dt><dd>{k('bio_ernesto')}</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="is__sez" id="contatti" aria-labelledby="contatti-h">
+      <h2 class="is__h2" id="contatti-h">{k('contatti_t')}</h2>
+      <div class="is__blocchi">
+        <div class="is__b">
+          <h3 class="is__bt">{t('galleria.home.scrivimi')}</h3>
+          <ul>
+            <li><a class="is__a" href={`mailto:${EMAIL}`}>{EMAIL}</a></li>
+            <li><a class="is__a num" href={`tel:${TELEFONO.replace(/\s/g, '')}`}>{TELEFONO}</a></li>
+            <li><a class="is__a" href={WHATSAPP} {...est}>{k('whatsapp')}</a></li>
+          </ul>
+        </div>
+        <div class="is__b">
+          <h3 class="is__bt">{t('galleria.home.seguimi')}</h3>
+          <ul>
+            <li><a class="is__a" href={INSTAGRAM} {...est}>{t('footer.instagram')}</a></li>
+            <li><a class="is__a" href={PRISMA} {...est}>{k('prisma')}</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="is__modulo">
+        <div class="is__mod-int">
+          <h3 class="is__mt" id="ct-h">{k('modulo_t')}</h3>
+          <p class="is__mi">{t('contatti.intro')}</p>
+        </div>
+        <div class="is__mod-campi">
+          <form class="ct" id={id} novalidate aria-labelledby="ct-h" data-modulo="contatti" data-i18n={i18n} data-lang={lang} data-titoli={JSON.stringify(titoli)}>
+            <div class="isa-error-summary" role="alert" tabindex="-1" data-error-summary hidden></div>
+            <div class="ct__due">
+              <Field idPrefix={id} name="name" label={t('contatti.campo_nome')} required autocomplete="name" />
+              <Field idPrefix={id} name="email" type="email" label={t('contatti.campo_email')} required autocomplete="email" inputmode="email" />
+            </div>
+            <Field idPrefix={id} name="topic" as="select" label={t('contatti.campo_argomento')} value="altro" options={argomenti} />
+            <Field idPrefix={id} name="message" as="textarea" rows={6} required label={t('contatti.campo_messaggio')} />
+            <div class="conv__fine">
+              <Consenso idPrefix={id} lang={lang} label={t('contatti.consenso_privacy')} />
+              <button class="btn conv__invia" type="submit">{t('bottoni.invia_messaggio')}</button>
+              <p class="conv__demo">{k('demo')}</p>
+            </div>
+          </form>
+          <div class="conv__ok" role="status" tabindex="-1" data-modulo-ok hidden>
+            <p class="conv__ok-t" data-modulo-ok-t></p>
+            <p class="conv__demo">{k('demo')}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+</Base>
+
+<script>
+  import '../../../lib/moduli-client';
+</script>

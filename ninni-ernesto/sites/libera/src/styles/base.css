@@ -1,0 +1,168 @@
+/* ==========================================================================
+   Galleria — base (pezzo 1): reset, focus, .wrap, griglia, titoli, C5 bottoni, link, C6 frecce, C4 torna.
+   Token in tokens.css (copia identica di direzioni/galleria/tokens.css). Riferimento: styleguide.html.
+   Regola: ogni :hover sta dentro @media (hover: hover); gli stati veri (aria-current, aria-selected) restano fuori.
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+html {
+  -webkit-text-size-adjust: 100%;
+  /* niente riquadro azzurro/grigio al tocco (audit finale 2, telefono #1): il fuoco da tastiera resta (:focus-visible) */
+  -webkit-tap-highlight-color: transparent;
+  text-size-adjust: 100%;
+  background: var(--c-bg);
+  --ingombro-basso: 0px; /* chi mostra una barra fissa in basso la imposta su <html> */
+  scroll-padding-top: calc(var(--header-h) + env(safe-area-inset-top) + var(--s-4));
+}
+html[data-scroll-lock] { overflow: hidden; }
+/* «Galleria, ma con del colore»: chi mostra una foto mette --tinta su <html>
+   (lib/colori.ts → tintaOpera: il colore più vivo della foto, chiarissimo); lo sfondo diventa quella tinta */
+html[style*='--tinta'] {
+  --c-bg: var(--tinta);
+  --c-placeholder: color-mix(in oklab, var(--tinta), #000 8%);
+}
+body {
+  margin: 0;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: var(--f-sans);
+  font-weight: var(--w-text);
+  font-size: 1rem;
+  line-height: var(--lh-text);
+  letter-spacing: var(--ls-text);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+  transition: background-color var(--d-reveal) var(--ease-out);
+}
+@media (prefers-reduced-motion: reduce) { body { transition: none; } }
+:lang(zh) body, body:lang(zh) { letter-spacing: 0; }
+img, svg, picture { display: block; max-width: 100%; }
+img { height: auto; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; letter-spacing: inherit; text-align: inherit; }
+h1, h2, h3, h4, p, ul, ol, dl, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+abbr[title] { text-decoration: none; }
+[hidden] { display: none !important; }
+
+/* Focus: anello doppio 2 px bianco + 2 px nero, solo da tastiera */
+:focus { outline: none; }
+:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+main:focus-visible, dialog:focus-visible { box-shadow: none; }
+
+/* Testo solo per lettori di schermo */
+.vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* Salta al contenuto: compare in alto a sinistra col fuoco */
+.salta {
+  position: fixed; left: var(--gutter); top: var(--s-2); z-index: calc(var(--z-index) + 1);
+  background: var(--c-ink); color: var(--c-bg); font-size: var(--t-ui); font-weight: var(--w-strong);
+  padding: 0 var(--s-4); min-height: var(--touch); display: inline-flex; align-items: center;
+  transform: translateY(-200%);
+}
+.salta:focus-visible { transform: none; }
+
+/* Margini della pagina (con le safe area) */
+.wrap {
+  padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
+}
+.mute { color: var(--c-mute); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* Griglia: 4 colonne < 768, 8 da 768, 12 da 1024 */
+.griglia { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); column-gap: var(--col-gap); }
+
+/* Contenuto sotto l'header fisso (la home ha lo spazio nella sua griglia) */
+.main { flex: 1 0 auto; padding-top: calc(var(--header-h) + env(safe-area-inset-top)); }
+.main--home { padding-top: 0; overflow: clip; } /* lo zoom A1/A2 (camera sulla mappa) non allarga la pagina né fa comparire barre */
+
+/* Titolo gigante: sta sempre nella riga (--fit da lib/fit.ts) */
+.titolo { container-type: inline-size; }
+.titolo > h1, .titolo > h2 {
+  font-weight: var(--w-display);
+  font-size: min(var(--t-title), calc(100cqw / var(--fit, 3)));
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
+  margin-left: -0.05em;
+}
+:lang(zh) .titolo > h1, :lang(zh) .titolo > h2 { font-size: var(--t-title); margin-left: 0; word-break: keep-all; }
+/* da 768 il titolo latino sta su una riga (--fit): anche col carattere di riserva, prima che arrivi Inter Tight,
+   non va a capo, così niente salto della pagina al caricamento (CLS di Su commissione e Proposte, audit finale 1, #5) */
+@media (min-width: 768px) { .titolo > h1:not(:lang(zh)) { white-space: nowrap; } }
+/* cinese: peso esplicito (PingFang Semibold, YaHei Bold) invece del 560 che ogni sistema arrotonda a modo suo */
+:lang(zh) .titolo > h1 { font-weight: 600; }
+
+/* ---------- C6 Freccia ---------- */
+.freccia {
+  width: 0.9em; height: 0.9em; flex: none;
+  stroke: currentColor; stroke-width: 1.6; fill: none; stroke-linecap: square;
+}
+.freccia--sottile { stroke-width: 1.3; }
+
+/* ---------- C5 Bottone ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px; padding: 0 var(--s-5);
+  font-size: var(--t-ui); font-weight: var(--w-strong); line-height: 1; white-space: nowrap;
+  background: var(--c-ink); color: var(--c-bg); border: var(--line); border-radius: 0;
+  transition: background-color var(--d-fast) var(--ease-out), color var(--d-fast) var(--ease-out);
+}
+.btn--linea { background: var(--c-bg); color: var(--c-ink); }
+.btn--largo { width: 100%; }
+.btn:disabled, .btn[aria-disabled='true'] {
+  background: var(--c-placeholder); border-color: var(--c-placeholder); color: var(--c-mute); cursor: not-allowed;
+}
+.btn[aria-busy='true'] { cursor: progress; }
+.btn__barra {
+  width: 28px; height: 1px; background: currentColor; transform-origin: left;
+  animation: btn-barra 1s var(--ease-out) infinite;
+}
+@keyframes btn-barra { from { transform: scaleX(0.1); } to { transform: scaleX(1); } }
+@media (hover: hover) {
+  .btn:hover:not(:disabled):not([aria-disabled='true']) { background: var(--c-bg); color: var(--c-ink); }
+  .btn--linea:hover:not(:disabled):not([aria-disabled='true']) { background: var(--c-ink); color: var(--c-bg); }
+}
+
+/* ---------- Link con filetto (A14: il filetto si accorcia da destra al passaggio) ---------- */
+.lnk {
+  display: inline-flex; align-items: center; gap: 6px; min-height: var(--touch);
+  font-size: var(--t-ui); font-weight: var(--w-strong);
+  background: linear-gradient(currentColor, currentColor) 0 calc(50% + 0.8em) / 100% 1px no-repeat;
+  transition: background-size var(--d-ui) var(--ease-out);
+}
+@media (hover: hover) { .lnk:hover { background-size: 0 1px; } }
+
+/* ---------- C4 Torna ---------- */
+.torna {
+  display: inline-flex; align-items: center; gap: 6px; min-height: var(--touch);
+  font-size: var(--t-ui); font-weight: var(--w-strong); line-height: 1;
+}
+.torna span {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  padding-bottom: 3px; margin-bottom: -3px;
+  transition: background-size var(--d-ui) var(--ease-out);
+}
+@media (hover: hover) { .torna:hover span { background-size: 100% 1px; } }
+
+/* ---------- Venduta (unico rosso, sempre con ■ e parola) ---------- */
+.venduta { display: inline-flex; align-items: center; gap: 6px; color: var(--c-sold); font-weight: var(--w-strong); }
+.venduta::before { content: ''; width: 0.55em; height: 0.55em; background: currentColor; flex: none; }
+
+/* Contrasto alto: grigi più scuri */
+@media (prefers-contrast: more) {
+  :root { --c-mute: #000000; --c-inactive: #595959; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn__barra { animation: none; }
+  .btn, .lnk, .torna span { transition: none; }
+}
+
+/* Righe con « · » (regola di Casa, logica copiata): il punto sta nel margine del pezzo, così a inizio riga resta
+   fuori dal bordo (overflow-x: clip) e non si vede mai da solo. Le parti vengono da lib/misure.ts → pezzi(). */
+.sep-riga { --sep: 1.1em; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--sep); min-width: 0; overflow-x: clip; }
+.sep-riga > * { position: relative; margin-left: calc(-1 * var(--sep)); padding-left: var(--sep); min-width: 0; }
+.sep-riga > *::before { content: '·'; position: absolute; left: 0; width: var(--sep); text-align: center; }

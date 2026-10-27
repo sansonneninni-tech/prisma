@@ -1,0 +1,40 @@
+---
+/**
+ * C20 FiguraScala: l'opera in scala accanto a una persona di 170 cm, disegnata a filo (DIREZIONE §6 P3).
+ * Misure da `misureAr()` del core (le stesse della AR: 09 = 90 × 90 con la cornice). Il quadro è appeso come in una
+ * casa: centro a 150 cm da terra, mai più in basso di 25 cm. Un solo SVG in centimetri (1 unità = 1 cm), le linee non
+ * cambiano spessore con la scala. Decorativa per gli occhi, con una descrizione per i lettori di schermo.
+ */
+import { getArtworkImage, type Artwork } from '@ne/core/catalog';
+import type { MisureAr } from '@ne/core/ar';
+import { useT, type Locale } from '../../lib/i18n';
+
+interface Props { art: Artwork; misure: MisureAr | null; lang: Locale; class?: string }
+const { art, misure, lang, class: cls } = Astro.props;
+const t = useT(lang);
+const w = misure?.larghezzaCm ?? art.dimensions?.widthCm ?? 0;
+const h = misure?.altezzaCm ?? art.dimensions?.heightCm ?? 0;
+const PERSONA = 170;
+const CENTRO = 150;
+const SPAZIO = 32;
+const basso = Math.max(25, CENTRO - h / 2);
+const alto = basso + h;
+const H = Math.max(alto, PERSONA) + 4;
+const px = w + SPAZIO;
+const W = px + 52;
+const img = getArtworkImage(art, 'canvas', { width: 240 });
+---
+{w > 0 && h > 0 && (
+  <figure class:list={['scala', cls]}>
+    <svg class="scala__svg" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={t('galleria.scheda.scala')} preserveAspectRatio="xMinYMax meet" style={`--scala-r:${(W / H).toFixed(4)}`}>
+      <image href={img.src} x="0" y={H - alto} width={w} height={h} preserveAspectRatio="xMidYMid slice" />
+      <rect x="0" y={H - alto} width={w} height={h} class="scala__bordo" />
+      <g transform={`translate(${px} ${H - PERSONA}) scale(1.7)`} class="scala__persona">
+        <circle cx="15" cy="8" r="6.5" />
+        <path d="M15 15v45M3 30h24M15 60 6 99.6M15 60l9 39.6" />
+      </g>
+      <path d={`M0 ${H - 0.5}H${W}`} class="scala__terra" />
+    </svg>
+    <figcaption class="scala__dida" aria-hidden="true">{t('galleria.scheda.persona')}</figcaption>
+  </figure>
+)}

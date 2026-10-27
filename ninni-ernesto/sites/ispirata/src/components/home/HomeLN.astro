@@ -1,0 +1,87 @@
+---
+/**
+ * Home della versione ispirata a Luke & Nik: niente scorrimento della pagina, le foto attraversano lo schermo.
+ * Dal teardown: ogni voce è grande .5 / .75 / .9 dello schermo (contenuta), va da +100vw a −100vw (un lato e
+ * l'altro a turno) e da +R a −R in verticale (seme fisso), in modo lineare; ognuna parte quando la precedente è al 20 %.
+ * Il nastro scorre da solo, piano; la rotella e il trascinamento lo spostano (il trascinamento di più); gira all'infinito.
+ * Clic: il nastro si ferma, la foto si apre a tutto schermo in 750 ms, le altre volano via, poi la sua scheda.
+ * Ci sono le 8 foto di Ninni e 5 dettagli (ritagli delle stesse foto, aprono la stessa scheda).
+ * Senza JavaScript o con «riduci movimento»: le stesse voci in una griglia che scorre (classe ln-palco--statico).
+ * Comportamento in lib/palco-client.ts, stili in styles/ispirata-home.css.
+ */
+import ArtworkPicture from '@ne/core/components/ArtworkPicture.astro';
+import { getArtworks, getPrintOptions, type Artwork } from '@ne/core/catalog';
+import { formatPrice } from '@ne/core/i18n';
+import { useT, type Locale } from '../../lib/i18n';
+import { hrefOpera } from '../../lib/opera-link';
+import '../../styles/ispirata-home.css';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useT(lang);
+
+const foto = getArtworks().filter((a) => a.author === 'ninni');
+const per = (id: string) => foto.find((a) => a.id === id) ?? foto[0]!;
+// i dettagli: quale foto, dove (centro del ritaglio in %), quanto ingrandita, che forma
+const dettagli = [
+  { a: per('01'), cx: 50, cy: 38, z: 2.4, ar: 0.8 },
+  { a: per('03'), cx: 46, cy: 34, z: 2.2, ar: 1 },
+  { a: per('07'), cx: 52, cy: 50, z: 2.8, ar: 1.25 },
+  { a: per('04'), cx: 40, cy: 60, z: 2.5, ar: 0.8 },
+  { a: per('02'), cx: 55, cy: 45, z: 2.6, ar: 1 },
+];
+const ordine = ['01', '02', '04', '03', '06', '07', '08', '05'];
+type Voce = { a: Artwork; dettaglio?: (typeof dettagli)[number] };
+const voci: Voce[] = [];
+ordine.forEach((id, i) => {
+  voci.push({ a: per(id) });
+  const dt = dettagli[(i - 1) / 2];
+  if (i % 2 === 1 && dt) voci.push({ a: dt.a, dettaglio: dt });
+});
+if (dettagli[4]) voci.push({ a: dettagli[4].a, dettaglio: dettagli[4] });
+
+const misure = ['l', 'm', 's', 'm', 'l', 's', 'm', 's', 'l', 'm', 's', 'm', 'l'] as const;
+function riga(a: Artwork) {
+  const ed = a.edition;
+  const da = getPrintOptions(a)?.fromCents ?? null;
+  const edz = ed ? t('galleria.ln.ed_restano', { n: ed.remaining, di: ed.size }) : t('galleria.ln.solo_stampe');
+  const prezzo = ed && a.status === 'available' && a.priceCents !== null ? formatPrice(a.priceCents, lang)
+    : da !== null ? t('galleria.ln.stampa_da', { prezzo: formatPrice(da, lang) }) : '';
+  return [edz, prezzo].filter(Boolean).join(' · ');
+}
+const n = foto.length;
+---
+<section class="ln-palco ln-palco--statico" data-palco aria-label={t('galleria.ln.palco')}>
+  <ul class="ln-palco__ol">
+    {voci.map((v, i) => {
+      const ar = v.dettaglio ? v.dettaglio.ar : v.a.aspectRatio;
+      const num = foto.indexOf(v.a) + 1;
+      return (
+        <li class="ln-v" data-m={misure[i % misure.length]} data-ar={ar} data-dett={v.dettaglio ? '' : undefined} style={`--ar:${ar}`}>
+          <a class="ln-v__a" href={hrefOpera(lang, v.a)} data-titolo={v.a.title} data-riga={riga(v.a)} data-num={`${num}/${n}`}
+            tabindex={v.dettaglio ? -1 : undefined} aria-hidden={v.dettaglio ? 'true' : undefined}>
+            {v.dettaglio ? (
+              <span class="ln-v__crop" style={`--cx:${v.dettaglio.cx}%;--cy:${v.dettaglio.cy}%;--z:${v.dettaglio.z}`}>
+                <ArtworkPicture artwork={v.a} lang={lang} alt="" width={1600} sizes="(min-width: 1000px) 90vw, 180vw" loading={i < 5 ? 'eager' : 'lazy'} />
+              </span>
+            ) : (
+              <ArtworkPicture artwork={v.a} lang={lang} alt="" width={1200} sizes="(min-width: 1000px) 60vw, 90vw" loading={i < 5 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
+            )}
+            {!v.dettaglio && <span class="vh">{v.a.title}. {riga(v.a)}</span>}
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</section>
+<div class="ln-dida" aria-hidden="true">
+  <p class="ln-dida__sx" data-dida><span data-dida-t>{t('galleria.ln.guida')}</span><span class="ln-dida__r" data-dida-r></span></p>
+  <p class="ln-dida__dx"><span data-dida-n></span><span>{t('galleria.ln.demo')}</span></p>
+</div>
+<p class="vh">{t('galleria.ln.palco')}</p>
+
+<script>
+  import { avviaPalco } from '../../lib/palco-client';
+  avviaPalco();
+  document.addEventListener('astro:page-load', avviaPalco);
+</script>

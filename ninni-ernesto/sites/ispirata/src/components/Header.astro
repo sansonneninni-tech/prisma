@@ -1,0 +1,41 @@
+---
+/**
+ * Header della versione ispirata a Luke & Nik: tutto fisso e in `mix-blend-mode: difference`, così il testo bianco
+ * si inverte sopra le foto e sopra qualsiasi colore di fondo.
+ * - centro: il nome (→ home);
+ * - sinistra: in home la frase su due righe e sotto «Indice · Carrello (n) · Email · Instagram»; nelle altre pagine
+ *   solo la riga di voci (sul telefono «Info» non c'è: la frase sta solo in home);
+ * - destra: il quadratino del colore di fondo (si apre in una barra) e le lingue.
+ * `ridotto` (checkout): niente Indice, restano nome, Carrello (n) e lingue.
+ */
+import Lingue from './Lingue.astro';
+import ContaCarrello from './ContaCarrello.astro';
+import { href, useT, type Locale } from '../lib/i18n';
+import { EMAIL, INSTAGRAM } from '../lib/nav';
+interface Props { lang: Locale; pathname: string; ridotto?: boolean; home?: boolean }
+const { lang, pathname, ridotto = false, home = false } = Astro.props;
+const t = useT(lang);
+---
+<header class="hd" data-hd>
+  <a class="hd__logo" href={href(lang, '/')} aria-label={t('galleria.nav.home_aria')}><span class="logo" aria-hidden="true" translate="no">Ninni &amp; Ernesto</span></a>
+  <div class="hd__sx">
+    {home && <p class="hd__frase">{t('galleria.ln.frase_1')}<br />{t('galleria.ln.frase_2')}</p>}
+    <nav class="hd__nav" aria-label={t('galleria.nav.principale')}>
+      {!ridotto && <button class="hd__btn hd__idx-btn" type="button" aria-expanded="false" aria-controls="indice-menu" data-indice-apri>{t('galleria.nav.indice')}</button>}
+      {ridotto && <a class="hd__btn hd__idx-ck" href={href(lang, '/')} data-hd-indice-ck hidden>{t('galleria.nav.home')}</a>}
+      <ContaCarrello lang={lang} />
+      {!ridotto && <a class="hd__btn hd__sec" href={`mailto:${EMAIL}`}>{t('galleria.ln.email')}</a>}
+      {!ridotto && <a class="hd__btn hd__sec" href={INSTAGRAM} rel="noopener" target="_blank">Instagram</a>}
+    </nav>
+  </div>
+  <div class="hd__dx">
+    <Lingue lang={lang} pathname={pathname} class="hd__lang" />
+    <div class="fondo" data-fondo>
+      <button class="fondo__q" type="button" aria-expanded="false" aria-controls="fondo-barra" data-fondo-apri><span class="vh">{t('galleria.ln.colore')}</span></button>
+      <label class="fondo__barra" id="fondo-barra" hidden>
+        <span class="vh">{t('galleria.ln.colore')}</span>
+        <input class="fondo__in" type="range" min="0" max="1000" step="1" value="158" data-fondo-in />
+      </label>
+    </div>
+  </div>
+</header>

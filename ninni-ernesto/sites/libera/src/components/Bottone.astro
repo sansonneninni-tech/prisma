@@ -1,0 +1,26 @@
+---
+/**
+ * C5 Bottone: nero pieno 48 px (default), `linea` (contorno; anche «Nel carrello»), `disabled` (grigio),
+ * `attesa` (aria-busy con barretta che si allunga). Hover: inversione in 0,2 s (solo con puntatore).
+ * Con `href` è un link con lo stesso aspetto. Gli altri attributi passano all'elemento (data-*, aria-*…).
+ */
+interface Props {
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  linea?: boolean;
+  largo?: boolean;
+  attesa?: boolean;
+  disabled?: boolean;
+  class?: string;
+  [k: string]: unknown;
+}
+const { href, type = 'button', linea = false, largo = false, attesa = false, disabled = false, class: cls, ...resto } = Astro.props;
+const classi = ['btn', linea && 'btn--linea', largo && 'btn--largo', cls];
+---
+{href ? (
+  <a class:list={classi} href={href} {...resto}><slot /></a>
+) : (
+  <button class:list={classi} type={type} disabled={disabled} aria-busy={attesa ? 'true' : undefined} {...resto}>
+    {attesa && <span class="btn__barra" aria-hidden="true" />}<slot />
+  </button>
+)}

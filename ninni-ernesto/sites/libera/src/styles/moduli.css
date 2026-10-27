@@ -1,0 +1,54 @@
+/* ==========================================================================
+   Galleria — moduli di Su commissione e Contatti (pezzo 7). Campi C13 in core.css (etichetta 15–18 px, campo 48 px
+   con filetto nero, errore rosso con ■, riepilogo). Qui: la «conversazione» (domande di Isabella a --t-lead, una sotto
+   l'altra con un filetto), la foto facoltativa, la casella privacy col link, la conferma demo.
+   Ogni :hover sta dentro @media (hover: hover).
+   ========================================================================== */
+
+.conv { display: grid; gap: var(--s-7); min-width: 0; }
+.conv > .isa-error-summary { scroll-margin-top: var(--s-4); }
+
+/* una domanda di Isabella: filetto sopra, la domanda in grande, l'aiuto in grigio, poi lo spazio per rispondere */
+.domanda { border-top: var(--line); padding-top: var(--s-4); gap: var(--s-3); }
+/* con la tastiera aperta la domanda resta visibile sopra il campo, non sotto l'header (audit finale 1, telefono #17) */
+.domanda input, .domanda textarea { scroll-margin-top: calc(var(--header-h) + env(safe-area-inset-top) + 5rem); }
+.domanda > .isa-field__label, .domanda__q {
+  font-size: var(--t-lead); font-weight: var(--w-strong); line-height: var(--lh-tight); letter-spacing: -0.01em;
+}
+:lang(zh) .domanda > .isa-field__label, :lang(zh) .domanda__q { letter-spacing: 0; }
+.domanda > .isa-field__hint { margin-top: calc(-1 * var(--s-1)); font-size: var(--t-ui); }
+fieldset.domanda { margin: 0; padding-inline: 0; padding-bottom: 0; border-inline: 0; border-bottom: 0; min-width: 0; display: grid; }
+.domanda__q { padding: 0; float: left; width: 100%; margin-bottom: var(--s-4); }
+.domanda__campi { clear: both; display: grid; gap: var(--s-5); }
+
+/* foto della parete: il campo file è nascosto alla vista ma resta quello che prende il fuoco; si sceglie dal bottone */
+.foto { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-4); }
+.foto__input { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; clip-path: inset(50%); }
+.foto__scegli { cursor: pointer; }
+.foto__input:focus-visible + .foto__scegli { box-shadow: var(--focus-ring); }
+.foto__input[aria-invalid='true'] + .foto__scegli { border: 2px solid var(--c-sold); padding-inline: calc(var(--s-5) - 1px); }
+.foto__s2, .foto__scegli[data-scelta] .foto__s1 { display: none; }
+.foto__scegli[data-scelta] .foto__s2 { display: inline; }
+.foto__scelta { display: flex; align-items: center; gap: var(--s-3); min-width: 0; flex: 1 1 12rem; }
+.foto__img { width: 56px; height: 56px; object-fit: cover; flex: none; background: var(--c-placeholder); }
+.foto__nome { font-size: var(--t-ui); min-width: 0; overflow-wrap: anywhere; line-height: var(--lh-text); }
+.foto__togli {
+  flex: none; min-height: var(--touch); padding-inline: var(--s-2); margin-left: auto;
+  font-size: var(--t-ui); font-weight: var(--w-strong); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px;
+}
+.foto__nota { font-size: var(--t-small); color: var(--c-mute); line-height: var(--lh-text); }
+
+/* fine del modulo: casella privacy, bottone, nota demo */
+.conv__fine { display: grid; gap: var(--s-4); justify-items: start; }
+.conv__invia { min-width: 14rem; }
+.conv__demo { font-size: var(--t-small); color: var(--c-mute); line-height: var(--lh-text); }
+.consenso__link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.18em; position: relative; padding-block: 14px; margin-block: -14px; }
+@media (hover: hover) { .consenso__link:hover { text-decoration-thickness: 2px; } }
+.isa-field--check .isa-field__check { position: relative; z-index: 1; }
+@media (max-width: 479.98px) { .conv__invia { width: 100%; } }
+
+/* conferma demo al posto del modulo */
+.conv__ok { border-top: var(--line); padding-top: var(--s-4); display: grid; gap: var(--s-3); }
+.conv__ok:focus { box-shadow: none; }
+.conv__ok-t { font-size: var(--t-lead); font-weight: var(--w-strong); line-height: var(--lh-tight); }
+.conv__ok-x { font-size: var(--t-cap); line-height: var(--lh-text); max-width: 34rem; }

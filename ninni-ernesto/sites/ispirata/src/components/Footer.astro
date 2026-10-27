@@ -1,0 +1,22 @@
+---
+/**
+ * C2 Footer (DIREZIONE §4.3): una riga. «Andria, Puglia» e 4 link a sinistra, «Sito dimostrativo…» a destra in 12 px
+ * grigio (a capo sotto 1024). Sotto 768 i link stanno in una griglia 2 × 2 (mai un link da solo su una riga).
+ * Filetto nero sopra, 24 px di aria. Non c'è in home.
+ */
+import { useT, type Locale } from '../lib/i18n';
+import { FOOTER, hrefVoce } from '../lib/nav';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useT(lang);
+---
+<footer class="ft wrap">
+  <p class="ft__luogo">{t('galleria.footer.luogo')}</p>
+  <ul class="ft__link">
+    {FOOTER.map((v) => {
+      const esterno = /^https?:/.test(v.path);
+      return <li><a href={hrefVoce(lang, v)} rel={esterno ? 'noopener' : undefined}>{t(v.chiave)}</a></li>;
+    })}
+  </ul>
+  <p class="ft__demo">{t('galleria.footer.demo')}</p>
+</footer>

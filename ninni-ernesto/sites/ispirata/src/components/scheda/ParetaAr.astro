@@ -1,0 +1,55 @@
+---
+/**
+ * C16 ParetaAr: «Vedi sulla tua parete» (DIREZIONE §9). Dialog a schermo intero con l'ArViewer del core così com'è:
+ * Android → Scene Viewer (parete, scala fissa), iPhone → Quick Look (USDZ v3 ancorato a parete, scala fissa, anche
+ * senza WebGL con <a rel="ar">), computer → anteprima 3D + QR che riapre questa scheda già su #parete.
+ * A sinistra (telefono: sopra) l'anteprima 3D su fondo bianco; a destra la misura in grande, i 3 passi e il bottone.
+ * Telefono senza AR: l'avviso del core + la FiguraScala. Senza WebGL: la foto della tela al posto del riquadro vuoto.
+ * Si apre da `[data-parete-apri]` o con #parete nell'indirizzo; Indietro, Esc e Chiudi chiudono senza rifare la
+ * pagina (popstate prima del ClientRouter, come stanza-client.ts di Casa). Comportamento in parete-client.ts.
+ */
+import ArViewer from '@ne/core/components/ArViewer.astro';
+import type { Artwork } from '@ne/core/catalog';
+import FiguraScala from './FiguraScala.astro';
+import { useT, type Locale } from '../../lib/i18n';
+import type { DatiScheda } from '../../lib/scheda';
+
+interface Props { art: Artwork; ar: DatiScheda['ar']; lang: Locale }
+const { art, ar, lang } = Astro.props;
+const t = useT(lang);
+const titolo = lang === 'en' && art.titleEn ? art.titleEn : art.title;
+---
+<dialog class="parete" data-parete aria-labelledby="parete-t" style={`--tela:url("${ar.poster}")`} data-modelli={JSON.stringify(ar.modelli)} data-iniziale={ar.iniziale} data-titolo={titolo}>
+  <div class="parete__barra">
+    <p class="parete__t" id="parete-t">{t('galleria.ar.titolo')}</p>
+    <button class="parete__chiudi" type="button" data-parete-chiudi>{t('galleria.nav.chiudi')}</button>
+  </div>
+  <div class="parete__corpo">
+    <ArViewer
+      glb={ar.glb}
+      usdz={ar.usdz}
+      alt={titolo}
+      titolo={titolo}
+      poster={ar.poster}
+      t={t}
+      lingua={lang}
+      hashQr="#parete"
+      testi={{ bottone: t('galleria.ar.apri'), qrTitolo: t('galleria.ar.qr_titolo'), qrTesto: t('galleria.ar.qr_testo') }}
+      class="parete__ar"
+      id="parete-ar"
+    >
+      <div class="parete__testo">
+        <p class="parete__opera">{titolo}</p>
+        {ar.testoMisure && <p class="parete__misura" data-parete-misura>{ar.testoMisure}</p>}
+        <p class="parete__ruota">{t('galleria.ar.ruota')}</p>
+      </div>
+      {/* fuori da .parete__testo: sul computer vanno dopo il QR (audit finale 2, N5), sul telefono restano qui */}
+      <ol class="parete__passi" aria-label={t('galleria.ar.passi')}>
+        <li>{t('galleria.ar.passo_1')}</li>
+        <li>{t('galleria.ar.passo_2')}</li>
+        <li>{t('galleria.ar.passo_3')}</li>
+      </ol>
+      <FiguraScala art={art} misure={ar.misure} lang={lang} class="parete__scala" />
+    </ArViewer>
+  </div>
+</dialog>

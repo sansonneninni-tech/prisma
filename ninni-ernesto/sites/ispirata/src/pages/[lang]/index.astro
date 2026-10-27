@@ -1,0 +1,14 @@
+---
+/**
+ * Home della versione ispirata a Luke & Nik: il nastro di foto e basta (niente footer, pagina ferma).
+ * La nota «Sito dimostrativo» sta nella didascalia in basso a destra.
+ */
+import Base from '../../layouts/Base.astro';
+import HomeLN from '../../components/home/HomeLN.astro';
+import { localeStaticPaths, type Locale } from '@ne/core/i18n';
+export const getStaticPaths = () => localeStaticPaths();
+const lang = Astro.params.lang as Locale;
+---
+<Base lang={lang} home>
+  <HomeLN lang={lang} />
+</Base>
