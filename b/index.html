@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>PRISMA — Versione B</title>
+  <meta name="description" content="PRISMA, studio di produzione video in Puglia. Editoriali, short form, reel evento e un sistema di contenuti." />
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#EFEDE9" />
+  <link rel="icon" href="/img/brand/logotipo.svg" type="image/svg+xml" />
+</head>
+<body class="b">
+  <!-- Apertura: solo il prisma -->
+  <div class="load" data-load aria-hidden="true">
+    <div class="tetra" data-tetra><div class="tetra__in">
+      <div class="tf"></div><div class="tf"></div><div class="tf"></div><div class="tf"></div>
+    </div></div>
+  </div>
+
+  <!-- Il nome spezzato: resta fermo su tutte le schermate -->
+  <div class="nm" data-nm aria-hidden="true">
+    <p class="nm__g nm__g--1"><span>PRI</span><span>SMA PRI</span><span>SM</span><span>A</span></p>
+    <p class="nm__g nm__g--2"><span>STU</span><span>DIO STU</span><span>DI</span><span>O</span></p>
+  </div>
+
+  <header class="hd">
+    <h1 class="sr">PRISMA, studio di produzione video in Puglia</h1>
+    <a class="hd__home" href="#home" data-go="0">PRISMA <span data-i18n="hd.home">Inizio</span></a>
+    <nav class="hd__nav" aria-label="Sezioni">
+      <a href="#lavori" data-go="1" data-i18n="nav.1">Lavori</a>
+      <a href="#formati" data-go="2" data-i18n="nav.2">Formati</a>
+      <a href="#studio" data-go="3" data-i18n="nav.3">Studio</a>
+    </nav>
+    <div class="hd__lang" role="group" aria-label="Lingua / Language">
+      <button type="button" data-lang="it" aria-pressed="true">IT</button><button type="button" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </header>
+
+  <main class="vw">
+    <!-- 00 Home: video a tutto schermo -->
+    <section class="v v--home is-on" data-v="0" id="home" aria-label="PRISMA">
+      <div class="reel" data-reel>
+        <video muted playsinline preload="auto" aria-hidden="true"></video>
+      </div>
+      <p class="home__now" data-reel-now></p>
+      <button type="button" class="home__pp" data-reel-pp aria-pressed="false"><span data-i18n="pp.pause">Pausa</span></button>
+      <button type="button" class="cue" data-go="1" data-i18n="cue">Scorri per scoprire</button>
+    </section>
+
+    <!-- 01 Lavori: indice dei titoli, anteprima a tutto schermo -->
+    <section class="v v--works" data-v="1" id="lavori" aria-labelledby="t-w">
+      <div class="bgv" data-bgv aria-hidden="true"><video muted playsinline loop preload="none"></video><img alt="" /></div>
+      <h2 class="sr" id="t-w" data-i18n="nav.1">Lavori</h2>
+      <div class="band" data-band role="group" aria-label="Filtra"></div>
+      <ul class="idx" data-idx></ul>
+      <p class="idx__meta" data-idx-meta aria-live="polite"></p>
+    </section>
+
+    <!-- 02 Formati -->
+    <section class="v v--fmt" data-v="2" id="formati" aria-labelledby="t-f">
+      <div class="fmt">
+        <h2 class="fmt__h" id="t-f"><span data-i18n="f.h">Una giornata di riprese. Mesi di contenuti.</span></h2>
+        <ol class="fl">
+          <li class="fl__r">
+            <span class="fl__n">A</span><span class="fl__t" data-i18n="f.evento">Reel evento</span>
+            <span class="fl__d" data-i18n="f.evento.d">1 reel verticale fino a 45″, pronto il giorno dopo</span>
+            <span class="fl__p"><span data-i18n="p.da">da</span> <b data-from="evento"></b> <span data-i18n="p.a">a</span> <b data-to="evento"></b></span>
+            <a class="fl__a" href="#studio" data-go="3" data-ask="evento" data-i18n="ask">Chiedi</a>
+          </li>
+          <li class="fl__r">
+            <span class="fl__n">B</span><span class="fl__t" data-i18n="f.social">Short form</span>
+            <span class="fl__d" data-i18n="f.social.d">Serie di video da 7–30″, un solo linguaggio visivo</span>
+            <span class="fl__p"><span data-i18n="p.da">da</span> <b data-from="social"></b> <span data-i18n="p.a">a</span> <b data-to="social"></b></span>
+            <a class="fl__a" href="#studio" data-go="3" data-ask="social" data-i18n="ask">Chiedi</a>
+          </li>
+          <li class="fl__r">
+            <span class="fl__n">C</span><span class="fl__t" data-i18n="f.ed">Editoriale</span>
+            <span class="fl__d" data-i18n="f.ed.d">Il racconto del brand: concept, riprese, montaggio, colore</span>
+            <span class="fl__p"><span data-i18n="p.da">da</span> <b data-from="editoriale"></b> <span data-i18n="p.a">a</span> <b data-to="editoriale"></b></span>
+            <a class="fl__a" href="#studio" data-go="3" data-ask="editoriale" data-i18n="ask">Chiedi</a>
+          </li>
+          <li class="fl__r fl__r--sys">
+            <span class="fl__n">D</span><span class="fl__t" data-i18n="f.sys">Sistema contenuti</span>
+            <span class="fl__d" data-i18n="f.sys.d">14 contenuti pronti, 24 in riserva. Tutto da una giornata</span>
+            <span class="fl__p"><span data-i18n="p.da">da</span> <b data-base></b> <em data-unit></em></span>
+            <a class="fl__a" href="#studio" data-go="3" data-ask="sistema" data-i18n="ask">Chiedi</a>
+          </li>
+        </ol>
+        <div class="kp">
+          <p><b>1</b><span data-i18n="k.1">giornata</span></p>
+          <p><b>38</b><span data-i18n="k.2">contenuti girati</span></p>
+          <p><b>14</b><span data-i18n="k.3">pronti</span></p>
+          <p><b>24</b><span data-i18n="k.4">in riserva, 12 mesi</span></p>
+          <a href="/isabella/" class="kp__a"><span data-i18n="k.case">Caso Isabella Pistillo</span> →</a>
+        </div>
+        <p class="fmt__note" data-i18n="f.note">Trasferte escluse. Il preventivo esatto segue il brief.</p>
+      </div>
+    </section>
+
+    <!-- 03 Studio -->
+    <section class="v v--st" data-v="3" id="studio" aria-labelledby="t-s">
+      <div class="st">
+        <h2 class="st__h" id="t-s" data-i18n="s.h">Due persone, dal brief all'export. In Puglia, e dove serve.</h2>
+        <div class="st__c">
+          <h3 data-i18n="s.team">Studio</h3>
+          <ul>
+            <li>Ninni — <span data-i18n="s.ninni">regia, montaggio, colore</span></li>
+            <li>Ernesto — <span data-i18n="s.ernesto">produzione e clienti</span></li>
+            <li><a data-foto href="#" target="_blank" rel="noopener"><span data-i18n="s.foto">Fotografia · Ninni &amp; Ernesto</span> ↗</a></li>
+          </ul>
+        </div>
+        <div class="st__c">
+          <h3 data-i18n="s.direct">Diretto</h3>
+          <ul>
+            <li><a data-wa href="#" target="_blank" rel="noopener">WhatsApp ↗</a></li>
+            <li><a data-mail href="#"></a></li>
+            <li><a data-ig href="#" target="_blank" rel="noopener"></a></li>
+          </ul>
+        </div>
+        <div class="st__c">
+          <h3 data-i18n="s.clients">Clienti</h3>
+          <ul class="st__cl" data-clients></ul>
+        </div>
+        <form class="st__f" name="contatto" method="POST" data-netlify="true" netlify-honeypot="bot" data-form>
+          <input type="hidden" name="form-name" value="contatto" />
+          <input type="hidden" name="versione" value="B" />
+          <p hidden><label>Bot <input name="bot" /></label></p>
+          <h3 data-i18n="s.write">Scrivici</h3>
+          <label><span class="sr" data-i18n="s.name">Nome</span><input name="nome" required autocomplete="name" placeholder="Nome" data-ph="s.name" /></label>
+          <label><span class="sr" data-i18n="s.fmt">Formato</span>
+            <select name="formato" data-ask-select>
+              <option value="" data-i18n="s.fmt">Formato</option>
+              <option value="evento" data-i18n="f.evento">Reel evento</option>
+              <option value="social" data-i18n="f.social">Short form</option>
+              <option value="editoriale" data-i18n="f.ed">Editoriale</option>
+              <option value="sistema" data-i18n="f.sys">Sistema contenuti</option>
+            </select>
+          </label>
+          <label><span class="sr" data-i18n="s.msg">Il progetto, in due righe</span><input name="messaggio" required placeholder="Il progetto, in due righe" data-ph="s.msg" /></label>
+          <button type="submit"><span data-i18n="s.send">Invia</span> →</button>
+          <p class="st__out" data-form-out aria-live="polite"></p>
+        </form>
+        <p class="st__ft">© <span data-year></span> PRISMA · Puglia · <span data-i18n="s.v">Versione B</span> · <a href="/" data-i18n="s.other">Versione attuale</a> · <a href="/a/" data-i18n="s.otherA">Versione A</a></p>
+      </div>
+    </section>
+  </main>
+
+  <p class="pos" aria-hidden="true"><span data-pos>01</span> / 04</p>
+
+  <div class="player" data-player hidden role="dialog" aria-modal="true" aria-label="Video">
+    <video class="player__v" playsinline controls preload="none"></video>
+    <div class="player__bar">
+      <p class="player__t" data-pl-title></p>
+      <div class="player__act">
+        <a data-pl-dl href="#" download><span data-i18n="pl.dl">Scarica originale</span> ↓</a>
+        <button type="button" data-pl-prev aria-label="Precedente">Prec.</button>
+        <button type="button" data-pl-next aria-label="Successivo">Succ.</button>
+        <button type="button" data-pl-close data-i18n="pl.close">Chiudi</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/b/main.js"></script>
+</body>
+</html>
