@@ -1,0 +1,77 @@
+---
+/**
+ * C18 Sequenza (DIREZIONE §6 P1, §8 A4): le opere che cambiano nell'apertura della home, con didascalia e Pausa.
+ * - Tutte le opere sono nell'HTML, ma solo la prima ha i file (fetchpriority="high"): le altre hanno `data-srcset`
+ *   e le carica lib/home-motion.ts dopo `load`. Senza JS si vede la prima opera, ferma, senza Pausa né contatore.
+ * - Ogni opera sta in un box con le sue proporzioni (`--ar`), largo al massimo quanto lo spazio libero
+ *   (container query sul `<figure>`): il link e l'anello del fuoco abbracciano l'opera, non il vuoto attorno.
+ * - Modo (home.json, §12 D1): "taglio" = cambio netto; "dissolvenza" = 0,6 s di dissolvenza incrociata.
+ * - Didascalia `aria-live="off"`: non annuncia ogni 2,5 s (§10).
+ * - Shop (audit di ninni 22/10: «devo capire subito che è uno shop»): dopo «Titolo, misure» il prezzo (grigio, D7) e
+ *   «Acquista →» verso la scheda dell'opera; il gruppo va a capo intero. Opera venduta: niente prezzo né Acquista.
+ */
+import { getArtworkImage, artworkAlt, type Artwork } from '@ne/core/catalog';
+import { formatDimensions, formatPrice, sep } from '@ne/core/i18n';
+import Freccia from '../Freccia.astro';
+import { useT, type Locale } from '../../lib/i18n';
+import { hrefOpera } from '../../lib/opera-link';
+import type { ModoSequenza } from '../../lib/home';
+import { tintaOpera } from '../../lib/colori';
+
+interface Props { lang: Locale; opere: Artwork[]; modo: ModoSequenza; intervalloMs: number }
+const { lang, opere, modo, intervalloMs } = Astro.props;
+const t = useT(lang);
+const due = (n: number) => String(n).padStart(2, '0');
+
+const voci = opere.map((a) => {
+  const ar = a.aspectRatio;
+  // larghezza mostrata: tutta la riga sul telefono in verticale, altrimenti ~62% dell'altezza × proporzioni (§6 P1)
+  const sizes = `(orientation: portrait) calc(100vw - 32px), (max-height: 500px) ${Math.round(ar * 70)}vh, ${Math.round(ar * 62)}vh`;
+  const img = getArtworkImage(a, 'canvas', { width: 960, sizes });
+  return {
+    img,
+    ar: Math.round((img.width / img.height) * 10000) / 10000,
+    alt: artworkAlt(a, lang),
+    titolo: a.title,
+    misure: a.dimensions ? formatDimensions(a.dimensions, lang) : '',
+    prezzo: a.status === 'available' && a.priceCents !== null ? formatPrice(a.priceCents, lang) : '',
+    href: hrefOpera(lang, a),
+    tinta: tintaOpera(a),
+  };
+});
+const primo = voci[0]!;
+const totale = due(voci.length);
+---
+<div class="seq" data-seq data-modo={modo} data-intervallo={intervalloMs}>
+  <figure class="seq__fig">
+    <a class="seq__a" href={primo.href} data-seq-a>
+      {voci.map((v, i) => (
+        <picture
+          class="seq__pic"
+          style={`--ar:${v.ar};--isa-dominant:${v.img.dominantColor ?? 'var(--c-placeholder)'}`}
+          data-seq-pic
+          data-on={i === 0 ? '' : undefined}
+          data-href={v.href}
+          data-titolo={v.titolo}
+          data-misure={v.misure}
+          data-prezzo={v.prezzo}
+          data-tinta={v.tinta}
+        >
+          {v.img.sources.map((s) =>
+            i === 0 ? <source type={s.type} srcset={s.srcset} sizes={v.img.sizes} /> : <source type={s.type} data-srcset={s.srcset} sizes={v.img.sizes} />,
+          )}
+          {i === 0
+            ? <img src={v.img.src} width={v.img.width} height={v.img.height} alt={v.alt} loading="eager" fetchpriority="high" />
+            : <img data-src={v.img.src} width={v.img.width} height={v.img.height} alt={v.alt} decoding="async" />}
+        </picture>
+      ))}
+    </a>
+  </figure>
+  <div class="seq__meta">
+    <p class="seq__cap" aria-live="off"><span class="seq__tm" data-seq-tm><b data-seq-t>{primo.titolo}</b>{primo.misure && <>{sep(lang).v}<span class="seq__mis" data-seq-m>{primo.misure}</span></>}</span>{' '}<span class="seq__acq" data-seq-acq hidden={!primo.prezzo}><span class="seq__prezzo" data-seq-p>{primo.prezzo}</span><a class="seq__buy" href={primo.href} data-seq-buy>{t('galleria.home.acquista')}<Freccia /></a></span></p>
+    <div class="seq__ctrl" data-seq-ctrl hidden>
+      <span class="seq__n" data-seq-n>01 / {totale}</span>
+      <button class="seq__btn" type="button" data-seq-btn data-pausa={t('galleria.home.pausa')} data-riprendi={t('galleria.home.riprendi')}>{t('galleria.home.pausa')}</button>
+    </div>
+  </div>
+</div>

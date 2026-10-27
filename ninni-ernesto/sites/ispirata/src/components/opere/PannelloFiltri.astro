@@ -1,0 +1,84 @@
+---
+/**
+ * C10 PannelloFiltri: <dialog> modale da destra, 420 px (telefono: a tutto schermo). Gruppi di §6 P2:
+ * Originali → Colore, Formato, Prezzo, Disponibilità; Stampe → Colore, Forma. Ogni voce è un bottone a pressione
+ * col suo conteggio («Rossi (9)»); in fondo «Mostra 12 opere» + «Azzera». I filtri si applicano subito (la griglia
+ * dietro cambia) e vanno nell'URL. Comportamento in opere-client.ts (A9, focus intrappolato, Esc, ritorno del fuoco).
+ * I conteggi scritti qui sono quelli senza filtri (senza JS); il motore li aggiorna.
+ */
+import { formatPrice, sep } from '@ne/core';
+import { useT, type Locale } from '../../lib/i18n';
+import { GRUPPI_COLORE, FORMATI, FASCE, FORME, FASCIA_1_MAX, FASCIA_2_MAX, type CardDati } from '../../lib/opere';
+
+interface Props { lang: Locale; originali: CardDati[]; stampe: CardDati[] }
+const { lang, originali, stampe } = Astro.props;
+const t = useT(lang);
+const S = sep(lang); // «Rossi (9)», in cinese «红色（9）»
+
+const num = (cents: number) => new Intl.NumberFormat(lang === 'it' ? 'it-IT' : 'en-US', { maximumFractionDigits: 0, useGrouping: 'always' } as Intl.NumberFormatOptions).format(cents / 100);
+const prima = /^\d/.test(formatPrice(FASCIA_1_MAX, lang)); // «3.500 €» (numero prima) oppure «€3,500»
+const etichettaFascia: Record<string, string> = {
+  'fino-3500': t('galleria.opere.prezzi.fino-3500', { p: formatPrice(FASCIA_1_MAX, lang) }),
+  '3500-5000': prima
+    ? t('galleria.opere.prezzi.3500-5000', { a: num(FASCIA_1_MAX), b: formatPrice(FASCIA_2_MAX, lang) })
+    : t('galleria.opere.prezzi.3500-5000', { a: formatPrice(FASCIA_1_MAX, lang), b: num(FASCIA_2_MAX) }),
+  'oltre-5000': t('galleria.opere.prezzi.oltre-5000', { p: formatPrice(FASCIA_2_MAX, lang) }),
+};
+
+type Voce = { valore: string; label: string; nota?: string; n: number };
+const conta = (lista: CardDati[], f: (c: CardDati) => boolean) => lista.filter(f).length;
+const gruppi: { id: string; viste: string; legenda: string; voci: Voce[]; due?: boolean }[] = [
+  {
+    id: 'colore', viste: 'originali stampe', legenda: t('galleria.opere.colore'), due: true,
+    voci: GRUPPI_COLORE.map((v) => ({ valore: v, label: t(`galleria.opere.colori.${v}`), n: conta(originali, (c) => c.colori.includes(v)) })),
+  },
+  {
+    id: 'formato', viste: 'originali', legenda: t('galleria.opere.formato'),
+    voci: FORMATI.map((v) => ({ valore: v, label: t(`galleria.opere.formati.${v}`), nota: v === 'panoramici' ? undefined : t(`galleria.opere.formati_nota.${v}`), n: conta(originali, (c) => c.formato === v) })),
+  },
+  {
+    id: 'prezzo', viste: 'originali', legenda: t('galleria.opere.prezzo'),
+    voci: FASCE.map((v) => ({ valore: v, label: etichettaFascia[v]!, n: conta(originali, (c) => c.fascia === v) })),
+  },
+  {
+    id: 'forma', viste: 'stampe', legenda: t('galleria.opere.forma'),
+    voci: FORME.map((v) => ({ valore: v, label: t(`galleria.opere.forme.${v}`), n: conta(stampe, (c) => c.forma === v) })),
+  },
+  {
+    id: 'stato', viste: 'originali', legenda: t('galleria.opere.disponibilita'),
+    voci: [{ valore: 'disponibili', label: t('galleria.opere.solo_disponibili'), n: conta(originali, (c) => !c.venduta) }],
+  },
+];
+const totale = t('galleria.opere.conteggio', { n: originali.length });
+---
+<dialog class="flt" id="filtri" data-filtri aria-labelledby="flt-titolo">
+  <div class="flt__velo" data-filtri-chiudi aria-hidden="true"></div>
+  <div class="flt__pan" data-filtri-pan>
+    <div class="flt__top">
+      <h2 class="flt__titolo" id="flt-titolo">{t('galleria.opere.filtra')}<span class="flt__tot"> · <span data-totale>{totale}</span></span></h2>
+      <button class="flt__chiudi" type="button" data-filtri-chiudi>{t('galleria.opere.chiudi')}</button>
+    </div>
+    <div class="flt__corpo">
+      {gruppi.map((g) => (
+        <fieldset class="flt__g" data-gruppo-box data-viste={g.viste} hidden={!g.viste.includes('originali')}>
+          <legend class="flt__leg">{g.legenda}</legend>
+          <ul class:list={['flt__voci', g.due && 'flt__voci--due']}>
+            {g.voci.map((v) => (
+              <li>
+                <button class="flt__op" type="button" aria-pressed="false" data-opzione data-gruppo={g.id} data-valore={v.valore} data-label={v.label} disabled={v.n === 0}>
+                  <span class="flt__box" aria-hidden="true"></span>
+                  <span class="flt__nome">{v.label}<span class="flt__n">{S.ap}<span data-conto>{v.n}</span>{S.ch}</span></span>
+                  {v.nota && <span class="flt__nota">{v.nota}</span>}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </fieldset>
+      ))}
+    </div>
+    <div class="flt__piede">
+      <button class="btn flt__mostra" type="button" data-filtri-mostra><span data-mostra>{t('galleria.opere.mostra', { n: originali.length })}</span></button>
+      <button class="btn btn--linea" type="button" data-azzera disabled>{t('galleria.opere.azzera')}</button>
+    </div>
+  </div>
+</dialog>

@@ -1,0 +1,30 @@
+{
+  "_nota": "Prossimamente (pezzo 6, DIREZIONE §6 P6). Non ci sono ancora foto di Fabric Art, vasi, candele e abiti: la striscia di ogni voce mostra particolari dei quadri da cui vengono volti e colori, con la didascalia «Titolo, particolare». Quando arrivano le foto vere si mettono qui (serve una voce \"foto\" e il ramo in lib/prossimamente.ts). Formato: \"id opera:detail1|detail2\".",
+  "strisce": {
+    "fabric-art": [
+      "16:detail1",
+      "13:detail1",
+      "05:detail1",
+      "11:detail1",
+      "03:detail1"
+    ],
+    "vasi": [
+      "25:detail1",
+      "14:detail1",
+      "19:detail1",
+      "20:detail1"
+    ],
+    "candele-the-moon": [
+      "26:detail1",
+      "22:detail1",
+      "01:detail1",
+      "23:detail1"
+    ],
+    "abiti-dipinti": [
+      "21:detail1",
+      "17:detail1",
+      "12:detail1",
+      "02:detail1"
+    ]
+  }
+}

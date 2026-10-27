@@ -1,0 +1,4 @@
+{
+  "_nota": "Mostre e stampa della pagina Isabella (DIREZIONE §6 P8, §12 D8). Finché l'elenco è vuoto la sezione #mostre non c'è (né nel sottoindice). Una voce: { \"anno\": \"2025\", \"titolo\": \"…\", \"luogo\": \"Spazio, città\" }. Quando arrivano i dati: rimettere «Mostre e stampa» in data/altro.json e in data/home.json, e il rinvio /mostre-e-stampa/ → /isabella/#mostre in public/_redirects.",
+  "mostre": []
+}

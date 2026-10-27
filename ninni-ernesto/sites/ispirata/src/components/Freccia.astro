@@ -1,0 +1,14 @@
+---
+/**
+ * C6 Freccia: SVG 20×20, tratto 1,6 (1,3 nei pannelli con `sottile`). Mai il carattere → (non è nel font caricato).
+ * Misura: 0,9em (segue il testo accanto). Decorativa.
+ */
+interface Props { dir?: 'destra' | 'sinistra' | 'giu'; sottile?: boolean; class?: string }
+const { dir = 'destra', sottile = false, class: cls } = Astro.props;
+const D = {
+  destra: 'M2 10h15M11 4l6 6-6 6',
+  sinistra: 'M18 10H3M9 4l-6 6 6 6',
+  giu: 'M10 2v15M4 11l6 6 6-6',
+} as const;
+---
+<svg class:list={['freccia', sottile && 'freccia--sottile', cls]} viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d={D[dir]} /></svg>

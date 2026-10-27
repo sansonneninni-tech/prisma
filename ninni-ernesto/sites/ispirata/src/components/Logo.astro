@@ -1,0 +1,10 @@
+---
+/**
+ * Logotipo: testo vivo «Ninni & Ernesto» (Inter Tight), colore del testo.
+ * `forma`: 'orizzontale' (una riga) o 'compatto' (due righe, header < 768).
+ * Decorativo (aria-hidden): il nome accessibile lo dà il link che lo contiene.
+ */
+interface Props { forma: 'orizzontale' | 'compatto'; class?: string }
+const { forma, class: cls } = Astro.props;
+---
+<span class:list={['logo', `logo--${forma}`, cls]} aria-hidden="true" translate="no">{forma === 'compatto' ? <><span>Ninni &amp;</span><span>Ernesto</span></> : 'Ninni & Ernesto'}</span>

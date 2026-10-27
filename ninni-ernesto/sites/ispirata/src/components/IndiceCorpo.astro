@@ -1,0 +1,83 @@
+---
+/**
+ * Indice a schermo intero (versione ispirata a Luke & Nik), a ogni larghezza: sale dal basso (lib/struttura-client.ts).
+ * - in alto: il nome a sinistra, i filtri Tutte / Edizioni / Stampe al centro, «Chiudi» a destra;
+ * - le foto in grande, numerate «1 .», su due colonne da 1000 px, ognuna spostata di poco (seme fisso);
+ *   col mouse sopra, il numero diventa la miniatura e il titolo si sottolinea; quelle già viste vanno al 40 %;
+ *   il filtro nasconde con visibility (le righe restano al loro posto, come nell'originale);
+ * - sotto, piccole, tutte le pagine del sito e le lingue.
+ */
+import ArtworkPicture from '@ne/core/components/ArtworkPicture.astro';
+import { getArtworks } from '@ne/core/catalog';
+import Lingue from './Lingue.astro';
+import ContaCarrello from './ContaCarrello.astro';
+import { href, useT, type Locale } from '../lib/i18n';
+import { hrefOpera } from '../lib/opera-link';
+import { EMAIL, INSTAGRAM } from '../lib/nav';
+interface Props { lang: Locale; pathname: string }
+const { lang, pathname } = Astro.props;
+const t = useT(lang);
+const home = /^\/(it|en|zh)\/?$/.test(pathname);
+const foto = getArtworks().filter((a) => a.author === 'ninni');
+// spostamento di ogni riga: pseudo-casuale ma uguale a ogni build
+const spost = (i: number) => (((Math.imul(i + 3, 2654435761) >>> 0) % 1000) / 1000) * 9;
+const pagine = [
+  { k: 'galleria.nav.home', p: '/' },
+  { k: 'galleria.nav.ninni', p: '/ninni/' },
+  { k: 'galleria.nav.stampe', p: '/ninni/?vista=stampe' },
+  { k: 'galleria.nav.ernesto', p: '/ernesto/' },
+  { k: 'galleria.nav.carte', p: '/carte-e-cornici/' },
+  { k: 'galleria.nav.chi_siamo', p: '/chi-siamo/' },
+  { k: 'galleria.nav.info', p: '/info/' },
+];
+const cur = (p: string) => (href(lang, p) === pathname ? 'page' : undefined);
+---
+<div class="idx__top ln-it">
+  <a class="ln-it__nome" href={href(lang, '/')} aria-label={t('galleria.nav.home_aria')} aria-current={home ? 'page' : undefined}><span translate="no">Ninni &amp; Ernesto</span></a>
+  <div class="ln-it__filtri" role="group" aria-label={t('galleria.ln.palco')} data-ln-filtri>
+    <button type="button" class="ln-it__f" aria-pressed="true" data-ln-filtro="tutte">{t('galleria.ln.tutte')}</button>
+    <button type="button" class="ln-it__f" aria-pressed="false" data-ln-filtro="edizione">{t('galleria.ln.edizioni')}</button>
+    <button type="button" class="ln-it__f" aria-pressed="false" data-ln-filtro="stampa">{t('galleria.ln.stampe')}</button>
+  </div>
+  <button class="ln-it__chiudi" type="button" data-indice-chiudi>{t('galleria.nav.chiudi')}</button>
+</div>
+<nav class="ln-idx" aria-label={t('galleria.indice.voci')}>
+  <ol class="ln-idx__ol">
+    {foto.map((a, i) => (
+      <li class="ln-idx__li" data-tipo={a.edition ? 'edizione' : 'stampa'} style={`--sp:${spost(i).toFixed(2)}em`}>
+        <a class="idx__a ln-idx__a" href={hrefOpera(lang, a)} aria-current={hrefOpera(lang, a) === pathname ? 'page' : undefined}>
+          <span class="ln-idx__n" aria-hidden="true"><span class="ln-idx__num">{i + 1} .</span><ArtworkPicture artwork={a} lang={lang} alt="" width={96} sizes="96px" class="ln-idx__img" /></span>
+          <span class="ln-idx__t">{a.title}</span>
+          <span class="ln-idx__s">{a.edition ? t('galleria.ln.ed_restano', { n: a.edition.remaining, di: a.edition.size }) : t('galleria.ln.solo_stampe')}</span>
+        </a>
+      </li>
+    ))}
+  </ol>
+  <ul class="ln-idx__pag">
+    {pagine.map((v) => <li><a href={href(lang, v.p)} aria-current={cur(v.p)}>{t(v.k)}</a></li>)}
+    <li><ContaCarrello lang={lang} class="ln-idx__conta" /></li>
+    <li><a href={`mailto:${EMAIL}`}>{t('galleria.ln.email')}</a></li>
+    <li><a href={INSTAGRAM} rel="noopener" target="_blank">Instagram</a></li>
+  </ul>
+</nav>
+<div class="idx__piede ln-idx__piede">
+  <Lingue lang={lang} pathname={pathname} class="ln-idx__lingue" />
+  <span>{t('galleria.indice.demo')}</span>
+</div>
+
+<script>
+  // filtri dell'Indice: le righe che non c'entrano diventano invisibili ma restano al loro posto
+  document.addEventListener('click', (e) => {
+    const b = (e.target as Element | null)?.closest?.<HTMLButtonElement>('[data-ln-filtro]');
+    if (!b) return;
+    const d = b.closest('[data-indice]') ?? document;
+    const f = b.dataset.lnFiltro!;
+    d.querySelectorAll<HTMLButtonElement>('[data-ln-filtro]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    d.querySelectorAll<HTMLElement>('.ln-idx__li').forEach((li) => {
+      const fuori = f !== 'tutte' && li.dataset.tipo !== f;
+      li.classList.toggle('ln-idx__li--fuori', fuori);
+      const a = li.querySelector('a');
+      if (a) { if (fuori) a.setAttribute('tabindex', '-1'); else a.removeAttribute('tabindex'); }
+    });
+  });
+</script>
