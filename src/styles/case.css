@@ -61,3 +61,5 @@
 .cs-cta__a:hover .display { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .cs-hero::after { content: ''; position: absolute; inset: 40% 0 0; background: linear-gradient(180deg, transparent, rgba(5,2,3,.75)); pointer-events: none; }
 .cs-hero__in { z-index: 2; }
+
+.cs-hero::before { content: ''; position: absolute; inset: 0 0 auto; height: 160px; background: linear-gradient(180deg, rgba(5,2,3,.55), transparent); z-index: 1; pointer-events: none; }
