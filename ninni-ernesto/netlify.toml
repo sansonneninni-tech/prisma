@@ -1,0 +1,7 @@
+# Ninni & Ernesto: su Netlify basta impostare Base directory = ninni-ernesto
+[build]
+  command = "npm run build"
+  publish = "sites/foto/dist"
+
+[build.environment]
+  NODE_VERSION = "22"
