@@ -60,19 +60,21 @@ describe('cart store', () => {
     expect(cart.$cart.get()[0]?.quantity).toBe(1);
   });
 
-  it('stores one line per print format and material, summing quantities', async () => {
+  it('stores one line per print format, paper and frame, summing quantities', async () => {
     const { cart } = await freshCart();
-    cart.addToCart(print('10', 13420, '50x70', 'paper'));
-    cart.addToCart(print('10', 13420, '50x70', 'paper'));
-    cart.addToCart(print('10', 28060, '50x70', 'canvas'));
-    cart.addToCart(print('10', 19520, '70x100', 'paper'));
+    cart.addToCart(print('10', 12000, '40x60', 'rag'));
+    cart.addToCart(print('10', 12000, '40x60', 'rag'));
+    cart.addToCart(print('10', 13800, '40x60', 'baryta'));
+    cart.addToCart(print('10', 30000, '40x60', 'rag', 'oak'));
+    cart.addToCart(print('10', 22000, '60x90', 'rag'));
     const lines = cart.$cart.get();
     expect(lines.map((l) => [l.key, l.quantity])).toEqual([
-      ['print:10:50x70:paper', 2],
-      ['print:10:50x70:canvas', 1],
-      ['print:10:70x100:paper', 1],
+      ['print:10:40x60:rag:none', 2],
+      ['print:10:40x60:baryta:none', 1],
+      ['print:10:40x60:rag:oak', 1],
+      ['print:10:60x90:rag:none', 1],
     ]);
-    expect(cart.$cartCount.get()).toBe(4);
+    expect(cart.$cartCount.get()).toBe(5);
   });
 
   it('caps print quantity', async () => {
@@ -87,10 +89,10 @@ describe('cart store', () => {
     const { cart } = await freshCart();
     cart.addToCart(print('10', 13420));
     cart.addToCart(original('08', 350000));
-    cart.setQuantity('print:10:50x70:paper', 3);
+    cart.setQuantity('print:10:40x60:rag:none', 3);
     expect(cart.$cartCount.get()).toBe(4);
     expect(cart.$cartEvent.get()).toMatchObject({ type: 'quantity', quantity: 3 });
-    cart.setQuantity('print:10:50x70:paper', 0);
+    cart.setQuantity('print:10:40x60:rag:none', 0);
     expect(cart.$cart.get().map((l) => l.key)).toEqual(['original:08']);
     cart.removeFromCart('original:08');
     expect(cart.$cartEvent.get()).toMatchObject({ type: 'removed', title: 'Opera 08' });
@@ -107,7 +109,7 @@ describe('cart store', () => {
     expect(cart.$cart.get()).toEqual([]);
   });
 
-  it('computes totals with VAT and shipping for the chosen country', async () => {
+  it('computes totals (no VAT: flat-rate regime) and shipping for the chosen country', async () => {
     const { cart } = await freshCart();
     cart.addToCart(original('08', 350000));
     cart.addToCart(print('10', 13420));
@@ -116,7 +118,7 @@ describe('cart store', () => {
     expect(cart.$cartCountry.get()).toBe('IT');
     const totals = cart.$cartTotals.get();
     expect(totals.shipping?.zone).toBe('italy');
-    expect(totals.vat.map((v) => v.rate)).toEqual([0.05, 0.22]);
+    expect(totals.vatTotalCents).toBe(0);
     expect(totals.totalCents).toBe(350000 + 13420 + (totals.shipping?.totalCents ?? 0));
   });
 
@@ -131,18 +133,18 @@ describe('cart store', () => {
     const second = await freshCart(storage);
     expect(second.cart.$cart.get().map((l) => [l.key, l.quantity])).toEqual([
       ['original:08', 1],
-      ['print:10:50x70:paper', 2],
+      ['print:10:40x60:rag:none', 2],
     ]);
     expect(second.cart.$cartCountry.get()).toBe('DE');
   });
 
   it('ignores corrupted or tampered storage', async () => {
     const storage = new MemoryStorage();
-    storage.setItem('isa:cart:v1', '{not json');
+    storage.setItem('ne:cart:v1', '{not json');
     expect((await freshCart(storage)).cart.$cart.get()).toEqual([]);
 
     storage.setItem(
-      'isa:cart:v1',
+      'ne:cart:v1',
       JSON.stringify([
         { ...original('08', 350000), quantity: 7 }, // original with qty 7 → clamped to 1
         { ...original('08', 350000), quantity: 1 }, // duplicate → dropped
@@ -168,7 +170,7 @@ describe('cart store', () => {
     cart.addToCart(print('24', 13420));
     const removed = cart.pruneUnavailable(['09']);
     expect(removed.map((l) => l.artworkId)).toEqual(['08']);
-    expect(cart.$cart.get().map((l) => l.key)).toEqual(['original:09', 'print:24:50x70:paper']);
+    expect(cart.$cart.get().map((l) => l.key)).toEqual(['original:09', 'print:24:40x60:rag:none']);
     expect(cart.isInCart(original('09', 0))).toBe(true);
   });
 });

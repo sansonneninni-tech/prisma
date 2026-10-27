@@ -4,17 +4,14 @@ import { calculateTotals } from '../src/pricing/totals.ts';
 import { line, original, print } from './helpers.ts';
 
 describe('calculateTotals', () => {
-  const lines = [line(original('08', 350000)), line(print('10', 28060, '50x70', 'canvas'), 2)];
+  const lines = [line(original('01', 99000)), line(print('05', 22000, '60x90', 'rag'), 2)];
 
-  it('sums gross prices and shows VAT per rate (VAT included, not added)', () => {
+  it('sums final prices with no VAT (flat-rate regime)', () => {
     const totals = calculateTotals(lines);
     expect(totals.itemsCount).toBe(3);
-    expect(totals.subtotalCents).toBe(350000 + 2 * 28060);
-    expect(totals.vat).toEqual([
-      { kind: 'original', rate: 0.05, grossCents: 350000, netCents: 333333, vatCents: 16667 },
-      { kind: 'print', rate: 0.22, grossCents: 56120, netCents: 46000, vatCents: 10120 },
-    ]);
-    expect(totals.vatTotalCents).toBe(16667 + 10120);
+    expect(totals.subtotalCents).toBe(99000 + 2 * 22000);
+    expect(totals.vat.every((v) => v.rate === 0 && v.vatCents === 0 && v.netCents === v.grossCents)).toBe(true);
+    expect(totals.vatTotalCents).toBe(0);
     expect(totals.shipping).toBeNull();
     expect(totals.totalCents).toBe(totals.subtotalCents);
     expect(totals.vatExempt).toBe(false);
@@ -34,12 +31,12 @@ describe('calculateTotals', () => {
   it('keeps VAT outside the EU by default and removes it when configured as exempt', () => {
     const included = calculateTotals(lines, { country: 'US' });
     expect(included.vatExempt).toBe(false);
-    expect(included.subtotalCents).toBe(406120);
+    expect(included.subtotalCents).toBe(143000);
 
     const exempt = calculateTotals(lines, { country: 'US', vatOutsideEU: 'exempt' });
     expect(exempt.vatExempt).toBe(true);
     expect(exempt.vatTotalCents).toBe(0);
-    expect(exempt.subtotalCents).toBe(333333 + 46000);
+    expect(exempt.subtotalCents).toBe(143000);
 
     // inside the EU the exemption never applies
     expect(calculateTotals(lines, { country: 'FR', vatOutsideEU: 'exempt' }).vatExempt).toBe(false);

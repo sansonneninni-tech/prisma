@@ -116,7 +116,7 @@ export function datiScheda(art: Artwork, lang: Locale, site?: URL): DatiScheda {
   righe.push({ chiave: 'autore', etichetta: t('galleria.scheda.fotografo'), valore: art.author === 'ernesto' ? 'Ernesto' : 'Ninni' });
   if (art.place) righe.push({ chiave: 'luogo', etichetta: t('galleria.scheda.luogo'), valore: art.place });
   if (art.year) righe.push({ chiave: 'anno', etichetta: t('etichette.anno'), valore: String(art.year) });
-  if (art.edition) righe.push({ chiave: 'edizione', etichetta: t('galleria.edizione.etichetta'), valore: t('galleria.edizione.valore', { n: art.edition.size, pa: art.edition.artistProofs }) });
+  if (art.edition) righe.push({ chiave: 'edizione', etichetta: t('galleria.edizione.etichetta'), valore: t(art.edition.artistProofs === 1 ? 'galleria.edizione.valore_1' : 'galleria.edizione.valore', { n: art.edition.size, pa: art.edition.artistProofs }) });
   righe.push({ chiave: 'stampa', etichetta: t('galleria.scheda.stampa_t'), valore: t('galleria.scheda.stampa_v') });
   const kd = `galleria.descrizioni.${art.id}`;
   const descrizione = t.has(kd) ? t(kd) : null;

@@ -75,3 +75,8 @@ html:has(.si--sempre) { scroll-padding-top: calc(var(--header-h) + env(safe-area
 @media (max-height: 500px) and (orientation: landscape) {
   .is__ritratto .isa-picture { aspect-ratio: auto; height: 80svh; }
 }
+
+/* Ninni & Ernesto: due righe, una per fotografo */
+.is__due { display: grid; gap: var(--s-4); margin: 0; font-size: var(--t-cap); line-height: var(--lh-text); max-width: 30rem; }
+.is__due dt { font-weight: var(--w-strong); }
+.is__due dd { margin: 2px 0 0; color: var(--c-mute); }

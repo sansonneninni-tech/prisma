@@ -398,3 +398,29 @@ html[data-a3='indietro']::view-transition-new(scheda) { animation: a3-da-sx var(
   .parete__ar:not([data-webgl='no']) .parete__ruota { display: block; }
   .parete[data-no-webgl] .parete__ruota { display: none; }
 }
+
+/* ==========================================================================
+   Ninni & Ernesto: edizione limitata (numero, copie rimaste, scala dei prezzi) e righe di carta e cornice
+   ========================================================================== */
+.ed__n { margin: 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: var(--s-1) var(--s-4); font-size: var(--t-cap); font-weight: var(--w-strong); }
+.ed__rest { display: inline-flex; align-items: center; gap: 6px; font-size: var(--t-ui); }
+.ed__rest::before { content: ''; width: 0.55em; height: 0.55em; background: currentColor; flex: none; }
+.ed__sale { margin: calc(-1 * var(--s-2)) 0 0; font-size: var(--t-ui); line-height: 1.4; }
+.ed__scala { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 3px; margin: 0; padding: 0; list-style: none; }
+.ed__s { display: grid; gap: 2px; padding-top: var(--s-2); border-top: 2px solid var(--c-placeholder); font-size: var(--t-small); line-height: 1.25; color: var(--c-mute); font-variant-numeric: tabular-nums; }
+.ed__s-p { font-size: var(--t-ui); }
+.ed__s--venduto .ed__s-p { text-decoration: line-through; text-decoration-thickness: 1px; }
+.ed__s--attuale { border-top-color: var(--c-ink); color: var(--c-ink); font-weight: var(--w-strong); }
+.ed__inclusi { margin: 0; padding: 0; list-style: none; display: grid; gap: 2px; font-size: var(--t-ui); line-height: 1.4; }
+
+/* carta e cornice: una riga per voce, nome e nota a sinistra, sovrapprezzo a destra */
+.opz__g--lista { grid-template-columns: minmax(0, 1fr); }
+.opz__v--riga span { flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; padding-block: var(--s-2); padding-right: 76px; white-space: normal; }
+.opz__v--riga b { font-weight: inherit; }
+.opz__v--riga small { font-size: var(--t-small); font-weight: var(--w-text); color: var(--c-mute); line-height: 1.3; }
+.opz__delta {
+  position: absolute; right: var(--s-3); top: 50%; transform: translateY(-50%); pointer-events: none;
+  font-style: normal; font-size: var(--t-ui); color: var(--c-mute); font-variant-numeric: tabular-nums;
+}
+
+

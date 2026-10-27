@@ -73,8 +73,8 @@ const prossimi = t.raw<string[]>('checkout.prossimi_passi') ?? [];
     <div class="ck__vuoto vuoto" data-ck-vuoto hidden>
       <p class="vuoto__t">{t('galleria.acquisto.vuoto')}</p>
       <ul class="porte" role="list">
-        <li><a class="porta" href={href(lang, '/opere/')}><span>{t('galleria.opere.originali')}</span><Freccia sottile /></a></li>
-        <li><a class="porta" href={href(lang, '/opere/?vista=stampe')}><span>{t('galleria.opere.stampe')}</span><Freccia sottile /></a></li>
+        <li><a class="porta" href={href(lang, '/ninni/')}><span>{t('galleria.opere.originali')}</span><Freccia sottile /></a></li>
+        <li><a class="porta" href={href(lang, '/ninni/?vista=stampe')}><span>{t('galleria.opere.stampe')}</span><Freccia sottile /></a></li>
       </ul>
     </div>
 
@@ -216,7 +216,7 @@ const prossimi = t.raw<string[]>('checkout.prossimi_passi') ?? [];
               {prossimi.map((s, i) => <li><span class="ck__prossimi-n">{String(i + 1).padStart(2, '0')}</span><span>{s}</span></li>)}
             </ol>
           </div>
-          <a class="lnk ck__opere" href={href(lang, '/opere/')}>{t('galleria.nav.opere')}<Freccia /></a>
+          <a class="lnk ck__opere" href={href(lang, '/ninni/')}>{t('galleria.nav.opere')}<Freccia /></a>
           <p class="ck__nota">{t('checkout.successo_demo')}</p>
           <div class="email" data-ck-email hidden>
             <h2 class="ck__h3">{t('galleria.acquisto.email_titolo')}</h2>

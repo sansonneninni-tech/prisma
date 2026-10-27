@@ -32,7 +32,7 @@ const testi = testiBrowser(t, [
     data-catalogo={JSON.stringify(catalogoCarrello())}
     data-simile={href(lang, '/su-commissione/')}
   >
-    <Torna href={href(lang, '/opere/')}>{t('galleria.nav.opere')}</Torna>
+    <Torna href={href(lang, '/ninni/')}>{t('galleria.nav.opere')}</Torna>
     <div class="titolo" style={f ? `--fit:${f}` : undefined}><h1 id="car-titolo" tabindex="-1">{titolo}</h1></div>
 
     <div class="avvisi" data-car-avvisi hidden></div>
@@ -60,8 +60,8 @@ const testi = testiBrowser(t, [
     <div class="car__vuoto vuoto" data-car-vuoto hidden>
       <p class="vuoto__t">{t('galleria.acquisto.vuoto')}</p>
       <ul class="porte" role="list">
-        <li><a class="porta" href={href(lang, '/opere/')}><span>{t('galleria.opere.originali')}</span><Freccia sottile /></a></li>
-        <li><a class="porta" href={href(lang, '/opere/?vista=stampe')}><span>{t('galleria.opere.stampe')}</span><Freccia sottile /></a></li>
+        <li><a class="porta" href={href(lang, '/ninni/')}><span>{t('galleria.opere.originali')}</span><Freccia sottile /></a></li>
+        <li><a class="porta" href={href(lang, '/ninni/?vista=stampe')}><span>{t('galleria.opere.stampe')}</span><Freccia sottile /></a></li>
       </ul>
     </div>
   </section>

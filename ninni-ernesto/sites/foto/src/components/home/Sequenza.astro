@@ -16,6 +16,7 @@ import Freccia from '../Freccia.astro';
 import { useT, type Locale } from '../../lib/i18n';
 import { hrefOpera } from '../../lib/opera-link';
 import type { ModoSequenza } from '../../lib/home';
+import { tintaOpera } from '../../lib/colori';
 
 interface Props { lang: Locale; opere: Artwork[]; modo: ModoSequenza; intervalloMs: number }
 const { lang, opere, modo, intervalloMs } = Astro.props;
@@ -35,6 +36,7 @@ const voci = opere.map((a) => {
     misure: a.dimensions ? formatDimensions(a.dimensions, lang) : '',
     prezzo: a.status === 'available' && a.priceCents !== null ? formatPrice(a.priceCents, lang) : '',
     href: hrefOpera(lang, a),
+    tinta: tintaOpera(a),
   };
 });
 const primo = voci[0]!;
@@ -53,6 +55,7 @@ const totale = due(voci.length);
           data-titolo={v.titolo}
           data-misure={v.misure}
           data-prezzo={v.prezzo}
+          data-tinta={v.tinta}
         >
           {v.img.sources.map((s) =>
             i === 0 ? <source type={s.type} srcset={s.srcset} sizes={v.img.sizes} /> : <source type={s.type} data-srcset={s.srcset} sizes={v.img.sizes} />,

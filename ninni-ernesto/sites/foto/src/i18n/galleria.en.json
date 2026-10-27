@@ -120,7 +120,7 @@
       "descrizione": "{titolo}, photograph. {misure}.",
       "acquisto": "Buy",
       "schede": "Limited edition or print",
-      "originale": "Limited edition",
+      "originale": "Edition",
       "stampa": "Print",
       "dati": "About the photograph",
       "spedizione_inclusa": "free shipping in Italy",
@@ -223,8 +223,8 @@
       "invio": "Sending…",
       "demo": "Demo: no message is sent.",
       "nuova_scheda": "opens in a new tab",
-      "bio_ninni": "Flowers, bodies, full colour. Looking for the light that makes ordinary things strange.",
-      "bio_ernesto": "His catalogue is coming soon.",
+      "bio_ninni": "Flowers, bodies, full color. Looking for the light that makes ordinary things strange.",
+      "bio_ernesto": "His catalog is coming soon.",
       "prisma": "Prisma, our film studio"
     },
     "info": {
@@ -234,9 +234,9 @@
       "termini_t": "Terms",
       "privacy_t": "Privacy and cookies",
       "sped_intro": "We check and pack every print by hand. Unframed prints travel in a rigid tube, framed ones in a crate. Tracking arrives by email.",
-      "tab_nota": "Editions: per piece. Prints: once per order. Working days from shipping.",
+      "tab_nota": "Editions: per piece. Prints: once per order. Business days from shipping.",
       "giorni": "{min}⁠–⁠{max} days",
-      "preparazione": "Before shipping: limited editions {o} working days, prints {s}.",
+      "preparazione": "Before shipping: limited editions {o} business days, prints {s}.",
       "resi": "You have 14 days from delivery to return a print: write to us before shipping it and we will tell you how to pack it.",
       "esclusi": "Custom sizes cannot be returned.",
       "termini": [
@@ -246,7 +246,7 @@
         ],
         [
           "The photographs",
-          "Prints are pigment on archival paper. Limited editions have a fixed number of copies, signed and numbered by hand, with a certificate. Colours on screen may look slightly different."
+          "Prints are pigment on archival paper. Limited editions have a fixed number of copies, signed and numbered by hand, with a certificate. Colors on screen may look slightly different."
         ],
         [
           "Prices",
@@ -254,7 +254,7 @@
         ],
         [
           "Order and payment",
-          "The contract is concluded with the confirmation email. Payment by card through Stripe, or in 3 instalments."
+          "The contract is concluded with the confirmation email. Payment by card through Stripe, or in 3 installments."
         ],
         [
           "Availability",
@@ -323,7 +323,7 @@
     },
     "catalogo": {
       "ninni_descrizione": "Photographs by Ninni: fine art prints and limited editions signed by Ninni.",
-      "ernesto_descrizione": "Photographs by Ernesto: the catalogue opens soon.",
+      "ernesto_descrizione": "Photographs by Ernesto: the catalog opens soon.",
       "nota_edizioni": "A few copies, signed, numbered and framed. The price rises as the edition sells.",
       "nota_stampe": "On cotton or Japanese papers, in three sizes. Frame optional."
     },
@@ -341,7 +341,8 @@
       "incluso": "frame included",
       "aggiungi": "Take no. {n}",
       "etichetta": "Edition",
-      "valore": "{n} copies + {pa} artist’s proofs"
+      "valore": "{n} copies + {pa} artist’s proofs",
+      "valore_1": "{n} copies + 1 artist’s proof"
     },
     "carte": {
       "descrizione": "The fine art papers and frames we use for prints and limited editions, with prices.",
@@ -360,8 +361,8 @@
       "vai": "See the editions"
     },
     "ernesto": {
-      "lead": "Ernesto’s catalogue opens soon. Leave your email and we will write to you on the day it opens, before anyone else.",
-      "modulo": "Notify me when Ernesto’s catalogue opens",
+      "lead": "Ernesto’s catalog opens soon. Leave your email and we will write to you on the day it opens, before anyone else.",
+      "modulo": "Notify me when Ernesto’s catalog opens",
       "campo": "Email",
       "bottone": "Notify me",
       "successo": "Done. We will write to {email} on opening day."

@@ -3,7 +3,7 @@
  */
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { misureAr, testiAr } from '../src/ar/index.ts';
-import { getArtwork, getArtworkImage } from '../src/catalog/index.ts';
+import { getArtwork, getArtworkImage, getArtworks } from '../src/catalog/index.ts';
 import { DemoPaymentProvider } from '../src/checkout/payment.ts';
 import { checkoutErrorKey, DECLINED_NO_INSTALLMENTS_KEY } from '../src/checkout/store.ts';
 import type { Order } from '../src/checkout/types.ts';
@@ -28,12 +28,9 @@ describe('Chinese: one unit form and 您 (0.3.0: 您 instead of 你)', () => {
   });
 });
 
-describe('artwork 26 frame', () => {
-  it('has a public frame text and a separate internal note', () => {
-    const two = getArtwork('26');
-    expect(two?.frame).toBe('Tela con cornice');
-    expect(two?.frameNote).toMatch(/foto/);
-    expect(getArtwork('04')?.frameNote).toBeNull();
+describe('edition frame', () => {
+  it('has no internal frame note on the public photos', () => {
+    for (const a of getArtworks()) expect(a.frameNote).toBeNull();
   });
 });
 
@@ -109,9 +106,8 @@ describe('order email: payment method row can wrap', () => {
 
 describe('misureAr', () => {
   it('reads the model sizes from assets/ar/index.json (frame included)', () => {
-    expect(misureAr('09')).toMatchObject({ larghezzaCm: 90, altezzaCm: 90 });
-    expect(misureAr(9)).toEqual(misureAr('09'));
-    expect(getArtwork('09')?.dimensions).toEqual({ widthCm: 71, heightCm: 71 });
+    expect(misureAr('01-40x60')).toMatchObject({ larghezzaCm: 40, altezzaCm: 60 });
+    expect(misureAr('01-20x30')).toMatchObject({ larghezzaCm: 20, altezzaCm: 30 });
     expect(misureAr('99')).toBeNull();
   });
 });

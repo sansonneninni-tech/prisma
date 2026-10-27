@@ -282,3 +282,7 @@ button.ck__passo { color: var(--c-ink); }
 @media (prefers-reduced-motion: reduce) {
   .porta .freccia, .riep__testa .freccia { transition: none; }
 }
+
+/* Ninni & Ernesto: «Edizioni limitate» è più lunga di «Originali»: sempre su una riga, alla misura dello schermo */
+.car__vuoto, .ck__vuoto { max-width: 64rem; }
+.car__vuoto .porta, .ck__vuoto .porta { font-size: min(var(--t-list), 10.5vw); min-height: calc(min(var(--t-list), 10.5vw) * 1.25); white-space: nowrap; }

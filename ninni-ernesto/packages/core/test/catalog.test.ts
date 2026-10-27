@@ -5,98 +5,97 @@ import {
   getArtworkBySlug,
   getArtworkImage,
   getArtworks,
-  getComingSoon,
   getPhotoImage,
   getPhotos,
   getPrintOptions,
-  getPrints,
-  getProposals,
+  getPrintPrice,
   toCartProduct,
   toPrintCartProduct,
   toPrintCartProducts,
 } from '../src/catalog/index.ts';
 import { slugify } from '../src/catalog/slug.ts';
 
-describe('catalog (real data files)', () => {
-  it('loads the 26 artworks with English field names', () => {
+describe('catalog (real data files: Ninni & Ernesto)', () => {
+  it('loads the 8 photos by Ninni, Ernesto has none yet', () => {
     const all = getArtworks();
-    expect(all).toHaveLength(26);
-    const dea = getArtwork('04');
-    expect(dea).toMatchObject({ slug: 'dea-alea', title: 'Dea Alea', status: 'available', priceCents: 500000, orientation: 'portrait' });
-    expect(dea?.dimensions).toEqual({ widthCm: 100, heightCm: 140 });
-    expect(Object.keys(dea?.images ?? {}).sort()).toEqual(['canvas', 'detail1', 'detail2', 'full', 'signature', 'thumbnail']);
+    expect(all).toHaveLength(8);
+    expect(all.every((a) => a.author === 'ninni')).toBe(true);
+    const tulip = getArtwork('01');
+    expect(tulip).toMatchObject({ slug: 'tulipano', title: 'Tulipano', status: 'available', orientation: 'portrait' });
+    expect(Object.keys(tulip?.images ?? {})).toEqual(expect.arrayContaining(['canvas', 'detail1', 'detail2', 'thumbnail']));
   });
 
-  it('marks sold works ("esaurito") with no price', () => {
-    const sold = getArtworks({ status: 'sold' });
-    expect(sold.map((a) => a.id).sort()).toEqual(['24', '26']);
-    for (const a of sold) expect(a.priceCents).toBeNull();
+  it('builds the numbered limited edition with real scarcity and a price ladder', () => {
+    const ed = getArtwork('01')!.edition!;
+    expect(ed).toMatchObject({ size: 7, artistProofs: 1, sold: 4, nextNumber: 5, remaining: 3 });
+    // copies 4–5 at 1.190 €, then 1.390 €: one left at this price
+    expect(getArtwork('01')!.priceCents).toBe(119000);
+    expect(ed.nextStepPriceCents).toBe(139000);
+    expect(ed.leftAtThisPrice).toBe(1);
+    // the edition is sold framed: the page shows the framed size
+    expect(getArtwork('01')!.dimensions).toEqual(ed.framedDimensions);
+    // prints-only photos have no edition
+    expect(getArtwork('05')!.edition).toBeNull();
   });
 
   it('has unique slugs and finds by slug', () => {
     const slugs = getArtworks().map((a) => a.slug);
     expect(new Set(slugs).size).toBe(slugs.length);
-    expect(getArtworkBySlug('maesta-riflessa')?.id).toBe('23');
-    expect(slugify('Maestà Riflessa')).toBe('maesta-riflessa');
+    expect(getArtworkBySlug('croce-rossa')?.id).toBe('07');
+    expect(slugify('Croce Rossa')).toBe('croce-rossa');
   });
 
   it('builds responsive images with avif/webp srcset, size and LQIP', () => {
-    const img = getArtworkImage('04', 'canvas', { width: 600 });
+    const img = getArtworkImage('01', 'canvas', { width: 600 });
     expect(img.sources.map((s) => s.type)).toEqual(['image/avif', 'image/webp']);
-    expect(img.sources[0]?.srcset).toMatch(/^\/assets\/opere\/04\/opera-04_tela_\d+\.avif \d+w, /);
+    expect(img.sources[0]?.srcset).toMatch(/^\/assets\/opere\/01\/foto-01_tela_\d+\.avif \d+w, /);
     expect(img.src).toMatch(/\.jpg$/);
     expect(img.width).toBe(600);
-    expect(img.height).toBe(Math.round(600 / getArtwork('04')!.aspectRatio));
+    expect(img.height).toBe(Math.round(600 / getArtwork('01')!.aspectRatio));
     expect(img.lqip).toMatch(/^data:image\/webp;base64,/);
-    expect(img.dominantColor).toBe('#97a4ac');
     expect(img.palette.length).toBeGreaterThan(0);
-    expect(img.sizes).toBe('(max-width: 600px) 100vw, 600px');
   });
 
   it('never upscales beyond the original', () => {
     const asset = getArtwork('01')!.images.canvas!;
-    expect(getArtworkImage('01', 'canvas', { width: 5000 }).width).toBe(asset.width);
+    expect(getArtworkImage('01', 'canvas', { width: 9000 }).width).toBe(asset.width);
   });
 
-  it('offers prints matching the orientation, not for panoramic friezes', () => {
-    expect(getPrintOptions(getArtwork('04')!)?.formats.map((f) => f.id)).toEqual(['40x60', '50x70', '70x100', '100x150']);
-    expect(getPrintOptions(getArtwork('01')!)?.formats.map((f) => f.id)).toEqual(['60x40', '70x50', '100x70', '150x100']);
-    expect(getPrintOptions(getArtwork('09')!)?.formats.map((f) => f.id)).toEqual(['50x50', '80x80', '100x100']);
-    expect(getPrintOptions(getArtwork('24')!)).toBeNull();
-    expect(getPrintOptions(getArtwork('04')!)?.fromCents).toBe(10980);
-    expect(getPrints().length).toBe(24);
+  it('offers print formats by proportion, up to the largest size each file allows', () => {
+    expect(getPrintOptions(getArtwork('01')!, { formats: 'all' })?.formats.map((f) => f.id)).toEqual(['20x30', '30x45', '40x60', '60x90']);
+    expect(getPrintOptions(getArtwork('05')!, { formats: 'all' })?.formats.map((f) => f.id)).toEqual(['20x30']);
+    expect(getPrintOptions(getArtwork('04')!, { formats: 'all' })?.formats.map((f) => f.id)).toEqual(['30x30', '50x50', '70x70']);
+    expect(getPrintOptions(getArtwork('01')!)?.fromCents).toBe(6000);
   });
 
-  it('builds cart products on the server', () => {
-    const p = toCartProduct(getArtwork('04')!, 'en', { path: '/opere/dea-alea' });
-    expect(p).toMatchObject({ kind: 'original', artworkId: '04', unitPriceCents: 500000, longestSideCm: 140, url: '/en/opere/dea-alea' });
-    expect(p?.image?.src).toMatch(/^\/assets\/opere\/04\/.+\.webp$/);
-    expect(toCartProduct(getArtwork('24')!, 'it')).toBeNull();
-    expect(toPrintCartProduct(getArtwork('04')!, '50x70', 'canvas', 'it')).toMatchObject({ kind: 'print', unitPriceCents: 28060, print: { formatId: '50x70', material: 'canvas' } });
-    expect(toPrintCartProduct(getArtwork('04')!, '40x60', 'canvas', 'it')).toBeNull();
-    expect(toPrintCartProducts(getArtwork('04')!, 'it')).toHaveLength(7);
+  it('prices paper and frame: base × paper factor (rounded to 5 €) + frame by size band', () => {
+    const o = getPrintOptions(getArtwork('01')!, { formats: 'all' })!;
+    expect(getPrintPrice(o, '40x60', 'rag')).toBe(12000);
+    expect(getPrintPrice(o, '40x60', 'baryta')).toBe(14000); // 138 € rounded to the nearest 5 €
+    expect(getPrintPrice(o, '40x60', 'rag', 'oak')).toBe(12000 + 18000);
+    expect(getPrintPrice(o, '60x90', 'rag', 'walnut')).toBe(22000 + 54000);
+    expect(getPrintPrice(o, '50x70', 'rag')).toBeNull();
   });
 
-  it('resolves the four proposals and the coming-soon categories', () => {
-    const proposals = getProposals();
-    expect(proposals.map((p) => p.id)).toEqual(['rosso-notte', 'ocra-mezzogiorno', 'smeraldo-oro', 'petrolio-avorio']);
-    for (const p of proposals) {
-      expect(p.original.status).toBe('available');
-      expect(p.print.priceCents).toBeGreaterThan(0);
-      expect(p.object.purchasable).toBe(false);
-    }
-    expect(getComingSoon().map((c) => c.id)).toEqual(['fabric-art', 'vasi', 'candele-the-moon', 'abiti-dipinti']);
+  it('builds cart products on the server, one per format × paper × frame', () => {
+    const ed = toCartProduct(getArtwork('01')!, 'en', { path: '/ninni/tulipano' });
+    expect(ed).toMatchObject({ kind: 'original', artworkId: '01', unitPriceCents: 119000, url: '/en/ninni/tulipano' });
+    expect(ed?.image?.src).toMatch(/^\/assets\/opere\/01\/.+\.webp$/);
+    expect(toPrintCartProduct(getArtwork('01')!, '40x60', 'rag', 'it', {}, 'oak')).toMatchObject({
+      kind: 'print', unitPriceCents: 30000, print: { formatId: '40x60', material: 'rag', frame: 'oak' },
+    });
+    expect(toPrintCartProducts(getArtwork('05')!, 'it')).toHaveLength(1 * 3 * 4);
   });
 
   it('gives a localised fallback alt text', () => {
-    expect(artworkAlt(getArtwork('04')!, 'en')).toBe('Dea Alea, painting by Isabella Pistillo');
-    expect(artworkAlt(getArtwork('04')!, 'zh')).toBe('Dea Alea，伊莎贝拉·皮斯蒂洛的画作');
+    const a = { ...getArtwork('01')!, alt: {} };
+    expect(artworkAlt(a, 'en')).toBe('Tulipano, photograph by Ninni');
   });
 
-  it('exposes the photos of the manifest', () => {
-    const portraits = getPhotos({ group: 'ritratti' });
-    expect(portraits.length).toBeGreaterThan(0);
-    const img = getPhotoImage(portraits[0]!.id, { width: 800 });
+  it('exposes the photos of the manifest (portrait of Ninni & Ernesto)', () => {
+    const photos = getPhotos();
+    expect(photos.some((p) => p.id === 'ninni-ernesto-ritratto')).toBe(true);
+    const img = getPhotoImage('ninni-ernesto-ritratto', { width: 800 });
     expect(img.sources[0]?.srcset).toContain('/assets/foto/');
   });
 });

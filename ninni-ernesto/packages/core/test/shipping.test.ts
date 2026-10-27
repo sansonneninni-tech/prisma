@@ -34,21 +34,24 @@ describe('getShippingZone', () => {
 });
 
 describe('calculateShipping', () => {
-  it('uses the demo rates from ninni (18/10): originals free in Italy, 90 € EU, 180 € world', () => {
-    const one = [line(original('08', 350000, { longestSideCm: 100 }))];
+  it('uses the demo rates (27/10): limited editions included in Italy, 45 € EU, 90 € world', () => {
+    const one = [line(original('01', 99000, { longestSideCm: 104 }))];
     expect(calculateShipping(one, 'italy').totalCents).toBe(0);
-    expect(calculateShipping(one, 'eu').totalCents).toBe(9000);
-    expect(calculateShipping(one, 'world').totalCents).toBe(18000);
+    expect(calculateShipping(one, 'eu').totalCents).toBe(4500);
+    expect(calculateShipping(one, 'world').totalCents).toBe(9000);
     // extra zones reuse the nearest group
-    expect(calculateShipping(one, 'uk-ch').totalCents).toBe(9000);
-    expect(calculateShipping(one, 'asia').totalCents).toBe(18000);
+    expect(calculateShipping(one, 'uk-ch').totalCents).toBe(4500);
+    expect(calculateShipping(one, 'asia').totalCents).toBe(9000);
   });
 
-  it('uses the demo rates for prints: 12 € Italy, 25 € EU, 45 € world (flat per order)', () => {
-    const prints = [line(print('01', 10980), 2), line(print('02', 13420))];
+  it('uses the demo rates for prints: 12 € Italy, 25 € EU, 45 € world (flat per order), free above the threshold', () => {
+    const prints = [line(print('05', 6000), 2)];
     expect(calculateShipping(prints, 'italy').printsCents).toBe(1200);
     expect(calculateShipping(prints, 'eu').printsCents).toBe(2500);
     expect(calculateShipping(prints, 'world').printsCents).toBe(4500);
+    const many = [line(print('05', 9000), 2)]; // 180 € of prints
+    expect(calculateShipping(many, 'italy').printsCents).toBe(0);
+    expect(calculateShipping(many, 'eu').printsCents).toBe(2500);
   });
 
   it('charges originals per piece and adds prints once', () => {
@@ -90,10 +93,10 @@ describe('calculateShipping', () => {
       Object.assign(SHIPPING_RATES.eu.original, { insuranceRate: 0.01, insuranceMinCents: 1000, oversizeSurchargeCents: 5000 });
       const big = calculateShipping([line(original('25', 1500000, { longestSideCm: 280 }))], 'eu');
       expect(big.insuranceCents).toBe(15000);
-      expect(big.originalsCents).toBe(9000 + 5000);
+      expect(big.originalsCents).toBe(4500 + 5000);
       const cheap = calculateShipping([line(original('x', 30000, { longestSideCm: 50 }))], 'eu');
       expect(cheap.insuranceCents).toBe(1000);
-      expect(cheap.originalsCents).toBe(9000);
+      expect(cheap.originalsCents).toBe(4500);
     });
 
     it('charges extra prints and makes prints free above a threshold', () => {

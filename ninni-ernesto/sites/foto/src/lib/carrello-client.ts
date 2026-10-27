@@ -48,11 +48,13 @@ export function titoloCarrello(t: Translator, lang: Locale, n: number): string {
   return `${t('galleria.nav.carrello')}${s.ap}${n}${s.ch}`;
 }
 
-/** «Originale · 100 × 140 cm» / «Stampa su tela · 70 × 50 cm». */
+/** «Edizione limitata · 74 × 104 cm» / «Stampa · 20 × 30 cm · Baryta · rovere a cassetta». */
 export function metaRiga(line: CartLine, t: Translator, lang: Locale, cat: Catalogo): string {
   if (line.kind === 'print' && line.print) {
-    const tipo = line.print.material === 'canvas' ? t('galleria.acquisto.stampa_tela') : t('galleria.acquisto.stampa_carta');
-    return `${tipo} · ${formatDimensions({ widthCm: line.print.widthCm, heightCm: line.print.heightCm }, lang)}`;
+    const pr = line.print as typeof line.print & { frame?: string };
+    const parti = [t('galleria.acquisto.stampa_carta'), formatDimensions({ widthCm: pr.widthCm, heightCm: pr.heightCm }, lang), t(`carte.${pr.material}.breve`)];
+    if (pr.frame && pr.frame !== 'none') parti.push(t(`cornici.${pr.frame}.breve`));
+    return parti.join(' · ');
   }
   const o = cat[line.artworkId];
   const misure = o?.w && o?.h ? ` · ${formatDimensions({ widthCm: o.w, heightCm: o.h }, lang)}` : '';
@@ -199,6 +201,8 @@ export function righeConto(totals: CartTotals, t: Translator, lang: Locale): Rig
   else r.push({ tipo: 'sped', label: t('carrello.spedizione'), valore: t('galleria.acquisto.al_checkout') });
   if (s && s.insuranceCents > 0) r.push({ tipo: 'iva-det', label: t('core.cart.assicurazione'), valore: p(s.insuranceCents) });
   r.push({ tipo: 'tot', label: s ? t('carrello.totale') : t('galleria.acquisto.totale_senza'), valore: p(totals.totalCents) });
+  // regime forfettario: niente IVA nei prezzi, quindi nessuna riga IVA
+  if (totals.vatTotalCents === 0) return r;
   if (totals.vatExempt) { r.push({ tipo: 'iva', label: t('core.cart.iva_esente'), valore: '' }); return r; }
   if (totals.vat.length === 1) {
     const v = totals.vat[0]!;

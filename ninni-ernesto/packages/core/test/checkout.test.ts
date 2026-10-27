@@ -75,7 +75,7 @@ describe('DemoPaymentProvider', () => {
   });
 
   it('creates fake order numbers', () => {
-    expect(createOrderNumber(new Date(2026, 9, 18))).toMatch(/^IP-DEMO-2610-[A-Z2-9]{6}$/);
+    expect(createOrderNumber(new Date(2026, 9, 18))).toMatch(/^NE-DEMO-2610-[A-Z2-9]{6}$/);
   });
 });
 

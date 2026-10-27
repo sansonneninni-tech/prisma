@@ -39,7 +39,7 @@ export interface CardInput {
 }
 
 export interface Order {
-  /** e.g. `IP-DEMO-2610-7K3F9Q` */
+  /** e.g. `NE-DEMO-2610-7K3F9Q` */
   number: string;
   createdAt: string;
   lang: Locale;

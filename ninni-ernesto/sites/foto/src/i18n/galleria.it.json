@@ -120,7 +120,7 @@
       "descrizione": "{titolo}, fotografia. {misure}.",
       "acquisto": "Acquisto",
       "schede": "Edizione limitata o stampa",
-      "originale": "Edizione limitata",
+      "originale": "Edizione",
       "stampa": "Stampa",
       "dati": "Dati della foto",
       "spedizione_inclusa": "spedizione in Italia inclusa",
@@ -341,7 +341,8 @@
       "incluso": "cornice inclusa",
       "aggiungi": "Prendi la n° {n}",
       "etichetta": "Edizione",
-      "valore": "{n} copie + {pa} prove d’artista"
+      "valore": "{n} copie + {pa} prove d’artista",
+      "valore_1": "{n} copie + 1 prova d’artista"
     },
     "carte": {
       "descrizione": "Le carte fine art e le cornici che usiamo per stampe ed edizioni limitate, con i prezzi.",

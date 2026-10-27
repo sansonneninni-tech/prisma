@@ -46,6 +46,9 @@ export const CHIAVI_RIGHE = [
   'carrello.subtotale', 'carrello.totale', 'carrello.spedizione', 'carrello.iva_inclusa',
   'carrello.iva_dettaglio_originali', 'carrello.iva_dettaglio_stampe', 'core.cart.iva_esente', 'core.cart.assicurazione',
   'core.zone.italy', 'core.zone.eu', 'core.zone.uk-ch', 'core.zone.asia', 'core.zone.world',
+  // carta e cornice della stampa nella riga del carrello
+  'carte.rag.breve', 'carte.baryta.breve', 'carte.washi.breve', 'carte.bizan.breve',
+  'cornici.alu.breve', 'cornici.oak.breve', 'cornici.walnut.breve',
 ] as const;
 
 /**

@@ -17,7 +17,7 @@
 .cc__tab th, .cc__tab td { text-align: left; padding: var(--s-3) var(--s-2) var(--s-3) 0; border-bottom: var(--line-soft); vertical-align: top; }
 .cc__tab thead th { font-size: var(--t-small); color: var(--c-mute); font-weight: var(--w-text); }
 .cc__tab tbody th b { display: block; font-weight: var(--w-strong); }
-.cc__tab tbody th small { display: block; color: var(--c-mute); font-size: var(--t-small); margin-top: 2px; max-width: 22rem; }
+.cc__tab tbody th small { display: block; font-weight: var(--w-text); color: var(--c-mute); font-size: var(--t-small); margin-top: 2px; max-width: 22rem; }
 .cc__tab td { white-space: nowrap; }
 .cc__fig img { width: 100%; height: auto; display: block; }
-.cc__passi { padding-left: 1.2em; display: grid; gap: var(--s-3); font-size: var(--t-lead); line-height: var(--lh-tight); max-width: 40rem; margin-bottom: var(--s-6); }
+.cc__passi { padding-left: 1.2em; list-style: decimal; display: grid; gap: var(--s-3); font-size: var(--t-lead); line-height: var(--lh-tight); max-width: 40rem; margin-bottom: var(--s-6); }

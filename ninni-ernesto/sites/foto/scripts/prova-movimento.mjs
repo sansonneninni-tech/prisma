@@ -1,6 +1,6 @@
 const { chromium } = await import('/opt/node22/lib/node_modules/playwright/index.mjs');
 // Prova di comportamento del pezzo 8 (movimento): zoom A1/A2, Indietro, cambio lingua, scroll nativo, cursore A7,
-// riduci movimento, telefono. Uso: node scripts/prova-movimento.mjs --base http://localhost:4322
+// riduci movimento, telefono. Uso: node scripts/prova-movimento.mjs --base http://localhost:4330
 // Si contano le animazioni della view transition sugli pseudo-elementi e quelle della «camera» sulla mappa.
 // Aggiornata il 22/10 (audit di ninni, lavoro_ninni_2): lo zoom non anima più le istantanee per 1 s ma la mappa vera
 // (camera 0,65 s + velo del pannello); la view transition fa solo la dissolvenza di 0,15 s (A1) o un taglio (A2).
@@ -9,7 +9,7 @@ const { chromium } = await import('/opt/node22/lib/node_modules/playwright/index
 // Lavoro «animazioni fluide» (22/10): A1 si monta senza view transition (taglio come prima, ma senza l'istantanea:
 // «vt nessuna» resta vero) e A2 fa partire il titolo del pannello da dove era l'h1 (controllo «titolo A2 dall'h1»).
 // Lenis è stato tolto apposta: la prova della «rotella morbida» è diventata «rotella nativa».
-const ia = process.argv.indexOf('--base'); const B = ia > 0 ? process.argv[ia + 1].replace(/\/$/, '') : 'http://localhost:4322';
+const ia = process.argv.indexOf('--base'); const B = ia > 0 ? process.argv[ia + 1].replace(/\/$/, '') : 'http://localhost:4330';
 const b = await chromium.launch();
 let ko = 0;
 const ok = (c, m) => { if (!c) ko++; console.log(c ? '✓' : '✗', m); };
@@ -76,7 +76,7 @@ await p.mouse.move(x, y); await p.waitForTimeout(400);
 ok(await p.$eval('[data-cur]', (e) => getComputedStyle(e).opacity === '1' && e.textContent === 'Apri'), 'A7 «Apri» sul pannello');
 await p.mouse.click(x, y); await p.waitForTimeout(1500);
 let c = await ultimo(p);
-ok(p.url().endsWith('/it/opere/') && c?.zoom === 'dentro', `A1 mappa → Opere (zoom ${c?.zoom})`);
+ok(p.url().endsWith('/it/ninni/') && c?.zoom === 'dentro', `A1 mappa → Opere (zoom ${c?.zoom}, ${p.url()})`);
 // 22/10: la camera sulla mappa vera (0,65 s), poi la pagina compare in 0,15 s; l'istantanea vecchia non si muove
 ok(c && c.camera.join() === '650' && c.anim.length === 0 && c.titolo === '300', `A1 camera 0,65 s sulla mappa, taglio e titolo al suo posto in 0,3 s (camera ${c?.camera.join()}, vt ${c?.anim.join(' ') || 'nessuna'}, titolo ${c?.titolo})`);
 ok(await p.evaluate(() => !document.documentElement.dataset.zoom && scrollY === 0), 'A1 finita: niente data-zoom, pagina in cima');
@@ -88,15 +88,15 @@ const sc = await p.evaluate(() => window.__titoloA2);
 ok(typeof sc === 'number' && sc <= 2, `titolo A2 dall'h1: al primo fotogramma della camera il titolo è dove era l'h1 (scarto ${sc} px)`);
 ok(Math.abs((await p.evaluate(() => scrollY)) - yMappa) <= 2, `Indietro: mappa allo stesso punto (${yMappa})`);
 // «Indice» da Isabella → A2
-await p.goto(B + '/it/isabella/', { waitUntil: 'networkidle' }); await p.waitForTimeout(300);
+await p.goto(B + '/it/chi-siamo/', { waitUntil: 'networkidle' }); await p.waitForTimeout(300);
 await p.click('.hd__idx-link'); await p.waitForTimeout(1600);
 c = await ultimo(p);
-ok(c?.zoom === 'fuori' && new URL(p.url()).hash === '#indice', `«Indice» → A2 (${c?.zoom})`);
+ok(c?.zoom === 'fuori' && new URL(p.url()).hash === '#indice', `«Indice» → A2 (${c?.zoom}, ${p.url()})`);
 ok(Math.abs((await p.evaluate(() => scrollY)) - yMappa) <= 2, 'mappa in vista dopo A2');
 // link della riga sotto la tavola (Proposte di Isa) → A1 dal pannello Altro
-await p.click('.mappa__riga a[href="/it/proposte/"]'); await p.waitForTimeout(1500);
+await p.click('.mappa__riga a[href="/it/carte-e-cornici/"]'); await p.waitForTimeout(1500);
 c = await ultimo(p);
-ok(p.url().endsWith('/it/proposte/') && c?.zoom === 'dentro', `riga sotto la tavola → A1 (${c?.zoom})`);
+ok(p.url().endsWith('/it/carte-e-cornici/') && c?.zoom === 'dentro', `riga sotto la tavola → A1 (${c?.zoom})`);
 // pagina senza pannello (Info) → dissolvenza
 await p.goto(B + '/it/info/', { waitUntil: 'networkidle' });
 await p.click('.hd__idx-link'); await p.waitForTimeout(800);
@@ -106,19 +106,19 @@ ok(c?.zoom === '' && c.anim.join(' ') === 'new:300 old:300', `Info → mappa: di
 await p.goto(B + '/it/', { waitUntil: 'networkidle' }); await p.waitForTimeout(300);
 await p.click('[data-seq-a]'); await p.waitForTimeout(900);
 c = await ultimo(p);
-ok(c?.zoom === '' && /\/it\/opere\/[^/]+\/$/.test(p.url()), `opera della sequenza → scheda senza zoom (${p.url()})`);
+ok(c?.zoom === '' && /\/it\/ninni\/[^/]+\/$/.test(p.url()), `opera della sequenza → scheda senza zoom (${p.url()})`);
 
 /* 2. Cambio lingua: stessa pagina, stesso punto, niente zoom */
-await p.goto(B + '/it/isabella/', { waitUntil: 'networkidle' });
+await p.goto(B + '/it/chi-siamo/', { waitUntil: 'networkidle' });
 await p.$eval('#contatti', (e) => window.scrollTo(0, e.getBoundingClientRect().top + scrollY - 300)); await p.waitForTimeout(400);
 const daIt = await p.$eval('#contatti', (e) => Math.round(e.getBoundingClientRect().top));
 await p.click('header a[data-lingua=en]'); await p.waitForTimeout(1000);
 const daEn = await p.$eval('#contatti', (e) => Math.round(e.getBoundingClientRect().top));
 c = await ultimo(p);
-ok(p.url().endsWith('/en/isabella/') && Math.abs(daEn - daIt) < 80 && c?.zoom === '', `lingua IT → EN resta a Contatti (${daIt} → ${daEn} px dal bordo)`);
+ok(p.url().endsWith('/en/chi-siamo/') && Math.abs(daEn - daIt) < 80 && c?.zoom === '', `lingua IT → EN resta a Contatti (${daIt} → ${daEn} px dal bordo)`);
 await p.mouse.move(700, 450);
 // cursore tradotto
-await p.goto(B + '/en/opere/', { waitUntil: 'networkidle' }); await p.waitForTimeout(300);
+await p.goto(B + '/en/ninni/', { waitUntil: 'networkidle' }); await p.waitForTimeout(300);
 [x, y] = await centro(p, '[data-card]');
 await p.mouse.move(x - 5, y); await p.mouse.move(x, y); await p.waitForTimeout(400);
 ok(await p.$eval('[data-cur]', (e) => e.textContent === 'View' && getComputedStyle(e).opacity === '1'), 'A7 «View» su una card in inglese');
@@ -126,7 +126,7 @@ await p.mouse.move(x, 30); await p.waitForTimeout(400);
 ok(await p.$eval('[data-cur]', (e) => getComputedStyle(e).opacity === '0'), 'A7 sparisce fuori dai bersagli');
 
 /* 3. Scroll nativo (Lenis tolto il 22/10): la rotella sposta subito la pagina; nei dialog scorre il dialog */
-await p.goto(B + '/it/opere/', { waitUntil: 'networkidle' }); await p.waitForTimeout(500);
+await p.goto(B + '/it/ninni/', { waitUntil: 'networkidle' }); await p.waitForTimeout(500);
 await p.mouse.move(700, 500); await p.mouse.wheel(0, 600); await p.waitForTimeout(150);
 const yFine = await p.evaluate(() => scrollY);
 ok(Math.abs(yFine - 600) <= 2, `rotella nativa, niente scorrimento morbido (${yFine} dopo 150 ms)`);
@@ -146,7 +146,7 @@ await p.goto(B + '/it/#indice', { waitUntil: 'networkidle' }); await p.waitForTi
 ok(await p.$eval('[data-cur]', (e) => getComputedStyle(e).display === 'none'), 'telefono: niente cursore');
 await p.tap('a[data-zoom="isabella"]'); await p.waitForTimeout(1500);
 c = await ultimo(p);
-ok(p.url().endsWith('/it/isabella/') && c?.zoom === 'dentro', `375: A1 dal pannello impilato (${c?.zoom})`);
+ok(p.url().endsWith('/it/ernesto/') && c?.zoom === 'dentro', `375: A1 dal pannello impilato (${c?.zoom})`);
 await p.goBack(); await p.waitForTimeout(1600);
 c = await ultimo(p);
 ok(c?.zoom === 'fuori', `375: Indietro → A2 (${c?.zoom})`);

@@ -3,10 +3,10 @@ import { VAT_RATES } from '../src/config/vat.ts';
 import { assertCents, splitVat, vatRateFor } from '../src/pricing/vat.ts';
 
 describe('VAT', () => {
-  it('uses 5% for originals and 22% for prints', () => {
-    expect(vatRateFor('original')).toBe(0.05);
-    expect(vatRateFor('print')).toBe(0.22);
-    expect(VAT_RATES).toEqual({ original: 0.05, print: 0.22 });
+  it('uses no VAT (flat-rate regime: prices are final, VAT is never shown)', () => {
+    expect(vatRateFor('original')).toBe(0);
+    expect(vatRateFor('print')).toBe(0);
+    expect(VAT_RATES).toEqual({ original: 0, print: 0 });
   });
 
   it('splits a VAT-inclusive price into net + VAT', () => {

@@ -4,7 +4,7 @@ export function original(id: string, priceCents: number, extra: Partial<CartProd
   return { kind: 'original', artworkId: id, slug: `opera-${id}`, title: `Opera ${id}`, unitPriceCents: priceCents, ...extra };
 }
 
-export function print(id: string, priceCents: number, formatId = '50x70', material: 'paper' | 'canvas' = 'paper'): CartProduct {
+export function print(id: string, priceCents: number, formatId = '40x60', material: 'rag' | 'baryta' | 'washi' = 'rag', frame: 'none' | 'alu' | 'oak' | 'walnut' = 'none'): CartProduct {
   const [w, h] = formatId.split('x').map(Number);
   return {
     kind: 'print',
@@ -12,7 +12,7 @@ export function print(id: string, priceCents: number, formatId = '50x70', materi
     slug: `opera-${id}`,
     title: `Stampa ${id}`,
     unitPriceCents: priceCents,
-    print: { formatId, material, widthCm: w ?? 0, heightCm: h ?? 0 },
+    print: { formatId, material, frame, widthCm: w ?? 0, heightCm: h ?? 0 } as CartProduct['print'],
   };
 }
 

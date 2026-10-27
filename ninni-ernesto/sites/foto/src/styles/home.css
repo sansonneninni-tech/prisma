@@ -86,8 +86,8 @@
 .ap__nome {
   font-family: 'Inter Tight', var(--f-sans);
   font-weight: var(--w-display);
-  font-size: min(calc(100cqw / var(--mega-2r)), clamp(2.25rem, 9vw, 4rem));
-  line-height: 0.95;
+  font-size: calc(100cqw / var(--mega-2r));
+  line-height: var(--lh-mega);
   letter-spacing: var(--ls-mega);
   white-space: nowrap;
   margin-left: -0.04em;
@@ -96,14 +96,14 @@
 .ap__nome span { display: block; }
 /* una riga: da 1024 e su ogni schermo largo almeno 4/5 dell'altezza (finestre basse, telefono in orizzontale) */
 @media (min-width: 1024px), (min-aspect-ratio: 4/5) {
-  .ap__nome { font-size: clamp(2.5rem, 4.6vw, 5rem); }
+  .ap__nome { font-size: calc(100cqw / var(--mega-1r)); }
   .ap__nome span { display: inline; }
 }
 /* Telefono piccolo in verticale (320 × 568) col banner cookie aperto: l'apertura scende sotto i 540 px e il nome va su
    una riga, così opera, riga e nome restano tutti sopra il banner. Alla scelta il nome torna su due righe. */
 @media (orientation: portrait) and (max-height: 640px) {
   html[data-cookie-aperto] .ap { min-height: 360px; }
-  html[data-cookie-aperto] .ap__nome { font-size: clamp(2.5rem, 4.6vw, 5rem); }
+  html[data-cookie-aperto] .ap__nome { font-size: calc(100cqw / var(--mega-1r)); }
   html[data-cookie-aperto] .ap__nome span { display: inline; }
 }
 /* Telefono in orizzontale e finestre molto basse: opera + riga riempiono la prima schermata, il nome viene sotto */
@@ -163,7 +163,7 @@
    che ci stanno intere (lista di blocco 4: mai ritagliate): colonna flex a capo, quelle che non stanno passano in una
    seconda colonna fuori dal riquadro (nascosta). */
 .pan__mas { flex: 1; min-height: 0; overflow: hidden; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; }
-.pan__mas--3 { display: none; }
+.pan__mas--4 { display: none; }
 .pan__col { display: flex; flex-direction: column; flex-wrap: wrap; row-gap: 6px; column-gap: 0; min-height: 0; overflow: hidden; }
 .pan__op { width: 100%; }
 .pan__op .isa-picture { aspect-ratio: var(--isa-aspect); }
@@ -251,7 +251,7 @@
   .tav { aspect-ratio: 2 / 1; }
   .pan__t, :lang(zh) .pan__t { font-size: 5.4cqw; }
   .pan__mas--2 { display: none; }
-  .pan__mas--3 { display: grid; }
+  .pan__mas--4 { display: grid; }
   .pan__voci { font-size: max(var(--t-ui), 1.75cqw); }
   .mappa__demo--breve { display: none; }
   .mappa__demo--lunga { display: inline; }
@@ -270,7 +270,7 @@
   .pan { padding: 8px; }
   .pan__t, :lang(zh) .pan__t { font-size: 5.4cqw; margin-bottom: calc(0.17em + 4px); }
   .pan__mas--2 { display: none; }
-  .pan__mas--3 { display: grid; }
+  .pan__mas--4 { display: grid; }
   .pan__mini { gap: 4px 6px; padding-top: 6px; }
   .pan__voci { font-size: var(--t-ui); font-weight: var(--w-strong); line-height: 1.4; letter-spacing: 0; }
   .pan__al { gap: 8px; }
@@ -278,3 +278,8 @@
 @media (orientation: landscape) and (max-height: 500px) and (min-width: 768px) and (max-width: 1023.98px) {
   .mappa__demo { display: none; } /* la riga dei link occupa la fascia; «Sito dimostrativo» resta nel piè di pagina */
 }
+
+/* Ninni & Ernesto: pannello di Ernesto finché il suo catalogo non apre («Presto» e «Avvisami», stile di .pan__voci) */
+.pan__presto { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; container-type: inline-size; }
+.pan__presto-t { font-weight: var(--w-display); font-size: max(var(--t-ui), calc(100cqw / 9)); line-height: 0.95; letter-spacing: var(--ls-list); }
+.pan__presto-s { font-size: var(--t-ui); font-weight: var(--w-strong); color: var(--c-mute); }

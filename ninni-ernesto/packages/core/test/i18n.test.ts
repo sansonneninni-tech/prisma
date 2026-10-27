@@ -55,21 +55,22 @@ describe('i18n', () => {
 
   it('builds localised paths', () => {
     expect(localizePath('/opere/dea-alea', 'en')).toBe('/en/opere/dea-alea');
-    expect(localizePath('/', 'zh')).toBe('/zh/');
+    expect(localizePath('/', 'en')).toBe('/en/');
     expect(localizePath('/it/opere?x=1#a', 'en')).toBe('/en/opere?x=1#a');
-    expect(switchLocalePath('/en/opere/x', 'zh')).toBe('/zh/opere/x');
+    expect(switchLocalePath('/en/opere/x', 'it')).toBe('/it/opere/x');
     expect(switchLocalePath('/en', 'it')).toBe('/it/');
     expect(localizePath('/opere/x', 'en', { trailingSlash: 'always' })).toBe('/en/opere/x/');
     expect(localizePath('/opere/x/?a=1', 'en', { trailingSlash: 'never' })).toBe('/en/opere/x?a=1');
     expect(localizePath('/opere', 'it', { base: '/demo/', trailingSlash: 'always' })).toBe('/demo/it/opere/');
     expect(localizePath('/file.pdf', 'it', { trailingSlash: 'always' })).toBe('/it/file.pdf');
-    expect(getLocaleFromUrl(new URL('https://x.it/zh/opere'))).toBe('zh');
+    expect(getLocaleFromUrl(new URL('https://x.it/en/opere'))).toBe('en');
     expect(getLocaleFromUrl('/opere')).toBe('it');
-    expect(alternateLinks('/it/opere', 'https://casa.netlify.app').map((l) => l.hreflang)).toEqual(['it', 'en', 'zh-Hans', 'x-default']);
+    expect(alternateLinks('/it/opere', 'https://casa.netlify.app').map((l) => l.hreflang)).toEqual(['it', 'en', 'x-default']);
   });
 
   it('detects the preferred language', () => {
-    expect(detectPreferredLocale(['zh-CN', 'en'])).toBe('zh');
+    // Ninni & Ernesto: solo italiano e inglese
+    expect(detectPreferredLocale(['zh-CN', 'en'])).toBe('en');
     expect(detectPreferredLocale(['de-DE', 'en-US'])).toBe('en');
     expect(detectPreferredLocale(['fr'])).toBe('it');
   });

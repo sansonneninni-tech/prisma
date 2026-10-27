@@ -66,6 +66,8 @@ function avvia() {
     pic.setAttribute('data-on', '');
     i = k;
     link!.href = pic.dataset.href ?? link!.href;
+    // il fondo prende la tinta della foto in vista (base.css)
+    if (pic.dataset.tinta) document.documentElement.style.setProperty('--tinta', pic.dataset.tinta);
     // didascalia rifatta con nodi nuovi: i nodi che restano e si spostano conterebbero come layout shift (CLS)
     if (cap && t0) {
       const t = t0.cloneNode(false) as HTMLElement;

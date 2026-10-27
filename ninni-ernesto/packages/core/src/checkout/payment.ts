@@ -105,9 +105,9 @@ export function randomCode(length: number): string {
   return Array.from(bytes, (b) => ALPHABET[b % ALPHABET.length]).join('');
 }
 
-/** Fake order number: `IP-DEMO-YYMM-XXXXXX`. */
+/** Fake order number: `NE-DEMO-YYMM-XXXXXX`. */
 export function createOrderNumber(date: Date = new Date()): string {
   const yy = String(date.getFullYear()).slice(-2);
   const mm = String(date.getMonth() + 1).padStart(2, '0');
-  return `IP-DEMO-${yy}${mm}-${randomCode(6)}`;
+  return `NE-DEMO-${yy}${mm}-${randomCode(6)}`;
 }

@@ -9,11 +9,14 @@
   padding-top: env(safe-area-inset-top);
   display: flex; align-items: center; justify-content: space-between; gap: var(--s-2);
   background: var(--c-bg);
+  transition: background-color var(--d-reveal) var(--ease-out);
 }
 .hd__logo { display: flex; align-items: center; min-height: var(--touch); color: var(--c-ink); flex: none; }
-.hd__logo .logo { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; line-height: 1.05; white-space: nowrap; }
+.hd__logo .logo { font-family: 'Inter Tight', var(--f-sans); font-weight: 600; letter-spacing: -0.045em; white-space: nowrap; }
+/* stesse misure del logotipo di Galleria: orizzontale largo 172 px, compatto (due righe) largo 58 px */
+.hd__l-or { display: none; font-size: 28px; line-height: 0.8; }
+.hd__l-co { display: block; font-size: 18.5px; line-height: 0.86; }
 .logo--compatto > span { display: block; }
-.hd__l-or { display: none; }
 .hd__nav {
   display: flex; align-items: center; min-width: 0;
   font-size: var(--t-ui); font-weight: var(--w-strong); line-height: 1;

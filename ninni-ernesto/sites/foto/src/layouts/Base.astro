@@ -24,8 +24,10 @@ interface Props {
   lang: Locale; title?: string; description?: string; noindex?: boolean; home?: boolean;
   /** pagina carrello o checkout: niente cassetto («Carrello (n)» porta alla pagina); nel checkout header ridotto */
   acquisto?: 'carrello' | 'checkout';
+  /** colore dominante della foto della pagina: lo sfondo ne prende una tinta leggera (base.css) */
+  tinta?: string | null;
 }
-const { lang, title, description, noindex = false, home = false, acquisto } = Astro.props;
+const { lang, title, description, noindex = false, home = false, acquisto, tinta } = Astro.props;
 const t = useT(lang);
 const pathname = Astro.url.pathname;
 const brand = 'Ninni & Ernesto';
@@ -35,7 +37,7 @@ const alternates = alternateLinks(pathname, Astro.site);
 const canonical = Astro.site ? new URL(pathname, Astro.site).href : pathname;
 ---
 <!doctype html>
-<html lang={HTML_LANG[lang]} data-lang={lang} data-home={home ? '' : undefined}>
+<html lang={HTML_LANG[lang]} data-lang={lang} data-home={home ? '' : undefined} style={tinta ? `--tinta:${tinta}` : undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -44,7 +46,8 @@ const canonical = Astro.site ? new URL(pathname, Astro.site).href : pathname;
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
     {alternates.map((a) => <link rel="alternate" hreflang={a.hreflang} href={a.href} />)}
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#ffffff" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={desc} />

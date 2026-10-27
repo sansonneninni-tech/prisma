@@ -22,7 +22,7 @@ const t = useT(lang);
 const { sfondo, sfondoPosizione, ritratto, opere, altro } = HOME.mappa;
 
 // Opere: n colonne riempite «alla più corta» con le proporzioni vere (come C8), calcolate qui: niente JS, niente salti.
-// Due versioni (2 colonne: telefono e tablet in verticale; 3: computer e telefono in orizzontale), se ne vede una;
+// Due versioni (2 colonne: telefono e tablet in verticale; 4: computer e telefono in orizzontale), se ne vede una;
 // le immagini sono lazy, quindi quella nascosta non scarica nulla.
 function masonry(n: number): Artwork[][] {
   const colonne: Artwork[][] = Array.from({ length: n }, () => []);
@@ -36,7 +36,7 @@ function masonry(n: number): Artwork[][] {
 }
 const versioni = [
   { n: 2, sizes: '(max-width: 767px) 45vw, 26vw' },
-  { n: 3, sizes: '(max-width: 1023px) 12vw, 19vw' },
+  { n: 4, sizes: '(max-width: 1023px) 9vw, 14vw' },
 ];
 ---
 <section class:list={['mappa wrap', !sfondo && 'mappa--bianca']} id="indice" aria-labelledby="mappa-t" style={sfondo ? `--sfondo-pos:${sfondoPosizione}` : undefined}>

@@ -35,10 +35,10 @@
     "colonna_contatti": "Contact",
     "indirizzo": "Via Felice Orsini 69A, 76123 Andria (BT), Italy",
     "email": "info@isabellapistillo.com",
-    "telefono": "+39 376 0426 212",
+    "telefono": "+39 000 000 0000",
     "instagram": "Instagram",
     "facebook": "Facebook",
-    "whatsapp": "Message me on WhatsApp",
+    "whatsapp": "Message us on WhatsApp",
     "newsletter_titolo": "When a new painting is born",
     "newsletter_testo": "I write when I finish a new painting or when there's an exhibition. No more than [N] times a year.",
     "newsletter_placeholder": "Your email",
@@ -119,8 +119,8 @@
     "spedizione": "Shipping",
     "spedizione_calcolata": "Shipping calculated at checkout based on your country",
     "spedizione_zone": "Italy {italia} · Europe {europa} · Rest of the world {mondo}",
-    "tempi_originale": "Printed, signed and framed in {giorni} working days",
-    "tempi_stampa": "Printed and shipped in {giorni} working days",
+    "tempi_originale": "Printed, signed and framed in {giorni} business days",
+    "tempi_stampa": "Printed and shipped in {giorni} business days",
     "consegna_stimata": "Estimated delivery: {data_da}–{data_a}",
     "rate": "Or 3 interest-free payments of {importo} with Scalapay",
     "rate_breve": "Pay in 3 installments",
@@ -502,7 +502,7 @@
     "campo_messaggio": "Message",
     "consenso_privacy": "I have read the privacy notice.",
     "consenso_newsletter": "Tell me when a new edition comes out (optional).",
-    "successo": "Thank you, {nome}. I'll reply within [N] business days."
+    "successo": "Thank you, {nome}. We’ll reply within 2 business days."
   },
   "carrello": {
     "titolo": "Your cart",
@@ -528,7 +528,7 @@
     "tempi_mondo": "Rest of the world: [7–12] business days after shipping",
     "originale_unico": "It is a numbered copy: we hold it for you once payment is complete.",
     "originale_quantita": "Each number of the edition can be bought once.",
-    "venduta_nel_frattempo": "{titolo} was sold while it was in your cart. I'm sorry: I've removed it. If you like, I can paint a similar one.",
+    "venduta_nel_frattempo": "The last copy of {titolo} was taken while it was in your cart, so we removed it.",
     "rate_nota": "At checkout you can choose to pay in 3 installments."
   },
   "demo": {
@@ -563,7 +563,7 @@
     "campo_sdi": "Recipient code or certified email (Italy only)",
     "regalo_check": "It's a gift",
     "regalo_biglietto": "Handwritten card (optional)",
-    "regalo_aiuto": "Write your message: I'll copy it by hand, and I won't put prices in the package.",
+    "regalo_aiuto": "Write your message: we copy it by hand onto a card, and there are no prices in the parcel.",
     "metodo_titolo": "How would you like to pay",
     "metodo_carta": "Credit or debit card",
     "metodo_rate": "3 interest-free installments with Scalapay",
@@ -593,7 +593,7 @@
   },
   "email_conferma": {
     "oggetto": "Order no. {numero} · Ninni & Ernesto",
-    "preheader": "I've received your order. Here's the summary.",
+    "preheader": "We’ve received your order. Here is the summary.",
     "saluto": "Hello {nome},",
     "corpo": "thank you. Your order has arrived and we are taking care of it. Your summary is below.",
     "corpo_originale": "You chose a limited edition: we sign and number it by hand, with a certificate of authenticity.",
@@ -607,12 +607,12 @@
     "riga_metodo": "Payment",
     "spedizione_titolo": "Delivery address",
     "tempi_titolo": "When it ships",
-    "tempi_testo": "Prints ship within 5 working days, framed editions within 10. We will write again with the tracking number.",
-    "domande": "For anything at all, reply to this email or message me on WhatsApp at +39 376 0426 212.",
+    "tempi_testo": "Prints ship within 5 business days, framed editions within 10. We will write again with the tracking number.",
+    "domande": "For anything at all, reply to this email or message us on WhatsApp at +39 000 000 0000.",
     "chiusura": "Speak soon,",
     "firma": "Ninni & Ernesto",
     "ps": "P.S. Once it is on the wall, send us a picture if you like.",
-    "footer": "Ninni & Ernesto · Puglia, Italy · ciao@ninnieernesto.example",
+    "footer": "Ninni & Ernesto · Italy · ciao@ninnieernesto.example",
     "footer_demo": "Demo preview: this email was not sent."
   },
   "errori": {
@@ -620,7 +620,7 @@
     "email": "This email doesn't look complete. Check it has an @ and a domain (e.g. name@email.com).",
     "telefono": "Write the number with the country code, for example +1 212 555 0100.",
     "cap": "Check the ZIP code: it doesn't match the country you chose.",
-    "paese_non_servito": "I don't have a rate for this country yet. Write to me and we'll find a way.",
+    "paese_non_servito": "We don’t have a rate for this country yet. Write to us and we’ll find a way.",
     "carta_numero": "The card number isn't valid. Check the digits.",
     "carta_scadenza": "This card has expired. Use a card with a future date.",
     "carta_cvc": "The CVC is the 3 digits on the back of the card (4 for American Express).",
@@ -628,7 +628,7 @@
     "carta_demo": "In demo mode only the test card 4242 4242 4242 4242 works.",
     "consenso": "To send, please accept the privacy notice.",
     "termini": "To complete your purchase, please accept the terms of sale.",
-    "messaggio_breve": "Write a few more words: it helps me give you a proper answer.",
+    "messaggio_breve": "Write a few more words: it helps us reply properly.",
     "file_formato": "You can upload a JPG, PNG or HEIC photo.",
     "file_peso": "The photo is too large: the maximum is 10 MB.",
     "invio": "The message did not go through. Check your connection and try again, or write to ciao@ninnieernesto.example.",
@@ -803,7 +803,7 @@
       "nome": "Hahnemühle Photo Rag 308",
       "breve": "Photo Rag",
       "nota": "Cotton, matte",
-      "testo": "100% cotton, 308 gsm, matte and velvety. Soft colour and no glare: the museum paper for colour photography."
+      "testo": "100% cotton, 308 gsm, matte and velvety. Soft color and no glare: the museum paper for color photography."
     },
     "baryta": {
       "nome": "Hahnemühle Photo Rag Baryta 315",

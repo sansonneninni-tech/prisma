@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Galleria — token del sito demo B di Isabella Pistillo
+   Ninni & Ernesto — token (base: Galleria di Isabella Pistillo, con il colore preso dalle foto)
    Fonte di verità: siti/direzioni/galleria/tokens.css
    Il sito ne tiene una copia identica in sites/galleria/src/styles/tokens.css
    (si cambia qui e si ricopia, mai il contrario).
@@ -28,15 +28,15 @@
   /* Scala a due salti: GIGANTE (mega, titolo, lista) e PICCOLO (12–22 px). Niente in mezzo,
      tranne --t-tab per le schede Originali/Stampe. Tutte le misure fluide stanno in clamp(). */
   /* Nome in home: riempie ESATTAMENTE la larghezza del contenitore (container-type: inline-size).
-     Larghezze misurate con Inter Tight 560, tracking -0,045em: "Isabella Pistillo" = 5,70em,
-     "Isabella" = 3,01em (la riga più lunga delle due). */
+     Larghezze misurate con Inter Tight 560, tracking -0,045em: "Ninni & Ernesto" = 6,08em,
+     "Ernesto" = 3,12em (la riga più lunga delle due). */
   --mega-1r: 6.1; /* una riga, da 1024 */
   --mega-2r: 3.15; /* due righe, sotto 1024 */
   --t-mega: calc(100cqw / var(--mega-2r));
   /* Titolo di pagina: 16vw, ma mai più largo del contenitore. --fit = larghezza della parola in em
      (tabella fit-larghezze.json, calcolata sul font): font-size = min(--t-title, 100cqw / --fit). */
-  --t-title: clamp(1.75rem, 4.2vw, 3.75rem);     /* "Opere", "Isabella" */
-  --t-title-min: clamp(1.5rem, 3vw, 2.5rem);   /* titolo ridotto dopo lo scorrimento (A5) */
+  --t-title: clamp(3.5rem, 16vw, 19rem);     /* "Opere", "Isabella" */
+  --t-title-min: clamp(2rem, 5.6vw, 6rem);   /* titolo ridotto dopo lo scorrimento (A5) */
   --t-list: clamp(2.5rem, 7.2vw, 8.5rem);    /* elenchi grandi: Altro, Indice telefono, Prossimamente */
   --t-tab: clamp(1.5rem, 2.5vw, 2.25rem);    /* Originali / Stampe, Originale / Stampa */
   --t-lead: clamp(1.125rem, 1.45vw, 1.5rem); /* bio di 3 righe, frase d'autore, prezzo in scheda */

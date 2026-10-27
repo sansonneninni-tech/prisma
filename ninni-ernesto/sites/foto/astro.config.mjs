@@ -5,7 +5,7 @@ import { defineConfig } from 'astro/config';
 import isabellaCore from '@ne/core/integration';
 
 export default defineConfig({
-  site: 'https://isabella-galleria.netlify.app',
+  site: 'https://ninni-ernesto.netlify.app',
   trailingSlash: 'always',
   integrations: [isabellaCore({ assetFolders: ['opere', 'foto', 'ar'] })],
   prefetch: { prefetchAll: false, defaultStrategy: 'hover' },

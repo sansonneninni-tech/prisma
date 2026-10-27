@@ -262,7 +262,7 @@ export function initCheckout(): (() => void) | null {
     const email = renderOrderEmail(ordine, {
       t, baseUrl: location.origin,
       theme: {
-        brandName: 'Ninni & Ernesto', logoUrl: '/favicon.svg', logoWidth: 32,
+        brandName: 'Ninni & Ernesto', logoUrl: '/logo-email.png', logoWidth: 48,
         accentColor: '#000000', backgroundColor: '#FFFFFF', surfaceColor: '#FFFFFF', textColor: '#000000',
         mutedColor: '#6B6B6B', borderColor: '#000000',
         fontFamily: 'Helvetica, Arial, sans-serif', headingFontFamily: 'Helvetica, Arial, sans-serif',

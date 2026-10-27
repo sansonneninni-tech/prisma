@@ -15,6 +15,12 @@ html {
   scroll-padding-top: calc(var(--header-h) + env(safe-area-inset-top) + var(--s-4));
 }
 html[data-scroll-lock] { overflow: hidden; }
+/* «Galleria, ma con del colore»: chi mostra una foto mette --tinta su <html>
+   (lib/colori.ts → tintaOpera: il colore più vivo della foto, chiarissimo); lo sfondo diventa quella tinta */
+html[style*='--tinta'] {
+  --c-bg: var(--tinta);
+  --c-placeholder: color-mix(in oklab, var(--tinta), #000 8%);
+}
 body {
   margin: 0;
   min-height: 100svh;
@@ -30,7 +36,9 @@ body {
   font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
+  transition: background-color var(--d-reveal) var(--ease-out);
 }
+@media (prefers-reduced-motion: reduce) { body { transition: none; } }
 :lang(zh) body, body:lang(zh) { letter-spacing: 0; }
 img, svg, picture { display: block; max-width: 100%; }
 img { height: auto; }

@@ -160,3 +160,14 @@
 @media (max-height: 500px) and (orientation: landscape) {
   .tg { --t-title: min(clamp(3.5rem, 16vw, 19rem), 22svh); }
 }
+
+/* Ninni & Ernesto: «Restano N di M» sotto la didascalia delle edizioni (scarsità vera, solo sulle edizioni limitate) */
+.card__ed { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; font-size: var(--t-ui); font-weight: var(--w-strong); }
+.card__ed::before { content: ''; width: 0.5em; height: 0.5em; background: currentColor; flex: none; }
+@container (min-width: 300px) { .card__cap { flex-wrap: wrap; } .card__ed { flex-basis: 100%; } }
+.op__nota { margin: 0 0 var(--s-4); font-size: var(--t-ui); line-height: 1.4; color: var(--c-mute); max-width: 60ch; }
+.presto { display: grid; gap: var(--s-5); padding: var(--s-5) 0 var(--s-8); max-width: 34rem; }
+.presto__lead { font-size: var(--t-lead); line-height: var(--lh-tight); }
+.presto__form { display: grid; gap: var(--s-4); }
+/* «Edizioni limitate · Stampe · Filtra» in una riga anche a 320 px */
+.op-bar .tabs__b { white-space: nowrap; font-size: min(var(--t-tab), 6.2vw); }
