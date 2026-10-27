@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Livello_1" data-name="Livello 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="415 415 250 250">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #0e110e;
+      }
+
+      .cls-2 {
+        fill: url(#Sfumatura_senza_nome_150);
+      }
+    </style>
+    <linearGradient id="Sfumatura_senza_nome_150" data-name="Sfumatura senza nome 150" x1="415" y1="540" x2="665" y2="540" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000"/>
+      <stop offset=".41" stop-color="#ee4212"/>
+      <stop offset=".75" stop-color="#f8b624"/>
+      <stop offset="1" stop-color="#e6dede"/>
+    </linearGradient>
+  </defs>
+  <circle class="cls-2" cx="540" cy="540" r="125"/>
+  <polygon class="cls-1" points="552.44 450.18 504.3 629.82 527.56 629.82 575.7 450.18 552.44 450.18"/>
+</svg>
