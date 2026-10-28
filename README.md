@@ -33,9 +33,7 @@ Netlify, sito `prismamov.netlify.app`, collegato a questo repo: ogni push su `ma
 3. Originale: `ffmpeg -i sorgente.mov -c:v libx264 -crf 20 -c:a aac -b:a 192k -movflags +faststart public/originali/<id>.mp4`
 4. Aggiungi una voce in `LAVORI` dentro `src/data.js`.
 
-## Versioni da confrontare (27/10/2026)
-- `/` versione attuale (v2).
-- `/a/` Versione A, libertà creativa: sala di montaggio con monitor, ispettore e timeline di tutti i lavori. Codice in `a/` e `src/a/`.
-- `/b/` Versione B, sulla traccia di nataschavavrina.com: nome spezzato, video a tutto schermo, indice di titoli. Codice in `b/` e `src/b/`.
-- Parti comuni in `src/shared/works.js`. Video della home B: `public/media/_reel/reel-h.mp4` (orizzontale) e `reel-v.mp4` (verticale).
-- Le due versioni hanno `noindex`, per non fare concorrenza al sito attuale su Google.
+## Il sito (28/10/2026)
+- Una sola pagina: `index.html`, codice in `src/b/` (main.js, b.css) e `src/shared/works.js`.
+- Video della home: `public/media/_reel/reel-h.mp4` (orizzontale) e `reel-v.mp4` (verticale).
+- I vecchi indirizzi `/a/`, `/b/` e `/isabella/` portano alla pagina unica (`public/_redirects`).
