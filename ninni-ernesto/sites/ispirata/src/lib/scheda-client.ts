@@ -1,22 +1,19 @@
 /**
  * Scheda opera (pezzo 4) — parte che gira nel browser. Modulo caricato una volta: si avvia su `astro:page-load` e si
  * spegne su `astro:before-swap` (ClientRouter).
- *  - C14 schede Originale / Stampa: frecce, Home, End; `?v=stampa` nell'URL con replaceState(history.state) e
+ *  - C14 schede Stampa / Edizione limitata: frecce, Home, End; `?v=stampa` nell'URL con replaceState(history.state) e
  *    l'evento `galleria:url-cambiato` (le lingue lo seguono). Lo stato iniziale lo mette lo script inline della scheda.
  *  - Carrello: addToCart del core (originale: «Nel carrello» al posto del bottone; stampa: formato + supporto,
  *    prezzo, al massimo MAX_PRINT_QUANTITY uguali, «Nel carrello: n»).
  *  - Barra fissa in basso (sotto 1024): prezzo + azione quando il bottone vero non si vede; imposta
  *    `--ingombro-basso` su <html> (regola di Casa).
- *  - C15 Lente con A13 (view transition dal riquadro), zoom ×2,5, ← →, voce #lente nella storia.
+ *  - Anteprima della stampa e lente sulla foto: lib/anteprima-client.ts (audit 28/10, al posto della vecchia Lente).
  *  - A3: «Precedente / Successiva» con la pagina che esce di lato (view transition del ClientRouter, CSS in scheda.css).
  */
 import { $cart, addToCart, lineKey } from '@ne/core/cart';
 import type { CartProduct } from '@ne/core';
-import { lockScroll, unlockScroll } from './scroll-lock';
-import { storiaDialog } from './dialog-storia';
+import { avviaAnteprima, type Scelta } from './anteprima-client';
 
-const movimento = () => window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
-const EASE_OUT = 'cubic-bezier(0.22, 0.61, 0.36, 1)';
 const leggiJson = <T>(el: HTMLElement, k: string): T => { try { return JSON.parse(el.dataset[k] ?? '{}') as T; } catch { return {} as T; } };
 
 /* ======================================================================= acquisto */
@@ -164,6 +161,10 @@ function avviaAcquisto(sk: HTMLElement): () => void {
     const chiave = corrente() === 'o' ? 'ed' : scelto('formato');
     document.documentElement.dataset.modelloAr = chiave;
     document.dispatchEvent(new CustomEvent('galleria:modello-ar', { detail: { chiave } }));
+    // anteprima della stampa e figura in scala (lib/anteprima-client.ts)
+    document.dispatchEvent(new CustomEvent<Scelta>('galleria:anteprima', {
+      detail: { vista: corrente(), formato: scelto('formato'), carta: scelto('supporto') || 'rag', cornice: scelto('cornice') || 'none' },
+    }));
   }
 
   /* ---------- barra fissa in basso ---------- */
@@ -236,197 +237,6 @@ function avviaAcquisto(sk: HTMLElement): () => void {
   return () => { for (const p of pulizie) p(); };
 }
 
-/* ======================================================================= lente (C15, A13) */
-const ZOOM = 2.5;
-function avviaLente(): () => void {
-  const dlg = document.querySelector<HTMLDialogElement>('dialog[data-lente]');
-  if (!dlg) return () => {};
-  const pulizie: (() => void)[] = [];
-  const figure = [...dlg.querySelectorAll<HTMLElement>('[data-lente-f]')];
-  const contatore = dlg.querySelector<HTMLElement>('[data-lente-n]');
-  const zoomBtn = dlg.querySelector<HTMLButtonElement>('[data-lente-zoom-btn]');
-  let i = 0;
-  let ritorno: HTMLElement | null = null;
-  let anim: Animation | null = null;
-  // zoom: scala e spostamento del particolare corrente (in px, centro = 0)
-  let z = 1, tx = 0, ty = 0;
-
-  const zona = () => figure[i]?.querySelector<HTMLElement>('[data-lente-zoom]') ?? null;
-  const limita = (el: HTMLElement) => {
-    const r = el.getBoundingClientRect();
-    const w = r.width / z, h = r.height / z; // misure senza zoom
-    const mx = (w * (z - 1)) / 2, my = (h * (z - 1)) / 2;
-    tx = Math.max(-mx, Math.min(mx, tx));
-    ty = Math.max(-my, Math.min(my, ty));
-  };
-  const applica = (liscio = false) => {
-    const el = zona();
-    if (!el) return;
-    if (z > 1) limita(el);
-    el.style.transition = liscio && movimento() ? 'transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1)' : 'none';
-    el.style.transform = z > 1 ? `translate(${tx}px, ${ty}px) scale(${z})` : '';
-    dlg.toggleAttribute('data-zoom', z > 1);
-    if (zoomBtn) {
-      zoomBtn.setAttribute('aria-pressed', String(z > 1));
-      zoomBtn.textContent = (z > 1 ? dlg.dataset.tRiduci : dlg.dataset.tZoom) ?? '';
-    }
-  };
-  /** zoom nel punto (x, y) dello schermo, o al centro */
-  const zoomA = (x?: number, y?: number) => {
-    const el = zona();
-    if (!el) return;
-    if (z > 1) { z = 1; tx = 0; ty = 0; applica(true); return; }
-    const r = el.getBoundingClientRect();
-    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-    z = ZOOM;
-    tx = x === undefined ? 0 : -(x - cx) * (ZOOM - 1);
-    ty = y === undefined ? 0 : -(y - cy) * (ZOOM - 1);
-    applica(true);
-  };
-  const mostra = (n: number) => {
-    i = (n + figure.length) % figure.length;
-    z = 1; tx = 0; ty = 0;
-    figure.forEach((f, k) => { f.hidden = k !== i; });
-    for (const f of figure) { const el = f.querySelector<HTMLElement>('[data-lente-zoom]'); if (el) { el.style.transform = ''; el.style.transition = 'none'; } }
-    dlg.removeAttribute('data-zoom');
-    if (zoomBtn) { zoomBtn.setAttribute('aria-pressed', 'false'); zoomBtn.textContent = dlg.dataset.tZoom ?? ''; }
-    if (contatore) contatore.textContent = figure.length > 1 ? (figure[i]!.dataset.tN ?? '') : '';
-    // le foto grandi si caricano adesso (e la successiva subito dopo)
-    for (const k of [i, (i + 1) % figure.length]) figure[k]?.querySelectorAll('img').forEach((im) => { im.loading = 'eager'; });
-  };
-
-  const imgDi = (k: number) => figure[k]?.querySelector<HTMLElement>('picture') ?? null;
-  let aprendo = false;
-  const apri = async (n: number, da?: HTMLElement | null) => {
-    if (dlg.open || aprendo) return;
-    ritorno = da ?? null;
-    const miniatura = da?.querySelector<HTMLElement>('picture') ?? null;
-    const fai = () => {
-      mostra(n);
-      dlg.showModal();
-      lockScroll();
-      dlg.querySelector<HTMLElement>('[data-lente-chiudi]')?.focus({ preventScroll: true });
-    };
-    anim?.cancel();
-    const vt = (document as Document & { startViewTransition?: (f: () => void) => { finished: Promise<void> } }).startViewTransition;
-    if (movimento() && vt && miniatura) {
-      // A13: il riquadro vola a schermo intero. La foto grande si decodifica prima (al massimo 200 ms; di solito è già
-      // pronta, la scalda il passaggio del mouse): l'istantanea d'arrivo è la foto vera e non cambia durante il volo
-      // (lavoro «animazioni fluide» 22/10; prima arrivava a volo iniziato e si disegnava a metà corsa)
-      const grande = figure[((n % figure.length) + figure.length) % figure.length]?.querySelector('img');
-      if (grande && !grande.complete) {
-        aprendo = true;
-        grande.loading = 'eager';
-        await Promise.race([grande.decode().catch(() => {}), new Promise((ok) => setTimeout(ok, 200))]);
-        aprendo = false;
-        if (dlg.open) return;
-      }
-      miniatura.style.viewTransitionName = 'lente';
-      document.documentElement.dataset.vtLente = '';
-      const tr = vt.call(document, () => {
-        miniatura.style.viewTransitionName = '';
-        fai();
-        const g = imgDi(i);
-        if (g) g.style.viewTransitionName = 'lente';
-      });
-      tr.finished.finally(() => { const g = imgDi(i); if (g) g.style.viewTransitionName = ''; delete document.documentElement.dataset.vtLente; });
-    } else {
-      fai();
-      anim = dlg.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200, easing: 'linear' });
-    }
-    storia.entra();
-  };
-  const chiudi = ({ subito = false } = {}) => {
-    if (!dlg.open) return;
-    anim?.cancel();
-    if (subito) { dlg.close(); return; }
-    anim = dlg.animate([{ opacity: 1 }, { opacity: 0 }], { duration: movimento() ? 250 : 200, easing: movimento() ? EASE_OUT : 'linear' });
-    anim.finished.then(() => dlg.close(), () => {});
-  };
-  const storia = storiaDialog({ hash: '#lente', chiave: 'galLente', aperto: () => dlg.open, chiudi: () => chiudi(), riapri: () => { void apri(i, ritorno); } });
-  pulizie.push(() => storia.stacca());
-
-  const onClose = () => { unlockScroll(); storia.esci(); ritorno?.focus({ preventScroll: true }); };
-  const onCancel = (e: Event) => { e.preventDefault(); chiudi(); };
-  dlg.addEventListener('close', onClose);
-  dlg.addEventListener('cancel', onCancel);
-  pulizie.push(() => { dlg.removeEventListener('close', onClose); dlg.removeEventListener('cancel', onCancel); });
-
-  const onClickDoc = (e: MouseEvent) => {
-    const b = (e.target as Element | null)?.closest?.<HTMLElement>('[data-lente-apri]');
-    if (b) void apri(Number(b.dataset.lenteApri), b);
-  };
-  document.addEventListener('click', onClickDoc);
-  pulizie.push(() => document.removeEventListener('click', onClickDoc));
-  // le foto grandi partono appena si mostra l'intenzione di aprire
-  const scalda = (e: Event) => {
-    const b = (e.target as Element | null)?.closest?.<HTMLElement>('[data-lente-apri]');
-    if (b) figure[Number(b.dataset.lenteApri)]?.querySelectorAll('img').forEach((im) => { im.loading = 'eager'; });
-  };
-  document.addEventListener('pointerover', scalda, { passive: true });
-  document.addEventListener('focusin', scalda);
-  pulizie.push(() => { document.removeEventListener('pointerover', scalda); document.removeEventListener('focusin', scalda); });
-
-  const onClickDlg = (e: MouseEvent) => {
-    const el = e.target as Element | null;
-    if (el?.closest('[data-lente-chiudi]')) { chiudi(); return; }
-    const vai = el?.closest<HTMLElement>('[data-lente-vai]');
-    if (vai) { mostra(i + Number(vai.dataset.lenteVai)); return; }
-    if (el?.closest('[data-lente-zoom-btn]')) { zoomA(); return; }
-    if (el?.closest('[data-lente-zoom]') && !trascinato) zoomA(e.clientX, e.clientY);
-  };
-  dlg.addEventListener('click', onClickDlg);
-  const onKey = (e: KeyboardEvent) => {
-    if (e.key === 'ArrowRight' && figure.length > 1) { e.preventDefault(); mostra(i + 1); }
-    else if (e.key === 'ArrowLeft' && figure.length > 1) { e.preventDefault(); mostra(i - 1); }
-  };
-  dlg.addEventListener('keydown', onKey);
-
-  // mouse: con lo zoom il particolare segue il puntatore; dito: si trascina
-  let trascinato = false;
-  let inizio: { x: number; y: number; tx: number; ty: number; id: number } | null = null;
-  const onMove = (e: PointerEvent) => {
-    const el = zona();
-    if (!el || z === 1) return;
-    if (e.pointerType === 'mouse') {
-      const r = dlg.querySelector<HTMLElement>('[data-lente-vista]')!.getBoundingClientRect();
-      const w = el.offsetWidth, h = el.offsetHeight;
-      const px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
-      tx = -px * w * (z - 1) * 1.1;
-      ty = -py * h * (z - 1) * 1.1;
-      applica();
-    } else if (inizio && e.pointerId === inizio.id) {
-      const dx = e.clientX - inizio.x, dy = e.clientY - inizio.y;
-      if (Math.abs(dx) + Math.abs(dy) > 6) trascinato = true;
-      tx = inizio.tx + dx; ty = inizio.ty + dy;
-      applica();
-    }
-  };
-  const onDown = (e: PointerEvent) => {
-    trascinato = false;
-    if (e.pointerType !== 'mouse' && z > 1) inizio = { x: e.clientX, y: e.clientY, tx, ty, id: e.pointerId };
-  };
-  const onUp = () => { inizio = null; setTimeout(() => { trascinato = false; }, 0); };
-  const vista = dlg.querySelector<HTMLElement>('[data-lente-vista]');
-  vista?.addEventListener('pointermove', onMove);
-  vista?.addEventListener('pointerdown', onDown);
-  vista?.addEventListener('pointerup', onUp);
-  vista?.addEventListener('pointercancel', onUp);
-  pulizie.push(() => {
-    dlg.removeEventListener('click', onClickDlg);
-    dlg.removeEventListener('keydown', onKey);
-    vista?.removeEventListener('pointermove', onMove);
-    vista?.removeEventListener('pointerdown', onDown);
-    vista?.removeEventListener('pointerup', onUp);
-    vista?.removeEventListener('pointercancel', onUp);
-  });
-
-  return () => {
-    if (dlg.open) { dlg.removeEventListener('close', onClose); dlg.close(); unlockScroll(); }
-    for (const p of pulizie) p();
-  };
-}
-
 /* ======================================================================= A3 */
 // Il ClientRouter fa la view transition; qui si dice da che parte va la pagina (scheda.css fa il resto).
 // La direzione sta su <html> della pagina vecchia (istantanea «old») e di quella nuova (lo swap del ClientRouter
@@ -458,8 +268,8 @@ function avvia() {
   spegni = null;
   const sk = document.querySelector<HTMLElement>('[data-scheda]');
   if (!sk) return;
+  const l = avviaAnteprima(sk); // prima dell'acquisto: ascolta già la prima scelta
   const a = avviaAcquisto(sk);
-  const l = avviaLente();
   spegni = () => { a(); l(); };
 }
 document.addEventListener('astro:page-load', avvia);

@@ -120,7 +120,7 @@
       "descrizione": "{titolo}, fotografia. {misure}.",
       "acquisto": "Acquisto",
       "schede": "Edizione limitata o stampa",
-      "originale": "Edizione",
+      "originale": "Edizione limitata",
       "stampa": "Stampa",
       "dati": "Dati della foto",
       "spedizione_inclusa": "spedizione in Italia inclusa",
@@ -145,7 +145,8 @@
       "carta": "Carta",
       "cornice": "Cornice",
       "piu": "+ {prezzo}",
-      "spedizione_gratis_da": "spedizione gratuita in Italia da {prezzo}"
+      "spedizione_gratis_da": "spedizione gratuita in Italia da {prezzo}",
+      "lente": "Lente: guarda da vicino carta e cornice"
     },
     "ar": {
       "titolo": "Sulla tua parete",
@@ -382,7 +383,8 @@
       "solo_stampe": "Solo stampa",
       "stampa_da": "stampa da {prezzo}",
       "demo": "Sito dimostrativo",
-      "dettaglio": "dettaglio"
+      "dettaglio": "dettaglio",
+      "shop": "Shop"
     }
   }
 }

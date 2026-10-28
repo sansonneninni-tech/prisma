@@ -120,7 +120,7 @@
       "descrizione": "{titolo}, photograph. {misure}.",
       "acquisto": "Buy",
       "schede": "Limited edition or print",
-      "originale": "Edition",
+      "originale": "Limited edition",
       "stampa": "Print",
       "dati": "About the photograph",
       "spedizione_inclusa": "free shipping in Italy",
@@ -145,7 +145,8 @@
       "carta": "Paper",
       "cornice": "Frame",
       "piu": "+ {prezzo}",
-      "spedizione_gratis_da": "free shipping in Italy over {prezzo}"
+      "spedizione_gratis_da": "free shipping in Italy over {prezzo}",
+      "lente": "Magnifier: see the paper and frame up close"
     },
     "ar": {
       "titolo": "On your wall",

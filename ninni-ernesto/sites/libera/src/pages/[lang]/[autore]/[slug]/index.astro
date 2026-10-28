@@ -7,7 +7,6 @@ import { tintaOpera } from '../../../../lib/colori';
  */
 import Base from '../../../../layouts/Base.astro';
 import Scheda from '../../../../components/scheda/Scheda.astro';
-import Lente from '../../../../components/scheda/Lente.astro';
 import ParetaAr from '../../../../components/scheda/ParetaAr.astro';
 import { LOCALES, type Locale } from '@ne/core/i18n';
 import { getArtworks, requireArtwork } from '@ne/core/catalog';
@@ -24,7 +23,6 @@ const d = datiScheda(requireArtwork(id), lang, Astro.site);
 <Base lang={lang} title={d.titolo} description={d.metaDescrizione} tinta={tintaOpera(d.art)}>
   <script type="application/ld+json" set:html={d.jsonLd} />
   <Scheda d={d} lang={lang} />
-  <Lente art={d.art} particolari={d.particolari} lang={lang} />
   <ParetaAr art={d.art} ar={d.ar} lang={lang} />
   <script>
     import '../../../../lib/scheda-client';
