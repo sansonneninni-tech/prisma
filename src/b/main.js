@@ -69,7 +69,7 @@ tetra.kick(3)
 function reveal() {
   const d = reduced ? 0 : 1
   const tl = gsap.timeline({ delay: reduced ? 0 : .25 })
-  tl.to('.load__in', { strokeDashoffset: 0, duration: .7 * d, ease: 'power2.in' })
+  tl.fromTo('.load__in', { scaleX: 0, transformOrigin: '0% 50%' }, { scaleX: 1, duration: .7 * d, ease: 'power2.in' })
     .fromTo('.load__out', { scaleX: 0, opacity: .92, transformOrigin: '0% 50%' }, { scaleX: 1, duration: .8 * d, ease: 'expo.out', stagger: .07 }, '>-.05')
     .to(load, { clipPath: 'inset(0 0 100% 0)', duration: .9 * d, ease: 'expo.inOut', onComplete: () => { load.remove(); tetra.pause() } }, '+=.35')
     .from('.lg', { yPercent: 30, opacity: 0, duration: .9 * d, ease: 'expo.out', clearProps: 'transform,opacity' }, '-=.4')
@@ -303,20 +303,22 @@ let prLoop = null, prIntroDone = false
 function prismOn() {
   if (reduced) return
   if (!prLoop) {
-    prLoop = gsap.timeline({ repeat: -1 })
-      .fromTo('.pr__ph', { strokeDashoffset: 0 }, { strokeDashoffset: -280, duration: 4.2, ease: 'none' }, 0)
-    gsap.to('#prGlass', { attr: { x1: 150, x2: 360, y1: 260, y2: 20 }, duration: 3.6, yoyo: true, repeat: -1, ease: 'sine.inOut' })
-    gsap.to('.pr__glow', { opacity: .55, duration: 1.8, yoyo: true, repeat: -1, ease: 'sine.inOut' })
+    prLoop = gsap.timeline({ repeat: -1, yoyo: true })
+      .to('#prEdge', { attr: { x1: 118, x2: 282 }, duration: 3.4, ease: 'sine.inOut' }, 0)
+      .to('.pr__warm', { scale: 1.06, transformOrigin: '50% 50%', duration: 3.4, ease: 'sine.inOut' }, 0)
   }
   if (!prIntroDone) {
     prIntroDone = true
     const nums = $$('.pr__l b', prism)
-    gsap.timeline({ delay: .35 })
-      .fromTo('.pr__in', { attr: { x2: 0, y2: 170 } }, { attr: { x2: 214, y2: 139 }, duration: .7, ease: 'power2.in' })
-      .fromTo('.pr__tri', { scale: .6, opacity: 0, transformOrigin: '50% 60%' }, { scale: 1, opacity: 1, duration: .7, ease: 'back.out(1.6)' }, '-=.25')
-      .fromTo(['.pr__ray', '.pr__glow polygon'], { scaleX: 0, opacity: .92, transformOrigin: '0% 50%' }, { scaleX: 1, duration: 1, ease: 'expo.out', stagger: .06 }, '-=.35')
-      .fromTo('.pr__l', { opacity: 0, x: -12 }, { opacity: 1, x: 0, duration: .6, ease: 'expo.out', stagger: .08 }, '-=.75')
-      .add(() => nums.forEach(b => { const o = { v: 0 }; gsap.to(o, { v: +b.dataset.n, duration: .9, ease: 'power2.out', onUpdate: () => { b.textContent = Math.round(o.v) } }) }), '-=.7')
+    const rays = $$('.pr__rays line', prism)
+    rays.forEach(l => { const n = l.getTotalLength(); l.style.strokeDasharray = n; l.style.strokeDashoffset = n })
+    gsap.timeline({ delay: .3 })
+      .fromTo('.pr__in', { attr: { x2: 0, y2: 152 } }, { attr: { x2: 205, y2: 126 }, duration: .8, ease: 'power2.inOut' })
+      .fromTo(['.pr__body', '.pr__line', '.pr__edge'], { opacity: 0, scale: .92, transformOrigin: '50% 60%' }, { opacity: 1, scale: 1, duration: .8, ease: 'expo.out' }, '-=.35')
+      .fromTo('.pr__beam', { attr: { x2: 205 } }, { attr: { x2: 296 }, duration: .35, ease: 'none' }, '-=.45')
+      .to(rays, { strokeDashoffset: 0, duration: 1.1, ease: 'expo.out', stagger: .04 }, '-=.05')
+      .fromTo('.pr__l', { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: .6, ease: 'expo.out', stagger: .08 }, '-=.8')
+      .add(() => nums.forEach(b => { const o = { v: 0 }; gsap.to(o, { v: +b.dataset.n, duration: .9, ease: 'power2.out', onUpdate: () => { b.textContent = Math.round(o.v) } }) }), '-=.75')
   }
   prLoop.play()
 }

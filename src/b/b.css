@@ -67,25 +67,26 @@ ul, ol { list-style: none; }
   position: absolute; left: 50%; top: 50%; width: calc(var(--s) * 16.67); height: calc(var(--s) * 6.67);
   transform: translate(-50%, -50%); overflow: visible; pointer-events: none;
 }
-.load__in { stroke: var(--ink); stroke-width: 1.4; stroke-dasharray: 470; stroke-dashoffset: 470; }
+.load__rays line { vector-effect: non-scaling-stroke; }
+.load__in { stroke: var(--ink); stroke-width: 1.2; transform: scaleX(0); }
+.load__out { stroke-width: 1.2; stroke-linecap: round; fill: none; }
 .load__out { opacity: 0; }
-.load__out--1 { fill: var(--c1); } .load__out--2 { fill: var(--c2); } .load__out--3 { fill: var(--c3); }
+.load__out--1 { stroke: #C63C11; } .load__out--2 { stroke: #D9581C; } .load__out--3 { stroke: #E8792A; } .load__out--4 { stroke: #F09A2A; } .load__out--5 { stroke: #F4AE33; }
 .tetra { --s: clamp(96px, 13vw, 150px); width: var(--s); height: var(--s); position: relative; perspective: 900px; transform-style: preserve-3d; touch-action: none; z-index: 2; }
 .tetra__in { position: absolute; inset: 0; transform-style: preserve-3d; }
 .tf {
   position: absolute; left: 50%; top: 50%; transform-origin: 0 0;
   clip-path: polygon(50% 0, 100% 100%, 0 100%);
-  background: linear-gradient(200deg, #F8B624 0%, #EE4212 55%, #C63C11 100%);
+  background: linear-gradient(200deg, rgba(244, 164, 54, .23) 0%, rgba(232, 114, 42, .14) 55%, rgba(198, 60, 17, .20) 100%);
 }
-.tf:nth-child(2) { background: linear-gradient(150deg, #F8B624 0%, #EE4212 55%, #C63C11 100%); }
-.tf:nth-child(3) { background: linear-gradient(240deg, #FFD06A 0%, #F8B624 40%, #EE4212 100%); }
-.tf:nth-child(4) { background: linear-gradient(180deg, #EE4212 0%, #C63C11 100%); }
-.tf::after { content: ''; position: absolute; inset: 0; background: var(--grain); mix-blend-mode: multiply; opacity: .3; }
+.tf:nth-child(2) { background: linear-gradient(150deg, rgba(244, 164, 54, .14) 0%, rgba(198, 60, 17, .18) 100%); }
+.tf:nth-child(3) { background: linear-gradient(240deg, rgba(248, 190, 90, .14) 0%, rgba(232, 114, 42, .15) 100%); }
+.tf:nth-child(4) { background: linear-gradient(180deg, rgba(232, 114, 42, .14) 0%, rgba(198, 60, 17, .14) 100%); }
 .tf::before {
-  content: ''; position: absolute; inset: 0; z-index: 2; background: rgba(255, 236, 200, .7);
-  clip-path: polygon(50% 0, 100% 100%, 0 100%, 0 100%, 1px calc(100% - .6px), calc(100% - 1px) calc(100% - .6px), 50% 1.2px, 1px calc(100% - .6px), 0 100%);
+  content: ''; position: absolute; inset: 0; z-index: 2; background: linear-gradient(45deg, #C63C11, #E8722A 55%, #F4A436);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%, 0 100%, 1.6px calc(100% - 1px), calc(100% - 1.6px) calc(100% - 1px), 50% 2px, 1.6px calc(100% - 1px), 0 100%);
 }
-.tf__sh { position: absolute; inset: 0; background: #8A2C0A; mix-blend-mode: multiply; opacity: .2; }
+.tf__sh { position: absolute; inset: 0; background: rgba(150, 40, 8, .12); opacity: .2; }
 
 /* ============ Logo ============ */
 .lg {
@@ -203,17 +204,19 @@ body.is-pl .pos { visibility: hidden; }
 /* il prisma 2D */
 .pr { position: relative; width: 100%; max-width: calc(min(40vh, 330px) * 640 / 300); }
 .pr__svg { display: block; width: 100%; height: auto; overflow: visible; }
-.pr__in { stroke-width: 2.2; stroke-linecap: round; }
-.pr__ph { stroke: #fff; stroke-width: 1.6; stroke-linecap: round; stroke-dasharray: 2 26; opacity: .9; mix-blend-mode: screen; }
-.pr__ph--in { stroke: var(--bg); opacity: 1; mix-blend-mode: normal; }
-.pr__beam { stroke: #fff; stroke-width: 2.4; stroke-linecap: round; opacity: .85; }
-.pr__edge { fill: none; stroke: rgba(255, 240, 210, .75); stroke-width: 1.2; stroke-linejoin: round; }
-.pr__tri { filter: drop-shadow(0 14px 18px rgba(120, 30, 5, .28)); }
+/* stesso segno del triangolo di prisma-386: filo 1.2px, lato acceso a gradiente, velo caldo */
+.pr__svg line, .pr__svg polygon { vector-effect: non-scaling-stroke; }
+.pr__in { stroke-width: 1.2; stroke-linecap: round; }
+.pr__rays line { stroke-width: 1.2; stroke-linecap: round; }
+.pr__beam { stroke: #0B0A0A; stroke-width: 1.2; opacity: .8; }
+.pr__line { fill: none; stroke: #A29990; stroke-width: 1.2; stroke-linejoin: round; }
+.pr__edge { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
 .pr__lb { position: absolute; inset: 0; pointer-events: none; }
 .pr__l { position: absolute; right: 0; display: flex; align-items: baseline; gap: 6px; transform: translateY(-50%); color: var(--ink); }
-.pr__l b { font-size: clamp(18px, 1.8vw, 28px); line-height: 1; font-weight: 600; font-variation-settings: 'wdth' 62; font-variant-numeric: tabular-nums; }
-.pr__l--1 { top: 4%; } .pr__l--2 { top: 39.5%; } .pr__l--3 { top: 74.5%; }
-.pr__cap { position: absolute; left: 0; top: 66%; color: var(--ink-2); max-width: 30%; }
+.pr__l b { font-size: clamp(17px, 1.6vw, 24px); line-height: 1; font-weight: 600; font-variation-settings: 'wdth' 62; font-variant-numeric: tabular-nums; }
+.pr__l { transform: translateY(-120%); }
+.pr__l--1 { top: 10%; } .pr__l--2 { top: 50%; } .pr__l--3 { top: 76.7%; transform: translateY(25%); }
+.pr__cap { position: absolute; left: 0; top: 62%; color: var(--ink-2); max-width: 30%; }
 
 .kp { display: flex; flex-wrap: wrap; gap: 8px clamp(18px, 3vw, 44px); padding-top: clamp(10px, 1.6vh, 16px); border-top: 1px solid var(--ink); }
 .kp div { display: flex; align-items: baseline; gap: 7px; }
