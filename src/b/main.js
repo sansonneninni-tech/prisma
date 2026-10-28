@@ -33,7 +33,7 @@ const EN = {
   'f.note': 'Travel not included. The exact quote follows the brief.',
   's.h': 'Two people, from brief to export.', 's.alt': 'Ninni and Ernesto, PRISMA',
   's.team': 'Studio · Puglia', 's.ninni': 'Direction, edit, colour', 's.ernesto': 'Production and clients', 's.foto': 'Photography · Ninni &amp; Ernesto',
-  's.direct': 'Contacts', 's.name': 'Name', 's.fmt': 'What you need', 's.msg': 'The project, in two lines', 's.send': 'Send',
+  's.direct': 'Contacts', 's.clients': 'Clients', 's.name': 'Name', 's.fmt': 'What you need', 's.msg': 'The project, in two lines', 's.send': 'Send',
   's.ok': 'Got it. We’ll reply soon.', 's.err': 'Something went wrong. Write us on WhatsApp.',
   'all': 'All', 'pl.back': 'All work', 'pl.close': 'Close', 'pl.dl': 'Download original', 'pl.case': 'Open the case', 'drive': 'Watch on Drive',
   'cs.back': 'Back', 'cs.k': 'Case study · Artist', 'cs.play': 'Watch the editorial with sound', 'cs.pause': 'Pause', 'cs.resume': 'Play', 'cs.audio': 'Sound', 'cs.full': 'Full screen', 'cs.dl': 'Download original',
@@ -43,14 +43,14 @@ const EN = {
 }
 const L = makeLang(EN)
 const IT_X = {
-  'pp.play': 'Play', 's.ok': 'Ricevuto. Ti rispondiamo a breve.', 's.alt': 'Ninni ed Ernesto, PRISMA', 's.err': 'Qualcosa non va. Scrivici su WhatsApp.', all: 'Tutti', unit: '≈ {v} a contenuto',
+  'pp.play': 'Play', 's.ok': 'Ricevuto. Ti rispondiamo a breve.', 's.alt': 'Ninni ed Ernesto, PRISMA', 's.clients': 'Clienti', 's.err': 'Qualcosa non va. Scrivici su WhatsApp.', all: 'Tutti', unit: '≈ {v} a contenuto',
   'cs.resume': 'Riprendi', 'fa.client': 'Cliente', 'fa.fmt': 'Formato', 'fa.ratio': 'Proporzioni', 'fa.len': 'Durata', 'fa.where': 'Dove',
 }
 const t = (k) => (L.get() === 'en' ? EN[k] : (IT_X[k] ?? L.t(k)))
 const tx = (o) => o[L.get()] ?? o.it
 
 wireContacts()
-wireForm($('[data-form]'), { ok: () => t('s.ok'), err: () => t('s.err') })
+wireForm($('[data-form]'), { ok: () => { $('[data-form-out]').dataset.k = 's.ok'; return t('s.ok') }, err: () => { $('[data-form-out]').dataset.k = 's.err'; return t('s.err') } })
 
 /* ---------- prezzi, segnaposto, clienti ---------- */
 function paint() {
@@ -60,6 +60,8 @@ function paint() {
   $$('[data-base]').forEach(el => { el.textContent = euro(PREZZI.sistema.base, l) })
   $$('[data-unit]').forEach(el => { el.textContent = t('unit').replace('{v}', euro(PREZZI.sistema.base / PREZZI.sistema.contenuti, l)) })
   $$('[data-i18n-alt]').forEach(el => { el.alt = t(el.dataset.i18nAlt) })
+  logos.setAttribute('aria-label', t('s.clients'))
+  const fo = $('[data-form-out]'); if (fo.dataset.k) fo.textContent = t(fo.dataset.k)
   $('[data-reel-pp] span').textContent = t(paused ? 'pp.play' : 'pp.pause')
 }
 /* loghi dei clienti nello Studio, uno per cliente */
@@ -68,8 +70,13 @@ LAVORI.forEach(w => {
   if (!w.logo || seenLogo.has(w.logo)) return
   seenLogo.add(w.logo)
   const li = document.createElement('li')
-  li.innerHTML = `<img src="/img/loghi/${w.logo}" alt="${w.cliente}" loading="lazy" class="${['tgtm.png', 'df-marmi.png'].includes(w.logo) ? 'is-tall' : ''}" />`
-  logos.append(li)
+  const img = new Image()
+  img.alt = w.cliente; img.loading = 'lazy'; img.src = `/img/loghi/${w.logo}`
+  if (w.logo === 'panegos.png') img.classList.add('is-thin')
+  /* stessa area per tutti i loghi: i larghi si abbassano, i quadrati salgono */
+  const fit = () => { const a = img.naturalWidth / img.naturalHeight; if (a) img.style.height = `${Math.min(28, Math.max(12, Math.sqrt(1100 / a)))}px` }
+  img.complete ? fit() : img.addEventListener('load', fit, { once: true })
+  li.append(img); logos.append(li)
 })
 
 /* ---------- apertura: il prisma rifrange la luce, poi il video ---------- */
