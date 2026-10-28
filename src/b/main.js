@@ -31,9 +31,9 @@ const EN = {
   'f.sys': 'Content system',
   'p.da': 'from', 'p.a': 'to', 'ask': 'Ask', 'ex': 'Watch an example', 'unit': '≈ {v} per piece',
   'f.note': 'Travel not included. The exact quote follows the brief.',
-  's.h': 'Two people, from brief to export. In Puglia, and wherever needed.',
-  's.team': 'Studio', 's.ninni': 'direction, edit, colour', 's.ernesto': 'production and clients', 's.foto': 'Photography · Ninni &amp; Ernesto',
-  's.direct': 'Direct', 's.clients': 'Clients', 's.write': 'Write to us', 's.name': 'Name', 's.fmt': 'Format', 's.msg': 'The project, in two lines', 's.send': 'Send',
+  's.h': 'Two people, from brief to export.', 's.alt': 'Ninni and Ernesto, PRISMA',
+  's.team': 'Studio · Puglia', 's.ninni': 'Direction, edit, colour', 's.ernesto': 'Production and clients', 's.foto': 'Photography · Ninni &amp; Ernesto',
+  's.direct': 'Contacts', 's.name': 'Name', 's.fmt': 'What you need', 's.msg': 'The project, in two lines', 's.send': 'Send',
   's.ok': 'Got it. We’ll reply soon.', 's.err': 'Something went wrong. Write us on WhatsApp.',
   'all': 'All', 'pl.back': 'All work', 'pl.close': 'Close', 'pl.dl': 'Download original', 'pl.case': 'Open the case', 'drive': 'Watch on Drive',
   'cs.back': 'Back', 'cs.k': 'Case study · Artist', 'cs.play': 'Watch the editorial with sound', 'cs.pause': 'Pause', 'cs.resume': 'Play', 'cs.audio': 'Sound', 'cs.full': 'Full screen', 'cs.dl': 'Download original',
@@ -43,7 +43,7 @@ const EN = {
 }
 const L = makeLang(EN)
 const IT_X = {
-  'pp.play': 'Play', 's.ok': 'Ricevuto. Ti rispondiamo a breve.', 's.err': 'Qualcosa non va. Scrivici su WhatsApp.', all: 'Tutti', unit: '≈ {v} a contenuto',
+  'pp.play': 'Play', 's.ok': 'Ricevuto. Ti rispondiamo a breve.', 's.alt': 'Ninni ed Ernesto, PRISMA', 's.err': 'Qualcosa non va. Scrivici su WhatsApp.', all: 'Tutti', unit: '≈ {v} a contenuto',
   'cs.resume': 'Riprendi', 'fa.client': 'Cliente', 'fa.fmt': 'Formato', 'fa.ratio': 'Proporzioni', 'fa.len': 'Durata', 'fa.where': 'Dove',
 }
 const t = (k) => (L.get() === 'en' ? EN[k] : (IT_X[k] ?? L.t(k)))
@@ -59,11 +59,18 @@ function paint() {
   $$('[data-to]').forEach(el => { el.textContent = euro(PREZZI[el.dataset.to].a, l) })
   $$('[data-base]').forEach(el => { el.textContent = euro(PREZZI.sistema.base, l) })
   $$('[data-unit]').forEach(el => { el.textContent = t('unit').replace('{v}', euro(PREZZI.sistema.base / PREZZI.sistema.contenuti, l)) })
-  $$('[data-ph]').forEach(el => { el.placeholder = t(el.dataset.ph) })
+  $$('[data-i18n-alt]').forEach(el => { el.alt = t(el.dataset.i18nAlt) })
   $('[data-reel-pp] span').textContent = t(paused ? 'pp.play' : 'pp.pause')
 }
-const cl = $('[data-clients]')
-;[...new Set(LAVORI.map(w => w.cliente))].forEach(c => { const li = document.createElement('li'); li.textContent = c; cl.append(li) })
+/* loghi dei clienti nello Studio, uno per cliente */
+const logos = $('[data-logos]'), seenLogo = new Set()
+LAVORI.forEach(w => {
+  if (!w.logo || seenLogo.has(w.logo)) return
+  seenLogo.add(w.logo)
+  const li = document.createElement('li')
+  li.innerHTML = `<img src="/img/loghi/${w.logo}" alt="${w.cliente}" loading="lazy" class="${['tgtm.png', 'df-marmi.png'].includes(w.logo) ? 'is-tall' : ''}" />`
+  logos.append(li)
+})
 
 /* ---------- apertura: il prisma rifrange la luce, poi il video ---------- */
 const load = $('[data-load]')
@@ -664,7 +671,7 @@ function canNav(e) {
 const nav = viewNav(views.length, transition, { start: cur, canNav })
 $$('[data-go]').forEach(a => a.addEventListener('click', (e) => {
   e.preventDefault()
-  if (a.dataset.ask) { const s = $('[data-ask-select]'); s.value = a.dataset.ask }
+  if (a.dataset.ask) { const r = $(`[data-ask-chips] input[value="${a.dataset.ask}"]`); if (r) r.checked = true }
   const go = () => nav.go(+a.dataset.go)
   if (!pl.hidden) { plClose(); setTimeout(() => { if (csOpenNow()) csClose(false, go); else go() }, reduced ? 0 : 750) } else if (csOpenNow()) csClose(false, go); else go()
 }))

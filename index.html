@@ -214,45 +214,49 @@
     <!-- 03 Studio -->
     <section class="v v--st" data-v="3" id="studio" aria-labelledby="t-s">
       <div class="st scrl">
-        <h2 class="st__h" id="t-s" data-i18n="s.h">Due persone, dal brief all'export. In Puglia, e dove serve.</h2>
-        <div class="st__c">
-          <h3 data-i18n="s.team">Studio</h3>
-          <ul>
-            <li>Ninni — <span data-i18n="s.ninni">regia, montaggio, colore</span></li>
-            <li>Ernesto — <span data-i18n="s.ernesto">produzione e clienti</span></li>
-            <li><a data-foto href="#" target="_blank" rel="noopener"><span data-i18n="s.foto">Fotografia · Ninni &amp; Ernesto</span> ↗</a></li>
-          </ul>
+        <div class="st__about">
+          <figure class="st__img"><img src="/img/ninni-ernesto.jpg" alt="Ninni ed Ernesto, PRISMA" data-i18n-alt="s.alt" width="720" height="900" loading="lazy" decoding="async" /></figure>
+          <div class="st__txt">
+            <p class="st__k" data-i18n="s.team">Studio · Puglia</p>
+            <h2 class="st__h" id="t-s" data-i18n="s.h">Due persone, dal brief all’export.</h2>
+            <ul class="st__ppl">
+              <li><b>Domenico “Ninni” Sansonne</b><span data-i18n="s.ninni">Regia, montaggio, colore</span></li>
+              <li><b>Ernesto D’Addario</b><span data-i18n="s.ernesto">Produzione e clienti</span></li>
+            </ul>
+            <ul class="st__logos" aria-label="Clienti" data-logos></ul>
+            <a class="st__foto" data-foto href="#" target="_blank" rel="noopener"><span data-i18n="s.foto">Fotografia · Ninni &amp; Ernesto</span> ↗</a>
+          </div>
         </div>
-        <div class="st__c">
-          <h3 data-i18n="s.direct">Diretto</h3>
-          <ul>
-            <li><a data-wa href="#" target="_blank" rel="noopener">WhatsApp ↗</a></li>
-            <li><a data-mail href="#"></a></li>
-            <li><a data-ig href="#" target="_blank" rel="noopener"></a></li>
-          </ul>
+        <div class="st__ct">
+          <p class="st__k" data-i18n="s.direct">Contatti</p>
+          <div class="st__quick">
+            <a class="st__q" data-wa href="#" target="_blank" rel="noopener">WhatsApp ↗</a>
+            <a class="st__q" data-mail href="#"></a>
+            <a class="st__q" data-ig href="#" target="_blank" rel="noopener">Instagram ↗</a>
+          </div>
+          <form class="st__f" name="contatto" method="POST" data-netlify="true" netlify-honeypot="bot" data-form>
+            <input type="hidden" name="form-name" value="contatto" />
+            <p hidden><label>Bot <input name="bot" /></label></p>
+            <div class="st__row">
+              <label class="st__fld"><span data-i18n="s.name">Nome</span><input name="nome" required autocomplete="name" /></label>
+              <label class="st__fld"><span>Email</span><input name="email" type="email" required autocomplete="email" /></label>
+            </div>
+            <fieldset class="st__fld">
+              <legend data-i18n="s.fmt">Cosa ti serve</legend>
+              <div class="st__chips" data-ask-chips>
+                <label><input type="radio" name="formato" value="evento" /><span data-i18n="f.evento">Reel evento</span></label>
+                <label><input type="radio" name="formato" value="social" /><span data-i18n="f.social">Short form</span></label>
+                <label><input type="radio" name="formato" value="editoriale" /><span data-i18n="f.ed">Editoriale</span></label>
+                <label><input type="radio" name="formato" value="sistema" /><span data-i18n="f.sys">Sistema contenuti</span></label>
+              </div>
+            </fieldset>
+            <label class="st__fld"><span data-i18n="s.msg">Il progetto, in due righe</span><textarea name="messaggio" rows="2" required></textarea></label>
+            <div class="st__end">
+              <button type="submit" class="btn"><span data-i18n="s.send">Invia</span> →</button>
+              <p class="st__out" data-form-out aria-live="polite"></p>
+            </div>
+          </form>
         </div>
-        <div class="st__c">
-          <h3 data-i18n="s.clients">Clienti</h3>
-          <ul class="st__cl" data-clients></ul>
-        </div>
-        <form class="st__f" name="contatto" method="POST" data-netlify="true" netlify-honeypot="bot" data-form>
-          <input type="hidden" name="form-name" value="contatto" />
-          <p hidden><label>Bot <input name="bot" /></label></p>
-          <h3 data-i18n="s.write">Scrivici</h3>
-          <label><span class="sr" data-i18n="s.name">Nome</span><input name="nome" required autocomplete="name" placeholder="Nome" data-ph="s.name" /></label>
-          <label><span class="sr" data-i18n="s.fmt">Formato</span>
-            <select name="formato" data-ask-select>
-              <option value="" data-i18n="s.fmt">Formato</option>
-              <option value="sistema" data-i18n="f.sys">Sistema contenuti</option>
-              <option value="evento" data-i18n="f.evento">Reel evento</option>
-              <option value="social" data-i18n="f.social">Short form</option>
-              <option value="editoriale" data-i18n="f.ed">Editoriale</option>
-            </select>
-          </label>
-          <label><span class="sr" data-i18n="s.msg">Il progetto, in due righe</span><input name="messaggio" required placeholder="Il progetto, in due righe" data-ph="s.msg" /></label>
-          <button type="submit"><span data-i18n="s.send">Invia</span> →</button>
-          <p class="st__out" data-form-out aria-live="polite"></p>
-        </form>
         <p class="st__ft">© <span data-year></span> PRISMA · Puglia</p>
       </div>
     </section>
