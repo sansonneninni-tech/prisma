@@ -1,4 +1,4 @@
-/* Lista lavori comune alle versioni A e B: un oggetto piatto per ogni video. */
+/* Lista dei lavori: un oggetto piatto per ogni video. */
 import { LAVORI, ORIGINAL, FORMATI, CONTATTI } from '../data.js'
 
 const media = (id, f) => `/media/${id}/${f}`
@@ -46,7 +46,7 @@ export function wireContacts(root = document) {
   root.querySelectorAll('[data-year]').forEach(el => { el.textContent = new Date().getFullYear() })
 }
 
-/* Testi: italiano scritto nell'HTML, inglese dal dizionario della versione */
+/* Testi: italiano scritto nell'HTML, inglese dal dizionario EN */
 export function makeLang(EN) {
   const IT = {}
   document.querySelectorAll('[data-i18n]').forEach(el => { IT[el.dataset.i18n] = el.innerHTML })
