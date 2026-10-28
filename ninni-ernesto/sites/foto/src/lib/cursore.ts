@@ -1,7 +1,7 @@
 /**
  * A7 Cursore con etichetta (DIREZIONE §8): solo con `(hover: hover) and (pointer: fine)` e senza riduci movimento
  * (lo carica lib/movimento.ts). Un'etichetta nera 12 px accanto alla punta del mouse dice cosa fa il clic: «Apri» sui
- * pannelli della mappa, «Vedi» sulle opere, «Parete» sul bottone AR, «Ingrandisci» sui particolari.
+ * pannelli della mappa, «Vedi» sulle opere, «Parete» sul bottone AR, «Ingrandisci» sulla foto della scheda (la lente).
  * Leggera (audit di ninni 22/10, «appesantiscono il sito»): niente GSAP né rincorsa continua; la posizione segue il
  * mouse direttamente (proprietà `translate`, al massimo una volta per fotogramma), comparsa e scomparsa sono una
  * transizione CSS di opacity e scale (styles/movimento.css). Nascosta durante i cambi pagina (A1–A3), con un dialog
@@ -14,7 +14,7 @@ const BERSAGLI: [string, string][] = [
   ['a[data-zoom]', 'apri'],
   ['a[data-card], a[data-seq-a]', 'vedi'],
   ['[data-parete-apri]', 'parete'],
-  ['[data-lente-apri]', 'ingrandisci'],
+  ['[data-lente-apri]:not([aria-pressed="true"])', 'ingrandisci'],
 ];
 const SELETTORE = BERSAGLI.map(([s]) => s).join(', ');
 const DISTANZA = 14; // px fra la punta del cursore e l'etichetta

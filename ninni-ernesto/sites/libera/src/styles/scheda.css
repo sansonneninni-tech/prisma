@@ -1,6 +1,6 @@
 /* ==========================================================================
    Galleria — P3 Scheda opera (pezzo 4): griglia della scheda, C14 Originale/Stampa, acquisto, dati, C20 figura in
-   scala, particolari, barra fissa in basso, opera precedente/successiva, C15 Lente, C16 «Vedi sulla tua parete»
+   scala, anteprima della stampa con la lente, barra fissa in basso, opera precedente/successiva, C16 «Vedi sulla tua parete»
    (vestito dell'ArViewer del core), A3, A13. Riferimento: styleguide.html §05, ref SSENSE (3 colonne), Artsy.
    Ogni :hover sta dentro @media (hover: hover); gli stati veri (aria-selected, aria-pressed) restano fuori.
    ========================================================================== */
@@ -14,7 +14,7 @@
   --sk-hmax: max(160px, min(78svh, calc(100svh - var(--header-h) - env(safe-area-inset-top) - var(--touch) - var(--sk-tfs) * 0.8 - 56px)));
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: 'torna' 'titolo' 'opera' 'acq' 'dati' 'parti';
+  grid-template-areas: 'torna' 'titolo' 'opera' 'acq' 'dati';
   column-gap: var(--s-6);
   align-items: start;
   padding-top: var(--s-2);
@@ -25,7 +25,6 @@
 .sk__opera { grid-area: opera; min-width: 0; margin-top: var(--s-5); }
 .sk__acq { grid-area: acq; min-width: 0; margin-top: var(--s-6); }
 .sk__dati { grid-area: dati; min-width: 0; margin-top: var(--s-7); }
-.sk__parti { grid-area: parti; min-width: 0; margin-top: var(--s-7); }
 
 .sk__titolo > h1,
 :lang(zh) .sk__titolo > h1 {
@@ -38,14 +37,77 @@
   white-space: nowrap;
 }
 
-/* ---------- opera: box con le proporzioni dell'immagine, mai ritagliata, intera nello schermo ---------- */
-.sk__box {
-  aspect-ratio: var(--ar);
-  width: min(100%, calc(var(--sk-hmax) * (var(--ar))));
+/* ---------- opera: l'anteprima della stampa scelta (audit 28/10), intera nello schermo ----------
+   --ar-box (proporzioni con cornice e passe-partout), --cf (cornice, % della larghezza), --cm (passe-partout o aria,
+   % dell'interno), --tex (trama della carta) li mette lib/anteprima-client.ts a ogni scelta. */
+.sk__opera { --ar-b: var(--ar-box, var(--ar)); }
+.sk__box, .sk__dida {
+  width: min(100%, calc(var(--sk-hmax) * (var(--ar-b))));
   margin-inline: auto;
 }
-.sk__box .isa-picture { display: block; width: 100%; height: 100%; background: var(--isa-dominant, var(--c-placeholder)) var(--isa-lqip, none) center / cover no-repeat; }
-.sk__box img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.sk__box {
+  position: relative; display: block; padding: 0; border: 0; background: none; color: inherit; font: inherit;
+  aspect-ratio: var(--ar-b); cursor: zoom-in; -webkit-tap-highlight-color: transparent;
+}
+.sk__box:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.sk__box[data-lente-on] { cursor: zoom-out; touch-action: none; }
+.sk__cornice { position: absolute; inset: 0; display: block; box-sizing: border-box; padding: var(--cf, 0%); transition: padding var(--d-ui) var(--ease-out), background-color var(--d-ui) linear; }
+.sk__pp { display: block; position: relative; width: 100%; height: 100%; box-sizing: border-box; padding: var(--cm, 0%); transition: padding var(--d-ui) var(--ease-out); }
+.sk__foto { display: block; position: relative; width: 100%; height: 100%; overflow: hidden; }
+.sk__foto .isa-picture { display: block; width: 100%; height: 100%; background: var(--isa-dominant, var(--c-placeholder)) var(--isa-lqip, none) center / cover no-repeat; }
+.sk__foto img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.sk__carta { position: absolute; inset: 0; display: block; pointer-events: none; background-size: var(--tex, 20%) auto; }
+.sk__dida { display: block; margin-top: var(--s-2); font-size: var(--t-small); line-height: 1.3; color: var(--c-mute); font-variant-numeric: tabular-nums; }
+
+/* cornici */
+.sk__box[data-cornice='alu'] .sk__cornice {
+  background: linear-gradient(135deg, #3a3a3a, #121212 38%, #1b1b1b 62%, #0b0b0b);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.2), 0 18px 36px -22px rgb(0 0 0 / 0.6), inset 0 0 0 0.5px rgb(255 255 255 / 0.18);
+}
+.sk__box[data-cornice='oak'] .sk__cornice {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' preserveAspectRatio='none'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.004 0.12' numOctaves='3' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.25 0 0 0 0 0.15 0 0 0 0 0.06 0.9 0 0 0 -0.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat, linear-gradient(160deg, #d9b98a, #c59d66 45%, #b48a55 80%, #c29a63);
+  box-shadow: 0 1px 2px rgb(60 35 10 / 0.2), 0 20px 40px -24px rgb(40 22 5 / 0.65), inset 0 0 0 0.5px rgb(255 255 255 / 0.25);
+}
+.sk__box[data-cornice='walnut'] .sk__cornice {
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' preserveAspectRatio='none'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.004 0.12' numOctaves='3' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.25 0 0 0 0 0.15 0 0 0 0 0.06 0.9 0 0 0 -0.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat, linear-gradient(150deg, #6a4630, #42291a 45%, #352015 70%, #4c3020);
+  box-shadow: 0 1px 2px rgb(30 15 5 / 0.25), 0 20px 40px -24px rgb(20 10 2 / 0.7), inset 0 0 0 0.5px rgb(255 255 255 / 0.12);
+}
+/* passe-partout in cotone con il taglio smussato; nel rovere la foto è sospesa con l'aria intorno */
+.sk__box:is([data-cornice='alu'], [data-cornice='walnut']) .sk__pp { background: #f7f5f0; box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.28), inset 0 0 0 1px rgb(0 0 0 / 0.06); }
+.sk__box:is([data-cornice='alu'], [data-cornice='walnut']) .sk__foto { box-shadow: 0 0 0 1px rgb(255 255 255 / 0.9), 0 0 0 2px rgb(0 0 0 / 0.08); }
+.sk__box[data-cornice='oak'] .sk__pp { background: linear-gradient(180deg, #4c3b29, #5e4934 40%, #5a4632); box-shadow: inset 0 3px 8px rgb(0 0 0 / 0.45); }
+.sk__box[data-cornice='oak'] .sk__foto { box-shadow: 0 6px 14px -4px rgb(0 0 0 / 0.55), 0 1px 2px rgb(0 0 0 / 0.3); }
+/* vetro: un riflesso leggero sull'alluminio; il noce ha il vetro museo, quasi senza riflessi */
+.sk__box[data-cornice='alu'] .sk__pp::after, .sk__box[data-cornice='walnut'] .sk__pp::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(118deg, transparent 34%, rgb(255 255 255 / 0.13) 47%, transparent 60%);
+}
+.sk__box[data-cornice='walnut'] .sk__pp::after { opacity: 0.25; }
+
+/* carte: solo una trama sopra la foto, mai un filtro sui colori (audit 28/10: «il colore di questa non è questo») */
+.sk__box[data-carta='rag'] .sk__carta { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.36 0 0 0 0 0.33 0 0 0 0 0.29 1.3 0 0 0 -0.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); mix-blend-mode: multiply; opacity: 0.22; }
+.sk__box[data-carta='baryta'] .sk__carta {
+  background: linear-gradient(122deg, rgb(255 255 255 / 0) 28%, rgb(255 255 255 / 0.16) 45%, rgb(255 255 255 / 0) 62%);
+  mix-blend-mode: screen; opacity: 0.8;
+}
+.sk__box:is([data-carta='washi'], [data-carta='bizan']) .sk__carta {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.035 0.012' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.42 0 0 0 0 0.38 0 0 0 0 0.3 2.6 0 0 0 -1.35'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.36 0 0 0 0 0.33 0 0 0 0 0.29 1.3 0 0 0 -0.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: calc(var(--tex, 20%) * 1.6) auto, var(--tex, 20%) auto;
+  mix-blend-mode: multiply; opacity: 0.4;
+}
+/* i colori della foto restano quelli: la carta si vede nella trama, e da vicino (nella lente) di più */
+.sk__box .sk__lente-in .sk__carta { opacity: 0.6; }
+.sk__box[data-carta='baryta'] .sk__lente-in .sk__carta { opacity: 1; }
+
+/* lente: segue il mouse (o sta sopra il dito) e mostra la stessa anteprima ×3 */
+.sk__lente {
+  position: absolute; left: 0; top: 0; z-index: 2; display: block; overflow: hidden; pointer-events: none;
+  width: clamp(150px, 20vw, 260px); aspect-ratio: 1; border-radius: 50%; background: var(--c-bg);
+  box-shadow: 0 0 0 1px var(--c-ink), 0 14px 34px -12px rgb(0 0 0 / 0.5);
+}
+.sk__lente[hidden] { display: none; }
+.sk__lente-in { position: absolute; left: 0; top: 0; display: block; }
+.sk__lente-in .sk__cornice, .sk__lente-in .sk__pp { transition: none; }
 
 /* ---------- acquisto ---------- */
 .acq { display: grid; gap: var(--s-4); align-content: start; }
@@ -102,25 +164,16 @@
 /* C20 figura in scala: alta 120 px, mai più larga della colonna */
 .scala { margin: var(--s-2) 0 0; display: flex; align-items: flex-end; gap: var(--s-2); }
 .scala__svg { height: 120px; width: auto; max-width: calc(100% - 56px); aspect-ratio: var(--scala-r); flex: none; overflow: visible; }
+.scala__cornice, .scala__pp { fill: none; }
+[data-cornice='alu'] > svg .scala__cornice { fill: #161616; }
+[data-cornice='oak'] > svg .scala__cornice { fill: #c49a64; }
+[data-cornice='walnut'] > svg .scala__cornice { fill: #4a2e1d; }
+:is([data-cornice='alu'], [data-cornice='walnut']) > svg .scala__pp { fill: #f4f2ec; }
+[data-cornice='oak'] > svg .scala__pp { fill: #4f3d2a; }
 .scala__bordo { fill: none; stroke: var(--c-ink); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .scala__persona, .scala__terra { fill: none; stroke: var(--c-ink); stroke-width: 1.2; vector-effect: non-scaling-stroke; stroke-linecap: square; }
 .scala__terra { stroke-width: 1; }
 .scala__dida { font-size: var(--t-small); color: var(--c-mute); white-space: nowrap; line-height: 1; }
-
-/* ---------- particolari: 3 in riga, sempre ---------- */
-.parti { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap); padding: 0; }
-.parti__v { min-width: 0; }
-.parti__b { display: block; width: 100%; min-width: var(--touch); aspect-ratio: 1; background: var(--c-placeholder); cursor: zoom-in; }
-.parti__img, .parti__img img { display: block; width: 100%; height: 100%; object-fit: cover; }
-/* firma: l'immagine ingrandita (--fz) e spostata (--fx, --fy) sulla firma di ogni opera (data/firme.json, lib/scheda.ts);
-   la finestra resta dentro la tela, mai sulla banda bianca dello scatto */
-.parti__b { overflow: hidden; }
-.parti__v--firma .parti__b { position: relative; }
-.parti__v--firma .parti__img img { position: absolute; left: var(--fx, 0%); top: var(--fy, 0%); width: var(--fz, 100%); height: var(--fz, 100%); max-width: none; object-fit: cover; }
-.parti__d { display: block; padding-top: 6px; font-size: var(--t-small); color: var(--c-mute); }
-/* riquadri sotto i 90 px (telefono in orizzontale con un verticale): le etichette non ci stanno, restano nei nomi dei bottoni */
-.sk__parti { container-type: inline-size; }
-@container (max-width: 280px) { .parti__d { display: none; } }
 
 /* ---------- barra fissa in basso (solo sotto 1024) ---------- */
 .barra {
@@ -170,16 +223,14 @@ body:has(.vicine) .ft { margin-top: var(--s-7); }
   .sk {
     /* la colonna dell'opera è larga quanto l'opera (al massimo 7/12): niente vuoto fra un verticale basso e l'acquisto */
     grid-template-columns: minmax(0, min(calc((100% - var(--s-6)) * 7 / 12), calc(var(--sk-hmax) * (var(--ar))))) minmax(0, 1fr);
-    /* i particolari stanno sotto l'opera anche quando acquisto + dati sono più alti (niente buco nella colonna) */
-    grid-template-areas: 'torna torna' 'titolo titolo' 'opera acq' 'parti acq' 'parti dati';
-    grid-template-rows: auto auto auto auto 1fr;
+    grid-template-areas: 'torna torna' 'titolo titolo' 'opera acq' 'opera dati';
+    grid-template-rows: auto auto auto 1fr;
   }
   .sk__acq { margin-top: var(--s-5); }
   .sk__dati { margin-top: var(--s-7); }
-  .sk__box { margin-inline: 0 auto; }
-  .sk--pano { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: 'torna torna' 'titolo titolo' 'opera opera' 'acq dati' 'parti parti'; grid-template-rows: none; }
-  .sk--pano .sk__box { margin-inline: auto; }
-  .sk--pano .sk__parti { max-width: 30rem; }
+  .sk__box, .sk__dida { margin-inline: 0 auto; }
+  .sk--pano { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: 'torna torna' 'titolo titolo' 'opera opera' 'acq dati'; grid-template-rows: none; }
+  .sk--pano :is(.sk__box, .sk__dida) { margin-inline: auto; }
 }
 @media (orientation: landscape) and (max-height: 500px) and (max-width: 1023.98px) {
   .sk { --sk-tfs: min(clamp(3.5rem, 16vw, 19rem), calc(100cqw / var(--fit, 3)), 15svh); --sk-hmax: max(150px, calc(100svh - var(--header-h) - var(--touch) - var(--sk-tfs) * 0.8 - 40px)); padding-top: 0; }
@@ -191,72 +242,46 @@ body:has(.vicine) .ft { margin-top: var(--s-7); }
 @media (min-width: 1024px) {
   .sk {
     grid-template-columns: minmax(0, 3fr) minmax(0, 6fr) minmax(0, 3fr);
-    grid-template-areas: 'torna torna torna' 'titolo titolo titolo' 'dati opera acq' 'dati parti acq';
+    grid-template-areas: 'torna torna torna' 'titolo titolo titolo' 'dati opera acq' 'dati opera acq';
     grid-template-rows: auto auto auto 1fr;
   }
   .sk__dati, .sk__acq { margin-top: var(--s-5); }
   .sk__opera { margin-top: var(--s-5); }
-  .sk__parti { margin-top: var(--s-5); justify-self: center; width: min(100%, 30rem); }
   .sk__dati { position: sticky; top: calc(var(--header-h) + var(--s-5)); }
   .sk__acq { position: sticky; top: calc(var(--header-h) + var(--s-5)); }
-  .sk--pano { grid-template-areas: 'torna torna torna' 'titolo titolo titolo' 'opera opera opera' 'dati parti acq'; grid-template-rows: none; }
+  .sk--pano { grid-template-areas: 'torna torna torna' 'titolo titolo titolo' 'opera opera opera' 'dati dati acq'; grid-template-rows: none; }
   .sk--pano .sk__dati, .sk--pano .sk__acq { position: static; }
-  .sk--pano .sk__parti { margin-top: var(--s-5); }
   /* panoramiche: opera allineata alla colonna 1 (come titolo e «←»), più bassa, e la riga di stato sotto il titolo */
   .sk--pano { --sk-hmax: min(62svh, calc(100svh - var(--header-h) - var(--sk-tfs) - 150px)); }
-  .sk--pano .sk__box { margin-inline: 0 auto; }
+  .sk--pano :is(.sk__box, .sk__dida) { margin-inline: 0 auto; }
   .sk__stato { display: flex; margin-top: var(--s-2); font-size: var(--t-lead); font-weight: var(--w-strong); line-height: 1.2; }
   .vicine { padding-top: var(--s-6); }
 }
 @media (min-width: 1920px) { .sk { column-gap: var(--s-7); } }
 
 /* ==========================================================================
-   C15 Lente (dialog a schermo intero)
+   Dialog a schermo intero di «Vedi sulla tua parete» (la vecchia Lente C15 è stata tolta il 28/10)
    ========================================================================== */
-.lente, .parete {
+.parete {
   position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0;
   border: 0; background: var(--c-bg); color: var(--c-ink); z-index: var(--z-dialog); overflow: hidden;
 }
-.lente:not([open]), .parete:not([open]) { display: none; }
-.lente::backdrop, .parete::backdrop { background: var(--c-bg); }
-.lente[open] { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; }
-.lente__barra, .parete__barra {
+.parete:not([open]) { display: none; }
+.parete::backdrop { background: var(--c-bg); }
+.parete__barra {
   display: flex; align-items: center; justify-content: space-between; gap: var(--s-4);
   min-height: calc(var(--header-h) + env(safe-area-inset-top)); padding-top: env(safe-area-inset-top);
   padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right));
 }
-.lente__t, .parete__t { margin: 0; font-size: var(--t-ui); font-weight: var(--w-strong); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.lente__n { color: var(--c-mute); font-weight: var(--w-text); margin-left: var(--s-2); }
-.lente__btn, .parete__chiudi {
+.parete__t { margin: 0; font-size: var(--t-ui); font-weight: var(--w-strong); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.parete__chiudi {
   min-height: var(--touch); min-width: var(--touch); padding: 0 10px; margin-right: -10px;
   display: inline-flex; align-items: center; justify-content: center;
   font-size: var(--t-ui); font-weight: var(--w-strong); white-space: nowrap; flex: none;
 }
-.lente__vista { position: relative; overflow: hidden; display: grid; place-items: center; min-height: 0; padding: var(--s-2) var(--gutter); }
-.lente__f { margin: 0; display: grid; place-items: center; width: 100%; height: 100%; min-height: 0; }
-.lente__f[hidden] { display: none; }
-.lente__zoom {
-  width: min(100%, 100cqh); aspect-ratio: 1; max-height: 100%; cursor: zoom-in; touch-action: pinch-zoom; transform-origin: 50% 50%;
-}
-.lente__vista { container-type: size; }
-.lente__zoom { width: min(100cqw - 2 * var(--gutter), 100cqh - var(--s-4)); }
-.lente[data-zoom] .lente__zoom { cursor: zoom-out; touch-action: none; }
-.lente__img, .lente__img img { display: block; width: 100%; height: 100%; object-fit: contain; }
-.lente__img { background: var(--isa-dominant, var(--c-placeholder)) var(--isa-lqip, none) center / cover no-repeat; }
-.lente__comandi {
-  display: flex; justify-content: center; align-items: center; gap: var(--s-5);
-  padding: var(--s-1) var(--gutter) calc(var(--s-2) + env(safe-area-inset-bottom));
-}
-.lente__comandi .lente__btn { margin-right: 0; }
-.lente__btn--fr .freccia { width: 20px; height: 20px; }
 @media (hover: hover) {
-  .lente__btn:hover, .parete__chiudi:hover { text-decoration: underline; text-underline-offset: 0.25em; }
+  .parete__chiudi:hover { text-decoration: underline; text-underline-offset: 0.25em; }
 }
-
-/* A13: il riquadro vola a schermo intero */
-::view-transition-group(lente) { animation-duration: var(--d-reveal); animation-timing-function: var(--ease-out); }
-::view-transition-old(lente), ::view-transition-new(lente) { height: 100%; object-fit: cover; }
-html[data-vt-lente]::view-transition-old(root), html[data-vt-lente]::view-transition-new(root) { animation-duration: var(--d-ui); }
 
 /* ==========================================================================
    C16 «Vedi sulla tua parete» (ArViewer del core vestito qui; le sue regole sono :where, queste vincono)
@@ -361,10 +386,9 @@ html[data-a3='indietro']::view-transition-new(scheda) { animation: a3-da-sx var(
 @media (prefers-reduced-motion: reduce) {
   html[data-a3]::view-transition-old(scheda) { animation: a3-esce 0.2s linear both !important; }
   html[data-a3]::view-transition-new(scheda) { animation: a3-entra 0.2s linear both !important; }
-  ::view-transition-group(lente) { animation-duration: 0.2s; }
 }
 
-/* C14 schede Originale / Stampa (stesse regole delle schede di Opere, che stanno in opere.css) */
+/* C14 schede Stampa / Edizione limitata (stesse regole delle schede di Opere, che stanno in opere.css) */
 .acq .tabs { display: flex; gap: 0.6em; align-items: baseline; font-size: var(--t-tab); }
 .acq .tabs__b {
   font-weight: var(--w-display); font-size: var(--t-tab); line-height: var(--lh-tab); letter-spacing: -0.02em;
@@ -423,4 +447,8 @@ html[data-a3='indietro']::view-transition-new(scheda) { animation: a3-da-sx var(
   font-style: normal; font-size: var(--t-ui); color: var(--c-mute); font-variant-numeric: tabular-nums;
 }
 
+/* «Stampa  Edizione limitata» su una riga anche nella colonna stretta: il corpo si adatta alla colonna */
+.acq { container-type: inline-size; }
+.acq .tabs, .acq .tabs__b { font-size: min(var(--t-tab), 8.4cqi); }
+.acq .tabs__b { white-space: nowrap; }
 

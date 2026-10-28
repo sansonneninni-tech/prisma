@@ -18,6 +18,20 @@ for (const [w, h] of [[1440, 900], [390, 844]]) {
   const shot = async (n) => OUT && p.screenshot({ path: `${OUT}/${n}_${w}.png` });
   // edizione
   await p.goto(B + '/it/ninni/tulipano/', { waitUntil: 'networkidle' });
+  // audit 28/10: si apre su Stampa, l'edizione limitata è la seconda scheda
+  ok(await p.locator('[role=tab][aria-selected=true]').getAttribute('data-v') === 's', `${w}: la scheda si apre su Stampa`);
+  // anteprima: la cornice scelta cambia la foto, la didascalia e la figura in scala
+  const vb0 = await p.locator('[data-scala] svg').getAttribute('viewBox');
+  await p.locator('[data-acq-form="s"] input[name="cornice"][value="walnut"]').check({ force: true }); await p.waitForTimeout(200);
+  const dida = await p.locator('[data-anteprima-dida]').textContent();
+  ok(await p.locator('[data-anteprima]').getAttribute('data-cornice') === 'walnut' && /noce/.test(dida) && vb0 !== await p.locator('[data-scala] svg').getAttribute('viewBox'), `${w}: anteprima e figura in scala seguono la cornice (${dida})`);
+  await p.locator('[data-acq-form="s"] input[name="cornice"][value="none"]').check({ force: true });
+  // lente: clic (tocco) sulla foto la apre, secondo clic la chiude
+  await p.locator('[data-anteprima]').click({ position: { x: 60, y: 80 } }); await p.waitForTimeout(300);
+  const lenteSu = await p.locator('[data-lente]').isVisible();
+  await p.locator('[data-anteprima]').click({ position: { x: 60, y: 80 } }); await p.waitForTimeout(200);
+  ok(lenteSu && !(await p.locator('[data-lente]').isVisible()), `${w}: lente si apre e si chiude`);
+  await p.locator('#sk-tab-o').click(); await p.waitForTimeout(200);
   ok(await p.locator('.ed__s--attuale').count() === 1, `${w}: scala dell'edizione con lo scalino attuale`);
   await p.locator('[data-acq-form="o"] [data-acq-btn]').click(); await p.waitForTimeout(700);
   await shot('cassetto');

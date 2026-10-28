@@ -1,19 +1,19 @@
 ---
 /**
- * P3 Scheda opera (DIREZIONE §6 P3, ref SSENSE 3 colonne + Artsy): «← Opere», titolo gigante, opera, acquisto, dati,
- * particolari. Una sola griglia con i figli nell'ordine del DOM titolo → opera → acquisto → dati → particolari
- * (§10); le colonne le decide scheda.css:
+ * P3 Scheda opera (DIREZIONE §6 P3, ref SSENSE 3 colonne + Artsy): «← Opere», titolo gigante, opera, acquisto, dati.
+ * Una sola griglia con i figli nell'ordine del DOM titolo → opera → acquisto → dati (§10); le colonne le decide scheda.css:
  *   telefono: una colonna in quest'ordine, barra fissa in basso quando il bottone principale esce dallo schermo;
  *   768–1023 e telefono in orizzontale: opera | acquisto + dati;
- *   da 1024: dati | opera | acquisto (3/6/3); panoramiche (24, 25): opera a tutta larghezza, sotto dati | particolari | acquisto.
- * Acquisto: schede Originale / Stampa (C14) con markup proprio e la logica del core (toCartProduct,
+ *   da 1024: dati | opera | acquisto (3/6/3); panoramiche (24, 25): opera a tutta larghezza, sotto dati | acquisto.
+ * Audit del 28/10: si apre su Stampa (prima scheda), poi Edizione limitata; l'opera è l'anteprima della scelta
+ * (cornice, passe-partout, carta) e si guarda da vicino con la lente; niente più riquadri dei particolari.
+ * Acquisto: schede Stampa / Edizione limitata (C14) con markup proprio e la logica del core (toCartProduct,
  * toPrintCartProducts con gli 8 formati, addToCart in scheda-client.ts): l'AddToCart del core si aggancia una volta
  * sola e dopo un cambio pagina del ClientRouter resterebbe senza ascoltatori (stessa scelta di Casa).
  * `?v=stampa` sceglie la stampa prima del primo disegno (script inline subito dopo l'acquisto).
  */
 import ArtworkPicture from '@ne/core/components/ArtworkPicture.astro';
 import InstallmentsNote from '@ne/core/components/InstallmentsNote.astro';
-import { getArtworkImage } from '@ne/core/catalog';
 import Torna from '../Torna.astro';
 import Freccia from '../Freccia.astro';
 import FiguraScala from './FiguraScala.astro';
@@ -32,7 +32,8 @@ const haOriginale = Boolean(d.originale);
 const ed = d.edizione;
 /** Due schede solo se c'è l'edizione limitata; altrimenti la sola parola «Stampa». */
 const schede = Boolean(ed) && d.stampabile;
-const iniziale: 'o' | 's' = !ed || (d.venduta && d.stampabile) ? 's' : 'o';
+/** Si apre sempre sulla stampa quando c'è (audit 28/10); l'edizione limitata è la seconda scheda. */
+const iniziale: 'o' | 's' = d.stampabile ? 's' : 'o';
 const carrello = href(lang, '/carrello/');
 const prodottiStampa = Object.fromEntries(d.stampe.map((s) => [s.chiave, s.product]));
 const prezziStampa = Object.fromEntries(d.stampe.map((s) => [s.chiave, s.prezzo]));
@@ -40,6 +41,9 @@ const centsStampa = Object.fromEntries(d.stampe.map((s) => [s.chiave, s.cents]))
 const prima = d.primaStampa;
 // pezzo 7: l'opera viaggia nell'URL e la pagina d'arrivo mette un messaggio iniziale col suo titolo
 const chiedi = `${href(lang, '/chi-siamo/')}?opera=${art.slug}#contatti`;
+// figura in scala all'apertura: il formato di stampa scelto, senza cornice (poi la aggiorna scheda-client.ts)
+const fPrima = prima ? d.anteprima.formati[prima.formato] : null;
+const misureScala = fPrima ? { larghezzaCm: fPrima.w, altezzaCm: fPrima.h, profonditaCm: 0 } : d.ar.misure;
 const sizes = d.panoramica ? '(min-width: 1920px) 1864px, 100vw' : '(min-width: 1024px) 50vw, (min-width: 768px) 58vw, 100vw';
 ---
 <article
@@ -64,20 +68,71 @@ const sizes = d.panoramica ? '(min-width: 1920px) 1864px, 100vw' : '(min-width: 
     )}
   </div>
 
+  <!-- anteprima della scelta: cornice, passe-partout e carta cambiano con le opzioni (lib/scheda-client.ts);
+       clic sulla foto: una lente segue il mouse (o il dito) e fa vedere da vicino carta e cornice -->
   <figure class="sk__opera">
-    <div class="sk__box">
-      <ArtworkPicture artwork={art} lang={lang} width={d.panoramica ? 1400 : 760} sizes={sizes} loading="eager" fetchpriority="high" />
-    </div>
+    <button class="sk__box" type="button" data-anteprima data-lente-apri aria-pressed="false" aria-label={t('galleria.scheda.lente')}
+      data-cornice="none" data-carta={prima?.supporto ?? 'rag'} data-dati={JSON.stringify(d.anteprima)}>
+      <span class="sk__cornice">
+        <span class="sk__pp">
+          <span class="sk__foto">
+            <ArtworkPicture artwork={art} lang={lang} width={d.panoramica ? 1400 : 760} sizes={sizes} loading="eager" fetchpriority="high" />
+            <span class="sk__carta" aria-hidden="true"></span>
+          </span>
+        </span>
+      </span>
+      <span class="sk__lente" data-lente hidden></span>
+    </button>
+    {(prima || ed) && <figcaption class="sk__dida" data-anteprima-dida>{prima ? `${d.anteprima.formati[prima.formato]?.et ?? ''} · ${d.anteprima.carte[prima.supporto] ?? ''} · ${d.anteprima.cornici.none}` : ''}</figcaption>}
   </figure>
 
   <section class="sk__acq acq" aria-label={t('galleria.scheda.acquisto')} data-acq>
     {schede ? (
       <div class="tabs acq__tabs" role="tablist" aria-label={t('galleria.scheda.schede')} data-acq-tabs>
-        <button class="tabs__b" type="button" role="tab" id="sk-tab-o" aria-controls="sk-pan-o" aria-selected={iniziale === 'o' ? 'true' : 'false'} tabindex={iniziale === 'o' ? 0 : -1} data-v="o">{t('galleria.scheda.originale')}</button>
         <button class="tabs__b" type="button" role="tab" id="sk-tab-s" aria-controls="sk-pan-s" aria-selected={iniziale === 's' ? 'true' : 'false'} tabindex={iniziale === 's' ? 0 : -1} data-v="s">{t('galleria.scheda.stampa')}</button>
+        <button class="tabs__b" type="button" role="tab" id="sk-tab-o" aria-controls="sk-pan-o" aria-selected={iniziale === 'o' ? 'true' : 'false'} tabindex={iniziale === 'o' ? 0 : -1} data-v="o">{t('galleria.scheda.originale')}</button>
       </div>
     ) : (
       <p class="acq__solo">{t('galleria.scheda.stampa')}</p>
+    )}
+
+    <!-- Stampa: formato, carta, cornice -->
+    {prima && (
+      <div class="acq__pan" id="sk-pan-s" role={schede ? 'tabpanel' : undefined} aria-labelledby={schede ? 'sk-tab-s' : undefined} hidden={iniziale !== 's'} data-pan="s">
+        <form class="acq__form" data-acq-form="s" data-products={JSON.stringify(prodottiStampa)} data-prices={JSON.stringify(prezziStampa)} data-cents={JSON.stringify(centsStampa)} data-max={d.maxStampe}
+          data-t-n={t('galleria.scheda.nel_carrello_n')} data-t-max={t('galleria.scheda.max_stampe', { n: d.maxStampe })} data-t-piu={t('galleria.scheda.piu')}>
+          <fieldset class="opz">
+            <legend class="opz__l">{t('etichette.formato_stampa')}</legend>
+            <div class="opz__g">
+              {d.formati.map((fm) => (
+                <label class="opz__v"><input type="radio" name="formato" value={fm.id} checked={fm.id === prima.formato} /><span>{fm.etichetta}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <fieldset class="opz">
+            <legend class="opz__l">{t('galleria.scheda.carta')}</legend>
+            <div class="opz__g opz__g--lista">
+              {d.carte.map((c) => (
+                <label class="opz__v opz__v--riga"><input type="radio" name="supporto" value={c.id} checked={c.id === prima.supporto} /><span><b>{c.nome}</b><small>{c.nota}</small></span><em class="opz__delta num" data-delta-carta={c.id}></em></label>
+              ))}
+            </div>
+          </fieldset>
+          <fieldset class="opz">
+            <legend class="opz__l">{t('galleria.scheda.cornice')}</legend>
+            <div class="opz__g opz__g--lista">
+              {d.cornici.map((c) => (
+                <label class:list={['opz__v opz__v--riga', c.id === 'oak' && 'opz__v--scelta']}><input type="radio" name="cornice" value={c.id} checked={c.id === prima.cornice} /><span><b>{c.nome}</b><small>{c.nota}</small></span><em class="opz__delta num" data-delta-cornice={c.id}></em></label>
+              ))}
+            </div>
+          </fieldset>
+          <p class="acq__prezzo"><output class="num" data-acq-prezzo aria-live="polite">{prima.prezzo}</output><small>{d.notaPrezzoStampa}</small></p>
+          <button class="btn btn--largo" type="submit" data-acq-btn>{t('bottoni.aggiungi_carrello')}</button>
+          <p class="acq__nota" data-acq-nota hidden>
+            <span data-acq-nota-t></span>
+            <a class="lnk" href={carrello} data-carrello>{t('bottoni.vai_carrello')}</a>
+          </p>
+        </form>
+      </div>
     )}
 
     <!-- Edizione limitata: numero, copie rimaste, prezzo a scaglioni (scarsità vera) -->
@@ -120,45 +175,6 @@ const sizes = d.panoramica ? '(min-width: 1920px) 1864px, 100vw' : '(min-width: 
       </div>
     )}
 
-    <!-- Stampa: formato, carta, cornice -->
-    {prima && (
-      <div class="acq__pan" id="sk-pan-s" role={schede ? 'tabpanel' : undefined} aria-labelledby={schede ? 'sk-tab-s' : undefined} hidden={iniziale !== 's'} data-pan="s">
-        <form class="acq__form" data-acq-form="s" data-products={JSON.stringify(prodottiStampa)} data-prices={JSON.stringify(prezziStampa)} data-cents={JSON.stringify(centsStampa)} data-max={d.maxStampe}
-          data-t-n={t('galleria.scheda.nel_carrello_n')} data-t-max={t('galleria.scheda.max_stampe', { n: d.maxStampe })} data-t-piu={t('galleria.scheda.piu')}>
-          <fieldset class="opz">
-            <legend class="opz__l">{t('etichette.formato_stampa')}</legend>
-            <div class="opz__g">
-              {d.formati.map((fm) => (
-                <label class="opz__v"><input type="radio" name="formato" value={fm.id} checked={fm.id === prima.formato} /><span>{fm.etichetta}</span></label>
-              ))}
-            </div>
-          </fieldset>
-          <fieldset class="opz">
-            <legend class="opz__l">{t('galleria.scheda.carta')}</legend>
-            <div class="opz__g opz__g--lista">
-              {d.carte.map((c) => (
-                <label class="opz__v opz__v--riga"><input type="radio" name="supporto" value={c.id} checked={c.id === prima.supporto} /><span><b>{c.nome}</b><small>{c.nota}</small></span><em class="opz__delta num" data-delta-carta={c.id}></em></label>
-              ))}
-            </div>
-          </fieldset>
-          <fieldset class="opz">
-            <legend class="opz__l">{t('galleria.scheda.cornice')}</legend>
-            <div class="opz__g opz__g--lista">
-              {d.cornici.map((c) => (
-                <label class:list={['opz__v opz__v--riga', c.id === 'oak' && 'opz__v--scelta']}><input type="radio" name="cornice" value={c.id} checked={c.id === prima.cornice} /><span><b>{c.nome}</b><small>{c.nota}</small></span><em class="opz__delta num" data-delta-cornice={c.id}></em></label>
-              ))}
-            </div>
-          </fieldset>
-          <p class="acq__prezzo"><output class="num" data-acq-prezzo aria-live="polite">{prima.prezzo}</output><small>{d.notaPrezzoStampa}</small></p>
-          <button class="btn btn--largo" type="submit" data-acq-btn>{t('bottoni.aggiungi_carrello')}</button>
-          <p class="acq__nota" data-acq-nota hidden>
-            <span data-acq-nota-t></span>
-            <a class="lnk" href={carrello} data-carrello>{t('bottoni.vai_carrello')}</a>
-          </p>
-        </form>
-      </div>
-    )}
-
     <div class="acq__azioni">
       <button class="lnk acq__parete" type="button" data-parete-apri aria-haspopup="dialog">{t('galleria.scheda.parete')}<Freccia /></button>
       <a class="lnk" href={chiedi}>{t('bottoni.richiedi_info')}</a>
@@ -190,24 +206,8 @@ const sizes = d.panoramica ? '(min-width: 1920px) 1864px, 100vw' : '(min-width: 
       </dl>
     )}
     {d.descrizione && <p class="dati__p">{d.descrizione}</p>}
-    <FiguraScala art={art} misure={d.ar.misure} lang={lang} class="dati__scala" />
+    <FiguraScala art={art} misure={misureScala} lang={lang} class="dati__scala" anteprima />
   </section>
-
-  {d.particolari.length > 0 && (
-    <ul class="sk__parti parti" role="list">
-      {d.particolari.map((p, i) => {
-        const img = getArtworkImage(art, p.id, { width: p.zoom ? 960 : 240 });
-        return (
-          <li class:list={['parti__v', p.id === 'signature' && 'parti__v--firma']}>
-            <button class="parti__b" type="button" data-lente-apri={i} aria-label={t('galleria.scheda.ingrandisci', { nome: p.nome })} aria-haspopup="dialog" style={p.stile}>
-              <ArtworkPicture image={img} lang={lang} alt="" sizes={p.zoom ? `(min-width: 1024px) calc(12vw * ${p.zoom}), calc(31vw * ${p.zoom})` : '(min-width: 1024px) 12vw, 31vw'} class="parti__img" />
-            </button>
-            <span class="parti__d" aria-hidden="true">{p.nome}</span>
-          </li>
-        );
-      })}
-    </ul>
-  )}
 
   <!-- barra fissa in basso (sotto 1024): prezzo + azione principale quando il bottone vero non si vede -->
   <div class="barra" data-barra hidden>

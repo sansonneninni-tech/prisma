@@ -3,7 +3,8 @@
  * Header della versione ispirata a Luke & Nik: tutto fisso e in `mix-blend-mode: difference`, così il testo bianco
  * si inverte sopra le foto e sopra qualsiasi colore di fondo.
  * - centro: il nome (→ home);
- * - sinistra: in home la frase su due righe e sotto «Indice · Carrello (n) · Email · Instagram»; nelle altre pagine
+ * - sinistra: in home la frase su due righe e sotto «Shop · Indice · Carrello (n) · Email · Instagram» (Shop porta
+ *   dritto alle foto, audit 28/10); nelle altre pagine
  *   solo la riga di voci (sul telefono «Info» non c'è: la frase sta solo in home);
  * - destra: il quadratino del colore di fondo (si apre in una barra) e le lingue.
  * `ridotto` (checkout): niente Indice, restano nome, Carrello (n) e lingue.
@@ -21,6 +22,7 @@ const t = useT(lang);
   <div class="hd__sx">
     {home && <p class="hd__frase">{t('galleria.ln.frase_1')}<br />{t('galleria.ln.frase_2')}</p>}
     <nav class="hd__nav" aria-label={t('galleria.nav.principale')}>
+      {!ridotto && <a class="hd__btn hd__shop" href={href(lang, '/ninni/')} aria-current={/\/(ninni|ernesto)\//.test(pathname) ? 'page' : undefined}>{t('galleria.ln.shop')}</a>}
       {!ridotto && <button class="hd__btn hd__idx-btn" type="button" aria-expanded="false" aria-controls="indice-menu" data-indice-apri>{t('galleria.nav.indice')}</button>}
       {ridotto && <a class="hd__btn hd__idx-ck" href={href(lang, '/')} data-hd-indice-ck hidden>{t('galleria.nav.home')}</a>}
       <ContaCarrello lang={lang} />

@@ -55,6 +55,13 @@ export interface DatiScheda {
     carta: string;
     cornice: string;
   };
+  /** Per l'anteprima della stampa (cornice, carta, figura in scala): misure in cm e nomi brevi. */
+  anteprima: {
+    formati: Record<string, { w: number; h: number; et: string }>;
+    carte: Record<string, string>;
+    cornici: Record<string, string>;
+    ed: null | { w: number; h: number; fw: number; fh: number; carta: string; cornice: string; et: string };
+  };
   carte: { id: string; nome: string; nota: string }[];
   cornici: { id: string; nome: string; nota: string }[];
   venduta: boolean;
@@ -168,6 +175,12 @@ export function datiScheda(art: Artwork, lang: Locale, site?: URL): DatiScheda {
   const carte = PRINT_MATERIALS.map((id) => ({ id, nome: t(`carte.${id}.nome`), nota: t(`carte.${id}.nota`) }));
   const cornici = FRAMES.map((id) => ({ id, nome: t(`cornici.${id}.nome`), nota: t(`cornici.${id}.nota`) }));
   void framePrice;
+  const anteprima: DatiScheda['anteprima'] = {
+    formati: Object.fromEntries(varianti.map((v) => [v.format.id, { w: v.format.widthCm, h: v.format.heightCm, et: formatDimensions(v.format, lang) }])),
+    carte: Object.fromEntries([...PRINT_MATERIALS, 'bizan'].map((id) => [id, t(`carte.${id}.breve`)])),
+    cornici: Object.fromEntries(FRAMES.map((id) => [id, t(`cornici.${id}.breve`)])),
+    ed: e ? { w: e.dimensions.widthCm, h: e.dimensions.heightCm, fw: e.framedDimensions.widthCm, fh: e.framedDimensions.heightCm, carta: e.paper, cornice: e.frame, et: formatDimensions(e.dimensions, lang) } : null,
+  };
 
   // --- particolari (lente) ---
   const particolari: Particolare[] = [];
@@ -186,7 +199,8 @@ export function datiScheda(art: Artwork, lang: Locale, site?: URL): DatiScheda {
   };
   if (art.edition) voce('ed', `${art.id}-ed`, (m) => t('galleria.ar.misura_cornice', { misure: m }));
   for (const f of formati) voce(f.id, `${art.id}-${f.id}`, (m) => t('galleria.ar.misura', { misure: m }));
-  const arIniziale = art.edition && art.status !== 'sold' ? 'ed' : primaStampa?.formato ?? Object.keys(modelli)[0] ?? 'ed';
+  // si apre sulla stampa (audit 28/10): il modello AR iniziale è quello del formato di stampa scelto
+  const arIniziale = primaStampa && modelli[primaStampa.formato] ? primaStampa.formato : art.edition && art.status !== 'sold' ? 'ed' : Object.keys(modelli)[0] ?? 'ed';
   const scelto = modelli[arIniziale] ?? Object.values(modelli)[0]!;
   const { glb, usdz } = scelto;
   const mAr = misureAr(`${art.id}-${arIniziale}`);
@@ -249,6 +263,7 @@ export function datiScheda(art: Artwork, lang: Locale, site?: URL): DatiScheda {
     edizione,
     carte,
     cornici,
+    anteprima,
     venduta,
     stampabile: stampe.length > 0,
     misure,

@@ -32,10 +32,15 @@
   --ombra-quadro: 0 1px 1px rgb(40 30 15 / 0.08), 0 6px 12px -4px rgb(40 30 15 / 0.14), 0 28px 48px -22px rgb(40 30 15 / 0.38);
   --raggio-btn: 999px;
 }
-/* la tinta della foto si posa sulla carta, non la sostituisce */
+/* la tinta della foto si posa sulla carta, non la sostituisce (home) */
 html[style*='--tinta'] {
   --c-bg: color-mix(in oklab, var(--tinta) 38%, var(--c-paper));
   --c-placeholder: color-mix(in oklab, var(--tinta) 30%, #d9cfbd);
+}
+/* scheda di una foto: il fondo è la tinta della foto, come nel sito attuale (audit 28/10) */
+html[style*='--tinta']:has([data-scheda]) {
+  --c-bg: var(--tinta);
+  --c-placeholder: color-mix(in oklab, var(--tinta), #000 8%);
 }
 :root ::selection { background: var(--c-ink); color: var(--c-paper); }
 
@@ -87,13 +92,8 @@ html[style*='--tinta'] {
 :root .tabs__b[aria-selected='true'] { font-style: italic; }
 :root .op__nota { font-size: 0.9375rem; color: var(--c-mute); max-width: 44rem; }
 
-/* ---------- Scheda: titolo serif, immagine col passe-partout ---------- */
-:root .sk__opera { --mat: clamp(14px, 2.2vw, 34px); padding: calc(var(--mat) + 4px); }
-/* il passe-partout è un'ombra piena: non cambia la misura della foto (lente e AR restano uguali) */
-:root .sk__box {
-  box-shadow: 0 0 0 var(--mat) var(--c-mat), 0 0 0 calc(var(--mat) + 1px) rgb(29 27 23 / 0.9),
-    0 0 0 calc(var(--mat) + 4px) #23201b, 0 calc(var(--mat) + 30px) 50px -18px rgb(40 30 15 / 0.38);
-}
+/* ---------- Scheda: titolo serif. La foto è l'anteprima della stampa scelta (cornice e passe-partout veri, audit
+   28/10), quindi niente più passe-partout finto qui ---------- */
 :root .vicine__t { font-family: var(--f-serif); font-weight: 400; font-size: clamp(1.75rem, 2.6vw, 2.5rem); }
 :root .acq__prezzo { font-family: var(--f-serif); font-weight: 400; font-size: clamp(2rem, 2.6vw, 2.6rem); line-height: 1; }
 
