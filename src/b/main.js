@@ -17,10 +17,10 @@ const EN = {
   'pp.pause': 'Pause', 'pp.play': 'Play', 'cue': 'Scroll to discover',
   'sys.k': 'Recommended', 'sys.h': 'Content system', 'sys.lead': 'One shoot day. Months of content.',
   'pr.1': 'editorial', 'pr.2': 'short', 'pr.3': 'micro', 'pr.src': 'shoot day',
-  'st.1': 'shoot day', 'st.2': 'pieces shot, one visual language', 'st.3': 'editorial, short, micro', 'st.4': 'ready to post, in the reserve for 12 months',
-  'cal.1': 'ready', 'cal.2': 'in the reserve, 12 months', 'cue.sys': 'Recommended: the content system', 'one.h': 'Three formats',
+  'st.1': 'shoot day', 'st.2': 'pieces shot, one visual language', 'st.3': 'editorial, short, micro', 'st.4': 'ready to post, in&nbsp;the&nbsp;reserve for 12 months',
+  'cal.1': 'ready', 'cal.2': 'in&nbsp;the&nbsp;reserve, 12 months', 'cue.sys': 'Recommended: the content system', 'one.h': 'Three formats',
   'sys.ask': 'Ask for the system', 'sys.case': 'The system at work: Isabella Pistillo',
-  'sys.res': 'The reserve opens when you need it: +3&nbsp;short&nbsp;€99 · +3&nbsp;short and&nbsp;5&nbsp;micro&nbsp;€199 · all&nbsp;24&nbsp;€549',
+  'sys.res': 'The reserve opens when you need it: +3&nbsp;short&nbsp;€99&nbsp;· +3&nbsp;short and&nbsp;5&nbsp;micro&nbsp;€199&nbsp;· all&nbsp;24&nbsp;€549',
   'one.k': 'Formats',
   'f.evento': 'Event reel', 'f.evento.d': 'One vertical reel up to 45″, ready the day after the event.',
   'f.evento.1': 'Filming during the event', 'f.evento.2': 'Edit, colour and music', 'f.evento.3': 'Delivered in 9:16 the next day',
@@ -37,7 +37,7 @@ const EN = {
   's.ok': 'Got it. We’ll reply soon.', 's.err': 'Something went wrong. Write us on WhatsApp.',
   'all': 'All', 'pl.back': 'All work', 'pl.close': 'Close', 'pl.dl': 'Download original', 'pl.case': 'Open the case', 'drive': 'Watch on Drive',
   'cs.back': 'Back', 'cs.k': 'Case study · Artist', 'cs.play': 'Watch the editorial with sound', 'cs.pause': 'Pause', 'cs.resume': 'Play', 'cs.audio': 'Sound', 'cs.full': 'Full screen', 'cs.dl': 'Download original',
-  'cs.lead': 'An artist needed a steady presence, not a video. We shot one day.', 'cs.k1': 'shoot day', 'cs.k2': 'pieces delivered', 'cs.k3': 'in the reserve', 'cs.k4': 'weeks of&nbsp;posts',
+  'cs.lead': 'An artist needed a steady presence, not a video. We shot one day.', 'cs.k1': 'shoot day', 'cs.k2': 'pieces delivered', 'cs.k3': 'in&nbsp;the&nbsp;reserve', 'cs.k4': 'weeks of&nbsp;posts',
   'cs.sh': 'short', 'cs.sh.d': 'with sound, they open', 'cs.mi': 'micro', 'cs.mi.d': 'write on them and download the video', 'cs.res': 'Reserve: 24 pieces already shot, activated when needed.', 'cs.cta': 'The same system, for you', 'cs.cta.b': 'The content system',
   'fa.client': 'Client', 'fa.fmt': 'Format', 'fa.ratio': 'Ratio', 'fa.len': 'Length', 'fa.where': 'Where',
 }
@@ -315,7 +315,7 @@ const csOpenNow = () => !cs.hidden
 const M = (id, f) => `/media/${id}/${f}`
 const ED = { prev: M('isabella-editoriale', 'preview.mp4'), src: M('isabella-editoriale', 'web.mp4') }
 const SHORTS = [1, 2, 3, 4, 5].map(n => ({
-  id: `isabella-short-${n}`, short: true, client: 'Isabella Pistillo', title: `Isabella Pistillo · Short ${String(n).padStart(2, '0')}`, cat: 'social', ratio: '4/5',
+  id: `isabella-short-${n}`, short: true, client: 'Isabella Pistillo', title: `Short ${String(n).padStart(2, '0')}`, cat: 'social', ratio: '4/5',
   sub: { it: 'Short dal sistema contenuti', en: 'Short from the content system' },
   poster: M(`isabella-short-${n}`, 'poster.jpg'), preview: M(`isabella-short-${n}`, 'preview.mp4'), src: M(`isabella-short-${n}`, 'web.mp4'),
   dl: `/originali/isabella-short-${n}.mp4`, drive: null, caso: null,
@@ -565,6 +565,9 @@ function sysEmpty() {
   ticks.forEach(t => { t.className = '' })
   raysOpen = false
   rays.forEach(l => { l.setAttribute('x2', 375); l.setAttribute('y2', 126) })
+  /* misura le etichette con i numeri veri, poi le azzera: niente scatto alla fine */
+  $$('.pr__l b', prism).forEach(b => { b.textContent = b.dataset.n })
+  fitRays()
   $$('.pr__l b', prism).forEach(b => { b.textContent = '0' })
   gsap.set(['.pr__body', '.pr__line', '.pr__edge', '.pr__beam', '.pr__l', '.pr__cal', '.pr__src', '.pr__rays', '.pr__calk > span'], { opacity: 0 })
   gsap.set('.pr__in', { attr: { x2: 0, y2: 152 } })

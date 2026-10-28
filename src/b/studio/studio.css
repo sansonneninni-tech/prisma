@@ -18,10 +18,10 @@ body.is-se { overflow: hidden; }
 .se__reset { justify-self: end; padding: 6px 0; color: var(--ink-2); }
 .se__reset.is-confirm { color: var(--red); }
 .se__nav { display: flex; align-items: center; gap: 14px; }
-.se__arrow { width: 32px; height: 28px; border: 1px solid var(--line); display: grid; place-items: center; transition: border-color .25s, color .25s; }
+.se__arrow { width: 32px; height: 32px; border: 1px solid rgba(11, 10, 10, .3); display: grid; place-items: center; transition: border-color .25s, color .25s; }
 .se__arrow:hover { border-color: var(--ink); }
 .se__title { display: flex; align-items: baseline; gap: 8px; font-size: var(--t-xs); letter-spacing: .07em; text-transform: uppercase; font-variation-settings: 'wdth' 112; font-weight: 500; min-width: 120px; justify-content: center; }
-.se__title b { font-size: 22px; font-weight: 600; font-variation-settings: 'wdth' 62; letter-spacing: 0; line-height: 1; }
+.se__title b { font-size: clamp(18px, 1.6vw, 24px); font-weight: 600; font-variation-settings: 'wdth' 62; letter-spacing: 0; line-height: 1; }
 .se__title span { color: var(--ink-2); }
 
 .se__body { display: grid; grid-template-columns: minmax(0, 1fr) clamp(320px, 28vw, 400px); min-height: 0; }
@@ -60,15 +60,15 @@ body.is-se { overflow: hidden; }
 .se__text::placeholder { color: var(--ink-3); }
 .se__fonts { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
 .se__font {
-  display: grid; justify-items: center; gap: 3px; padding: 8px 2px 6px; border: 1px solid var(--line); font-size: 21px; line-height: 1;
+  display: grid; justify-items: center; gap: 3px; padding: 8px 2px 6px; border: 1px solid rgba(11, 10, 10, .3); font-size: 21px; line-height: 1;
   transition: border-color .2s, background .2s, color .2s;
 }
-.se__font small { font: 500 8px/1 var(--f); letter-spacing: .02em; text-transform: uppercase; font-variation-settings: 'wdth' 80; color: var(--ink-2); white-space: nowrap; overflow: hidden; max-width: 100%; }
+.se__font small { font: 500 9.5px/1 var(--f); letter-spacing: 0; text-transform: none; font-variation-settings: 'wdth' 80; color: var(--ink-2); white-space: nowrap; overflow: hidden; max-width: 100%; }
 .se__font:hover { border-color: var(--ink); }
 .se__font[aria-checked="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
 .se__font[aria-checked="true"] small { color: rgba(239, 237, 233, .7); }
 .se__two { display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: start; }
-.se__seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border: 1px solid var(--line); }
+.se__seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; border: 1px solid rgba(11, 10, 10, .3); }
 .se__opt { padding: 9px 6px; transition: background .2s, color .2s; }
 .se__opt + .se__opt { border-left: 1px solid var(--line); }
 .se__opt:hover { background: rgba(11, 10, 10, .05); }
@@ -89,11 +89,11 @@ body.is-se { overflow: hidden; }
 .se__switch[aria-checked="true"] { color: var(--ink); }
 .se__switch[aria-checked="true"] i { background: var(--ink); }
 .se__switch[aria-checked="true"] i::after { transform: translateX(18px); }
-.se__pill { padding: 6px 12px; border: 1px solid var(--line); transition: border-color .25s, color .25s, background .25s; }
+.se__pill { min-height: 32px; display: inline-flex; align-items: center; padding: 0 12px; border: 1px solid rgba(11, 10, 10, .3); transition: border-color .25s, color .25s, background .25s; }
 .se__pill:hover { border-color: var(--ink); }
 .se__pill.is-hit { background: var(--ink); color: var(--bg); }
 .se__hint { color: var(--ink-3); text-transform: none; letter-spacing: .02em; font-size: 12px; }
-.se__actions { padding: 14px var(--pad) var(--pad); border-top: 1px solid var(--line); display: grid; gap: 8px; }
+.se__actions { padding: 14px var(--pad) var(--pad); background: linear-gradient(var(--line), var(--line)) var(--pad) 0 / calc(100% - 2 * var(--pad)) 1px no-repeat; display: grid; gap: 8px; }
 .se__save { justify-content: center; padding: 13px 14px; }
 .se__note { color: var(--ink-3); text-align: center; }
 
