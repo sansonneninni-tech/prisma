@@ -66,7 +66,7 @@ export function createEditor({ items, lang = () => 'it', onClose = () => {} }) {
             <section class="se__sec"><div class="se__head"><p class="se__k">${t.text}</p><button type="button" class="se__done" data-done hidden>${t.done}</button></div>
               <textarea class="se__text" data-text rows="3" maxlength="400" placeholder="${t.ph}"></textarea></section>
             <section class="se__sec"><p class="se__k">${t.font}</p><div class="se__fonts" role="radiogroup" aria-label="${t.font}">
-              ${FONTS.map(f => `<button type="button" role="radio" class="se__font" data-font="${f.id}" title="${f.name}" style="font-family:'${f.family}';font-weight:${f.weight};font-style:${f.style}">${f.upper ? 'AA' : 'Aa'}<small>${f.name}</small></button>`).join('')}</div></section>
+              ${FONTS.map(f => `<button type="button" role="radio" class="se__font" data-font="${f.id}" title="${f.name}" aria-label="${f.name}" style="font-family:'${f.family}';font-weight:${f.weight};font-style:${f.style}">${f.upper ? 'AA' : 'Aa'}<small>${f.name}</small></button>`).join('')}</div></section>
             <section class="se__sec se__two">
               <div><p class="se__k">${t.size}</p><div class="se__seg" role="radiogroup" aria-label="${t.size}">${SIZES.map(z => `<button type="button" role="radio" class="se__opt se__size--${z.id}" data-size="${z.id}">${z.id.toUpperCase()}</button>`).join('')}</div></div>
               <div><p class="se__k">${t.shadow}</p><button type="button" role="switch" class="se__switch" data-shadow><i></i><span data-sh></span></button></div>

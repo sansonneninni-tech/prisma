@@ -31,13 +31,13 @@ const EN = {
   'f.sys': 'Content system',
   'p.da': 'from', 'p.a': 'to', 'ask': 'Ask', 'ex': 'Watch an example', 'unit': '≈ {v} per piece',
   'f.note': 'Travel not included. The exact quote follows the brief.',
-  's.h': 'Two people, from brief to export.', 's.alt': 'Ninni and Ernesto, PRISMA',
+  's.h': 'Two people,<br />from&nbsp;brief to export.', 's.alt': 'Ninni and Ernesto, PRISMA',
   's.team': 'Studio · Puglia', 's.ninni': 'Direction, edit, colour', 's.ernesto': 'Production and clients', 's.foto': 'Photography · Ninni &amp; Ernesto',
   's.direct': 'Contacts', 's.clients': 'Clients', 's.name': 'Name', 's.fmt': 'What you need', 's.msg': 'The project, in two lines', 's.send': 'Send',
   's.ok': 'Got it. We’ll reply soon.', 's.err': 'Something went wrong. Write us on WhatsApp.',
   'all': 'All', 'pl.back': 'All work', 'pl.close': 'Close', 'pl.dl': 'Download original', 'pl.case': 'Open the case', 'drive': 'Watch on Drive',
   'cs.back': 'Back', 'cs.k': 'Case study · Artist', 'cs.play': 'Watch the editorial with sound', 'cs.pause': 'Pause', 'cs.resume': 'Play', 'cs.audio': 'Sound', 'cs.full': 'Full screen', 'cs.dl': 'Download original',
-  'cs.lead': 'An artist needed a steady presence, not a video. We shot one day.', 'cs.k1': 'shoot day', 'cs.k2': 'pieces delivered', 'cs.k3': 'in the reserve', 'cs.k4': 'weeks of posts',
+  'cs.lead': 'An artist needed a steady presence, not a video. We shot one day.', 'cs.k1': 'shoot day', 'cs.k2': 'pieces delivered', 'cs.k3': 'in the reserve', 'cs.k4': 'weeks of&nbsp;posts',
   'cs.sh': 'short', 'cs.sh.d': 'with sound, they open', 'cs.mi': 'micro', 'cs.mi.d': 'write on them and download the video', 'cs.res': 'Reserve: 24 pieces already shot, activated when needed.', 'cs.cta': 'The same system, for you', 'cs.cta.b': 'The content system',
   'fa.client': 'Client', 'fa.fmt': 'Format', 'fa.ratio': 'Ratio', 'fa.len': 'Length', 'fa.where': 'Where',
 }
@@ -74,7 +74,9 @@ LAVORI.forEach(w => {
   img.alt = w.cliente; img.loading = 'lazy'; img.src = `/img/loghi/${w.logo}`
   if (w.logo === 'panegos.png') img.classList.add('is-thin')
   /* stessa area per tutti i loghi: i larghi si abbassano, i quadrati salgono */
-  const fit = () => { const a = img.naturalWidth / img.naturalHeight; if (a) img.style.height = `${Math.min(28, Math.max(12, Math.sqrt(1100 / a)))}px` }
+  /* correzione ottica per i loghi molto pieni o molto sottili */
+  const k = { 'nugnes.png': .8, 'archemi.png': 1.25, 'antica-enotria.png': 1.25, 'panegos.png': 1.1 }[w.logo] || 1
+  const fit = () => { const a = img.naturalWidth / img.naturalHeight; if (a) img.style.height = `${Math.min(30, Math.max(12, Math.sqrt(1100 / a) * k))}px` }
   img.complete ? fit() : img.addEventListener('load', fit, { once: true })
   li.append(img); logos.append(li)
 })
@@ -247,7 +249,8 @@ function trapTab(e, box) {
   /* si muove sempre a mano: la testata e la finestra non sono vicine nel documento */
   const i = f.indexOf(document.activeElement)
   e.preventDefault()
-  const n = i < 0 ? (e.shiftKey ? f.length - 1 : 0) : (i + (e.shiftKey ? -1 : 1) + f.length) % f.length
+  const first = f.findIndex(el => box.contains(el))
+  const n = i < 0 ? (e.shiftKey ? f.length - 1 : Math.max(0, first)) : (i + (e.shiftKey ? -1 : 1) + f.length) % f.length
   f[n].focus()
 }
 function plOpen(w, list = listFor(), push = true, back = null) {
@@ -265,7 +268,7 @@ function plOpen(w, list = listFor(), push = true, back = null) {
   gsap.timeline()
     .fromTo(pl, { clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: .8 * d, ease: 'expo.inOut', clearProps: 'clipPath' })
     .fromTo([plStage, ...$$('.pl__info > *', pl)], { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: .7 * d, ease: 'expo.out', stagger: .04, clearProps: 'transform,opacity' }, .35 * d)
-  $('.pl__back', pl).focus({ preventScroll: true })
+  pl.focus({ preventScroll: true })
 }
 function plClose(fromPop = false) {
   if (pl.hidden || pl.dataset.closing) return
@@ -425,7 +428,7 @@ function csOpen(push = true) {
   gsap.timeline()
     .fromTo(cs, { clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: .8 * d, ease: 'expo.inOut', clearProps: 'clipPath' })
     .fromTo([ed, ...$$('.cs__info > *', cs)], { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: .7 * d, ease: 'expo.out', stagger: .04, clearProps: 'transform,opacity' }, .35 * d)
-  $('.pl__back', cs).focus({ preventScroll: true })
+  cs.focus({ preventScroll: true })
 }
 function csClose(fromPop = false, after = null) {
   if (!csOpenNow() || cs.dataset.closing) return

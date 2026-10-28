@@ -47,8 +47,10 @@
       <div class="reel" data-reel>
         <video muted playsinline preload="auto" aria-hidden="true"></video>
       </div>
-      <p class="home__now" data-reel-now></p>
-      <button type="button" class="home__pp" data-reel-pp aria-pressed="false"><span data-i18n="pp.pause">Pausa</span></button>
+      <div class="home__bt">
+        <p class="home__now" data-reel-now></p>
+        <button type="button" class="home__pp" data-reel-pp aria-pressed="false"><span data-i18n="pp.pause">Pausa</span></button>
+      </div>
       <button type="button" class="cue" data-go="1" data-i18n="cue">Scorri per scoprire</button>
     </section>
 
@@ -218,7 +220,7 @@
           <figure class="st__img"><img src="/img/ninni-ernesto.jpg" alt="Ninni ed Ernesto, PRISMA" data-i18n-alt="s.alt" width="720" height="900" loading="lazy" decoding="async" /></figure>
           <div class="st__txt">
             <p class="st__k" data-i18n="s.team">Studio · Puglia</p>
-            <h2 class="st__h" id="t-s" data-i18n="s.h">Due persone, dal brief all’export.</h2>
+            <h2 class="st__h" id="t-s" data-i18n="s.h">Due persone,<br />dal&nbsp;brief all’export.</h2>
             <ul class="st__ppl">
               <li><b>Domenico “Ninni” Sansonne</b><span data-i18n="s.ninni">Regia, montaggio, colore</span></li>
               <li><b>Ernesto D’Addario</b><span data-i18n="s.ernesto">Produzione e clienti</span></li>
@@ -266,7 +268,7 @@
 
   <!-- Scheda del lavoro: si apre dentro il sito, sotto la testata -->
   <!-- Caso Isabella: si apre dentro il sito -->
-  <div class="cs" id="isabella" data-cs hidden role="dialog" aria-modal="true" aria-labelledby="cs-t">
+  <div class="cs" id="isabella" data-cs hidden tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="cs-t">
     <div class="cs__bar">
       <button type="button" class="pl__back" data-cs-close><span aria-hidden="true">←</span> <span data-i18n="cs.back">Indietro</span></button>
       <p class="pl__count" data-i18n="cs.k">Caso studio · Artista</p>
@@ -289,10 +291,10 @@
       <h2 class="cs__t" id="cs-t">Isabella Pistillo</h2>
       <p class="cs__lead" data-i18n="cs.lead">Un’artista aveva bisogno di una presenza costante, non di un video. Abbiamo girato un giorno.</p>
       <dl class="cs__kpi">
-        <div><dt>1</dt><dd data-i18n="cs.k1">giornata di riprese</dd></div>
+        <div><dt>1</dt><dd data-i18n="cs.k1">giornata di&nbsp;riprese</dd></div>
         <div><dt>14</dt><dd data-i18n="cs.k2">contenuti consegnati</dd></div>
         <div><dt class="is-res">24</dt><dd data-i18n="cs.k3">in riserva</dd></div>
-        <div><dt>12</dt><dd data-i18n="cs.k4">settimane di post</dd></div>
+        <div><dt>12</dt><dd data-i18n="cs.k4">settimane di&nbsp;post</dd></div>
       </dl>
       <div class="cs__row">
         <p class="cs__rk"><b>5</b> <span data-i18n="cs.sh">short</span> <em data-i18n="cs.sh.d">con l’audio, si aprono</em></p>
@@ -313,7 +315,7 @@
     </div>
   </div>
 
-  <div class="pl" data-pl hidden role="dialog" aria-modal="true" aria-labelledby="pl-t">
+  <div class="pl" data-pl hidden tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="pl-t">
     <div class="pl__bar">
       <button type="button" class="pl__back" data-pl-close><span aria-hidden="true">←</span> <span data-i18n="pl.back">Tutti i lavori</span></button>
       <p class="pl__count" data-pl-count></p>
