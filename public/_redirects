@@ -1,0 +1,4 @@
+# un solo sito: i vecchi indirizzi delle versioni portano alla pagina unica
+/b/*         /           301
+/a/*         /           301
+/isabella/*  /#isabella  301

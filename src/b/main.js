@@ -34,7 +34,6 @@ const EN = {
   's.team': 'Studio', 's.ninni': 'direction, edit, colour', 's.ernesto': 'production and clients', 's.foto': 'Photography · Ninni &amp; Ernesto',
   's.direct': 'Direct', 's.clients': 'Clients', 's.write': 'Write to us', 's.name': 'Name', 's.fmt': 'Format', 's.msg': 'The project, in two lines', 's.send': 'Send',
   's.ok': 'Got it. We’ll reply soon.', 's.err': 'Something went wrong. Write us on WhatsApp.',
-  's.v': 'Version B', 's.other': 'Current version', 's.otherA': 'Version A',
   'all': 'All', 'pl.back': 'All work', 'pl.close': 'Close', 'pl.dl': 'Download original', 'pl.case': 'Open the case', 'drive': 'Watch on Drive',
   'fa.client': 'Client', 'fa.fmt': 'Format', 'fa.ratio': 'Ratio', 'fa.len': 'Length', 'fa.where': 'Where',
 }
