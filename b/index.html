@@ -10,22 +10,26 @@
   <link rel="icon" href="/img/brand/logotipo.svg" type="image/svg+xml" />
 </head>
 <body class="b">
-  <!-- Apertura: solo il prisma -->
+  <!-- Apertura: il prisma nei colori del brand, la luce entra e si apre -->
   <div class="load" data-load aria-hidden="true">
+    <svg class="load__rays" viewBox="0 0 1000 400" preserveAspectRatio="xMidYMid meet">
+      <line class="load__in" x1="0" y1="214" x2="470" y2="200" />
+      <polygon class="load__out load__out--1" points="530,198 1000,120 1000,150" />
+      <polygon class="load__out load__out--2" points="530,200 1000,186 1000,214" />
+      <polygon class="load__out load__out--3" points="530,202 1000,250 1000,280" />
+    </svg>
     <div class="tetra" data-tetra><div class="tetra__in">
       <div class="tf"></div><div class="tf"></div><div class="tf"></div><div class="tf"></div>
     </div></div>
   </div>
 
-  <!-- Il nome spezzato: resta fermo su tutte le schermate -->
-  <div class="nm" data-nm aria-hidden="true">
-    <p class="nm__g nm__g--1"><span>PRI</span><span>SMA PRI</span><span>SM</span><span>A</span></p>
-    <p class="nm__g nm__g--2"><span>STU</span><span>DIO STU</span><span>DI</span><span>O</span></p>
-  </div>
+  <!-- Logo PR/SMA: grande sulla home, piccolo nelle altre schermate -->
+  <a class="lg" href="#home" data-go="0" aria-label="PRISMA, torna all'inizio">
+    <svg viewBox="315 429.8 450 220.4" aria-hidden="true"><use href="#wordmark" /></svg>
+  </a>
 
   <header class="hd">
     <h1 class="sr">PRISMA, studio di produzione video in Puglia</h1>
-    <a class="hd__home" href="#home" data-go="0">PRISMA <span data-i18n="hd.home">Inizio</span></a>
     <nav class="hd__nav" aria-label="Sezioni">
       <a href="#lavori" data-go="1" data-i18n="nav.1">Lavori</a>
       <a href="#formati" data-go="2" data-i18n="nav.2">Formati</a>
@@ -49,57 +53,162 @@
 
     <!-- 01 Lavori: indice dei titoli, anteprima a tutto schermo -->
     <section class="v v--works" data-v="1" id="lavori" aria-labelledby="t-w">
-      <div class="bgv" data-bgv aria-hidden="true"><video muted playsinline loop preload="none"></video><img alt="" /></div>
+      <div class="bgv" data-bgv aria-hidden="true">
+        <img class="bgv__blur" alt="" />
+        <img class="bgv__img" alt="" />
+        <video muted playsinline loop preload="none"></video>
+      </div>
       <h2 class="sr" id="t-w" data-i18n="nav.1">Lavori</h2>
       <div class="band" data-band role="group" aria-label="Filtra"></div>
       <ul class="idx" data-idx></ul>
       <p class="idx__meta" data-idx-meta aria-live="polite"></p>
     </section>
 
-    <!-- 02 Formati -->
+    <!-- 02 Formati: il sistema è il protagonista, gli altri tre si aprono -->
     <section class="v v--fmt" data-v="2" id="formati" aria-labelledby="t-f">
-      <div class="fmt">
-        <h2 class="fmt__h" id="t-f"><span data-i18n="f.h">Una giornata di riprese. Mesi di contenuti.</span></h2>
-        <ol class="fl">
-          <li class="fl__r">
-            <span class="fl__n">A</span><span class="fl__t" data-i18n="f.evento">Reel evento</span>
-            <span class="fl__d" data-i18n="f.evento.d">1 reel verticale fino a 45″, pronto il giorno dopo</span>
-            <span class="fl__p"><span data-i18n="p.da">da</span> <b data-from="evento"></b> <span data-i18n="p.a">a</span> <b data-to="evento"></b></span>
-            <a class="fl__a" href="#studio" data-go="3" data-ask="evento" data-i18n="ask">Chiedi</a>
-          </li>
-          <li class="fl__r">
-            <span class="fl__n">B</span><span class="fl__t" data-i18n="f.social">Short form</span>
-            <span class="fl__d" data-i18n="f.social.d">Serie di video da 7–30″, un solo linguaggio visivo</span>
-            <span class="fl__p"><span data-i18n="p.da">da</span> <b data-from="social"></b> <span data-i18n="p.a">a</span> <b data-to="social"></b></span>
-            <a class="fl__a" href="#studio" data-go="3" data-ask="social" data-i18n="ask">Chiedi</a>
-          </li>
-          <li class="fl__r">
-            <span class="fl__n">C</span><span class="fl__t" data-i18n="f.ed">Editoriale</span>
-            <span class="fl__d" data-i18n="f.ed.d">Il racconto del brand: concept, riprese, montaggio, colore</span>
-            <span class="fl__p"><span data-i18n="p.da">da</span> <b data-from="editoriale"></b> <span data-i18n="p.a">a</span> <b data-to="editoriale"></b></span>
-            <a class="fl__a" href="#studio" data-go="3" data-ask="editoriale" data-i18n="ask">Chiedi</a>
-          </li>
-          <li class="fl__r fl__r--sys">
-            <span class="fl__n">D</span><span class="fl__t" data-i18n="f.sys">Sistema contenuti</span>
-            <span class="fl__d" data-i18n="f.sys.d">14 contenuti pronti, 24 in riserva. Tutto da una giornata</span>
-            <span class="fl__p"><span data-i18n="p.da">da</span> <b data-base></b> <em data-unit></em></span>
-            <a class="fl__a" href="#studio" data-go="3" data-ask="sistema" data-i18n="ask">Chiedi</a>
-          </li>
-        </ol>
-        <div class="kp">
-          <p><b>1</b><span data-i18n="k.1">giornata</span></p>
-          <p><b>38</b><span data-i18n="k.2">contenuti girati</span></p>
-          <p><b>14</b><span data-i18n="k.3">pronti</span></p>
-          <p><b>24</b><span data-i18n="k.4">in riserva, 12 mesi</span></p>
-          <a href="/isabella/" class="kp__a"><span data-i18n="k.case">Caso Isabella Pistillo</span> →</a>
+      <div class="fmt scrl">
+        <article class="sys" aria-labelledby="t-f">
+          <p class="sys__k"><span>D</span> <span data-i18n="sys.k">Consigliato</span></p>
+          <h2 class="sys__h" id="t-f" data-i18n="sys.h">Sistema contenuti</h2>
+          <p class="sys__lead" data-i18n="sys.lead">Una giornata di riprese. Mesi di contenuti.</p>
+
+          <div class="pr" data-prism>
+            <svg class="pr__svg" viewBox="0 0 640 300" aria-hidden="true">
+              <defs>
+                <linearGradient id="prGlass" gradientUnits="userSpaceOnUse" x1="180" y1="240" x2="320" y2="40">
+                  <stop offset="0" stop-color="#C63C11" /><stop offset=".5" stop-color="#EE4212" /><stop offset="1" stop-color="#F8B624" />
+                </linearGradient>
+                <linearGradient id="prShine" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#fff" stop-opacity=".55" /><stop offset=".45" stop-color="#fff" stop-opacity="0" />
+                </linearGradient>
+                <linearGradient id="prR1" x1="0" x2="1"><stop offset="0" stop-color="#C63C11" stop-opacity=".95" /><stop offset="1" stop-color="#C63C11" stop-opacity=".18" /></linearGradient>
+                <linearGradient id="prR2" x1="0" x2="1"><stop offset="0" stop-color="#EE4212" stop-opacity=".95" /><stop offset="1" stop-color="#EE4212" stop-opacity=".18" /></linearGradient>
+                <linearGradient id="prR3" x1="0" x2="1"><stop offset="0" stop-color="#F8B624" stop-opacity=".95" /><stop offset="1" stop-color="#F8B624" stop-opacity=".22" /></linearGradient>
+                <linearGradient id="prIn" x1="0" x2="1"><stop offset="0" stop-color="#0B0A0A" stop-opacity="0" /><stop offset=".35" stop-color="#0B0A0A" stop-opacity=".85" /><stop offset="1" stop-color="#0B0A0A" /></linearGradient>
+                <filter id="prGrain" x="0" y="0" width="100%" height="100%">
+                  <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7" result="n" />
+                  <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0" result="g" />
+                  <feComposite in="g" in2="SourceGraphic" operator="in" result="gi" />
+                  <feMerge><feMergeNode in="SourceGraphic" /><feMergeNode in="gi" /></feMerge>
+                </filter>
+                <filter id="prGlow" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="6" /></filter>
+              </defs>
+              <!-- luce bianca che entra -->
+              <line class="pr__in" x1="0" y1="170" x2="214" y2="139" stroke="url(#prIn)" />
+              <line class="pr__ph pr__ph--in" x1="0" y1="170" x2="214" y2="139" />
+              <!-- i tre fasci che escono -->
+              <g class="pr__out" filter="url(#prGrain)">
+                <polygon class="pr__ray pr__ray--1" points="290,134 640,26 640,62" fill="url(#prR1)" />
+                <polygon class="pr__ray pr__ray--2" points="292,140 640,132 640,168" fill="url(#prR2)" />
+                <polygon class="pr__ray pr__ray--3" points="290,146 640,238 640,274" fill="url(#prR3)" />
+              </g>
+              <g class="pr__glow" filter="url(#prGlow)" aria-hidden="true">
+                <polygon points="290,134 640,26 640,62" fill="#C63C11" opacity=".35" />
+                <polygon points="292,140 640,132 640,168" fill="#EE4212" opacity=".35" />
+                <polygon points="290,146 640,238 640,274" fill="#F8B624" opacity=".45" />
+              </g>
+              <line class="pr__ph" x1="292" y1="136" x2="640" y2="44" />
+              <line class="pr__ph" x1="292" y1="140" x2="640" y2="150" />
+              <line class="pr__ph" x1="292" y1="144" x2="640" y2="256" />
+              <!-- il prisma -->
+              <g class="pr__tri">
+                <polygon points="252,60 332,198.6 172,198.6" fill="url(#prGlass)" filter="url(#prGrain)" />
+                <polygon points="252,60 292,129.3 212,129.3" fill="url(#prShine)" />
+                <line class="pr__beam" x1="214" y1="139" x2="290" y2="140" />
+                <polygon class="pr__edge" points="252,60 332,198.6 172,198.6" />
+              </g>
+            </svg>
+            <ol class="pr__lb">
+              <li class="pr__l pr__l--1"><b data-n="1">1</b> <span data-i18n="pr.1">editoriale</span></li>
+              <li class="pr__l pr__l--2"><b data-n="12">12</b> <span data-i18n="pr.2">short</span></li>
+              <li class="pr__l pr__l--3"><b data-n="25">25</b> <span data-i18n="pr.3">micro</span></li>
+            </ol>
+            <p class="pr__cap" data-i18n="pr.cap">1 shooting entra, 38 contenuti escono</p>
+          </div>
+
+          <dl class="kp">
+            <div><dt>1</dt><dd data-i18n="k.1">giornata di riprese</dd></div>
+            <div><dt>38</dt><dd data-i18n="k.2">contenuti girati</dd></div>
+            <div><dt>14</dt><dd data-i18n="k.3">pronti da pubblicare</dd></div>
+            <div><dt class="is-res">24</dt><dd data-i18n="k.4">nella riserva, 12 mesi</dd></div>
+          </dl>
+          <div class="sys__row">
+            <p class="sys__p"><span data-i18n="p.da">da</span> <b data-base></b> <em data-unit></em></p>
+            <a class="btn" href="#studio" data-go="3" data-ask="sistema"><span data-i18n="sys.ask">Chiedi il sistema</span> →</a>
+            <a class="sys__case" href="/isabella/"><span data-i18n="sys.case">Il sistema applicato: caso Isabella Pistillo</span> →</a>
+          </div>
+          <p class="sys__res" data-i18n="sys.res">La riserva si attiva quando serve: +3 brevi € 99 · +3 brevi e 5 micro € 199 · tutti i 24 € 549</p>
+        </article>
+
+        <div class="one">
+          <p class="one__k" data-i18n="one.k">Oppure un formato singolo</p>
+          <ol class="ac" data-ac>
+            <li class="ac__i" data-fmt="evento">
+              <button type="button" class="ac__h" aria-expanded="false" aria-controls="ac-evento" id="ach-evento">
+                <span class="ac__n">A</span><span class="ac__t" data-i18n="f.evento">Reel evento</span>
+                <span class="ac__p"><span data-i18n="p.da">da</span> <b data-from="evento"></b> <span data-i18n="p.a">a</span> <b data-to="evento"></b></span>
+                <span class="ac__x" aria-hidden="true"></span>
+              </button>
+              <div class="ac__b" id="ac-evento" role="region" aria-labelledby="ach-evento" hidden>
+                <p data-i18n="f.evento.d">Un reel verticale fino a 45″, pronto il giorno dopo l'evento.</p>
+                <ul>
+                  <li data-i18n="f.evento.1">Riprese durante l'evento</li>
+                  <li data-i18n="f.evento.2">Montaggio, colore e musica</li>
+                  <li data-i18n="f.evento.3">Consegna in 9:16 il giorno dopo</li>
+                </ul>
+                <div class="ac__go">
+                  <button type="button" class="ac__ex" data-ex="archemi-evento"><span data-i18n="ex">Guarda un esempio</span> ▶</button>
+                  <a href="#studio" data-go="3" data-ask="evento"><span data-i18n="ask">Chiedi</span> →</a>
+                </div>
+              </div>
+            </li>
+            <li class="ac__i" data-fmt="social">
+              <button type="button" class="ac__h" aria-expanded="false" aria-controls="ac-social" id="ach-social">
+                <span class="ac__n">B</span><span class="ac__t" data-i18n="f.social">Short form</span>
+                <span class="ac__p"><span data-i18n="p.da">da</span> <b data-from="social"></b> <span data-i18n="p.a">a</span> <b data-to="social"></b></span>
+                <span class="ac__x" aria-hidden="true"></span>
+              </button>
+              <div class="ac__b" id="ac-social" role="region" aria-labelledby="ach-social" hidden>
+                <p data-i18n="f.social.d">Una serie di video da 7 a 30″ con un solo linguaggio visivo.</p>
+                <ul>
+                  <li data-i18n="f.social.1">Concept e piano di ripresa</li>
+                  <li data-i18n="f.social.2">Riprese, montaggio, colore, lettering</li>
+                  <li data-i18n="f.social.3">Ogni video in 9:16, 4:5 e 16:9</li>
+                </ul>
+                <div class="ac__go">
+                  <button type="button" class="ac__ex" data-ex="archemi-social"><span data-i18n="ex">Guarda un esempio</span> ▶</button>
+                  <a href="#studio" data-go="3" data-ask="social"><span data-i18n="ask">Chiedi</span> →</a>
+                </div>
+              </div>
+            </li>
+            <li class="ac__i" data-fmt="editoriale">
+              <button type="button" class="ac__h" aria-expanded="false" aria-controls="ac-ed" id="ach-ed">
+                <span class="ac__n">C</span><span class="ac__t" data-i18n="f.ed">Editoriale</span>
+                <span class="ac__p"><span data-i18n="p.da">da</span> <b data-from="editoriale"></b> <span data-i18n="p.a">a</span> <b data-to="editoriale"></b></span>
+                <span class="ac__x" aria-hidden="true"></span>
+              </button>
+              <div class="ac__b" id="ac-ed" role="region" aria-labelledby="ach-ed" hidden>
+                <p data-i18n="f.ed.d">Il racconto del brand, dal concept al colore.</p>
+                <ul>
+                  <li data-i18n="f.ed.1">Una o più giornate di riprese</li>
+                  <li data-i18n="f.ed.2">Regia, luci e audio sul set</li>
+                  <li data-i18n="f.ed.3">Montaggio, color grading, sound design</li>
+                </ul>
+                <div class="ac__go">
+                  <button type="button" class="ac__ex" data-ex="df-marmi"><span data-i18n="ex">Guarda un esempio</span> ▶</button>
+                  <a href="#studio" data-go="3" data-ask="editoriale"><span data-i18n="ask">Chiedi</span> →</a>
+                </div>
+              </div>
+            </li>
+          </ol>
+          <p class="fmt__note" data-i18n="f.note">Trasferte escluse. Il preventivo esatto segue il brief.</p>
         </div>
-        <p class="fmt__note" data-i18n="f.note">Trasferte escluse. Il preventivo esatto segue il brief.</p>
       </div>
     </section>
 
     <!-- 03 Studio -->
     <section class="v v--st" data-v="3" id="studio" aria-labelledby="t-s">
-      <div class="st">
+      <div class="st scrl">
         <h2 class="st__h" id="t-s" data-i18n="s.h">Due persone, dal brief all'export. In Puglia, e dove serve.</h2>
         <div class="st__c">
           <h3 data-i18n="s.team">Studio</h3>
@@ -130,10 +239,10 @@
           <label><span class="sr" data-i18n="s.fmt">Formato</span>
             <select name="formato" data-ask-select>
               <option value="" data-i18n="s.fmt">Formato</option>
+              <option value="sistema" data-i18n="f.sys">Sistema contenuti</option>
               <option value="evento" data-i18n="f.evento">Reel evento</option>
               <option value="social" data-i18n="f.social">Short form</option>
               <option value="editoriale" data-i18n="f.ed">Editoriale</option>
-              <option value="sistema" data-i18n="f.sys">Sistema contenuti</option>
             </select>
           </label>
           <label><span class="sr" data-i18n="s.msg">Il progetto, in due righe</span><input name="messaggio" required placeholder="Il progetto, in due righe" data-ph="s.msg" /></label>
@@ -147,19 +256,53 @@
 
   <p class="pos" aria-hidden="true"><span data-pos>01</span> / 04</p>
 
-  <div class="player" data-player hidden role="dialog" aria-modal="true" aria-label="Video">
-    <video class="player__v" playsinline controls preload="none"></video>
-    <div class="player__bar">
-      <p class="player__t" data-pl-title></p>
-      <div class="player__act">
-        <a data-pl-dl href="#" download><span data-i18n="pl.dl">Scarica originale</span> ↓</a>
-        <button type="button" data-pl-prev aria-label="Precedente">Prec.</button>
-        <button type="button" data-pl-next aria-label="Successivo">Succ.</button>
-        <button type="button" data-pl-close data-i18n="pl.close">Chiudi</button>
-      </div>
+  <!-- Scheda del lavoro: si apre dentro il sito, sotto la testata -->
+  <div class="pl" data-pl hidden role="dialog" aria-modal="true" aria-labelledby="pl-t">
+    <div class="pl__bar">
+      <button type="button" class="pl__back" data-pl-close><span aria-hidden="true">←</span> <span data-i18n="pl.back">Tutti i lavori</span></button>
+      <p class="pl__count" data-pl-count></p>
+      <button type="button" class="pl__x" data-pl-close><span data-i18n="pl.close">Chiudi</span> <span aria-hidden="true">✕</span></button>
     </div>
+    <div class="pl__stage" data-pl-stage>
+      <video class="pl__v" playsinline controls preload="none"></video>
+      <img class="pl__img" alt="" hidden />
+      <a class="pl__drive btn btn--light" data-pl-drive href="#" target="_blank" rel="noopener" hidden><span data-i18n="drive">Guarda su Drive</span> ↗</a>
+    </div>
+    <aside class="pl__info">
+      <p class="pl__k" data-pl-cat></p>
+      <h2 class="pl__t" id="pl-t" data-pl-title></h2>
+      <p class="pl__sub" data-pl-sub></p>
+      <dl class="pl__facts" data-pl-facts></dl>
+      <div class="pl__act">
+        <a class="btn" data-pl-dl href="#" download><span data-i18n="pl.dl">Scarica originale</span> ↓</a>
+        <a class="pl__case" data-pl-case href="#" hidden><span data-i18n="pl.case">Apri il caso</span> →</a>
+      </div>
+      <div class="pl__nav">
+        <button type="button" data-pl-prev><span aria-hidden="true">←</span> <span data-pl-prev-t></span></button>
+        <button type="button" data-pl-next><span data-pl-next-t></span> <span aria-hidden="true">→</span></button>
+      </div>
+    </aside>
   </div>
 
+  <!-- Logo PR/SMA del brand manual -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="wmGrad" x1="454.68" y1="539.93" x2="542.21" y2="539.93" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#000" /><stop offset=".41" stop-color="#ee4212" /><stop offset=".75" stop-color="#f8b624" /><stop offset="1" stop-color="#e6dede" />
+      </linearGradient>
+      <linearGradient id="wmGradLight" x1="454.68" y1="539.93" x2="542.21" y2="539.93" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#C63C11" /><stop offset=".45" stop-color="#ee4212" /><stop offset="1" stop-color="#f8b624" />
+      </linearGradient>
+      <g id="wordmark">
+        <path fill="currentColor" d="M375.6,473.89v41.59c0,30.3,0,44.07-22.04,44.07h-11.02v89.25c0,.83-.55,1.38-1.38,1.38h-24.79c-.83,0-1.38-.55-1.38-1.38v-217.6c0-.83.55-1.38,1.38-1.38h37.19c22.04,0,22.04,13.77,22.04,44.07ZM348.05,454.61h-5.51v80.16h5.51v-80.16Z" />
+        <path fill="currentColor" d="M444.18,650.18h-25.34c-.55,0-1.38-.55-1.65-1.1-3.58-5.51-3.58-15.15-3.58-20.38l.55-83.19h-5.51v103.29c0,.83-.55,1.38-1.38,1.38h-24.79c-.83,0-1.38-.55-1.38-1.38v-217.6c0-.83.55-1.38,1.38-1.38h37.19c22.04,0,22.04,13.77,22.04,44.07v39.39c0,14.87-8.54,19.28-12.95,19.83v2.75c4.13.55,12.95,4.96,12.95,19.83v72.99c0,4.68,0,14.32,3.31,19.83.55.83,0,1.65-.83,1.65ZM414.16,523.47v-68.86h-5.51v68.86h5.51Z" />
+        <path fill="currentColor" d="M583.76,454.61h-5.51v56.47c0,3.03,0,6.06,5.51,11.02l13.77,13.77c12.4,12.39,13.77,12.67,13.77,34.98v35.26c0,30.3,0,44.07-22.04,44.07h-16.53c-22.04,0-22.04-13.77-22.04-44.07v-44.35c0-.83.55-1.38,1.38-1.38h24.79c.83,0,1.38.55,1.38,1.38v63.63h5.51v-59.22c0-3.03.28-6.89-5.51-11.02l-11.02-9.64c-14.6-12.95-16.53-18.18-16.53-40.49v-31.13c0-30.3,0-44.07,22.04-44.07h16.53c22.04,0,22.04,13.77,22.04,44.07v41.59c0,.83-.55,1.38-1.38,1.38h-24.79c-.83,0-1.38-.55-1.38-1.38v-60.87Z" />
+        <path fill="currentColor" d="M618.19,650.18c-.83,0-1.38-.55-1.38-1.38v-217.6c0-.83.55-1.38,1.38-1.38h30.3c.83,0,1.38.28,1.38,1.38l7.44,106.05h1.38l7.16-106.05c0-1.1.55-1.38,1.38-1.38h30.3c.83,0,1.38.55,1.38,1.38v217.6c0,.83-.55,1.38-1.38,1.38h-24.79c-.83,0-1.38-.55-1.38-1.38v-119.82h-1.38l-6.61,119.82c0,1.1-.55,1.38-1.38,1.38h-8.26c-.83,0-1.38-.28-1.38-1.38l-6.61-119.82h-1.38v119.82c0,.83-.55,1.38-1.38,1.38h-24.79Z" />
+        <path fill="currentColor" d="M765,648.8c0,1.1-.55,1.38-1.38,1.38h-24.79c-.83,0-1.38-.28-1.38-1.38l-.55-60.6h-5.78l-.55,60.6c0,1.1-.55,1.38-1.38,1.38h-24.79c-.83,0-1.38-.28-1.38-1.38l3.86-217.6c0-1.1.55-1.38,1.38-1.38h51.51c.83,0,1.38.28,1.38,1.38l3.86,217.6ZM731.12,566.17h5.78l-.83-111.56h-4.13l-.83,111.56Z" />
+        <polygon class="lg__slash" points="513.69 429.82 454.68 650.04 483.2 650.04 542.21 429.82 513.69 429.82" />
+      </g>
+    </defs>
+  </svg>
   <script type="module" src="/src/b/main.js"></script>
 </body>
 </html>
