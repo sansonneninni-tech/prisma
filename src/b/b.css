@@ -271,7 +271,7 @@ body.is-pl .pos { visibility: hidden; }
 .pr__cal { position: absolute; left: 0; right: 0; bottom: 0; display: grid; gap: 8px; }
 .pr__ticks { display: grid; grid-template-columns: repeat(38, 1fr); gap: 3px; height: 14px; }
 .pr__ticks i { display: block; border: 1px solid var(--line); background: transparent; transition: background .45s var(--out), border-color .45s var(--out); }
-.pr__ticks i.is-shot { border-color: rgba(11, 10, 10, .4); }
+.pr__ticks i.is-shot { border-color: rgba(11, 10, 10, .6); }
 .pr__ticks i.is-rdy { background: var(--ink); border-color: var(--ink); }
 .pr__ticks i.is-res { border-color: #E8722A; background: rgba(240, 120, 18, .14); }
 .pr__calk { display: flex; justify-content: space-between; gap: 12px; color: var(--ink-2); }
@@ -370,8 +370,11 @@ body.is-pl .pos { visibility: hidden; }
 /* ============ Tablet ============ */
 @media (max-width: 1024px) {
   .fmt { scroll-snap-type: y proximity; }
-  .fp--sys { grid-template-columns: 1fr; align-content: start; gap: 26px; }
-  .pr { max-width: 640px; justify-self: stretch; }
+  .fp--sys { display: flex; flex-direction: column; justify-content: center; align-items: stretch; gap: clamp(10px, 1.7vh, 16px); }
+  .sys__txt { display: contents; }
+  .sys__k { order: 1; } .sys__h { order: 2; } .sys__lead { order: 3; }
+  .pr { order: 4; max-width: 640px; width: 100%; align-self: center; margin: 6px 0 4px; }
+  .stp { order: 5; } .sys__row { order: 6; } .sys__case { order: 7; align-self: flex-start; } .sys__res { order: 8; }
   .scrl { max-height: 100%; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
   .scrl::-webkit-scrollbar { display: none; }
   .st { grid-template-columns: repeat(3, 1fr); }
@@ -408,6 +411,8 @@ body.is-pl .pos { visibility: hidden; }
   .v--st { padding: calc(var(--hd) + 10px) var(--pad) 36px; align-items: start; }
   .fp { padding: calc(var(--hd) + 14px) var(--pad) 48px; }
   .fp--one { place-items: start stretch; align-content: center; }
+  .fp__cue { left: auto; right: var(--pad); transform: none; }
+  .pos { display: none; }
   .sys__txt { gap: 10px; }
   .sys__h, .one__h { font-size: 34px; }
   .pr__src b, .pr__l b { font-size: 16px; }

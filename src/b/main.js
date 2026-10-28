@@ -16,11 +16,12 @@ const EN = {
   'nav.1': 'Work', 'nav.2': 'Formats', 'nav.3': 'Studio',
   'pp.pause': 'Pause', 'pp.play': 'Play', 'cue': 'Scroll to discover',
   'sys.k': 'Recommended', 'sys.h': 'Content system', 'sys.lead': 'One shoot day. Months of content.',
-  'pr.1': 'editorial', 'pr.2': 'short', 'pr.3': 'micro', 'pr.cap': '1 shoot goes in, 38 pieces come out',
-  'k.1': 'shoot day', 'k.2': 'pieces shot', 'k.3': 'ready to post', 'k.4': 'in the reserve, 12 months',
+  'pr.1': 'editorial', 'pr.2': 'short', 'pr.3': 'micro', 'pr.src': 'shoot day',
+  'st.1': 'shoot day', 'st.2': 'pieces shot, one visual language', 'st.3': 'editorial, short, micro', 'st.4': 'ready to post, in the reserve for 12 months',
+  'cal.1': 'ready', 'cal.2': 'in the reserve, 12 months', 'cue.sys': 'Recommended: the content system', 'one.h': 'Three formats',
   'sys.ask': 'Ask for the system', 'sys.case': 'The system at work: Isabella Pistillo',
   'sys.res': 'The reserve opens when you need it: +3 short €99 · +3 short and 5 micro €199 · all 24 €549',
-  'one.k': 'Or a single format',
+  'one.k': 'Formats',
   'f.evento': 'Event reel', 'f.evento.d': 'One vertical reel up to 45″, ready the day after the event.',
   'f.evento.1': 'Filming during the event', 'f.evento.2': 'Edit, colour and music', 'f.evento.3': 'Delivered in 9:16 the next day',
   'f.social': 'Short form', 'f.social.d': 'A series of 7 to 30″ videos with one visual language.',
@@ -297,31 +298,92 @@ ac.addEventListener('click', (e) => {
   if (ex) { const w = all.find(x => x.id === ex.dataset.ex); if (w) plOpen(w, [w, ...all.filter(x => x.cat === w.cat && x !== w)]) }
 })
 
-const prism = $('[data-prism]')
-let prLoop = null, prIntroDone = false
-function prismOn() {
-  if (reduced) return
-  if (!prLoop) {
-    prLoop = gsap.timeline({ repeat: -1, yoyo: true })
-      .to('#prEdge', { attr: { x1: 118, x2: 282 }, duration: 3.4, ease: 'sine.inOut' }, 0)
-      .to('.pr__warm', { scale: 1.06, transformOrigin: '50% 50%', duration: 3.4, ease: 'sine.inOut' }, 0)
-  }
-  if (!prIntroDone) {
-    prIntroDone = true
-    const nums = $$('.pr__l b', prism)
-    const rays = $$('.pr__rays line', prism)
-    rays.forEach(l => { const n = l.getTotalLength(); l.style.strokeDasharray = n; l.style.strokeDashoffset = n })
-    gsap.timeline({ delay: .3 })
-      .fromTo('.pr__in', { attr: { x2: 0, y2: 152 } }, { attr: { x2: 205, y2: 126 }, duration: .8, ease: 'power2.inOut' })
-      .fromTo(['.pr__body', '.pr__line', '.pr__edge'], { opacity: 0, scale: .92, transformOrigin: '50% 60%' }, { opacity: 1, scale: 1, duration: .8, ease: 'expo.out' }, '-=.35')
-      .fromTo('.pr__beam', { attr: { x2: 205 } }, { attr: { x2: 296 }, duration: .35, ease: 'none' }, '-=.45')
-      .to(rays, { strokeDashoffset: 0, duration: 1.1, ease: 'expo.out', stagger: .04 }, '-=.05')
-      .fromTo('.pr__l', { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: .6, ease: 'expo.out', stagger: .08 }, '-=.8')
-      .add(() => nums.forEach(b => { const o = { v: 0 }; gsap.to(o, { v: +b.dataset.n, duration: .9, ease: 'power2.out', onUpdate: () => { b.textContent = Math.round(o.v) } }) }), '-=.75')
-  }
-  prLoop.play()
+/* ---------- sistema contenuti: compare scorrendo e racconta i passaggi ---------- */
+const fmtSc = $('[data-fmt-scroll]'), sysEl = $('#sistema'), prism = $('[data-prism]')
+const steps = $$('.stp__i'), stpList = $('[data-steps]')
+const ticksEl = $('[data-ticks]')
+for (let i = 0; i < 38; i++) ticksEl.append(document.createElement('i'))
+const ticks = $$('i', ticksEl)
+const rays = $$('.pr__rays line', prism)
+rays.forEach(l => { l.dataset.x = l.getAttribute('x2'); l.dataset.y = l.getAttribute('y2') })
+const dotsG = $('.pr__dots', prism)
+const SVGNS = 'http://www.w3.org/2000/svg'
+const IN = [[0, 152], [285, 126], [375, 126]]
+let sysTl = null, sysLoop = null, sysSeen = false
+const stepOn = (n) => () => { steps.forEach((li, k) => li.classList.toggle('is-on', k === n)); stpList.classList.remove('is-done') }
+function countUp(el, to, d = .9) { const o = { v: 0 }; return gsap.to(o, { v: to, duration: d, ease: 'power2.out', onUpdate: () => { el.textContent = Math.round(o.v) } }) }
+function sysFinal() {
+  steps.forEach(li => li.classList.remove('is-on')); stpList.classList.add('is-done')
+  ticks.forEach((t, k) => { t.className = k < 14 ? 'is-rdy' : 'is-res' })
+  gsap.set(['.pr__in', '.pr__beam', '.pr__body', '.pr__line', '.pr__edge', '.pr__src', '.pr__l', '.pr__cal', '.pr__calk > span'], { clearProps: 'all' })
+  rays.forEach(l => { l.setAttribute('x2', l.dataset.x); l.setAttribute('y2', l.dataset.y) })
+  $$('.pr__l b', prism).forEach(b => { b.textContent = b.dataset.n })
 }
-function prismOff() { prLoop?.pause() }
+/* la luce che continua a scorrere: un impulso entra nel prisma e si divide nei raggi */
+function pulse() {
+  const tl = gsap.timeline()
+  const c = document.createElementNS(SVGNS, 'circle')
+  c.setAttribute('r', 3); c.setAttribute('cx', IN[0][0]); c.setAttribute('cy', IN[0][1]); c.setAttribute('fill', '#0B0A0A'); dotsG.append(c)
+  tl.fromTo(c, { attr: { cx: IN[0][0], cy: IN[0][1] }, opacity: 0 }, { attr: { cx: IN[1][0], cy: IN[1][1] }, opacity: 1, duration: 1.1, ease: 'power1.in' })
+    .to(c, { attr: { cx: IN[2][0], cy: IN[2][1] }, fill: '#E8722A', duration: .35, ease: 'none' })
+    .add(() => c.remove())
+  rays.forEach((l) => {
+    const d = document.createElementNS(SVGNS, 'circle')
+    d.setAttribute('r', 2.4); d.setAttribute('cx', 375); d.setAttribute('cy', 126); d.setAttribute('fill', l.getAttribute('stroke')); d.setAttribute('opacity', 0); dotsG.append(d)
+    tl.fromTo(d, { attr: { cx: 375, cy: 126 }, opacity: 1 }, { attr: { cx: +l.dataset.x, cy: +l.dataset.y }, opacity: 0, duration: 1.5, ease: 'power1.out', onComplete: () => d.remove() }, 1.45)
+  })
+  return tl
+}
+function sysPlay() {
+  sysTl?.kill(); sysLoop?.kill(); dotsG.innerHTML = ''
+  if (reduced) { sysFinal(); return }
+  ticks.forEach(t => { t.className = '' })
+  rays.forEach(l => { l.setAttribute('x2', 375); l.setAttribute('y2', 126) })
+  const nums = $$('.pr__l b', prism)
+  nums.forEach(b => { b.textContent = '0' })
+  sysTl = gsap.timeline({ defaults: { ease: 'expo.out' }, onComplete: () => { sysFinal(); sysLoop = gsap.timeline({ repeat: -1, repeatDelay: .9 }).add(pulse()) } })
+  sysTl
+    /* 01 · una giornata di riprese: la luce entra */
+    .add(stepOn(0))
+    .set(['.pr__body', '.pr__line', '.pr__edge', '.pr__beam', '.pr__l', '.pr__cal'], { opacity: 0 })
+    .fromTo('.pr__src', { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: .6 }, 0)
+    .fromTo('.pr__in', { attr: { x2: 0, y2: 152 } }, { attr: { x2: 285, y2: 126 }, duration: 1.1, ease: 'power2.inOut' }, .1)
+    .set('.pr__cal', { opacity: 1 }, .2)
+    .set('.pr__calk > span', { opacity: 0 }, .2)
+    .add(() => ticks.forEach((t, k) => setTimeout(() => t.classList.add('is-shot'), k * 18)), .35)
+    /* 02 · 38 contenuti girati, un solo linguaggio: il prisma si accende */
+    .add(stepOn(1), 1.3)
+    .fromTo(['.pr__body', '.pr__line', '.pr__edge'], { opacity: 0, scale: .9, transformOrigin: '50% 60%' }, { opacity: 1, scale: 1, duration: .9, stagger: .06 }, 1.3)
+    .fromTo('.pr__beam', { opacity: 0, attr: { x2: 285 } }, { opacity: .8, attr: { x2: 375 }, duration: .5, ease: 'none' }, 1.9)
+    /* 03 · 1 editoriale, 12 short, 25 micro: i raggi si separano */
+    .add(stepOn(2), 2.5)
+    .to(rays.filter(l => l.dataset.g === '1'), { attr: { x2: (i, el) => +el.dataset.x, y2: (i, el) => +el.dataset.y }, duration: 1 }, 2.5)
+    .fromTo('.pr__l--1', { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: .5 }, 2.75)
+    .add(() => countUp(nums[0], 1, .3), 2.75)
+    .to(rays.filter(l => l.dataset.g === '2'), { attr: { x2: (i, el) => +el.dataset.x, y2: (i, el) => +el.dataset.y }, duration: 1, stagger: .05 }, 2.95)
+    .fromTo('.pr__l--2', { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: .5 }, 3.2)
+    .add(() => countUp(nums[1], 12, .7), 3.2)
+    .to(rays.filter(l => l.dataset.g === '3'), { attr: { x2: (i, el) => +el.dataset.x, y2: (i, el) => +el.dataset.y }, duration: 1, stagger: .05 }, 3.4)
+    .fromTo('.pr__l--3', { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: .5 }, 3.65)
+    .add(() => countUp(nums[2], 25, .9), 3.65)
+    /* 04 · 14 pronti subito, 24 in riserva per 12 mesi */
+    .add(stepOn(3), 4.6)
+    .fromTo('.pr__calk > span', { opacity: 0, y: 4 }, { opacity: 1, y: 0, duration: .6, stagger: .5 }, 4.75)
+    .add(() => ticks.forEach((t, k) => setTimeout(() => { t.classList.add(k < 14 ? 'is-rdy' : 'is-res') }, (k < 14 ? k : 14 + (k - 14) * .5) * 34)), 4.7)
+    .to({}, { duration: 1.6 })
+}
+function sysReset() { sysTl?.kill(); sysLoop?.kill(); dotsG.innerHTML = ''; sysSeen = false }
+let edgeLoop = null
+function prismOn() { if (reduced) return; edgeLoop ??= gsap.timeline({ repeat: -1, yoyo: true }).to('#prEdge', { attr: { x1: 198, x2: 362 }, duration: 3.4, ease: 'sine.inOut' }, 0).to('.pr__warm', { scale: 1.06, transformOrigin: '50% 50%', duration: 3.4, ease: 'sine.inOut' }, 0); edgeLoop.play(); sysLoop?.play() }
+function prismOff() { edgeLoop?.pause(); sysLoop?.pause() }
+new IntersectionObserver((es) => {
+  es.forEach(e => {
+    if (e.isIntersecting && e.intersectionRatio > .5 && !sysSeen) { sysSeen = true; sysPlay() }
+    if (!e.isIntersecting) sysReset()
+  })
+}, { root: fmtSc, threshold: [0, .55] }).observe(sysEl)
+$('[data-to-sys]').addEventListener('click', (e) => { e.preventDefault(); fmtSc.scrollTo({ top: sysEl.offsetTop, behavior: reduced ? 'auto' : 'smooth' }) })
+sysFinal()
 
 /* ---------- schermate ---------- */
 const views = $$('[data-v]')
