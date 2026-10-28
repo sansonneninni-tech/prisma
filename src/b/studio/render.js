@@ -31,7 +31,7 @@ export const ANIMS = [
   { id: 'rise', it: 'Sale', en: 'Rise' }, { id: 'words', it: 'Parola per parola', en: 'Word by word' },
 ]
 export const clamp = (v, a, b) => Math.min(b, Math.max(a, v))
-export const defaultState = () => ({ text: '', font: 'instrument', size: 'm', color: '#050203', shadow: false, anim: 'fade', x: 0.5, y: 0.5 })
+export const defaultState = () => ({ text: '', font: 'instrument', size: 'm', color: '#F4EFE6', shadow: true, anim: 'fade', x: 0.5, y: 0.5 })
 export function sanitizeState(s) {
   const d = defaultState()
   if (!s || typeof s !== 'object') return d

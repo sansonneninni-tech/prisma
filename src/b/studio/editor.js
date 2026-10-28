@@ -12,19 +12,19 @@ export const store = {
 
 const TX = {
   it: {
-    close: '← Torna al caso', title: 'Micro', of: 'di', reset: 'Ricomincia', sure: 'Sicura? Tocca ancora', text: 'Testo', ph: 'Scrivi qui il tuo testo', done: 'Fatto',
+    close: '← Torna al caso', closeS: '← Caso', title: 'Micro', of: 'di', reset: 'Ricomincia', sure: 'Sicura? Tocca ancora', text: 'Testo', ph: 'Scrivi qui il tuo testo', done: 'Fatto',
     font: 'Font', size: 'Misura', color: 'Colore', shadow: 'Ombra', no: 'No', yes: 'Sì', anim: 'Animazione', pos: 'Posizione', center: 'Centra',
     hint: 'Trascina il testo sul video', save: 'Scarica il video', note: 'MP4 1080×1350 con l’audio originale',
     noexp: 'Per scaricare il video aggiorna Chrome o Safari.', sound: 'Audio', exp: 'Preparo il video', cancel: 'Annulla',
-    share: 'Salva video', ready: 'Il video è pronto', again: 'Scarica di nuovo', back: 'Torna allo studio', err: 'Non è andata. Riprova.',
+    share: 'Salva video', ready: 'Il video è pronto', again: 'Scarica di nuovo', back: 'Torna al micro', err: 'Non è andata. Riprova.',
     write: 'Scrivi qui', prev: 'Micro precedente', next: 'Micro successivo',
   },
   en: {
-    close: '← Back to the case', title: 'Micro', of: 'of', reset: 'Start over', sure: 'Sure? Tap again', text: 'Text', ph: 'Write your text here', done: 'Done',
+    close: '← Back to the case', closeS: '← Case', title: 'Micro', of: 'of', reset: 'Start over', sure: 'Sure? Tap again', text: 'Text', ph: 'Write your text here', done: 'Done',
     font: 'Font', size: 'Size', color: 'Colour', shadow: 'Shadow', no: 'No', yes: 'Yes', anim: 'Animation', pos: 'Position', center: 'Centre',
     hint: 'Drag the text on the video', save: 'Download the video', note: 'MP4 1080×1350 with the original audio',
     noexp: 'To download the video, update Chrome or Safari.', sound: 'Sound', exp: 'Preparing the video', cancel: 'Cancel',
-    share: 'Save video', ready: 'Your video is ready', again: 'Download again', back: 'Back to the studio', err: 'That didn’t work. Try again.',
+    share: 'Save video', ready: 'Your video is ready', again: 'Download again', back: 'Back to the micro', err: 'That didn’t work. Try again.',
     write: 'Write here', prev: 'Previous micro', next: 'Next micro',
   },
 }
@@ -44,7 +44,7 @@ export function createEditor({ items, lang = () => 'it', onClose = () => {} }) {
     root.setAttribute('aria-label', `${t.title} — Isabella Pistillo`)
     root.innerHTML = `
       <header class="se__bar">
-        <button type="button" class="se__close" data-x>${t.close}</button>
+        <button type="button" class="se__close" data-x><span class="se__cl">${t.close}</span><span class="se__cs" aria-hidden="true">${t.closeS}</span></button>
         <div class="se__nav">
           <button type="button" class="se__arrow" data-step="-1" aria-label="${t.prev}">←</button>
           <p class="se__title">${t.title} <b data-num></b> <span data-count></span></p>
@@ -100,7 +100,7 @@ export function createEditor({ items, lang = () => 'it', onClose = () => {} }) {
 
   function wire() {
     video = $('.se__video'); cv = $('[data-cv]'); ctx = cv.getContext('2d'); frame = $('[data-frame]')
-    $('[data-x]').addEventListener('click', close)
+    $('[data-x]').addEventListener('click', () => close())
     $$('[data-step]').forEach(b => b.addEventListener('click', () => go(i + +b.dataset.step)))
     const ta = $('[data-text]')
     ta.addEventListener('input', () => { state.text = ta.value; commit(); $('[data-done]').hidden = false })
@@ -117,7 +117,7 @@ export function createEditor({ items, lang = () => 'it', onClose = () => {} }) {
       Object.assign(state, clampPosition(state)); commit()
     })
     $('[data-shadow]').addEventListener('click', () => { state.shadow = !state.shadow; commit() })
-    $('[data-center]').addEventListener('click', (e) => { state.x = 0.5; state.y = 0.5; commit(); e.currentTarget.classList.add('is-hit'); setTimeout(() => e.currentTarget.classList.remove('is-hit'), 700) })
+    $('[data-center]').addEventListener('click', (e) => { const b = e.currentTarget; state.x = 0.5; state.y = 0.5; commit(); b.classList.add('is-hit'); setTimeout(() => b.classList.remove('is-hit'), 700) })
     const rs = $('[data-reset]'); let rsT = 0
     rs.addEventListener('click', () => {
       if (!rs.classList.contains('is-confirm')) { rs.classList.add('is-confirm'); rs.textContent = L().sure; clearTimeout(rsT); rsT = setTimeout(() => { rs.classList.remove('is-confirm'); rs.textContent = L().reset }, 3200); return }
@@ -219,17 +219,27 @@ export function createEditor({ items, lang = () => 'it', onClose = () => {} }) {
   }
   function onKey(e) {
     if (root.hidden) return
-    if (e.key === 'Escape') { if (!$('[data-exp]').hidden) { ac?.abort(); return } close(); return }
+    if (e.key === 'Escape') {
+      /* l'Esc chiude solo l'editor, non il caso sotto */
+      e.stopPropagation(); e.preventDefault()
+      const exp = $('[data-exp]')
+      if (!exp.hidden) { if (busy) ac?.abort(); else { exp.hidden = true; video.play().catch(() => {}) } return }
+      close(); return
+    }
     if (e.target.closest?.('textarea')) return
     if (e.key === 'ArrowRight') go(i + 1)
     if (e.key === 'ArrowLeft') go(i - 1)
     if (e.key === 'Tab') {
-      const f = $$('button, textarea').filter(el => el.offsetParent !== null && !el.closest('[hidden]'))
+      const exp = $('[data-exp]')
+      const f = $$(exp.hidden ? 'button, textarea' : '[data-exp] button').filter(el => el.offsetParent !== null && !el.closest('[hidden]') && getComputedStyle(el).visibility !== 'hidden')
       const k = f.indexOf(document.activeElement)
-      if (e.shiftKey && k <= 0) { e.preventDefault(); f[f.length - 1].focus() } else if (!e.shiftKey && k === f.length - 1) { e.preventDefault(); f[0].focus() }
+      if (k < 0) { e.preventDefault(); (e.shiftKey ? f[f.length - 1] : f[0])?.focus() } else if (e.shiftKey && k === 0) { e.preventDefault(); f[f.length - 1].focus() } else if (!e.shiftKey && k === f.length - 1) { e.preventDefault(); f[0].focus() }
     }
   }
   addEventListener('keydown', onKey, true)
+  /* il tasto indietro (e il gesto su Android) chiude l'editor e torna al caso */
+  let pushed = false, busy = false
+  addEventListener('popstate', () => { if (!root.hidden && pushed) { pushed = false; close(true) } })
 
   async function doExport() {
     if (!canExport()) return
@@ -238,12 +248,13 @@ export function createEditor({ items, lang = () => 'it', onClose = () => {} }) {
     const t = L()
     exp.hidden = false; k.textContent = t.exp; prog.style.transform = 'scaleX(0)'; pct.textContent = '0%'
     btns.innerHTML = `<button type="button" class="se__pill" data-cancel>${t.cancel}</button>`
-    ac = new AbortController()
+    ac = new AbortController(); busy = true
     btns.querySelector('[data-cancel]').addEventListener('click', () => ac.abort())
     video.pause()
     try {
       if (!fontsReady) { await loadFonts(); fontsReady = true }
       const blob = await exportVideo({ url: it.original, state: snap, signal: ac.signal, onProgress: (p) => { prog.style.transform = `scaleX(${p})`; pct.textContent = `${Math.round(p * 100)}%` } })
+      busy = false
       const name = `Isabella-Micro-${it.n}.mp4`
       const file = new File([blob], name, { type: 'video/mp4' })
       k.textContent = t.ready
@@ -257,7 +268,9 @@ export function createEditor({ items, lang = () => 'it', onClose = () => {} }) {
         btns.querySelector('[data-again]').addEventListener('click', dl)
       }
       btns.querySelector('[data-back]').addEventListener('click', () => { exp.hidden = true; video.play().catch(() => {}) })
+      btns.querySelector('button')?.focus()
     } catch (e) {
+      busy = false
       if (e instanceof ExportCanceled) { exp.hidden = true; video.play().catch(() => {}); return }
       console.error(e)
       k.textContent = t.err
@@ -276,15 +289,20 @@ export function createEditor({ items, lang = () => 'it', onClose = () => {} }) {
     cancelAnimationFrame(raf); draw()
     loadFonts().then(() => { fontsReady = true })
     $('[data-x]').focus({ preventScroll: true })
+    history.pushState({ se: 1 }, '', location.hash); pushed = true
   }
-  function close() {
-    if (root.hidden) return
+  /* quiet: chi chiama gestisce la cronologia; restituisce se c'era un passo da togliere */
+  function close(quiet = false) {
+    if (root.hidden) return false
+    const had = pushed; pushed = false
+    if (had && !quiet) history.back()
     ac?.abort()
     cancelAnimationFrame(raf)
     video.pause(); video.removeAttribute('src'); video.load()
     root.hidden = true; document.body.classList.remove('is-se')
     onClose()
     focusBack?.focus?.({ preventScroll: true })
+    return had
   }
   return { open, close, get isOpen() { return !root.hidden } }
 }

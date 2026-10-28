@@ -20,7 +20,7 @@ const EN = {
   'st.1': 'shoot day', 'st.2': 'pieces shot, one visual language', 'st.3': 'editorial, short, micro', 'st.4': 'ready to post, in the reserve for 12 months',
   'cal.1': 'ready', 'cal.2': 'in the reserve, 12 months', 'cue.sys': 'Recommended: the content system', 'one.h': 'Three formats',
   'sys.ask': 'Ask for the system', 'sys.case': 'The system at work: Isabella Pistillo',
-  'sys.res': 'The reserve opens when you need it: +3 short €99 · +3 short and 5 micro €199 · all 24 €549',
+  'sys.res': 'The reserve opens when you need it: +3&nbsp;short&nbsp;€99 · +3&nbsp;short and&nbsp;5&nbsp;micro&nbsp;€199 · all&nbsp;24&nbsp;€549',
   'one.k': 'Formats',
   'f.evento': 'Event reel', 'f.evento.d': 'One vertical reel up to 45″, ready the day after the event.',
   'f.evento.1': 'Filming during the event', 'f.evento.2': 'Edit, colour and music', 'f.evento.3': 'Delivered in 9:16 the next day',
@@ -239,7 +239,19 @@ function plShow() {
   history.replaceState({ pl: 1 }, '', w.short ? '#isabella' : `#lavori/${w.id}`)
 }
 plV.addEventListener('loadedmetadata', () => { const w = plList[plIdx]; if (w?.src) facts(w, fmtTime(plV.duration)) })
+/* il fuoco resta nella finestra aperta (e nella testata): solo elementi che lo prendono davvero */
+function trapTab(e, box) {
+  const ok = (el) => el.offsetParent !== null && !el.closest('[hidden]') && el.tabIndex >= 0 && getComputedStyle(el).visibility !== 'hidden' && !(el.tagName === 'VIDEO' && !el.controls)
+  const f = [$('.lg'), ...$$('.hd a, .hd button'), ...$$('button, a[href], video', box)].filter(ok)
+  if (!f.length) return
+  /* si muove sempre a mano: la testata e la finestra non sono vicine nel documento */
+  const i = f.indexOf(document.activeElement)
+  e.preventDefault()
+  const n = i < 0 ? (e.shiftKey ? f.length - 1 : 0) : (i + (e.shiftKey ? -1 : 1) + f.length) % f.length
+  f[n].focus()
+}
 function plOpen(w, list = listFor(), push = true, back = null) {
+  pl.dataset.back = back || ''
   plList = list.includes(w) ? list : all
   $('.pl__back [data-i18n]', pl).textContent = back || t('pl.back')
   plIdx = Math.max(0, plList.indexOf(w))
@@ -267,7 +279,7 @@ function plClose(fromPop = false) {
       plV.removeAttribute('src'); plV.load()
       document.body.classList.remove('is-pl')
       history.replaceState(null, '', csOpenNow() ? '#isabella' : `#${HASH[cur]}`)
-      $('.pl__back [data-i18n]', pl).textContent = t('pl.back')
+      pl.dataset.back = ''; $('.pl__back [data-i18n]', pl).textContent = t('pl.back')
       if (cur === 0 && !csOpenNow()) playReel()
       plFocus?.focus?.({ preventScroll: true })
     },
@@ -284,9 +296,7 @@ addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight' && e.target !== plV) plStep(1)
   if (e.key === 'ArrowLeft' && e.target !== plV) plStep(-1)
   if (e.key === 'Tab') { // il fuoco resta nella scheda (e nella testata)
-    const f = [$('.lg'), ...$$('.hd a, .hd button'), ...$$('button, a[href], video', pl)].filter(el => el.offsetParent !== null && !el.closest('[hidden]'))
-    const i = f.indexOf(document.activeElement)
-    if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus() } else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus() }
+    trapTab(e, pl)
   }
 })
 idx.addEventListener('click', (e) => {
@@ -311,7 +321,7 @@ const MICROS = [1, 2, 3, 4, 5, 6, 7, 8].map(n => ({
   n, poster: M(`isabella-micro-${n}`, 'poster.jpg'), preview: M(`isabella-micro-${n}`, 'preview.mp4'), src: M(`isabella-micro-${n}`, 'web.mp4'), original: `/originali/isabella-micro-${n}.mp4`,
 }))
 let csPushed = false, csFocus = null, csBuilt = false, editor = null, fontsP = null
-const fmtMB = (b) => `· ${(b / 1048576).toFixed(0)} MB`
+const fmtMB = (b) => `${(b / 1048576).toFixed(0)} MB`
 function thumb(kind, it, k) {
   const b = document.createElement('button')
   b.type = 'button'; b.className = `cs__tb cs__tb--${kind}`; b.dataset.k = k
@@ -341,6 +351,9 @@ async function paintMicros() {
     if (st?.text) drawText(x, st, 99, c.width / FRAME_W)
   })
 }
+/* le miniature si ridisegnano quando cambiano misura */
+let miRaf = 0
+new ResizeObserver(() => { if (!csOpenNow() || !$('canvas', cs)) return; cancelAnimationFrame(miRaf); miRaf = requestAnimationFrame(() => paintMicros()) }).observe($('[data-mi]', cs))
 function edIdle() {
   ed.dataset.state = 'idle'
   edV.muted = true; edV.loop = true
@@ -416,8 +429,9 @@ function csOpen(push = true) {
 }
 function csClose(fromPop = false, after = null) {
   if (!csOpenNow() || cs.dataset.closing) return
-  if (editor?.isOpen) editor.close()
-  if (!fromPop && csPushed) { csPushed = false; csAfter = after; history.back(); return }
+  const edStep = editor?.isOpen && editor.close(true) ? 1 : 0
+  if (!fromPop && csPushed) { csPushed = false; csAfter = after; history.go(-1 - edStep); return }
+  if (edStep) history.back()
   csPushed = false
   cs.dataset.closing = '1'
   edV.pause()
@@ -437,7 +451,10 @@ let csAfter = null
 $$('[data-cs-close]', cs).forEach(b => b.addEventListener('click', () => csClose()))
 $('[data-cs-sys]', cs).addEventListener('click', (e) => {
   e.preventDefault()
-  csClose(false, () => { nav.go(2); setTimeout(() => fmtSc.scrollTo({ top: sysEl.offsetTop, behavior: reduced ? 'auto' : 'smooth' }), reduced ? 0 : 1000) })
+  csClose(false, () => {
+    nav.go(2)
+    setTimeout(() => { fmtSc.scrollTo({ top: sysEl.offsetTop, behavior: reduced ? 'auto' : 'smooth' }); const h = $('#t-sys'); h.tabIndex = -1; h.focus({ preventScroll: true }) }, reduced ? 0 : 1000)
+  })
 })
 addEventListener('popstate', () => {
   if (csOpenNow() && pl.hidden && location.hash !== '#isabella') csClose(true)
@@ -451,9 +468,7 @@ addEventListener('keydown', (e) => {
   if (!csOpenNow() || !pl.hidden || editor?.isOpen) return
   if (e.key === 'Escape') csClose()
   if (e.key === 'Tab') {
-    const f = [$('.lg'), ...$$('.hd a, .hd button'), ...$$('button, a[href], video', cs)].filter(el => el.offsetParent !== null && !el.closest('[hidden]'))
-    const i = f.indexOf(document.activeElement)
-    if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus() } else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus() }
+    trapTab(e, cs)
   }
 })
 
@@ -625,7 +640,8 @@ const views = $$('[data-v]')
 const HASH = ['home', 'lavori', 'formati', 'studio']
 const pos = $('[data-pos]')
 const hashView = () => HASH.indexOf(location.hash.slice(1).split('/')[0])
-let cur = Math.max(0, hashView())
+/* il caso aperto da link diretto si chiude sui Formati, da dove si apre */
+let cur = location.hash === '#isabella' ? 2 : Math.max(0, hashView())
 const deepId = location.hash.slice(1).split('/')[1]
 const deepCase = location.hash === '#isabella'
 function ui(i) {
@@ -695,7 +711,7 @@ ui(cur)
 buildBand(); buildIdx()
 document.addEventListener('langchange', () => {
   buildBand(); applyFilter(); paint()
-  if (!pl.hidden) plShow()
+  if (!pl.hidden) { plShow(); $('.pl__back [data-i18n]', pl).textContent = pl.dataset.back || t('pl.back') }
   if (csOpenNow()) edSync()
 })
 L.apply(L.get())
