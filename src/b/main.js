@@ -525,6 +525,10 @@ function fitRays() {
     })
     lb.style.top = `${(sy / group.length) / 300 * h - lb.offsetHeight / 2}px`
   })
+  /* su schermi stretti le etichette non si sovrappongono: la prima sale se serve */
+  const l1 = $('.pr__l--1', prism), l2 = $('.pr__l--2', prism)
+  const over = l1.offsetTop + l1.offsetHeight + 4 - l2.offsetTop
+  if (over > 0) l1.style.top = `${l1.offsetTop - over}px`
 }
 new ResizeObserver(fitRays).observe(prSvg)
 const SVGNS = 'http://www.w3.org/2000/svg'
@@ -686,7 +690,16 @@ function canNav(e) {
   const sc = $('.v.is-on .scrl')
   if (!sc || sc.scrollHeight <= sc.clientHeight + 2) return true
   const atTop = sc.scrollTop <= 1, atEnd = sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 2
-  if (e.type === 'wheel') return e.deltaY > 0 ? atEnd : atTop
+  if (e.type === 'wheel') {
+    const edge = e.deltaY > 0 ? atEnd : atTop
+    /* la rotella sopra l'intestazione muove comunque la schermata */
+    if (!edge && !sc.contains(e.target) && Math.abs(e.deltaY) >= 2) {
+      const now = performance.now()
+      if (sc === fmtSc && (now < fmtLock || fmtPage(Math.sign(e.deltaY)))) { if (now >= fmtLock) fmtLock = now + 950 }
+      else sc.scrollBy({ top: e.deltaY })
+    }
+    return edge
+  }
   if (e.type === 'touchend') return touchTop === sc.scrollTop && (atTop || atEnd)
   if (e.type === 'keydown') {
     if (e.target.closest?.('input,textarea,select') || (e.key === ' ' && e.target.closest?.('button,a'))) return true

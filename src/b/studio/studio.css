@@ -106,14 +106,14 @@ body.is-se { overflow: hidden; }
 .se__pct { color: var(--ink-2); font-variant-numeric: tabular-nums; }
 .se__btns { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 
-@media (max-width: 1024px) {
+@media (max-width: 1024px) and (orientation: portrait) {
   .se__body { grid-template-columns: 1fr; grid-template-rows: minmax(0, 54%) minmax(0, 1fr); }
   .se__stage { padding: 12px var(--pad) 10px; }
   .se__frame { height: 100%; }
   .se__panel { border-left: 0; border-top: 1px solid var(--line); }
   .se__frame { box-shadow: none; }
 }
-@media (max-width: 700px) {
+@media (max-width: 700px) and (orientation: portrait) {
   .se__bar { grid-template-columns: auto 1fr auto; }
   .se__nav { justify-self: center; gap: 8px; }
   .se__title { min-width: 0; }

@@ -181,7 +181,7 @@ export function createEditor({ items, lang = () => 'it', onClose = () => {} }) {
       ctx.fillStyle = 'rgba(239,237,233,.82)'; ctx.beginPath(); ctx.roundRect(x, y, w, h, h / 2); ctx.fill()
       ctx.fillStyle = '#0B0A0A'; ctx.font = '500 30px "Archivo Variable", Archivo, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
       ctx.fillText(L().write, x + w / 2, y + h / 2 + 1); ctx.restore()
-    } else drawText(ctx, state, dragging ? 99 : video.currentTime, s)
+    } else drawText(ctx, state, (dragging || document.activeElement === $('[data-text]')) ? 99 : video.currentTime, s)
     if (dragging) {
       ctx.save(); ctx.strokeStyle = GUIDE; ctx.lineWidth = 1; ctx.setLineDash([6, 5])
       if (guides.x) { ctx.beginPath(); ctx.moveTo(cv.width / 2, 0); ctx.lineTo(cv.width / 2, cv.height); ctx.stroke() }
