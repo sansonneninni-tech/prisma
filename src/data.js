@@ -28,7 +28,7 @@ export const LAVORI = [
   {
     id: 'isabella', cliente: 'Isabella Pistillo', formato: 'sistema',
     sub: { it: 'Artista · 1 giornata, 14 contenuti', en: 'Artist · 1 day, 14 pieces' },
-    media: 'isabella-editoriale', caso: '/isabella/', ratio: '4/5',
+    media: 'isabella-editoriale', caso: '#isabella', ratio: '4/5',
   },
   {
     id: 'df-marmi', cliente: 'DF Marmi', formato: 'editoriale', logo: 'df-marmi.png',

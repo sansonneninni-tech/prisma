@@ -36,12 +36,15 @@ const EN = {
   's.direct': 'Direct', 's.clients': 'Clients', 's.write': 'Write to us', 's.name': 'Name', 's.fmt': 'Format', 's.msg': 'The project, in two lines', 's.send': 'Send',
   's.ok': 'Got it. We’ll reply soon.', 's.err': 'Something went wrong. Write us on WhatsApp.',
   'all': 'All', 'pl.back': 'All work', 'pl.close': 'Close', 'pl.dl': 'Download original', 'pl.case': 'Open the case', 'drive': 'Watch on Drive',
+  'cs.back': 'Back', 'cs.k': 'Case study · Artist', 'cs.play': 'Watch the editorial with sound', 'cs.pause': 'Pause', 'cs.resume': 'Play', 'cs.audio': 'Sound', 'cs.full': 'Full screen', 'cs.dl': 'Download original',
+  'cs.lead': 'An artist needed a steady presence, not a video. We shot one day.', 'cs.k1': 'shoot day', 'cs.k2': 'pieces delivered', 'cs.k3': 'in the reserve', 'cs.k4': 'weeks of posts',
+  'cs.sh': 'short', 'cs.sh.d': 'with sound, they open', 'cs.mi': 'micro', 'cs.mi.d': 'write on them and download the video', 'cs.res': 'Reserve: 24 pieces already shot, activated when needed.', 'cs.cta': 'The same system, for you', 'cs.cta.b': 'The content system',
   'fa.client': 'Client', 'fa.fmt': 'Format', 'fa.ratio': 'Ratio', 'fa.len': 'Length', 'fa.where': 'Where',
 }
 const L = makeLang(EN)
 const IT_X = {
   'pp.play': 'Play', 's.ok': 'Ricevuto. Ti rispondiamo a breve.', 's.err': 'Qualcosa non va. Scrivici su WhatsApp.', all: 'Tutti', unit: '≈ {v} a contenuto',
-  'fa.client': 'Cliente', 'fa.fmt': 'Formato', 'fa.ratio': 'Proporzioni', 'fa.len': 'Durata', 'fa.where': 'Dove',
+  'cs.resume': 'Riprendi', 'fa.client': 'Cliente', 'fa.fmt': 'Formato', 'fa.ratio': 'Proporzioni', 'fa.len': 'Durata', 'fa.where': 'Dove',
 }
 const t = (k) => (L.get() === 'en' ? EN[k] : (IT_X[k] ?? L.t(k)))
 const tx = (o) => o[L.get()] ?? o.it
@@ -189,7 +192,7 @@ function fitStage() {
 }
 new ResizeObserver(() => fitStage()).observe(plStage)
 function facts(w, len) {
-  const rows = [[t('fa.client'), w.title], [t('fa.fmt'), tx(CATS[w.cat])], [t('fa.ratio'), (w.ratio || '').replace('/', ':')]]
+  const rows = [[t('fa.client'), w.client || w.title], [t('fa.fmt'), tx(CATS[w.cat])], [t('fa.ratio'), (w.ratio || '').replace('/', ':')]]
   if (len) rows.push([t('fa.len'), len])
   if (w.drive) rows.push([t('fa.where'), 'Google Drive'])
   $('[data-pl-facts]').innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')
@@ -219,17 +222,18 @@ function plShow() {
   $('[data-pl-next-t]').textContent = next.title
   $('[data-pl-prev]').hidden = $('[data-pl-next]').hidden = plList.length < 2
   fitStage()
-  history.replaceState({ pl: 1 }, '', `#lavori/${w.id}`)
+  history.replaceState({ pl: 1 }, '', w.short ? '#isabella' : `#lavori/${w.id}`)
 }
 plV.addEventListener('loadedmetadata', () => { const w = plList[plIdx]; if (w?.src) facts(w, fmtTime(plV.duration)) })
-function plOpen(w, list = listFor(), push = true) {
+function plOpen(w, list = listFor(), push = true, back = null) {
   plList = list.includes(w) ? list : all
+  $('.pl__back [data-i18n]', pl).textContent = back || t('pl.back')
   plIdx = Math.max(0, plList.indexOf(w))
   plFocus = document.activeElement
   showBg(null); rv.pause()
   pl.hidden = false
   document.body.classList.add('is-pl')
-  if (push) { history.pushState({ pl: 1 }, '', `#lavori/${w.id}`); plPushed = true }
+  if (push) { history.pushState({ pl: 1 }, '', w.short ? '#isabella' : `#lavori/${w.id}`); plPushed = true }
   plShow()
   const d = reduced ? 0 : 1
   gsap.timeline()
@@ -248,8 +252,9 @@ function plClose(fromPop = false) {
       pl.hidden = true; delete pl.dataset.closing; gsap.set(pl, { clearProps: 'clipPath' })
       plV.removeAttribute('src'); plV.load()
       document.body.classList.remove('is-pl')
-      history.replaceState(null, '', `#${HASH[cur]}`)
-      if (cur === 0) playReel()
+      history.replaceState(null, '', csOpenNow() ? '#isabella' : `#${HASH[cur]}`)
+      $('.pl__back [data-i18n]', pl).textContent = t('pl.back')
+      if (cur === 0 && !csOpenNow()) playReel()
       plFocus?.focus?.({ preventScroll: true })
     },
   })
@@ -274,6 +279,168 @@ idx.addEventListener('click', (e) => {
   const a = e.target.closest('a[data-i]'); if (!a) return
   e.preventDefault()
   plOpen(all[a.dataset.i])
+})
+
+
+/* ---------- caso Isabella: si apre dentro il sito ---------- */
+const cs = $('[data-cs]'), ed = $('[data-ed]'), edV = $('[data-ed-v]')
+const csOpenNow = () => !cs.hidden
+const M = (id, f) => `/media/${id}/${f}`
+const ED = { prev: M('isabella-editoriale', 'preview.mp4'), src: M('isabella-editoriale', 'web.mp4') }
+const SHORTS = [1, 2, 3, 4, 5].map(n => ({
+  id: `isabella-short-${n}`, short: true, client: 'Isabella Pistillo', title: `Isabella Pistillo · Short ${String(n).padStart(2, '0')}`, cat: 'social', ratio: '4/5',
+  sub: { it: 'Short dal sistema contenuti', en: 'Short from the content system' },
+  poster: M(`isabella-short-${n}`, 'poster.jpg'), preview: M(`isabella-short-${n}`, 'preview.mp4'), src: M(`isabella-short-${n}`, 'web.mp4'),
+  dl: `/originali/isabella-short-${n}.mp4`, drive: null, caso: null,
+}))
+const MICROS = [1, 2, 3, 4, 5, 6, 7, 8].map(n => ({
+  n, poster: M(`isabella-micro-${n}`, 'poster.jpg'), preview: M(`isabella-micro-${n}`, 'preview.mp4'), src: M(`isabella-micro-${n}`, 'web.mp4'), original: `/originali/isabella-micro-${n}.mp4`,
+}))
+let csPushed = false, csFocus = null, csBuilt = false, editor = null, fontsP = null
+const fmtMB = (b) => `· ${(b / 1048576).toFixed(0)} MB`
+function thumb(kind, it, k) {
+  const b = document.createElement('button')
+  b.type = 'button'; b.className = `cs__tb cs__tb--${kind}`; b.dataset.k = k
+  b.setAttribute('aria-label', kind === 'sh' ? it.title : `Micro ${String(it.n).padStart(2, '0')}`)
+  b.innerHTML = `<img src="${it.poster}" alt="" loading="lazy" decoding="async" />${kind === 'mi' ? '<canvas></canvas>' : ''}<span>${String(kind === 'sh' ? k + 1 : it.n).padStart(2, '0')}</span>`
+  return b
+}
+function csBuild() {
+  if (csBuilt) return
+  csBuilt = true
+  const sh = $('[data-sh]', cs), mi = $('[data-mi]', cs)
+  SHORTS.forEach((it, k) => sh.append(thumb('sh', it, k)))
+  MICROS.forEach((it, k) => mi.append(thumb('mi', it, k)))
+  const tk = $('[data-cs-ticks]', cs)
+  for (let k = 0; k < 38; k++) { const i = document.createElement('i'); i.className = k < 14 ? 'is-rdy' : 'is-res'; tk.append(i) }
+  fetch('/originali/isabella-editoriale.mp4', { method: 'HEAD' }).then(r => { const n = +r.headers.get('content-length'); if (n) $('[data-ed-size]', cs).textContent = fmtMB(n) }).catch(() => {})
+  fontsP = import('./studio/fonts.js').then(() => document.fonts.ready).then(paintMicros)
+}
+/* sulle copertine dei micro compare il testo già scritto */
+async function paintMicros() {
+  const { drawText, sanitizeState, FRAME_W } = await import('./studio/render.js')
+  $$('.cs__tb--mi', cs).forEach(b => {
+    const it = MICROS[+b.dataset.k], c = $('canvas', b)
+    let st = null; try { st = sanitizeState(JSON.parse(localStorage.getItem(`prisma-micro-${it.n}`))) } catch { }
+    const r = b.getBoundingClientRect(); c.width = Math.round(r.width * 2); c.height = Math.round(r.height * 2)
+    const x = c.getContext('2d'); x.clearRect(0, 0, c.width, c.height)
+    if (st?.text) drawText(x, st, 99, c.width / FRAME_W)
+  })
+}
+function edIdle() {
+  ed.dataset.state = 'idle'
+  edV.muted = true; edV.loop = true
+  if (edV.dataset.src !== ED.prev) { edV.dataset.src = ED.prev; edV.src = ED.prev }
+  $('[data-ed-prog]', cs).style.transform = 'scaleX(0)'
+  if (!reduced) edV.play().catch(() => {})
+}
+function edStart() {
+  if (edV.dataset.src !== ED.src) { edV.dataset.src = ED.src; edV.src = ED.src }
+  edV.loop = false; edV.muted = false
+  try { edV.currentTime = 0 } catch { }
+  edV.play().catch(() => { edV.muted = true; edV.play().catch(() => {}) })
+}
+function edSync() {
+  $('[data-ed-tl]', cs).textContent = t(ed.dataset.state === 'playing' ? 'cs.pause' : 'cs.resume')
+  $('[data-ed-audio]', cs).setAttribute('aria-pressed', String(!edV.muted)); $('[data-ed-snd]', cs).textContent = edV.muted ? 'off' : 'on'
+}
+edV.addEventListener('play', () => { if (edV.dataset.src === ED.src) { ed.dataset.state = 'playing'; edSync() } })
+edV.addEventListener('pause', () => { if (edV.dataset.src === ED.src && !edV.ended) { ed.dataset.state = 'paused'; edSync() } })
+edV.addEventListener('ended', () => { if (edV.dataset.src === ED.src) edIdle() })
+edV.addEventListener('volumechange', edSync)
+edV.addEventListener('timeupdate', () => { if (edV.dataset.src === ED.src && edV.duration) $('[data-ed-prog]', cs).style.transform = `scaleX(${edV.currentTime / edV.duration})` })
+$('[data-ed-play]', cs).addEventListener('click', edStart)
+edV.addEventListener('click', () => { if (ed.dataset.state === 'idle') edStart(); else if (edV.paused) edV.play(); else edV.pause() })
+$('[data-ed-toggle]', cs).addEventListener('click', () => { edV.paused ? edV.play() : edV.pause() })
+$('[data-ed-audio]', cs).addEventListener('click', () => { edV.muted = !edV.muted })
+$('[data-ed-full]', cs).addEventListener('click', () => {
+  if (ed.dataset.state === 'idle') edStart()
+  edV.muted = false
+  if (edV.requestFullscreen) edV.requestFullscreen().catch(() => {}); else edV.webkitEnterFullscreen?.()
+})
+cs.addEventListener('click', (e) => {
+  const b = e.target.closest('.cs__tb'); if (!b) return
+  edV.pause()
+  if (b.classList.contains('cs__tb--sh')) { const w = SHORTS[+b.dataset.k]; plOpen(w, SHORTS, true, 'Isabella Pistillo'); return }
+  openMicro(MICROS[+b.dataset.k].n)
+})
+async function openMicro(n) {
+  if (!editor) {
+    await import('./studio/studio.css')
+    const { createEditor } = await import('./studio/editor.js')
+    editor = createEditor({ items: MICROS, lang: () => L.get(), onClose: () => { paintMicros(); $('.pl__back', cs)?.focus?.() } })
+  }
+  await fontsP
+  editor.open(n)
+}
+if (fine) {
+  cs.addEventListener('pointerover', (e) => {
+    const b = e.target.closest('.cs__tb'); if (!b || b.contains(e.relatedTarget)) return
+    const it = b.classList.contains('cs__tb--sh') ? SHORTS[+b.dataset.k] : MICROS[+b.dataset.k]
+    let v = $('video', b)
+    if (!v) { v = document.createElement('video'); v.muted = true; v.loop = true; v.playsInline = true; v.src = it.preview; b.prepend(v) }
+    v.currentTime = 0; v.play().then(() => b.classList.add('is-playing')).catch(() => {})
+  })
+  cs.addEventListener('pointerout', (e) => {
+    const b = e.target.closest('.cs__tb'); if (!b || b.contains(e.relatedTarget)) return
+    const v = $('video', b); v?.pause(); b.classList.remove('is-playing')
+  })
+}
+function csOpen(push = true) {
+  if (csOpenNow()) return
+  csBuild()
+  csFocus = document.activeElement
+  rv.pause(); showBg(null)
+  cs.hidden = false; document.body.classList.add('is-cs')
+  if (push) { history.pushState({ cs: 1 }, '', '#isabella'); csPushed = true }
+  edIdle(); edSync()
+  const d = reduced ? 0 : 1
+  gsap.timeline()
+    .fromTo(cs, { clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: .8 * d, ease: 'expo.inOut', clearProps: 'clipPath' })
+    .fromTo([ed, ...$$('.cs__info > *', cs)], { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: .7 * d, ease: 'expo.out', stagger: .04, clearProps: 'transform,opacity' }, .35 * d)
+  $('.pl__back', cs).focus({ preventScroll: true })
+}
+function csClose(fromPop = false, after = null) {
+  if (!csOpenNow() || cs.dataset.closing) return
+  if (editor?.isOpen) editor.close()
+  if (!fromPop && csPushed) { csPushed = false; csAfter = after; history.back(); return }
+  csPushed = false
+  cs.dataset.closing = '1'
+  edV.pause()
+  gsap.to(cs, {
+    clipPath: 'inset(0 0 100% 0)', duration: reduced ? 0 : .7, ease: 'expo.inOut', onComplete: () => {
+      cs.hidden = true; delete cs.dataset.closing; gsap.set(cs, { clearProps: 'clipPath' })
+      edV.removeAttribute('src'); delete edV.dataset.src; edV.load()
+      document.body.classList.remove('is-cs')
+      history.replaceState(null, '', `#${HASH[cur]}`)
+      if (cur === 0) playReel()
+      const f = after || csAfter; csAfter = null
+      if (f) f(); else csFocus?.focus?.({ preventScroll: true })
+    },
+  })
+}
+let csAfter = null
+$$('[data-cs-close]', cs).forEach(b => b.addEventListener('click', () => csClose()))
+$('[data-cs-sys]', cs).addEventListener('click', (e) => {
+  e.preventDefault()
+  csClose(false, () => { nav.go(2); setTimeout(() => fmtSc.scrollTo({ top: sysEl.offsetTop, behavior: reduced ? 'auto' : 'smooth' }), reduced ? 0 : 1000) })
+})
+addEventListener('popstate', () => {
+  if (csOpenNow() && pl.hidden && location.hash !== '#isabella') csClose(true)
+})
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[href="#isabella"]'); if (!a) return
+  e.preventDefault()
+  if (!pl.hidden) { plClose(); setTimeout(() => csOpen(), reduced ? 0 : 800) } else csOpen()
+})
+addEventListener('keydown', (e) => {
+  if (!csOpenNow() || !pl.hidden || editor?.isOpen) return
+  if (e.key === 'Escape') csClose()
+  if (e.key === 'Tab') {
+    const f = [$('.lg'), ...$$('.hd a, .hd button'), ...$$('button, a[href], video', cs)].filter(el => el.offsetParent !== null && !el.closest('[hidden]'))
+    const i = f.indexOf(document.activeElement)
+    if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus() } else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus() }
+  }
 })
 
 /* ---------- formati: le righe si aprono, il prisma si accende ---------- */
@@ -392,6 +559,7 @@ const pos = $('[data-pos]')
 const hashView = () => HASH.indexOf(location.hash.slice(1).split('/')[0])
 let cur = Math.max(0, hashView())
 const deepId = location.hash.slice(1).split('/')[1]
+const deepCase = location.hash === '#isabella'
 function ui(i) {
   document.body.className = document.body.className.replace(/\bat-\d\b/g, '').trim() + ` at-${i}`
   $$('.hd__nav a').forEach(a => a.classList.toggle('is-on', +a.dataset.go === i))
@@ -424,7 +592,7 @@ function transition(i, dir, from) {
 let touchTop = null
 addEventListener('touchstart', () => { const sc = $('.v.is-on .scrl'); touchTop = sc ? sc.scrollTop : null }, { passive: true })
 function canNav(e) {
-  if (!pl.hidden || document.querySelector('[data-load]')) return false
+  if (!pl.hidden || csOpenNow() || document.querySelector('[data-load]')) return false
   const sc = $('.v.is-on .scrl')
   if (!sc || sc.scrollHeight <= sc.clientHeight + 2) return true
   const atTop = sc.scrollTop <= 1, atEnd = sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 2
@@ -437,9 +605,10 @@ $$('[data-go]').forEach(a => a.addEventListener('click', (e) => {
   e.preventDefault()
   if (a.dataset.ask) { const s = $('[data-ask-select]'); s.value = a.dataset.ask }
   const go = () => nav.go(+a.dataset.go)
-  if (!pl.hidden) { plClose(); setTimeout(go, reduced ? 0 : 750) } else go()
+  if (!pl.hidden) { plClose(); setTimeout(() => { if (csOpenNow()) csClose(false, go); else go() }, reduced ? 0 : 750) } else if (csOpenNow()) csClose(false, go); else go()
 }))
 addEventListener('hashchange', () => {
+  if (location.hash === '#isabella') { if (pl.hidden && !csOpenNow()) csOpen(false); return }
   const [h, id] = location.hash.slice(1).split('/')
   const i = HASH.indexOf(h)
   if (id && pl.hidden) { const w = all.find(x => x.id === id); if (w) { if (cur !== 1) nav.go(1); plOpen(w, listFor(), false) } return }
@@ -452,6 +621,7 @@ buildBand(); buildIdx()
 document.addEventListener('langchange', () => {
   buildBand(); applyFilter(); paint()
   if (!pl.hidden) plShow()
+  if (csOpenNow()) edSync()
 })
 L.apply(L.get())
 reveal()
@@ -461,5 +631,6 @@ if (cur === 2) prismOn()
 {
   const w = deepId && all.find(x => x.id === deepId)
   if (w) setTimeout(() => plOpen(w, all, false), reduced ? 0 : 2300)
+  if (deepCase) setTimeout(() => csOpen(true), reduced ? 0 : 2300)
 }
 if (location.search.includes('debug')) window.__gsap = gsap

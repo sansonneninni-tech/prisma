@@ -1,0 +1,11 @@
+/* I 10 font dello studio micro: caricati solo quando si apre il caso Isabella */
+import '@fontsource/instrument-serif/400.css'
+import '@fontsource/playfair-display/500-italic.css'
+import '@fontsource/cormorant-garamond/500.css'
+import '@fontsource/bodoni-moda/500.css'
+import '@fontsource/fraunces/400.css'
+import '@fontsource/dm-serif-display/400.css'
+import '@fontsource/archivo/500.css'
+import '@fontsource/manrope/600.css'
+import '@fontsource/syne/600.css'
+import '@fontsource/anton/400.css'
