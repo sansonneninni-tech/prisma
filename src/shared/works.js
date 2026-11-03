@@ -83,7 +83,18 @@ export function wireForm(form, { ok, err }) {
 }
 
 /* Navigazione a schermate: rotella, tastiera, swipe. onGo(i, dir) fa la transizione e restituisce una Promise. */
-export function viewNav(count, onGo, { start = 0, canNav = () => true } = {}) {
+/* un gesto della rotella = una pagina: l'inerzia del trackpad non conta come gesto nuovo.
+   Un gesto finisce solo dopo una pausa senza eventi. */
+export function wheelGesture(gap = 170) {
+  let last = 0, spent = false
+  return {
+    tick() { const n = performance.now(), fresh = n - last > gap; last = n; if (fresh) spent = false; return fresh },
+    get spent() { return spent },
+    spend() { spent = true },
+  }
+}
+
+export function viewNav(count, onGo, { start = 0, canNav = () => true, gesture = wheelGesture() } = {}) {
   let cur = start, busy = false, acc = 0, lockUntil = 0
   async function go(i) {
     i = Math.max(0, Math.min(count - 1, i))
@@ -93,12 +104,13 @@ export function viewNav(count, onGo, { start = 0, canNav = () => true } = {}) {
     try { await onGo(i, dir, from) } finally { busy = false; lockUntil = performance.now() + 380 }
   }
   addEventListener('wheel', (e) => {
+    if (gesture.tick()) acc = 0
     if (!canNav(e)) return
     e.preventDefault()
-    const now = performance.now()
-    if (busy || now < lockUntil) { acc = 0; return }
+    if (busy || performance.now() < lockUntil) { gesture.spend(); acc = 0; return }
+    if (gesture.spent) return
     acc += e.deltaY
-    if (Math.abs(acc) > 40) { go(cur + Math.sign(acc)); acc = 0 }
+    if (Math.abs(acc) > 40) { gesture.spend(); go(cur + Math.sign(acc)); acc = 0 }
   }, { passive: false })
   let ty = null, tx = null
   addEventListener('touchstart', (e) => { ty = e.touches[0].clientY; tx = e.touches[0].clientX }, { passive: true })

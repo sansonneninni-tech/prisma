@@ -2,8 +2,7 @@ import '@fontsource-variable/archivo/wdth.css'
 import './b.css'
 import { gsap } from 'gsap'
 import { LAVORI } from '../data.js'
-import { works, CATS, wireContacts, makeLang, wireForm, viewNav } from '../shared/works.js'
-import { initTetra } from '../tetra.js'
+import { works, CATS, wireContacts, makeLang, wireForm, viewNav, wheelGesture } from '../shared/works.js'
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
 const fine = matchMedia('(hover: hover) and (pointer: fine)').matches
@@ -77,19 +76,56 @@ LAVORI.forEach(w => {
   li.append(img); logos.append(li)
 })
 
+/* il bordo che entra porta il filo caldo del segno PRISMA (1 = arriva dal basso, -1 = dall'alto, 0 = via) */
+function edge(el, dir) {
+  el.classList.toggle('edge-t', dir > 0); el.classList.toggle('edge-b', dir < 0)
+}
+/* Movimento sul compositore (Web Animations): i pannelli scorrono anche se il codice è occupato.
+   Due curve per tutto il sito: EIO per i cambi di pagina, EOUT per i contenuti che arrivano. */
+const EIO = 'cubic-bezier(.87, 0, .13, 1)', EOUT = 'cubic-bezier(.16, 1, .3, 1)'
+const ms = (sec) => (reduced ? 0 : sec * 1000)
+function slide(el, from, to, dur, easing = EIO) {
+  const a = el.animate([{ transform: `translate3d(0, ${from}%, 0)` }, { transform: `translate3d(0, ${to}%, 0)` }], { duration: ms(dur), easing, fill: 'both' })
+  return a.finished.catch(() => {}).then(() => a)
+}
+/* i contenuti salgono di poco e compaiono, uno dopo l'altro; si somma ai transform che hanno già */
+function rise(kids, { y = 24, at = .38, each = .04, dur = .7 } = {}) {
+  if (reduced) return
+  kids.forEach((k, i) => {
+    const o = { duration: ms(dur), delay: ms(at + i * each), easing: EOUT, fill: 'backwards' }
+    k.animate([{ transform: `translate3d(0, ${y}px, 0)` }, { transform: 'translate3d(0, 0, 0)' }], { ...o, composite: 'add' })
+    k.animate([{ opacity: 0 }, {}], o)
+  })
+}
+/* finestre a tutto schermo: entrano dal basso ed escono verso il basso */
+function sheetIn(el, kids) {
+  edge(el, 1)
+  rise(kids, { y: 30 })
+  return slide(el, 100, 0, .85).then(a => { edge(el, 0); a.cancel() })
+}
+function sheetOut(el, done) {
+  edge(el, -1)
+  return slide(el, 0, 100, .7).then(a => { edge(el, 0); done(); a.cancel() })
+}
+
 /* ---------- apertura: il prisma rifrange la luce, poi il video ---------- */
 const load = $('[data-load]')
-const tetra = initTetra($('[data-tetra]'), { reduced })
-tetra.kick(3)
+/* i raggi corrono in CSS dal primo fotogramma; qui si decide solo quando il velo sale */
 function reveal() {
-  const d = reduced ? 0 : 1
-  const tl = gsap.timeline({ delay: reduced ? 0 : .25 })
-  tl.fromTo('.load__in', { scaleX: 0, transformOrigin: '0% 50%' }, { scaleX: 1, duration: .7 * d, ease: 'power2.in' })
-    .fromTo('.load__out', { scaleX: 0, opacity: .92, transformOrigin: '0% 50%' }, { scaleX: 1, duration: .8 * d, ease: 'expo.out', stagger: .07 }, '>-.05')
-    .to(load, { clipPath: 'inset(0 0 100% 0)', duration: .9 * d, ease: 'expo.inOut', onComplete: () => { load.remove(); tetra.pause() } }, '+=.35')
-    .from('.lg', { yPercent: 30, opacity: 0, duration: .9 * d, ease: 'expo.out', clearProps: 'transform,opacity' }, '-=.4')
-  return tl
+  if (reduced || !load) { load?.remove(); return }
+  const dl = Math.max(0, 2350 - performance.now())
+  load.style.setProperty('--dl', `${dl}ms`)
+  load.classList.add('is-go')
+  load.addEventListener('animationend', (e) => { if (e.animationName === 'loadOut') load.remove() })
+  gsap.from('.lg svg', { yPercent: 30, opacity: 0, duration: .9, ease: 'expo.out', delay: dl / 1000 + .5, clearProps: 'transform,opacity' })
 }
+/* il logo cambia misura solo con transform: qui si calcola il rapporto tra piccolo e grande */
+function logoK() {
+  const m = (v) => { const i = document.createElement('i'); i.style.cssText = `position:absolute;visibility:hidden;width:var(${v})`; document.body.append(i); const w = i.offsetWidth; i.remove(); return w }
+  const big = m('--lgw'), small = m('--lgw-s')
+  if (big) document.documentElement.style.setProperty('--lgk', (small / big).toFixed(4))
+}
+logoK(); addEventListener('resize', logoK)
 
 /* ---------- home: video a tutto schermo ---------- */
 const all = works().map(w => ({ ...w, hover: w.preview ? w.preview.replace('preview.mp4', 'hover.mp4') : null }))
@@ -105,6 +141,8 @@ function setReel() {
   if (k === reelKind) return
   reelKind = k
   rv.src = REEL[k].src; rv.poster = REEL[k].poster; rv.loop = true
+  /* la copertina sotto il video: mentre il reel si carica si vede già l'immagine */
+  rv.parentElement.style.background = `#111 url(${REEL[k].poster}) center / cover no-repeat`
   if (cur === 0 && !paused) rv.play().catch(() => {})
 }
 rv.addEventListener('timeupdate', () => {
@@ -182,7 +220,9 @@ function showBg(w, a) {
   }
 }
 if (fine) {
-  idx.addEventListener('pointerover', (e) => { const a = e.target.closest('a[data-i]'); if (a && a !== hot) showBg(all[a.dataset.i], a) })
+  let hovT = 0
+  idx.addEventListener('pointerover', (e) => { const a = e.target.closest('a[data-i]'); if (!a || a === hot) return; clearTimeout(hovT); hovT = setTimeout(() => showBg(all[a.dataset.i], a), hot ? 40 : 0) })
+  idx.addEventListener('pointerleave', () => clearTimeout(hovT))
   idx.addEventListener('pointerleave', () => showBg(null))
 }
 idx.addEventListener('focusin', (e) => { const a = e.target.closest('a[data-i]'); if (a) showBg(all[a.dataset.i], a) })
@@ -209,7 +249,15 @@ function facts(w, len) {
   if (w.drive) rows.push([t('fa.where'), 'Google Drive'])
   $('[data-pl-facts]').innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')
 }
-function plShow() {
+function plPlay() {
+  const w = plList[plIdx]
+  if (pl.hidden || !w?.src) return
+  if (plV.dataset.src !== w.src) { plV.dataset.src = w.src; plV.src = w.src }
+  plV.muted = false
+  plV.play().catch(() => { plV.muted = true; plV.play().catch(() => {}) })
+}
+function plStop() { plV.pause(); plV.removeAttribute('src'); delete plV.dataset.src; plV.load() }
+function plShow(play = true) {
   const w = plList[plIdx]
   $('[data-pl-cat]').textContent = tx(CATS[w.cat])
   $('[data-pl-title]').textContent = w.title
@@ -219,11 +267,11 @@ function plShow() {
   facts(w)
   if (w.src) {
     plImg.hidden = true; plDrive.hidden = true; plV.hidden = false
-    plV.poster = w.poster; plV.src = w.src; plV.muted = false
-    plV.play().catch(() => { plV.muted = true; plV.play().catch(() => {}) })
+    plV.poster = w.poster
+    if (play) plPlay(); else if (plV.dataset.src !== w.src) plStop()
     dl.hidden = false; dl.href = w.dl; dl.setAttribute('download', w.dl.split('/').pop())
   } else {
-    plV.pause(); plV.removeAttribute('src'); plV.load(); plV.hidden = true
+    plStop(); plV.hidden = true
     plImg.hidden = false; plImg.src = w.poster; plImg.alt = w.title
     plDrive.hidden = false; plDrive.href = w.drive
     dl.hidden = true
@@ -259,11 +307,11 @@ function plOpen(w, list = listFor(), push = true, back = null) {
   pl.hidden = false
   document.body.classList.add('is-pl')
   if (push) { history.pushState({ pl: 1 }, '', w.short ? '#isabella' : `#lavori/${w.id}`); plPushed = true }
-  plShow()
+  prismOff()
+  plShow(false)
   const d = reduced ? 0 : 1
-  gsap.timeline()
-    .fromTo(pl, { clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: .8 * d, ease: 'expo.inOut', clearProps: 'clipPath' })
-    .fromTo([plStage, ...$$('.pl__info > *', pl)], { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: .7 * d, ease: 'expo.out', stagger: .04, clearProps: 'transform,opacity' }, .35 * d)
+  /* il video parte quando la finestra è ferma: niente decodifica durante il movimento */
+  sheetIn(pl, [plStage, ...$$('.pl__info > *', pl)]).then(() => plPlay())
   pl.focus({ preventScroll: true })
 }
 function plClose(fromPop = false) {
@@ -272,16 +320,15 @@ function plClose(fromPop = false) {
   plPushed = false
   pl.dataset.closing = '1'
   plV.pause()
-  gsap.to(pl, {
-    clipPath: 'inset(0 0 100% 0)', duration: reduced ? 0 : .7, ease: 'expo.inOut', onComplete: () => {
-      pl.hidden = true; delete pl.dataset.closing; gsap.set(pl, { clearProps: 'clipPath' })
-      plV.removeAttribute('src'); plV.load()
+  sheetOut(pl, () => {
+      pl.hidden = true; delete pl.dataset.closing
+      plStop()
       document.body.classList.remove('is-pl')
       history.replaceState(null, '', csOpenNow() ? '#isabella' : `#${HASH[cur]}`)
       pl.dataset.back = ''; $('.pl__back [data-i18n]', pl).textContent = t('pl.back')
       if (cur === 0 && !csOpenNow()) playReel()
+      if (cur === 2 && !csOpenNow()) prismOn()
       plFocus?.focus?.({ preventScroll: true })
-    },
   })
 }
 const plStep = (d) => { plIdx = (plIdx + d + plList.length) % plList.length; plShow() }
@@ -325,7 +372,7 @@ function thumb(kind, it, k) {
   const b = document.createElement('button')
   b.type = 'button'; b.className = `cs__tb cs__tb--${kind}`; b.dataset.k = k
   b.setAttribute('aria-label', kind === 'sh' ? it.title : `Micro ${String(it.n).padStart(2, '0')}`)
-  b.innerHTML = `<img src="${it.poster}" alt="" loading="lazy" decoding="async" />${kind === 'mi' ? '<canvas></canvas>' : ''}<span>${String(kind === 'sh' ? k + 1 : it.n).padStart(2, '0')}</span>`
+  b.innerHTML = `<img src="${it.poster}" alt="" decoding="async" />${kind === 'mi' ? '<canvas></canvas>' : ''}<span>${String(kind === 'sh' ? k + 1 : it.n).padStart(2, '0')}</span>`
   return b
 }
 function csBuild() {
@@ -419,11 +466,11 @@ function csOpen(push = true) {
   rv.pause(); showBg(null)
   cs.hidden = false; document.body.classList.add('is-cs')
   if (push) { history.pushState({ cs: 1 }, '', '#isabella'); csPushed = true }
-  edIdle(); edSync()
+  prismOff()
+  ed.dataset.state = 'idle'; edSync()
   const d = reduced ? 0 : 1
-  gsap.timeline()
-    .fromTo(cs, { clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: .8 * d, ease: 'expo.inOut', clearProps: 'clipPath' })
-    .fromTo([ed, ...$$('.cs__info > *', cs)], { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: .7 * d, ease: 'expo.out', stagger: .04, clearProps: 'transform,opacity' }, .35 * d)
+  /* il video di anteprima parte a finestra ferma; prima si vede la copertina */
+  sheetIn(cs, [ed, ...$$('.cs__info > *', cs)]).then(() => { if (csOpenNow()) { edIdle(); edSync(); paintMicros() } })
   cs.focus({ preventScroll: true })
 }
 function csClose(fromPop = false, after = null) {
@@ -434,16 +481,15 @@ function csClose(fromPop = false, after = null) {
   csPushed = false
   cs.dataset.closing = '1'
   edV.pause()
-  gsap.to(cs, {
-    clipPath: 'inset(0 0 100% 0)', duration: reduced ? 0 : .7, ease: 'expo.inOut', onComplete: () => {
-      cs.hidden = true; delete cs.dataset.closing; gsap.set(cs, { clearProps: 'clipPath' })
+  sheetOut(cs, () => {
+      cs.hidden = true; delete cs.dataset.closing
       edV.removeAttribute('src'); delete edV.dataset.src; edV.load()
       document.body.classList.remove('is-cs')
       history.replaceState(null, '', `#${HASH[cur]}`)
       if (cur === 0) playReel()
+      if (cur === 2) prismOn()
       const f = after || csAfter; csAfter = null
       if (f) f(); else csFocus?.focus?.({ preventScroll: true })
-    },
   })
 }
 let csAfter = null
@@ -481,9 +527,10 @@ function acToggle(li, open) {
   gsap.killTweensOf(b)
   if (open) {
     b.hidden = false
-    gsap.fromTo(b, { height: 0, opacity: 0 }, { height: 'auto', opacity: 1, duration: reduced ? 0 : .55, ease: 'expo.out', clearProps: 'height,opacity' })
+    /* apertura e chiusura con la stessa curva e la stessa durata: l'altezza totale resta ferma */
+    gsap.fromTo(b, { height: 0, opacity: 0 }, { height: 'auto', opacity: 1, duration: reduced ? 0 : .5, ease: 'power3.inOut', clearProps: 'height,opacity' })
   } else {
-    gsap.to(b, { height: 0, opacity: 0, duration: reduced ? 0 : .4, ease: 'expo.inOut', onComplete: () => { b.hidden = true; gsap.set(b, { clearProps: 'height,opacity' }) } })
+    gsap.to(b, { height: 0, opacity: 0, duration: reduced ? 0 : .5, ease: 'power3.inOut', onComplete: () => { b.hidden = true; gsap.set(b, { clearProps: 'height,opacity' }) } })
   }
 }
 ac.addEventListener('click', (e) => {
@@ -501,37 +548,38 @@ for (let i = 0; i < 38; i++) ticksEl.append(document.createElement('i'))
 const ticks = $$('i', ticksEl)
 const rays = $$('.pr__rays line', prism)
 rays.forEach(l => { l.dataset.x = l.getAttribute('x2'); l.dataset.y = l.getAttribute('y2') })
-const dotsG = $('.pr__dots', prism)
 /* i raggi finiscono prima della loro etichetta, a qualsiasi larghezza; l'etichetta sta al centro del suo fascio */
 rays.forEach(l => { l.dataset.ox = l.dataset.x; l.dataset.oy = l.dataset.y })
 const prSvg = $('.pr__svg', prism)
-let raysOpen = true
+let raysOpen = true, prPx = 1
 function fitRays() {
   const w = prSvg.clientWidth, h = prSvg.clientHeight
   if (!w) return
   const k = 700 / w
-  ;['1', '2', '3'].forEach(g => {
-    const lb = $(`.pr__l--${g}`, prism), group = rays.filter(l => l.dataset.g === g)
-    const end = Math.min(700, (lb.offsetLeft - 16) * k)
+  const G = ['1', '2', '3'].map(g => { const lb = $(`.pr__l--${g}`, prism); return { g, lb, left: lb.offsetLeft, hh: lb.offsetHeight } })
+  G.forEach(o => {
+    const end = Math.min(700, (o.left - 16) * k)
     let sy = 0
+    const group = rays.filter(l => l.dataset.g === o.g)
     group.forEach(l => {
       const t = (end - 375) / (700 - 375)
       l.dataset.x = end; l.dataset.y = 126 + (+l.dataset.oy - 126) * t; sy += +l.dataset.y
       if (raysOpen) { l.setAttribute('x2', l.dataset.x); l.setAttribute('y2', l.dataset.y) }
     })
-    lb.style.top = `${(sy / group.length) / 300 * h - lb.offsetHeight / 2}px`
+    o.top = (sy / group.length) / 300 * h - o.hh / 2
   })
   /* su schermi stretti le etichette non si sovrappongono: la prima sale se serve */
-  const l1 = $('.pr__l--1', prism), l2 = $('.pr__l--2', prism)
-  const over = l1.offsetTop + l1.offsetHeight + 4 - l2.offsetTop
-  if (over > 0) l1.style.top = `${l1.offsetTop - over}px`
+  const over = G[0].top + G[0].hh + 4 - G[1].top
+  if (over > 0) G[0].top -= over
+  G.forEach(o => { o.lb.style.top = `${o.top}px` })
+  prPx = w / 700
 }
 new ResizeObserver(fitRays).observe(prSvg)
 const SVGNS = 'http://www.w3.org/2000/svg'
 const IN = [[0, 152], [285, 126], [375, 126]]
 let sysTl = null, sysLoop = null, sysSeen = false
 const stepOn = (n) => () => { steps.forEach((li, k) => li.classList.toggle('is-on', k === n)); stpList.classList.remove('is-done') }
-function countUp(el, to, d = .9) { const o = { v: 0 }; return gsap.to(o, { v: to, duration: d, ease: 'power2.out', onUpdate: () => { el.textContent = Math.round(o.v) } }) }
+function countUp(el, to, d = .9) { const o = { v: 0 }; let last = -1; return gsap.to(o, { v: to, duration: d, ease: 'power2.out', onUpdate: () => { const n = Math.round(o.v); if (n !== last) { last = n; el.textContent = n } } }) }
 function sysFinal() {
   steps.forEach(li => li.classList.remove('is-on')); stpList.classList.add('is-done')
   ticks.forEach((t, k) => { t.className = k < 14 ? 'is-rdy' : 'is-res' })
@@ -542,24 +590,26 @@ function sysFinal() {
   fitRays()
   $$('.pr__l b', prism).forEach(b => { b.textContent = b.dataset.n })
 }
-/* la luce che continua a scorrere: un impulso entra nel prisma e si divide nei raggi */
+/* la luce che continua a scorrere: un impulso entra nel prisma e si divide nei raggi.
+   Sempre gli stessi punti, mossi solo con transform sopra il disegno (niente SVG ridisegnato). */
+const pulseEl = document.createElement('div'); pulseEl.className = 'pr__pulse'; pulseEl.setAttribute('aria-hidden', 'true')
+prism.append(pulseEl)
+const pIn = document.createElement('i'); pIn.className = 'is-in'; pulseEl.append(pIn)
+const pOut = rays.map(l => { const d = document.createElement('i'); d.style.background = l.getAttribute('stroke'); pulseEl.append(d); return d })
+const P = (x, y) => ({ x: x * prPx, y: y * prPx })
 function pulse() {
   const tl = gsap.timeline()
-  const c = document.createElementNS(SVGNS, 'circle')
-  c.setAttribute('r', 3); c.setAttribute('cx', IN[0][0]); c.setAttribute('cy', IN[0][1]); c.setAttribute('fill', '#0B0A0A'); dotsG.append(c)
-  tl.fromTo(c, { attr: { cx: IN[0][0], cy: IN[0][1] }, opacity: 0 }, { attr: { cx: IN[1][0], cy: IN[1][1] }, opacity: 1, duration: 1.1, ease: 'power1.in' })
-    .to(c, { attr: { cx: IN[2][0], cy: IN[2][1] }, fill: '#E8722A', duration: .35, ease: 'none' })
-    .add(() => c.remove())
-  rays.forEach((l) => {
-    const d = document.createElementNS(SVGNS, 'circle')
-    d.setAttribute('r', 2.4); d.setAttribute('cx', 375); d.setAttribute('cy', 126); d.setAttribute('fill', l.getAttribute('stroke')); d.setAttribute('opacity', 0); dotsG.append(d)
-    tl.fromTo(d, { attr: { cx: 375, cy: 126 }, opacity: 1 }, { attr: { cx: +l.dataset.x, cy: +l.dataset.y }, opacity: 0, duration: 1.5, ease: 'power1.out', onComplete: () => d.remove() }, 1.45)
+  tl.fromTo(pIn, { ...P(IN[0][0], IN[0][1]), opacity: 0, backgroundColor: '#0B0A0A' }, { ...P(IN[1][0], IN[1][1]), opacity: 1, duration: 1.1, ease: 'power1.in' })
+    .to(pIn, { ...P(IN[2][0], IN[2][1]), backgroundColor: '#E8722A', duration: .35, ease: 'none' })
+    .set(pIn, { opacity: 0 })
+  rays.forEach((l, k) => {
+    tl.fromTo(pOut[k], { ...P(375, 126), opacity: 1 }, { ...P(+l.dataset.x, +l.dataset.y), opacity: 0, duration: 1.5, ease: 'power1.out' }, 1.45)
   })
   return tl
 }
 /* stato di partenza: niente è visibile prima del suo passaggio */
 function sysEmpty() {
-  sysTl?.kill(); sysLoop?.kill(); dotsG.innerHTML = ''
+  sysTl?.kill(); sysLoop?.kill(); gsap.set([pIn, ...pOut], { opacity: 0 })
   if (reduced) { sysFinal(); return }
   steps.forEach(li => li.classList.remove('is-on')); stpList.classList.remove('is-done')
   ticks.forEach(t => { t.className = '' })
@@ -634,11 +684,13 @@ function fmtPage(dir) {
   if (dir < 0 && top > 4 && top <= s + 4) { fmtSc.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' }); return true }
   return false
 }
+const wheelG = wheelGesture()
 fmtSc.addEventListener('wheel', (e) => {
-  if (Math.abs(e.deltaY) < 2) return
+  wheelG.tick()
+  if (Math.abs(e.deltaY) < 2 || !fmtPaged()) return
   const now = performance.now()
-  if (now < fmtLock) { e.preventDefault(); e.stopPropagation(); return }
-  if (fmtPage(Math.sign(e.deltaY))) { e.preventDefault(); e.stopPropagation(); fmtLock = now + 950 }
+  if (now < fmtLock || wheelG.spent) { e.preventDefault(); e.stopPropagation(); wheelG.spend(); return }
+  if (fmtPage(Math.sign(e.deltaY))) { e.preventDefault(); e.stopPropagation(); wheelG.spend(); fmtLock = now + 950 }
 }, { passive: false })
 
 /* ---------- schermate ---------- */
@@ -661,20 +713,22 @@ function onEnter(i) {
   if (i !== 1) showBg(null)
   if (i === 2) prismOn(); else prismOff()
 }
-const D = reduced ? 0 : .95
 function transition(i, dir, from) {
   const a = views[from], b = views[i]
   cur = i
   ui(i)
   if (i !== 2) prismOff()
-  return new Promise(res => {
-    b.classList.add('is-in')
-    const sc = $('.scrl', b); if (sc) sc.scrollTop = 0
-    const kids = [...b.querySelectorAll('.idx li, .band, .sys > *, .one > *, .st > *')]
-    const tl = gsap.timeline({ onComplete: () => { a.classList.remove('is-on'); b.classList.remove('is-in'); b.classList.add('is-on'); gsap.set([a, b], { clearProps: 'clipPath,transform' }); onEnter(i); res() } })
-    tl.fromTo(b, { clipPath: dir > 0 ? 'inset(100% 0 0 0)' : 'inset(0 0 100% 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: D, ease: 'expo.inOut' })
-      .to(a, { yPercent: -12 * dir, duration: D, ease: 'expo.inOut' }, 0)
-    if (kids.length) tl.fromTo(kids, { y: 24 * dir, opacity: 0 }, { y: 0, opacity: 1, duration: reduced ? 0 : .7, ease: 'expo.out', stagger: { each: .025, from: dir > 0 ? 'start' : 'end' }, clearProps: 'transform,opacity' }, D * .45)
+  b.classList.add('is-in')
+  const sc = $('.scrl', b); if (sc) sc.scrollTop = 0
+  const kids = [...b.querySelectorAll('.idx li, .band, .sys > *, .one > *, .st > *')]
+  edge(b, dir)
+  rise(dir > 0 ? kids : kids.reverse(), { y: 24 * dir, at: .95 * .45, each: .025 })
+  const out = slide(a, 0, -28 * dir, .95)
+  return slide(b, 100 * dir, 0, .95).then(async (inA) => {
+    const outA = await out
+    a.classList.remove('is-on'); b.classList.remove('is-in'); b.classList.add('is-on'); edge(b, 0)
+    inA.cancel(); outA.cancel()
+    onEnter(i)
   })
 }
 
@@ -691,7 +745,7 @@ function canNav(e) {
     /* la rotella sopra l'intestazione muove comunque la schermata */
     if (!edge && !sc.contains(e.target) && Math.abs(e.deltaY) >= 2) {
       const now = performance.now()
-      if (sc === fmtSc && (now < fmtLock || fmtPage(Math.sign(e.deltaY)))) { if (now >= fmtLock) fmtLock = now + 950 }
+      if (sc === fmtSc && fmtPaged()) { if (now >= fmtLock && !wheelG.spent && fmtPage(Math.sign(e.deltaY))) fmtLock = now + 950; wheelG.spend() }
       else sc.scrollBy({ top: e.deltaY })
     }
     return edge
@@ -706,7 +760,7 @@ function canNav(e) {
   }
   return true
 }
-const nav = viewNav(views.length, transition, { start: cur, canNav })
+const nav = viewNav(views.length, transition, { start: cur, canNav, gesture: wheelG })
 $$('[data-go]').forEach(a => a.addEventListener('click', (e) => {
   e.preventDefault()
   if (a.dataset.ask) { const r = $(`[data-ask-chips] input[value="${a.dataset.ask}"]`); if (r) r.checked = true }
@@ -731,6 +785,16 @@ document.addEventListener('langchange', () => {
 })
 L.apply(L.get())
 reveal()
+/* il caso e l'editor si preparano quando il sito è fermo: all'apertura c'è solo l'animazione */
+{
+  const idle = window.requestIdleCallback || ((f) => setTimeout(f, 200))
+  const prep = () => idle(() => {
+    csBuild()
+    $$('.cs__tb img', cs).forEach(img => img.decode?.().catch(() => {}))
+    idle(() => { import('./studio/studio.css'); import('./studio/editor.js'); import('./studio/render.js') })
+  }, { timeout: 4000 })
+  if (document.readyState === 'complete') setTimeout(prep, 2600); else addEventListener('load', () => setTimeout(prep, 2600), { once: true })
+}
 if (cur === 0) playReel()
 if (cur === 2) prismOn()
 /* link diretto a un lavoro: #lavori/<id> */
