@@ -1,8 +1,8 @@
 import '@fontsource-variable/archivo/wdth.css'
 import './b.css'
 import { gsap } from 'gsap'
-import { PREZZI, LAVORI } from '../data.js'
-import { works, CATS, euro, wireContacts, makeLang, wireForm, viewNav } from '../shared/works.js'
+import { LAVORI } from '../data.js'
+import { works, CATS, wireContacts, makeLang, wireForm, viewNav } from '../shared/works.js'
 import { initTetra } from '../tetra.js'
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -20,7 +20,7 @@ const EN = {
   'st.1': 'shoot day', 'st.2': 'pieces shot, one visual language', 'st.3': 'editorial, short, micro', 'st.4': 'ready to post, in&nbsp;the&nbsp;reserve for 12 months',
   'cal.1': 'ready', 'cal.2': 'in&nbsp;the&nbsp;reserve, 12 months', 'cue.sys': 'Recommended: the content system', 'one.h': 'Three formats',
   'sys.ask': 'Ask for the system', 'sys.case': 'The system at work: Isabella Pistillo',
-  'sys.res': 'The reserve opens when you need it: +3&nbsp;short&nbsp;€99&nbsp;· +3&nbsp;short and&nbsp;5&nbsp;micro&nbsp;€199&nbsp;· all&nbsp;24&nbsp;€549',
+  'sys.res': 'The reserve opens when you need it: +3&nbsp;short&nbsp;· +3&nbsp;short and&nbsp;5&nbsp;micro&nbsp;· all&nbsp;24.',
   'one.k': 'Formats',
   'f.evento': 'Event reel', 'f.evento.d': 'One vertical reel up to 45″, ready the day after the event.',
   'f.evento.1': 'Filming during the event', 'f.evento.2': 'Edit, colour and music', 'f.evento.3': 'Delivered in 9:16 the next day',
@@ -29,8 +29,8 @@ const EN = {
   'f.ed': 'Editorial', 'f.ed.d': 'The brand story, from concept to colour.',
   'f.ed.1': 'One or more shoot days', 'f.ed.2': 'Direction, light and sound on set', 'f.ed.3': 'Edit, colour grading, sound design',
   'f.sys': 'Content system',
-  'p.da': 'from', 'p.a': 'to', 'ask': 'Ask', 'ex': 'Watch an example', 'unit': '≈ {v} per piece',
-  'f.note': 'Travel not included. The exact quote follows the brief.',
+  'ask': 'Ask', 'ex': 'Watch an example',
+  'f.note': 'Prices on request: the quote follows the brief.',
   's.h': 'Two people,<br />from&nbsp;brief to export.', 's.alt': 'Ninni and Ernesto, PRISMA',
   's.team': 'Studio · Puglia', 's.ninni': 'Direction, edit, colour', 's.ernesto': 'Production and clients', 's.foto': 'Photography · Ninni &amp; Ernesto',
   's.direct': 'Contacts', 's.clients': 'Clients', 's.name': 'Name', 's.fmt': 'What you need', 's.msg': 'The project, in two lines', 's.send': 'Send',
@@ -43,7 +43,7 @@ const EN = {
 }
 const L = makeLang(EN)
 const IT_X = {
-  'pp.play': 'Play', 's.ok': 'Ricevuto. Ti rispondiamo a breve.', 's.alt': 'Ninni ed Ernesto, PRISMA', 's.clients': 'Clienti', 's.err': 'Qualcosa non va. Scrivici su WhatsApp.', all: 'Tutti', unit: '≈ {v} a contenuto',
+  'pp.play': 'Play', 's.ok': 'Ricevuto. Ti rispondiamo a breve.', 's.alt': 'Ninni ed Ernesto, PRISMA', 's.clients': 'Clienti', 's.err': 'Qualcosa non va. Scrivici su WhatsApp.', all: 'Tutti',
   'cs.resume': 'Riprendi', 'fa.client': 'Cliente', 'fa.fmt': 'Formato', 'fa.ratio': 'Proporzioni', 'fa.len': 'Durata', 'fa.where': 'Dove',
 }
 const t = (k) => (L.get() === 'en' ? EN[k] : (IT_X[k] ?? L.t(k)))
@@ -52,13 +52,9 @@ const tx = (o) => o[L.get()] ?? o.it
 wireContacts()
 wireForm($('[data-form]'), { ok: () => { $('[data-form-out]').dataset.k = 's.ok'; return t('s.ok') }, err: () => { $('[data-form-out]').dataset.k = 's.err'; return t('s.err') } })
 
-/* ---------- prezzi, segnaposto, clienti ---------- */
+/* ---------- testi tradotti, clienti ---------- */
 function paint() {
   const l = L.get()
-  $$('[data-from]').forEach(el => { el.textContent = euro(PREZZI[el.dataset.from].da, l) })
-  $$('[data-to]').forEach(el => { el.textContent = euro(PREZZI[el.dataset.to].a, l) })
-  $$('[data-base]').forEach(el => { el.textContent = euro(PREZZI.sistema.base, l) })
-  $$('[data-unit]').forEach(el => { el.textContent = t('unit').replace('{v}', euro(PREZZI.sistema.base / PREZZI.sistema.contenuti, l)) })
   $$('[data-i18n-alt]').forEach(el => { el.alt = t(el.dataset.i18nAlt) })
   logos.setAttribute('aria-label', t('s.clients'))
   const fo = $('[data-form-out]'); if (fo.dataset.k) fo.textContent = t(fo.dataset.k)
