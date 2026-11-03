@@ -30,6 +30,10 @@ for (const [w, h] of [[1440, 900], [390, 844]]) {
   ok(await p.locator('[data-what-menu] a[href*="prismamov"]').getAttribute('target') === '_blank', `${w}: PRISMA in una scheda nuova`);
   await p.keyboard.press('Escape'); await p.waitForTimeout(300);
   ok(await p.locator('[data-what-menu]').isHidden() && await p.evaluate(() => document.activeElement?.hasAttribute('data-what-apri')), `${w}: Esc chiude e il fuoco torna su What?`);
+  await p.locator('.hd__shop').click(); await p.waitForTimeout(300);
+  const negozi = await p.locator('#shop-menu a').evaluateAll((as) => as.map((x) => x.getAttribute('href')));
+  ok(negozi.join() === '/it/ninni/,/it/ernesto/', `${w}: Shop apre Ninni ed Ernesto`);
+  await p.keyboard.press('Escape'); await p.waitForTimeout(300);
   const nomi = await p.locator('.mz-nome__a').evaluateAll((as) => as.map((x) => x.getAttribute('href')));
   ok(nomi[0] === '/it/ninni/' && nomi[1] === '/it/ernesto/', `${w}: Ninni → ${nomi[0]}, Ernesto → ${nomi[1]}`);
   await p.locator('.mz-nome__a').nth(1).click(); await p.waitForURL('**/it/ernesto/');

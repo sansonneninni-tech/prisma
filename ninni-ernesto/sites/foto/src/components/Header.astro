@@ -25,11 +25,11 @@ const voci = [
 ];
 ---
 <header class="hd wrap" data-hd>
-  <div class="what" data-what>
-    <button class="what__btn" type="button" aria-expanded="false" aria-controls="what-menu" data-what-apri>
+  <div class="what tendina" data-what data-tendina>
+    <button class="what__btn" type="button" aria-expanded="false" aria-controls="what-menu" data-what-apri data-tendina-apri>
       <span class="what__t" translate="no">What?</span>
     </button>
-    <nav class="what__menu" id="what-menu" aria-label={t('galleria.nav.principale')} data-what-menu hidden>
+    <nav class="what__menu" id="what-menu" aria-label={t('galleria.nav.principale')} data-what-menu data-tendina-menu hidden>
       <ul class="what__ul">
         {voci.map((v) => (
           <li class="what__li">

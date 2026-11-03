@@ -217,3 +217,8 @@ html[data-home][data-what-aperto] .hd .lingue__a[aria-current] { color: var(--c-
 .hd .hd__shop { color: #004e89; }
 html[data-home] .hd .hd__shop { color: #ffb176; }
 html[data-home][data-what-aperto] .hd .hd__shop { color: #004e89; }
+
+/* tendina «Shop» (Ninni / Ernesto): a destra, sotto il bottone, larga quanto le sue voci */
+.tendina--dx { position: relative; display: flex; align-items: center; }
+.shop__menu { left: 0; width: max-content; min-width: 160px; padding: var(--s-2) var(--gutter) var(--s-3); border: var(--line); border-top: 0; }
+.shop__menu .what__a { color: #004e89; }
