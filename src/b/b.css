@@ -154,7 +154,8 @@ body.is-pl .pos { visibility: hidden; }
 .reel, .reel video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .reel video { opacity: 0; transition: opacity 1.2s linear; }
 .reel video.is-on { opacity: 1; }
-.reel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.42), rgba(0,0,0,0) 22%, rgba(0,0,0,0) 66%, rgba(0,0,0,.55)); }
+/* velature in alto e in basso: le scritte bianche piccole restano leggibili su ogni fotogramma (almeno 4.5:1) */
+.reel::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.6), rgba(0,0,0,.28) 9%, rgba(0,0,0,0) 24%, rgba(0,0,0,0) 56%, rgba(0,0,0,.34) 80%, rgba(0,0,0,.7)); }
 .cue {
   position: absolute; left: 50%; bottom: calc(var(--pad) - 6px); transform: translateX(-50%); z-index: 3; color: #fff;
   padding: 0 0 6px; overflow: hidden;
@@ -326,7 +327,9 @@ body.is-pl .pos { visibility: hidden; }
 .ac__x::before, .ac__x::after { content: ''; position: absolute; left: 0; top: 5px; width: 11px; height: 1px; background: currentColor; transition: transform .4s var(--out); }
 .ac__x::after { transform: rotate(90deg); }
 .ac__i.is-open .ac__x::after { transform: rotate(0); }
-.ac__b { padding: 0 0 18px 40px; overflow: hidden; }
+/* niente padding verticale: a altezza 0 la riga è chiusa davvero, nessun testo che spunta */
+.ac__b { padding: 0 0 0 40px; overflow: hidden; }
+.ac__b > :last-child { margin-bottom: 20px; }
 .ac__b > p { font-size: 13px; text-transform: none; letter-spacing: .01em; font-variation-settings: 'wdth' 100; font-weight: 400; color: var(--ink); max-width: 34em; margin-bottom: 10px; }
 .ac__b ul { display: grid; gap: 5px; color: var(--ink-2); margin-bottom: 14px; }
 .ac__b li::before { content: '—'; margin-right: 8px; color: var(--c2); }
@@ -805,3 +808,7 @@ body.is-cs .hd__nav a:hover::after, body.is-pl .hd__nav a:hover::after { transfo
   [data-pl-audio] span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   [data-pl-audio]::before { content: '♪'; font-size: 12px; letter-spacing: 0; }
 }
+
+/* fuoco da tastiera sulle righe dei formati: niente riquadro, il titolo si sottolinea col filo caldo */
+.ac__h:focus-visible { outline: none; }
+.ac__h:focus-visible .ac__t { text-decoration: underline; text-decoration-thickness: 1.2px; text-underline-offset: .16em; text-decoration-color: var(--c2); }

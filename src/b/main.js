@@ -562,8 +562,10 @@ function acToggle(li, open) {
   gsap.killTweensOf(b)
   if (open) {
     b.hidden = false
-    /* apertura e chiusura con la stessa curva e la stessa durata: l'altezza totale resta ferma */
-    gsap.fromTo(b, { height: 0, opacity: 0 }, { height: 'auto', opacity: 1, duration: reduced ? 0 : .5, ease: 'power3.inOut', clearProps: 'height,opacity' })
+    /* apertura e chiusura con la stessa curva e la stessa durata: l'altezza totale resta ferma.
+       Il blocco si apre, i suoi contenuti salgono di poco uno dopo l'altro */
+    gsap.fromTo(b, { height: 0 }, { height: 'auto', duration: reduced ? 0 : .5, ease: 'power3.inOut', clearProps: 'height' })
+    rise([...b.children], { y: 10, at: .12, each: .05, dur: .55 })
   } else {
     gsap.to(b, { height: 0, opacity: 0, duration: reduced ? 0 : .5, ease: 'power3.inOut', onComplete: () => { b.hidden = true; gsap.set(b, { clearProps: 'height,opacity' }) } })
   }
