@@ -34,7 +34,7 @@ const EN = {
   's.team': 'Studio · Puglia', 's.ninni': 'Direction, edit, colour', 's.ernesto': 'Production and clients', 's.foto': 'Photography · Ninni &amp; Ernesto',
   's.direct': 'Contacts', 's.clients': 'Clients', 's.name': 'Name', 's.fmt': 'What you need', 's.msg': 'The project, in two lines', 's.send': 'Send',
   's.ok': 'Got it. We’ll reply soon.', 's.err': 'Something went wrong. Write us on WhatsApp.',
-  'all': 'All', 'pl.back': 'All work', 'pl.close': 'Close', 'pl.dl': 'Download original', 'pl.case': 'Open the case', 'drive': 'Watch on Drive',
+  'all': 'All', 'w.one': 'work', 'w.many': 'works', 'pl.back': 'All work', 'pl.close': 'Close', 'pl.dl': 'Download original', 'pl.case': 'Open the case', 'drive': 'Watch on Drive',
   'cs.back': 'Back', 'cs.k': 'Case study · Artist', 'cs.play': 'Watch the editorial with sound', 'cs.pause': 'Pause', 'cs.resume': 'Play', 'cs.audio': 'Sound', 'cs.full': 'Full screen', 'cs.dl': 'Download original',
   'cs.lead': 'An artist needed a steady presence, not a video. We shot one day.', 'cs.k1': 'shoot day', 'cs.k2': 'pieces delivered', 'cs.k3': 'in&nbsp;the&nbsp;reserve', 'cs.k4': 'weeks of&nbsp;posts',
   'cs.sh': 'short', 'cs.sh.d': 'with sound, they open', 'cs.mi': 'micro', 'cs.mi.d': 'write on them and download the video', 'cs.res': 'Reserve: 24 pieces already shot, activated when needed.', 'cs.cta': 'The same system, for you', 'cs.cta.b': 'The content system',
@@ -42,7 +42,7 @@ const EN = {
 }
 const L = makeLang(EN)
 const IT_X = {
-  'pp.play': 'Play', 's.ok': 'Ricevuto. Ti rispondiamo a breve.', 's.alt': 'Ninni ed Ernesto, PRISMA', 's.clients': 'Clienti', 's.err': 'Qualcosa non va. Scrivici su WhatsApp.', all: 'Tutti',
+  'pp.play': 'Play', 's.ok': 'Ricevuto. Ti rispondiamo a breve.', 's.alt': 'Ninni ed Ernesto, PRISMA', 's.clients': 'Clienti', 's.err': 'Qualcosa non va. Scrivici su WhatsApp.', all: 'Tutti', 'w.one': 'lavoro', 'w.many': 'lavori',
   'cs.resume': 'Riprendi', 'fa.client': 'Cliente', 'fa.fmt': 'Formato', 'fa.ratio': 'Proporzioni', 'fa.len': 'Durata', 'fa.where': 'Dove',
 }
 const t = (k) => (L.get() === 'en' ? EN[k] : (IT_X[k] ?? L.t(k)))
@@ -183,8 +183,7 @@ const band = $('[data-band]')
 function buildBand() {
   const cats = ['all', 'editoriale', 'social', 'evento', 'sistema', 'original']
   const one = cats.map(c => `<button type="button" data-f="${c}" aria-pressed="${c === filter}">${c === 'all' ? t('all') : tx(CATS[c])}</button>`).join('')
-  band.innerHTML = `<div class="band__t"><span>${one}</span><span aria-hidden="true">${one}</span><span aria-hidden="true">${one}</span><span aria-hidden="true">${one}</span></div>`
-  $$('[aria-hidden] button', band).forEach(b => { b.tabIndex = -1 })
+  band.innerHTML = `<div class="band__t">${one}</div>`
 }
 band.addEventListener('click', (e) => {
   const b = e.target.closest('[data-f]'); if (!b) return
@@ -200,7 +199,7 @@ function applyFilter() {
     $('a', li).tabIndex = on ? 0 : -1
     if (on) n++
   })
-  meta.textContent = `${n} / ${all.length} — ${filter === 'all' ? t('all') : tx(CATS[filter])}`
+  meta.textContent = `${n} ${t(n === 1 ? 'w.one' : 'w.many')} — ${filter === 'all' ? t('all') : tx(CATS[filter])}`
 }
 let hot = null
 function showBg(w, a) {
@@ -238,9 +237,14 @@ function fitStage() {
   const w = plList[plIdx]; if (!w) return
   const [a, b] = (w.ratio || '16/9').split('/').map(Number)
   const r = a / b
-  const W = plStage.clientWidth, H = plStage.clientHeight
+  const duo = !matchMedia('(max-width: 1024px) and (orientation: portrait)').matches
+  const iw = Math.min(340, Math.max(250, innerWidth * .24)), gap = Math.min(48, Math.max(20, innerWidth * .03))
+  const cw = pl.clientWidth - parseFloat(getComputedStyle(pl).paddingLeft) - parseFloat(getComputedStyle(pl).paddingRight)
+  const W = duo ? cw - iw - gap : plStage.clientWidth, H = plStage.clientHeight
   const width = Math.min(W, H * r), height = width / r
-  ;[plV, plImg].forEach(el => { el.style.width = `${Math.floor(width)}px`; el.style.height = `${Math.floor(height)}px` })
+  pl.classList.toggle('is-duo', duo)
+  pl.style.gridTemplateColumns = duo ? `${Math.floor(width)}px ${iw}px` : ''
+  ;[plV, plImg, plCtl].forEach(el => { el.style.width = `${Math.floor(width)}px`; el.style.height = `${Math.floor(height)}px` })
 }
 new ResizeObserver(() => fitStage()).observe(plStage)
 function facts(w, len) {
@@ -249,6 +253,35 @@ function facts(w, len) {
   if (w.drive) rows.push([t('fa.where'), 'Google Drive'])
   $('[data-pl-facts]').innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')
 }
+/* comandi del lettore */
+const plCtl = $('[data-pl-ctl]'), plBar = $('[data-pl-bar]'), plProg = $('[data-pl-prog]')
+let plIdleT = 0
+function plWake() {
+  plCtl.classList.remove('is-idle'); clearTimeout(plIdleT)
+  if (!plV.paused) plIdleT = setTimeout(() => plCtl.classList.add('is-idle'), 2200)
+}
+function plSync() {
+  $('[data-pl-tl]').textContent = t(plV.paused ? 'cs.resume' : 'cs.pause')
+  $('[data-pl-audio]').setAttribute('aria-pressed', String(!plV.muted)); $('[data-pl-snd]').textContent = plV.muted ? 'off' : 'on'
+}
+const plTick = () => {
+  if (!plV.duration) return
+  const k = plV.currentTime / plV.duration
+  plBar.style.transform = `scaleX(${k})`; plProg.setAttribute('aria-valuenow', String(Math.round(k * 100)))
+  $('[data-pl-time]').textContent = `${fmtTime(plV.currentTime)} / ${fmtTime(plV.duration)}`
+}
+plV.addEventListener('timeupdate', plTick)
+;['play', 'pause', 'volumechange'].forEach(ev => plV.addEventListener(ev, () => { plSync(); plWake() }))
+plV.addEventListener('click', () => { plV.paused ? plV.play() : plV.pause() })
+$('[data-pl-toggle]').addEventListener('click', () => { plV.paused ? plV.play() : plV.pause() })
+$('[data-pl-audio]').addEventListener('click', () => { plV.muted = !plV.muted })
+$('[data-pl-full]').addEventListener('click', () => { if (plV.requestFullscreen) plV.requestFullscreen().catch(() => {}); else plV.webkitEnterFullscreen?.() })
+const plSeek = (x) => { const r = plProg.getBoundingClientRect(); if (plV.duration) plV.currentTime = Math.max(0, Math.min(1, (x - r.left) / r.width)) * plV.duration }
+plProg.addEventListener('pointerdown', (e) => { plSeek(e.clientX); plProg.setPointerCapture(e.pointerId) })
+plProg.addEventListener('pointermove', (e) => { if (plProg.hasPointerCapture(e.pointerId)) plSeek(e.clientX) })
+plProg.addEventListener('keydown', (e) => { if (!plV.duration) return; if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); e.stopPropagation(); plV.currentTime += e.key === 'ArrowRight' ? 5 : -5 } })
+$('[data-pl-stage]').addEventListener('pointermove', plWake)
+plCtl.addEventListener('focusin', plWake)
 function plPlay() {
   const w = plList[plIdx]
   if (pl.hidden || !w?.src) return
@@ -266,12 +299,13 @@ function plShow(play = true) {
   const dl = $('[data-pl-dl]'), cs = $('[data-pl-case]')
   facts(w)
   if (w.src) {
-    plImg.hidden = true; plDrive.hidden = true; plV.hidden = false
+    plImg.hidden = true; plDrive.hidden = true; plV.hidden = false; plCtl.hidden = false
+    plBar.style.transform = 'scaleX(0)'; $('[data-pl-time]').textContent = ''
     plV.poster = w.poster
     if (play) plPlay(); else if (plV.dataset.src !== w.src) plStop()
     dl.hidden = false; dl.href = w.dl; dl.setAttribute('download', w.dl.split('/').pop())
   } else {
-    plStop(); plV.hidden = true
+    plStop(); plV.hidden = true; plCtl.hidden = true
     plImg.hidden = false; plImg.src = w.poster; plImg.alt = w.title
     plDrive.hidden = false; plDrive.href = w.drive
     dl.hidden = true

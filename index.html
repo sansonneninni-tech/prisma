@@ -343,7 +343,17 @@
       <button type="button" class="pl__x" data-pl-close><span data-i18n="pl.close">Chiudi</span> <span aria-hidden="true">✕</span></button>
     </div>
     <div class="pl__stage" data-pl-stage>
-      <video class="pl__v" playsinline controls preload="none"></video>
+      <video class="pl__v" playsinline preload="none"></video>
+      <!-- comandi nel linguaggio del sito: compaiono quando servono, non coprono i sottotitoli -->
+      <div class="pl__ctl" data-pl-ctl hidden>
+        <div class="pl__prog" data-pl-prog role="slider" tabindex="0" aria-label="Avanzamento" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i data-pl-bar></i></div>
+        <div class="pl__btns">
+          <button type="button" data-pl-toggle><span data-pl-tl data-i18n="cs.pause">Pausa</span></button>
+          <button type="button" data-pl-audio aria-pressed="true"><span data-i18n="cs.audio">Audio</span> <b data-pl-snd>on</b></button>
+          <span class="pl__time" data-pl-time></span>
+          <button type="button" data-pl-full><span class="pl__lbl" data-i18n="cs.full">Schermo intero</span><span class="pl__ico" aria-hidden="true">⤢</span></button>
+        </div>
+      </div>
       <img class="pl__img" alt="" hidden />
       <a class="pl__drive btn btn--light" data-pl-drive href="#" target="_blank" rel="noopener" hidden><span data-i18n="drive">Guarda su Drive</span> ↗</a>
     </div>
