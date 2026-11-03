@@ -290,6 +290,8 @@ export function createEditor({ items, lang = () => 'it', onClose = () => {} }) {
     /* entra dal basso come le altre finestre; il video parte a finestra ferma */
     const it = items[i]; state = store.get(it.n); video.poster = it.poster; sync()
     const still = matchMedia('(prefers-reduced-motion: reduce)').matches
+    /* un fotogramma fermo prima di entrare: la finestra arriva già completa */
+    draw(); cancelAnimationFrame(raf)
     root.classList.add('edge-t')
     const a = root.animate([{ transform: 'translate3d(0, 100%, 0)' }, { transform: 'translate3d(0, 0, 0)' }], { duration: still ? 0 : 850, easing: 'cubic-bezier(.87, 0, .13, 1)', fill: 'both' })
     a.finished.catch(() => {}).then(() => {
@@ -313,10 +315,10 @@ export function createEditor({ items, lang = () => 'it', onClose = () => {} }) {
     cancelAnimationFrame(raf)
     video.pause()
     const still = matchMedia('(prefers-reduced-motion: reduce)').matches
-    root.classList.add('edge-b')
+    root.classList.add('edge-t')
     const a = root.animate([{ transform: 'translate3d(0, 0, 0)' }, { transform: 'translate3d(0, 100%, 0)' }], { duration: still ? 0 : 700, easing: 'cubic-bezier(.87, 0, .13, 1)', fill: 'both' })
     a.finished.catch(() => {}).then(() => {
-      root.classList.remove('edge-b')
+      root.classList.remove('edge-t')
       video.removeAttribute('src'); video.load()
       root.hidden = true; document.body.classList.remove('is-se'); a.cancel(); closing = false
       onClose()

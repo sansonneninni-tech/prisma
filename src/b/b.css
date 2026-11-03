@@ -85,9 +85,11 @@ ul, ol { list-style: none; }
 @keyframes lineOn { to { opacity: 1; } }
 @keyframes loadOut { to { transform: translateY(-100%); } }
 .tetra { --s: clamp(96px, 13vw, 150px); width: var(--s); height: var(--s); position: relative; perspective: 900px; transform-style: preserve-3d; touch-action: none; z-index: 2; }
-.tetra__in { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform;
-  animation: tKick 2.6s cubic-bezier(.15, .6, .35, 1) both, tSpin 14s linear 2.6s infinite; }
-@keyframes tKick { from { transform: rotateX(-26deg) rotateY(0deg); } to { transform: rotateX(-26deg) rotateY(720deg); } }
+/* una sola animazione per elemento: così il compositore le fa girare entrambe */
+.tetra__in, .tetra__sp { position: absolute; inset: 0; transform-style: preserve-3d; will-change: transform; }
+.tetra__in { transform: rotateX(-26deg); animation: tSpin 14s linear 2.6s infinite; }
+.tetra__sp { animation: tKick 2.6s cubic-bezier(.15, .6, .35, 1) both; }
+@keyframes tKick { from { transform: rotateY(0deg); } to { transform: rotateY(720deg); } }
 @keyframes tSpin { from { transform: rotateX(-26deg) rotateY(0deg); } to { transform: rotateX(-26deg) rotateY(360deg); } }
 @media (prefers-reduced-motion: reduce) { .load { display: none; } }
 .tf {
@@ -626,7 +628,8 @@ body.is-cs .hd { color: var(--ink); }
   .pl__facts { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  .cue::after, .fp__cue::after, .band__t { animation: none !important; }
 }
 
 /* Studio su tablet e telefono */

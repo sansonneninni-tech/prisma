@@ -89,12 +89,13 @@ function slide(el, from, to, dur, easing = EIO) {
   return a.finished.catch(() => {}).then(() => a)
 }
 /* i contenuti salgono di poco e compaiono, uno dopo l'altro; si somma ai transform che hanno già */
-function rise(kids, { y = 24, at = .38, each = .04, dur = .7 } = {}) {
+function rise(kids, { y = 24, at = .38, each = .04, dur = .7, fade = true } = {}) {
   if (reduced) return
   kids.forEach((k, i) => {
     const o = { duration: ms(dur), delay: ms(at + i * each), easing: EOUT, fill: 'backwards' }
-    k.animate([{ transform: `translate3d(0, ${y}px, 0)` }, { transform: 'translate3d(0, 0, 0)' }], { ...o, composite: 'add' })
-    k.animate([{ opacity: 0 }, {}], o)
+    /* translate (non transform): si somma da solo ai transform esistenti e resta sul compositore */
+    k.animate([{ translate: `0 ${y}px` }, { translate: '0 0' }], o)
+    if (fade) k.animate([{ opacity: 0 }, {}], o)
   })
 }
 /* finestre a tutto schermo: entrano dal basso ed escono verso il basso */
@@ -104,7 +105,7 @@ function sheetIn(el, kids) {
   return slide(el, 100, 0, .85).then(a => { edge(el, 0); a.cancel() })
 }
 function sheetOut(el, done) {
-  edge(el, -1)
+  edge(el, 1)
   return slide(el, 0, 100, .7).then(a => { edge(el, 0); done(); a.cancel() })
 }
 
@@ -736,8 +737,12 @@ const hashView = () => HASH.indexOf(location.hash.slice(1).split('/')[0])
 let cur = location.hash === '#isabella' ? 2 : Math.max(0, hashView())
 const deepId = location.hash.slice(1).split('/')[1]
 const deepCase = location.hash === '#isabella'
-function ui(i) {
-  document.body.className = document.body.className.replace(/\bat-\d\b/g, '').trim() + ` at-${i}`
+let uiT = 0
+function ui(i, later = 0) {
+  /* il colore della testata cambia quando la nuova pagina passa davvero sotto la testata */
+  const at = () => { document.body.className = document.body.className.replace(/\bat-\d\b/g, '').trim() + ` at-${i}` }
+  clearTimeout(uiT)
+  if (later) uiT = setTimeout(() => { if (cur === i) at() }, later); else at()
   $$('.hd__nav a').forEach(a => a.classList.toggle('is-on', +a.dataset.go === i))
   pos.textContent = String(i + 1).padStart(2, '0')
   if (pl.hidden) history.replaceState(null, '', `#${HASH[i]}`)
@@ -750,13 +755,21 @@ function onEnter(i) {
 function transition(i, dir, from) {
   const a = views[from], b = views[i]
   cur = i
-  ui(i)
+  ui(i, ms(.95 * (dir > 0 ? .68 : .2)))
   if (i !== 2) prismOff()
   b.classList.add('is-in')
   const sc = $('.scrl', b); if (sc) sc.scrollTop = 0
-  const kids = [...b.querySelectorAll('.idx li, .band, .sys > *, .one > *, .st > *')]
+  const kids = [...b.querySelectorAll('.band, .sys > *, .one > *, .st > *')]
   edge(b, dir)
-  rise(dir > 0 ? kids : kids.reverse(), { y: 24 * dir, at: .95 * .45, each: .025 })
+  const at = .95 * .45
+  rise(dir > 0 ? kids : kids.reverse(), { y: 24 * dir, at, each: .025 })
+  /* indice dei lavori: le voci salgono una per una, la dissolvenza è una sola su tutto l'indice */
+  const ix = $('.idx', b)
+  if (ix && !reduced) {
+    const li = $$('li', ix)
+    rise(dir > 0 ? li : li.reverse(), { y: 24 * dir, at, each: .025, fade: false })
+    ix.animate([{ opacity: 0 }, {}], { duration: ms(.7), delay: ms(at), easing: EOUT, fill: 'backwards' })
+  }
   const out = slide(a, 0, -28 * dir, .95)
   return slide(b, 100 * dir, 0, .95).then(async (inA) => {
     const outA = await out
