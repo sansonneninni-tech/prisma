@@ -4,7 +4,9 @@ Modelli AR delle foto (GLB per Android e anteprima 3D, USDZ per iPhone), alla mi
 
 Per ogni foto in dati/opere.json:
   NN-<formato>.glb/.usdz   una per ogni formato di stampa (stampa senza cornice, 3 mm di spessore come un pannello)
-  NN-ed.glb/.usdz          l'edizione limitata con la sua cornice e il passe-partout, misura esterna
+  NN-ed-LxA.glb/.usdz      l'edizione limitata (LxA = misura della stampa) con la sua cornice e il passe-partout, misura esterna
+                           (NN-ed senza misura: i modelli vecchi che usano ancora le versioni libera e ispirata)
+I modelli che non rifà (es. NN-ed delle versioni libera/ispirata) restano, e restano nell'indice.
 Scrive assets/ar/index.json (id, misure). Usa le funzioni di packages/core/scripts/ar/genera_ar.py
 (stessa geometria, stesso ancoraggio a parete, stessa scala bloccata dei siti di Isabella).
 
@@ -80,9 +82,9 @@ def main():
     opere = json.loads((RADICE / "dati/opere.json").read_text(encoding="utf-8"))
     man = {o["id"]: o for o in json.loads((RADICE / "assets/manifest.json").read_text(encoding="utf-8"))["opere"]}
     uscita = RADICE / "assets/ar"
-    for f in uscita.glob("*.glb"): f.unlink()
-    for f in uscita.glob("*.usdz"): f.unlink()
     uscita.mkdir(parents=True, exist_ok=True)
+    indice = uscita / "index.json"
+    vecchie = json.loads(indice.read_text(encoding="utf-8"))["opere"] if indice.exists() else []
     voci = []
     for o in opere:
         m = man[o["id"]]
@@ -101,8 +103,11 @@ def main():
             w, h = e["larghezza_cm"], e["altezza_cm"]
             if land and w < h: w, h = h, w
             fi, W, H = incornicia(img, w, h, e["cornice"])
-            scrivi(f"{o['id']}-ed", fi, W, H, 3.5 if e["cornice"] != "alu" else 2.5, o["titolo"], uscita, voci)
-    (uscita / "index.json").write_text(json.dumps({"generato_da": "scripts/foto/genera_ar_foto.py", "unita": "metri (1 unita' = 1 m)", "opere": voci, "saltate": []}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+            scrivi(f"{o['id']}-ed-{w:g}x{h:g}", fi, W, H, 3.5 if e["cornice"] != "alu" else 2.5, o["titolo"], uscita, voci)
+    nuove = {v["id"] for v in voci}
+    voci += [v for v in vecchie if v["id"] not in nuove]
+    voci.sort(key=lambda v: v["id"])
+    indice.write_text(json.dumps({"generato_da": "scripts/foto/genera_ar_foto.py", "unita": "metri (1 unita' = 1 m)", "opere": voci, "saltate": []}, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(f"fatto: {len(voci)} modelli")
 
 

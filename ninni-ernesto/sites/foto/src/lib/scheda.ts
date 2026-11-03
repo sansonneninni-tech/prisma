@@ -60,7 +60,7 @@ export interface DatiScheda {
     formati: Record<string, { w: number; h: number; et: string }>;
     carte: Record<string, string>;
     cornici: Record<string, string>;
-    ed: null | { w: number; h: number; fw: number; fh: number; carta: string; cornice: string; et: string };
+    ed: null | { w: number; h: number; fw: number; fh: number; carta: string; cornice: string; et: string; serie?: { n: number; col: number; gap: number } };
   };
   carte: { id: string; nome: string; nota: string }[];
   cornici: { id: string; nome: string; nota: string }[];
@@ -110,6 +110,9 @@ export function tRate(t: Translator): Translator {
 }
 
 const RAPPORTO_PANORAMICA = 1.6;
+/** Serie (es. Mare su tela): le stampe appese in griglia, 4 per riga, 3 cm fra l'una e l'altra (anteprima e scala). */
+export const SERIE_COLONNE = 4;
+export const SERIE_SPAZIO_CM = 3;
 
 export function datiScheda(art: Artwork, lang: Locale, site?: URL): DatiScheda {
   const t = useT(lang);
@@ -123,7 +126,7 @@ export function datiScheda(art: Artwork, lang: Locale, site?: URL): DatiScheda {
   righe.push({ chiave: 'autore', etichetta: t('galleria.scheda.fotografo'), valore: art.author === 'ernesto' ? 'Ernesto' : 'Ninni' });
   if (art.place) righe.push({ chiave: 'luogo', etichetta: t('galleria.scheda.luogo'), valore: art.place });
   if (art.year) righe.push({ chiave: 'anno', etichetta: t('etichette.anno'), valore: String(art.year) });
-  if (art.edition) righe.push({ chiave: 'edizione', etichetta: t('galleria.edizione.etichetta'), valore: t(art.edition.artistProofs === 1 ? 'galleria.edizione.valore_1' : 'galleria.edizione.valore', { n: art.edition.size, pa: art.edition.artistProofs }) });
+  if (art.edition) righe.push({ chiave: 'edizione', etichetta: t('galleria.edizione.etichetta'), valore: t(`galleria.edizione.${art.series.length ? 'valore_serie' : 'valore'}${art.edition.artistProofs === 1 ? '_1' : ''}`, { n: art.edition.size, pa: art.edition.artistProofs }) });
   righe.push({ chiave: 'stampa', etichetta: t('galleria.scheda.stampa_t'), valore: t('galleria.scheda.stampa_v') });
   const kd = `galleria.descrizioni.${art.id}`;
   const descrizione = t.has(kd) ? t(kd) : null;
@@ -148,7 +151,7 @@ export function datiScheda(art: Artwork, lang: Locale, site?: URL): DatiScheda {
   const primaStampa = fApertura ? stampe.find((s) => s.formato === fApertura.id && s.supporto === 'rag' && s.cornice === 'none') ?? stampe.find((s) => s.formato === fApertura.id) ?? null : null;
 
   const it = SHIPPING_RATES.italy;
-  const notaPrezzo = [t('galleria.edizione.incluso'), it.original.perItemCents === 0 ? t('galleria.scheda.spedizione_inclusa') : null].filter(Boolean).join(SEP);
+  const notaPrezzo = [art.edition?.frame === 'none' ? null : t('galleria.edizione.incluso'), it.original.perItemCents === 0 ? t('galleria.scheda.spedizione_inclusa') : null].filter(Boolean).join(SEP);
   const notaPrezzoStampa = it.print.freeAboveCents
     ? t('galleria.scheda.spedizione_gratis_da', { prezzo: formatPrice(it.print.freeAboveCents, lang) })
     : t('galleria.scheda.spedizione_stampe', { prezzo: formatPrice(it.print.firstItemCents, lang) });
@@ -167,7 +170,7 @@ export function datiScheda(art: Artwork, lang: Locale, site?: URL): DatiScheda {
     }),
     aQuestoPrezzo: e.leftAtThisPrice,
     prossimo: e.nextStepPriceCents ? formatPrice(e.nextStepPriceCents, lang) : null,
-    misura: formatDimensions(e.dimensions, lang),
+    misura: art.series.length ? t('galleria.edizione.serie', { n: art.series.length, misura: formatDimensions(e.dimensions, lang) }) : formatDimensions(e.dimensions, lang),
     misuraCornice: formatDimensions(e.framedDimensions, lang),
     carta: t(`carte.${e.paper}.nome`),
     cornice: t(`cornici.${e.frame}.nome`),
@@ -179,7 +182,8 @@ export function datiScheda(art: Artwork, lang: Locale, site?: URL): DatiScheda {
     formati: Object.fromEntries(varianti.map((v) => [v.format.id, { w: v.format.widthCm, h: v.format.heightCm, et: formatDimensions(v.format, lang) }])),
     carte: Object.fromEntries([...PRINT_MATERIALS, 'bizan'].map((id) => [id, t(`carte.${id}.breve`)])),
     cornici: Object.fromEntries(FRAMES.map((id) => [id, t(`cornici.${id}.breve`)])),
-    ed: e ? { w: e.dimensions.widthCm, h: e.dimensions.heightCm, fw: e.framedDimensions.widthCm, fh: e.framedDimensions.heightCm, carta: e.paper, cornice: e.frame, et: formatDimensions(e.dimensions, lang) } : null,
+    ed: e ? { w: e.dimensions.widthCm, h: e.dimensions.heightCm, fw: e.framedDimensions.widthCm, fh: e.framedDimensions.heightCm, carta: e.paper, cornice: e.frame, et: art.series.length ? t('galleria.edizione.serie_breve', { n: art.series.length, misura: formatDimensions(e.dimensions, lang) }) : formatDimensions(e.dimensions, lang),
+      ...(art.series.length ? { serie: { n: art.series.length, col: SERIE_COLONNE, gap: SERIE_SPAZIO_CM } } : {}) } : null,
   };
 
   // --- particolari (lente) ---
@@ -192,23 +196,27 @@ export function datiScheda(art: Artwork, lang: Locale, site?: URL): DatiScheda {
 
   // --- AR ---
   const modelli: Record<string, { glb: string; usdz: string; testo: string }> = {};
+  const idAr: Record<string, string> = {};
   const voce = (chiave: string, id: string, testo: (m: string) => string) => {
     const m = misureAr(id);
     if (!m) return;
+    idAr[chiave] = id;
     modelli[chiave] = { ...modelliAr(id), testo: testo(formatDimensions({ widthCm: m.larghezzaCm, heightCm: m.altezzaCm }, lang)) };
   };
-  if (art.edition) voce('ed', `${art.id}-ed`, (m) => t('galleria.ar.misura_cornice', { misure: m }));
+  // modello dell'edizione: NN-ed-LxA (misura della stampa); NN-ed senza misura resta per le versioni libera e ispirata
+  if (art.edition) voce('ed', `${art.id}-ed-${art.edition.dimensions.widthCm}x${art.edition.dimensions.heightCm}`, (m) => t(art.edition!.frame === 'none' ? 'galleria.ar.misura' : 'galleria.ar.misura_cornice', { misure: m }));
   for (const f of formati) voce(f.id, `${art.id}-${f.id}`, (m) => t('galleria.ar.misura', { misure: m }));
   // si apre sulla stampa (audit 28/10): il modello AR iniziale è quello del formato di stampa scelto
   const arIniziale = primaStampa && modelli[primaStampa.formato] ? primaStampa.formato : art.edition && art.status !== 'sold' ? 'ed' : Object.keys(modelli)[0] ?? 'ed';
   const scelto = modelli[arIniziale] ?? Object.values(modelli)[0]!;
   const { glb, usdz } = scelto;
-  const mAr = misureAr(`${art.id}-${arIniziale}`);
+  const mAr = misureAr(idAr[arIniziale] ?? `${art.id}-${arIniziale}`);
   const testoMisureAr = scelto.testo;
   const poster = getArtworkImage(art, 'canvas', { width: 960 }).src;
 
   // --- precedente / successiva ---
-  const lista = opereInOrdine();
+  // dentro lo stesso fotografo: da Ernesto non si salta a Ninni
+  const lista = opereInOrdine().filter((a) => a.author === art.author);
   const i = lista.findIndex((a) => a.id === art.id);
   const precedente = lista[(i - 1 + lista.length) % lista.length]!;
   const successiva = lista[(i + 1) % lista.length]!;
@@ -272,7 +280,7 @@ export function datiScheda(art: Artwork, lang: Locale, site?: URL): DatiScheda {
     prezzo: !venduta && art.priceCents !== null ? formatPrice(art.priceCents, lang) : null,
     notaPrezzo,
     notaPrezzoStampa,
-    tempiOriginale: t('etichette.tempi_originale', { giorni: PREPARATION_BUSINESS_DAYS.original }),
+    tempiOriginale: t(art.edition?.frame === 'none' ? 'galleria.edizione.tempi_senza_cornice' : 'etichette.tempi_originale', { giorni: PREPARATION_BUSINESS_DAYS.original }),
     tempiStampa: t('etichette.tempi_stampa', { giorni: PREPARATION_BUSINESS_DAYS.print }),
     originale,
     formati,

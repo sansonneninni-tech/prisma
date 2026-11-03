@@ -27,7 +27,7 @@
       "ernesto": "Ernesto",
       "carte": "Papers and frames",
       "chi_siamo": "About",
-      "prisma": "Prisma"
+      "prisma": "PRISMA"
     },
     "indice": {
       "titolo": "Site index",
@@ -52,7 +52,13 @@
       "seguimi": "Follow us",
       "indirizzo": "Italy",
       "ernesto_presto": "Soon",
-      "ernesto_avvisami": "Notify me"
+      "ernesto_avvisami": "Notify me",
+      "mazzo": "Ninni's photos come in from the left, Ernesto's from the right. Scroll or drag, click a photo to open it.",
+      "guida": "Scroll or drag",
+      "ed_restano": "Edition of {di}, {n} left",
+      "stampa_da": "prints from {prezzo}",
+      "vai_ninni": "Ninni's shop",
+      "vai_ernesto": "Ernesto's shop"
     },
     "opere": {
       "descrizione": "Photographs for sale, with sizes and prices.",
@@ -146,7 +152,8 @@
       "cornice": "Frame",
       "piu": "+ {prezzo}",
       "spedizione_gratis_da": "free shipping in Italy over {prezzo}",
-      "lente": "Magnifier: see the paper and frame up close"
+      "lente": "Magnifier: see the paper and frame up close",
+      "serie": "The series"
     },
     "ar": {
       "titolo": "On your wall",
@@ -226,7 +233,7 @@
       "nuova_scheda": "opens in a new tab",
       "bio_ninni": "Flowers, bodies, full color. Looking for the light that makes ordinary things strange.",
       "bio_ernesto": "His catalog is coming soon.",
-      "prisma": "Prisma, our film studio"
+      "prisma": "PRISMA, our film studio"
     },
     "info": {
       "descrizione": "Shipping and returns, terms of sale, privacy, cookies and legal notes of Ninni & Ernesto.",
@@ -325,7 +332,7 @@
     "catalogo": {
       "ninni_descrizione": "Photographs by Ninni: fine art prints and limited editions signed by Ninni.",
       "ernesto_descrizione": "Photographs by Ernesto: the catalog opens soon.",
-      "nota_edizioni": "A few copies, signed, numbered and framed. The price rises as the edition sells.",
+      "nota_edizioni": "A few copies, signed and numbered by hand. The price rises as the edition sells.",
       "nota_stampe": "On cotton or Japanese papers, in three sizes. Frame optional."
     },
     "edizione": {
@@ -339,11 +346,16 @@
       "scaglioni": "Edition prices, copy by copy",
       "venduti": "sold",
       "firma": "Signed and numbered by hand by {autore}, with certificate",
+      "tempi_senza_cornice": "Printed and signed in {giorni} business days",
       "incluso": "frame included",
       "aggiungi": "Take no. {n}",
       "etichetta": "Edition",
       "valore": "{n} copies + {pa} artist’s proofs",
-      "valore_1": "{n} copies + 1 artist’s proof"
+      "valore_serie": "{n} sets + {pa} artist’s proofs",
+      "valore_serie_1": "{n} sets + 1 artist’s proof",
+      "valore_1": "{n} copies + 1 artist’s proof",
+      "serie": "A series of {n} prints, each {misura}, sold only as a whole",
+      "serie_breve": "{n} prints {misura}"
     },
     "carte": {
       "descrizione": "The fine art papers and frames we use for prints and limited editions, with prices.",
@@ -355,10 +367,10 @@
       "fascia_m": "up to 60 cm",
       "fascia_l": "up to 90 cm",
       "edizioni_t": "Limited editions",
-      "ed_1": "7 to 10 copies per photograph, plus 1 or 2 artist’s proofs. When they are gone, no more are printed.",
+      "ed_1": "Face: 5 copies plus 1 artist’s proof. Sea on Canvas: 10 complete sets plus 1 artist’s proof. Once they are gone, no more are printed.",
       "ed_2": "Each copy is signed and numbered by hand on the back and comes with its certificate.",
       "ed_3": "The first copies cost less: the price rises in steps as the edition sells.",
-      "ed_4": "It arrives framed, ready to hang.",
+      "ed_4": "Face arrives framed in walnut, ready to hang; the Sea on Canvas prints arrive unframed.",
       "vai": "See the editions"
     },
     "ernesto": {

@@ -1,0 +1,57 @@
+/* Home: il mazzo di foto su bianco (components/home/Mazzo.astro, lib/mazzo-client.ts) */
+html.mz-blocca, html.mz-blocca body { overflow: hidden; overscroll-behavior: none; height: 100%; }
+html[data-home], html[data-home] body { background: #fff; }
+
+.mz { position: relative; }
+.mz__ul { list-style: none; margin: 0; padding: 0; }
+
+/* in movimento: un palco fisso a tutto schermo, le voci posizionate da JS con transform */
+.mz:not(.mz--statico) { position: fixed; inset: 0; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; cursor: grab; }
+.mz--trascina { cursor: grabbing; }
+.mz:not(.mz--statico) .mz-v { position: absolute; left: 0; top: 0; will-change: transform; contain: layout paint; }
+.mz-v--fuori { visibility: hidden; }
+.mz-v__a { display: block; width: 100%; height: 100%; -webkit-tap-highlight-color: transparent; }
+.mz-v__a:focus-visible { outline: 2px solid var(--c-ink); outline-offset: 4px; }
+.mz-v .isa-picture, .mz-v img { display: block; width: 100%; height: 100%; }
+.mz-v img { object-fit: cover; -webkit-user-drag: none; }
+.mz--apre { cursor: default; }
+
+/* senza JavaScript o con «riduci movimento»: le foto ferme in griglia, la pagina scorre */
+.mz--statico { padding: calc(var(--header-h) + 32px) var(--gutter) 0; }
+.mz--statico .mz__ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px var(--gutter); align-items: center; }
+@media (min-width: 1000px) { .mz--statico .mz__ul { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.mz--statico .mz-v { aspect-ratio: var(--ar); }
+
+/* il nome: fisso in basso, in differenza come l'header (nero sul bianco, chiaro sopra le foto) */
+.mz-nome {
+  position: fixed; inset: auto 0 0; z-index: var(--z-header); pointer-events: none;
+  padding: 0 var(--gutter) calc(var(--s-3) + env(safe-area-inset-bottom));
+  color: #fff; mix-blend-mode: difference; container-type: inline-size;
+  transition: opacity 0.4s linear;
+}
+html.mz-apre .mz-nome { opacity: 0; }
+.mz-nome__h {
+  margin: 0 0 0 -0.04em;
+  font-family: 'Inter Tight', var(--f-sans); font-weight: var(--w-display);
+  font-size: calc(100cqw / var(--mega-2r)); line-height: var(--lh-mega); letter-spacing: var(--ls-mega);
+  white-space: nowrap;
+}
+.mz-nome__r { display: block; }
+@media (min-width: 1024px), (min-aspect-ratio: 4/5) {
+  .mz-nome__h { font-size: calc(100cqw / var(--mega-1r)); }
+  .mz-nome__r { display: inline; }
+}
+.mz-nome__a { pointer-events: auto; color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+@media (hover: hover) {
+  .mz-nome__a { transition: opacity 0.2s linear; }
+  .mz-nome__h:has(.mz-nome__a:hover) .mz-nome__a:not(:hover) { opacity: 0.35; }
+}
+.mz-nome__a:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+.mz-dida { display: grid; margin: 0 0 var(--s-2); font-size: var(--t-ui); font-weight: var(--w-strong); line-height: 1.25; min-height: 2.5em; align-content: end; }
+.mz-dida__r { color: rgb(255 255 255 / 0.6); font-weight: 400; min-height: 1.25em; }
+@media (hover: none) { .mz-dida { visibility: hidden; } }
+
+/* griglia ferma: il nome torna nel flusso sotto le foto */
+.mz--statico ~ .mz-nome { position: static; mix-blend-mode: normal; color: var(--c-ink); padding-top: var(--s-6); }
+.mz--statico ~ .mz-nome .mz-dida { display: none; }

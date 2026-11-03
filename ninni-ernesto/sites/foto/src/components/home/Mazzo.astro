@@ -1,0 +1,67 @@
+---
+/**
+ * Home (audit ninni 03/11): niente scorrimento della pagina, fondo bianco, le foto attraversano lo schermo come nella
+ * versione Luke & Nik. Le foto di Ninni entrano solo da sinistra, quelle di Ernesto solo da destra: si incrociano
+ * come le due metà di un mazzo che si mischia. Clic su una foto: si apre a tutto schermo, poi la sua scheda.
+ * Sopra, in differenza, il nome gigante: «Ninni» porta al negozio di Ninni, «Ernesto» a quello di Ernesto.
+ * Senza JavaScript o con «riduci movimento»: le foto ferme in griglia (classe mz--statico).
+ * Comportamento in lib/mazzo-client.ts, stili in styles/mazzo.css.
+ */
+import ArtworkPicture from '@ne/core/components/ArtworkPicture.astro';
+import { getArtworks, getPrintOptions, type Artwork } from '@ne/core/catalog';
+import { formatPrice } from '@ne/core';
+import { useT, type Locale } from '../../lib/i18n';
+import { hrefCatalogo, hrefOpera } from '../../lib/opera-link';
+import '../../styles/mazzo.css';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useT(lang);
+
+const tutte = getArtworks();
+const ninni = tutte.filter((a) => a.author === 'ninni');
+const ernesto = tutte.filter((a) => a.author === 'ernesto');
+// mischia: ognuna al suo posto in proporzione (i + ½) / n nel proprio mazzo, così le due metà si alternano anche se
+// non hanno lo stesso numero di foto; a pari posto Ninni prima
+const voci = [
+  ...ninni.map((a, i) => ({ a, k: (i + 0.5) / ninni.length, chi: 0 })),
+  ...ernesto.map((a, i) => ({ a, k: (i + 0.5) / ernesto.length, chi: 1 })),
+].sort((x, y) => x.k - y.k || x.chi - y.chi).map((v) => v.a);
+
+const misure = ['l', 'm', 's', 'm', 'l', 's', 'm', 's', 'l', 'm', 's', 'm', 'l', 's', 'm', 'l', 's', 'm'] as const;
+function riga(a: Artwork) {
+  const ed = a.edition;
+  const da = getPrintOptions(a)?.fromCents ?? null;
+  const parti = [a.author === 'ernesto' ? 'Ernesto' : 'Ninni'];
+  if (ed) parti.push(t('galleria.home.ed_restano', { n: ed.remaining, di: ed.size }));
+  if (ed && a.status === 'available' && a.priceCents !== null) parti.push(formatPrice(a.priceCents, lang));
+  else if (da !== null) parti.push(t('galleria.home.stampa_da', { prezzo: formatPrice(da, lang) }));
+  return parti.join(' · ');
+}
+---
+<section class="mz mz--statico" data-mazzo aria-label={t('galleria.home.mazzo')}>
+  <ul class="mz__ul">
+    {voci.map((a, i) => (
+      <li class="mz-v" data-m={misure[i % misure.length]} data-ar={a.aspectRatio} data-chi={a.author} data-px={a.images.canvas?.width ?? 2000} style={`--ar:${a.aspectRatio}`}>
+        <a class="mz-v__a" href={hrefOpera(lang, a)} data-titolo={a.title} data-riga={riga(a)}>
+          <ArtworkPicture artwork={a} lang={lang} alt="" width={1200} sizes="(min-width: 1000px) 60vw, 90vw" loading={i < 4 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : undefined} />
+          <span class="vh">{a.title}. {riga(a)}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<div class="mz-nome" data-mazzo-nome>
+  <p class="mz-dida" aria-hidden="true" data-dida><span data-dida-t>{t('galleria.home.guida')}</span><span class="mz-dida__r" data-dida-r></span></p>
+  <h1 class="mz-nome__h" translate="no">
+    <span class="mz-nome__r"><a class="mz-nome__a" href={hrefCatalogo(lang, 'ninni')} aria-label={t('galleria.home.vai_ninni')}>Ninni</a> &amp;</span>{' '}
+    <a class="mz-nome__a mz-nome__r" href={hrefCatalogo(lang, 'ernesto')} aria-label={t('galleria.home.vai_ernesto')}>Ernesto</a>
+  </h1>
+</div>
+
+<script>
+  import { avviaMazzo } from '../../lib/mazzo-client';
+  avviaMazzo();
+  document.addEventListener('astro:page-load', avviaMazzo);
+</script>

@@ -173,3 +173,41 @@
   :lang(zh) .idx__a { font-size: min(var(--t-list), 9cqw, 9svh); }
   .idx__piede { padding-top: var(--s-4); }
 }
+
+/* ---------- «What?» (audit ninni 03/11): al posto del logo, stesse lettere; apre una tendina di link ---------- */
+.what { position: relative; display: flex; align-items: center; flex: none; }
+.what__btn {
+  display: inline-flex; align-items: center; min-height: var(--touch); padding: 0; border: 0; background: none; color: inherit; cursor: pointer;
+  font-family: 'Inter Tight', var(--f-sans); font-weight: 600; letter-spacing: -0.045em; line-height: 0.8; white-space: nowrap;
+  font-size: 24px;
+}
+@media (min-width: 768px) { .what__btn { font-size: 28px; } }
+.what__btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.what__t { display: inline-block; transition: transform var(--d-ui) var(--ease-out); }
+@media (hover: hover) { .what__btn:hover .what__t { transform: translateX(2px); } }
+.what__menu {
+  position: absolute; left: calc(-1 * var(--gutter)); top: 100%;
+  width: 100vw; padding: var(--s-2) var(--gutter) var(--s-4);
+  background: var(--c-bg); color: var(--c-ink); border-bottom: var(--line);
+}
+.what__menu[hidden] { display: none; }
+.what__ul { list-style: none; margin: 0; padding: 0; display: grid; }
+.what__a {
+  display: inline-flex; align-items: baseline; gap: 0.25em; min-height: var(--touch); padding-block: 4px;
+  font-family: 'Inter Tight', var(--f-sans); font-weight: 600; letter-spacing: -0.045em; line-height: 1;
+  font-size: 24px; color: var(--c-ink); text-decoration: none;
+}
+@media (min-width: 768px) { .what__a { font-size: 28px; min-height: 40px; } }
+.what__a[aria-current] { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+.what__ext { font-size: 0.6em; font-weight: 500; transform: translateY(-0.35em); }
+@media (hover: hover) { .what__a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; } }
+.what__a:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+/* home: l'header è trasparente e in differenza sopra le foto che scorrono (come la versione Luke & Nik);
+   con il menu aperto torna bianco e normale, perché la tendina si legga */
+html[data-home] .hd { background: none; color: #fff; mix-blend-mode: difference; }
+html[data-home] .hd .lingue__a { color: rgb(255 255 255 / 0.6); }
+html[data-home] .hd .lingue__a[aria-current] { color: #fff; }
+html[data-home][data-what-aperto] .hd { background: var(--c-bg); color: var(--c-ink); mix-blend-mode: normal; }
+html[data-home][data-what-aperto] .hd .lingue__a { color: var(--c-mute); }
+html[data-home][data-what-aperto] .hd .lingue__a[aria-current] { color: var(--c-ink); }

@@ -16,26 +16,34 @@ import {
 import { slugify } from '../src/catalog/slug.ts';
 
 describe('catalog (real data files: Ninni & Ernesto)', () => {
-  it('loads the 8 photos by Ninni, Ernesto has none yet', () => {
+  it('loads the 8 photos by Ninni and the 10 by Ernesto (Mare su tela is one series of 8)', () => {
     const all = getArtworks();
-    expect(all).toHaveLength(8);
-    expect(all.every((a) => a.author === 'ninni')).toBe(true);
+    expect(all).toHaveLength(18);
+    expect(all.filter((a) => a.author === 'ninni')).toHaveLength(8);
+    expect(all.filter((a) => a.author === 'ernesto')).toHaveLength(10);
+    const mare = getArtwork('51')!;
+    expect(mare.series).toHaveLength(8);
+    expect(mare.edition).toMatchObject({ size: 10, dimensions: { widthCm: 20, heightCm: 30 } });
+    expect(getPrintOptions(mare, { formats: 'all' })).toBeNull();
+    expect(getArtwork('52')!.series).toEqual([]);
     const tulip = getArtwork('01');
     expect(tulip).toMatchObject({ slug: 'tulipano', title: 'Tulipano', status: 'available', orientation: 'portrait' });
     expect(Object.keys(tulip?.images ?? {})).toEqual(expect.arrayContaining(['canvas', 'detail1', 'detail2', 'thumbnail']));
   });
 
   it('builds the numbered limited edition with real scarcity and a price ladder', () => {
-    const ed = getArtwork('01')!.edition!;
-    expect(ed).toMatchObject({ size: 7, artistProofs: 1, sold: 4, nextNumber: 5, remaining: 3 });
-    // copies 4–5 at 1.190 €, then 1.390 €: one left at this price
-    expect(getArtwork('01')!.priceCents).toBe(119000);
-    expect(ed.nextStepPriceCents).toBe(139000);
-    expect(ed.leftAtThisPrice).toBe(1);
+    // Ninni has one limited edition only: Volto, 150 cm on the long side
+    expect(getArtworks().filter((a) => a.author === 'ninni' && a.edition).map((a) => a.id)).toEqual(['03']);
+    const ed = getArtwork('03')!.edition!;
+    expect(ed).toMatchObject({ size: 5, artistProofs: 1, sold: 0, nextNumber: 1, remaining: 5, dimensions: { widthCm: 100, heightCm: 150 } });
+    // copies 1–2 at 2.400 €, then 2.900 €: two left at this price
+    expect(getArtwork('03')!.priceCents).toBe(240000);
+    expect(ed.nextStepPriceCents).toBe(290000);
+    expect(ed.leftAtThisPrice).toBe(2);
     // the edition is sold framed: the page shows the framed size
-    expect(getArtwork('01')!.dimensions).toEqual(ed.framedDimensions);
+    expect(getArtwork('03')!.dimensions).toEqual(ed.framedDimensions);
     // prints-only photos have no edition
-    expect(getArtwork('05')!.edition).toBeNull();
+    expect(getArtwork('01')!.edition).toBeNull();
   });
 
   it('has unique slugs and finds by slug', () => {
@@ -78,9 +86,9 @@ describe('catalog (real data files: Ninni & Ernesto)', () => {
   });
 
   it('builds cart products on the server, one per format × paper × frame', () => {
-    const ed = toCartProduct(getArtwork('01')!, 'en', { path: '/ninni/tulipano' });
-    expect(ed).toMatchObject({ kind: 'original', artworkId: '01', unitPriceCents: 119000, url: '/en/ninni/tulipano' });
-    expect(ed?.image?.src).toMatch(/^\/assets\/opere\/01\/.+\.webp$/);
+    const ed = toCartProduct(getArtwork('03')!, 'en', { path: '/ninni/volto' });
+    expect(ed).toMatchObject({ kind: 'original', artworkId: '03', unitPriceCents: 240000, url: '/en/ninni/volto' });
+    expect(ed?.image?.src).toMatch(/^\/assets\/opere\/03\/.+\.webp$/);
     expect(toPrintCartProduct(getArtwork('01')!, '40x60', 'rag', 'it', {}, 'oak')).toMatchObject({
       kind: 'print', unitPriceCents: 30000, print: { formatId: '40x60', material: 'rag', frame: 'oak' },
     });

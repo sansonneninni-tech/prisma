@@ -81,7 +81,8 @@ export function cardOriginali(lang: Locale, autore: AuthorId = 'ninni'): CardDat
       art, tipo: 'originale' as const, ordine: i,
       colori: coloriOpera(art), formato: formatoOpera(art), fascia: fasciaOpera(art), forma: formaOpera(art),
       venduta: art.status === 'sold',
-      misure: art.dimensions ? formatDimensions(art.dimensions, lang) : null,
+      // serie: «8 × 20 × 30 cm» direbbe poco; il numero di stampe viene prima
+      misure: art.dimensions ? `${art.series.length ? `${art.series.length} ${lang === 'it' ? 'stampe' : 'prints'} ` : ''}${formatDimensions(art.dimensions, lang)}` : null,
       prezzo: art.status === 'available' && art.priceCents !== null ? formatPrice(art.priceCents, lang) : null,
       restano: art.edition ? { n: art.edition.remaining, di: art.edition.size } : null,
     }))

@@ -1,33 +1,51 @@
 ---
 /**
- * C1 Header (DIREZIONE §4.1): fisso, bianco, senza filetto, non si nasconde scorrendo.
- * Sinistra il logo (compatto 58 px < 768, orizzontale 172 px ≥ 768) → home.
- * Destra: Shop (borsa → Opere, audit ninni 22/10) · Indice · Carrello (n) · IT EN 中文. «Indice» è un bottone che apre il dialog (C3) sotto 768 px
- * e un link alla mappa (/[lang]/#indice) da 768: nel DOM ci sono entrambi, se ne vede uno.
- * `ridotto` (checkout): niente Indice, per non perdere l'ordine; restano Carrello (n) e lingue.
+ * C1 Header (audit ninni 03/11): fisso, senza filetto.
+ * Sinistra «What?», con le lettere del vecchio logotipo: apre un menu a tendina con Stampe · Carte e cornici · PRISMA ·
+ * Chi siamo · Contatti (fuori dalla home anche Home). Al posto di logo, Shop e Indice.
+ * Destra: Carrello (n) · IT EN.
+ * In home l'header è trasparente e in differenza sopra le foto che scorrono (styles/struttura.css).
+ * Comportamento del menu in lib/what-client.ts.
  */
-import Logo from './Logo.astro';
 import Lingue from './Lingue.astro';
 import ContaCarrello from './ContaCarrello.astro';
-import Shop from './Shop.astro';
 import { href, useT, type Locale } from '../lib/i18n';
-interface Props { lang: Locale; pathname: string; /** checkout (§6 P10): logo, Carrello (n) e lingue, niente Indice */ ridotto?: boolean }
-const { lang, pathname, ridotto = false } = Astro.props;
+import { PRISMA } from '../lib/nav';
+interface Props { lang: Locale; pathname: string; /** checkout: il menu c'è, ma niente link che tolgono il fuoco dall'ordine in più */ ridotto?: boolean }
+const { lang, pathname } = Astro.props;
 const t = useT(lang);
+const home = pathname === `/${lang}/` || pathname === `/${lang}`;
+const voci = [
+  ...(home ? [] : [{ testo: t('galleria.nav.home'), url: href(lang, '/'), fuori: false }]),
+  { testo: t('galleria.nav.stampe'), url: href(lang, '/ninni/?vista=stampe'), fuori: false },
+  { testo: t('galleria.nav.carte'), url: href(lang, '/carte-e-cornici/'), fuori: false },
+  { testo: 'PRISMA', url: PRISMA, fuori: true },
+  { testo: t('galleria.nav.chi_siamo'), url: href(lang, '/chi-siamo/'), fuori: false },
+  { testo: t('galleria.nav.contatti'), url: `${href(lang, '/chi-siamo/')}#contatti`, fuori: false },
+];
 ---
 <header class="hd wrap" data-hd>
-  <a class="hd__logo" href={href(lang, '/')} aria-label={t('galleria.nav.home_aria')}>
-    <Logo forma="orizzontale" class="hd__l-or" />
-    <Logo forma="compatto" class="hd__l-co" />
-  </a>
-  <nav class="hd__nav" aria-label={t('galleria.nav.principale')}>
-    {/* checkout: niente Shop, come niente Indice (non si perde l'ordine) */}
-    {!ridotto && <Shop lang={lang} pathname={pathname} />}
-    {!ridotto && <button class="hd__btn hd__idx-btn" type="button" aria-expanded="false" aria-controls="indice-menu" data-indice-apri>{t('galleria.nav.indice')}</button>}
-    {!ridotto && <a class="hd__btn hd__idx-link" href={`${href(lang, '/')}#indice`}>{t('galleria.nav.indice')}</a>}
-    {/* checkout: a ordine chiuso («Grazie») l'Indice torna, come link alla mappa (lib/checkout-client.ts) */}
-    {ridotto && <a class="hd__btn hd__idx-ck" href={`${href(lang, '/')}#indice`} data-hd-indice-ck hidden>{t('galleria.nav.indice')}</a>}
+  <div class="what" data-what>
+    <button class="what__btn" type="button" aria-expanded="false" aria-controls="what-menu" data-what-apri>
+      <span class="what__t" translate="no">What?</span>
+    </button>
+    <nav class="what__menu" id="what-menu" aria-label={t('galleria.nav.principale')} data-what-menu hidden>
+      <ul class="what__ul">
+        {voci.map((v) => (
+          <li class="what__li">
+            <a class="what__a" href={v.url} target={v.fuori ? '_blank' : undefined} rel={v.fuori ? 'noopener' : undefined}
+              aria-current={!v.fuori && !v.url.includes('?') && !v.url.includes('#') && (pathname === v.url) ? 'page' : undefined}
+              >{v.testo}{v.fuori && <span class="what__ext" aria-hidden="true">↗</span>}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+  <div class="hd__nav">
     <ContaCarrello lang={lang} />
-    <Lingue lang={lang} pathname={pathname} ridotte={!ridotto} class="hd__lang" />
-  </nav>
+    <Lingue lang={lang} pathname={pathname} ridotte={false} class="hd__lang" />
+  </div>
 </header>
+<script>
+  import '../lib/what-client';
+</script>

@@ -1,5 +1,5 @@
 /**
- * Ninni & Ernesto — prova del flusso d'acquisto: edizione limitata (Tulipano) + stampa con carta e cornice (Pugno),
+ * Ninni & Ernesto — prova del flusso d'acquisto: home (zero scroll, menu What?, nomi che portano ai negozi), edizione limitata (Volto) + serie Mare su tela + stampa con carta e cornice (Pugno),
  * prezzo che cambia con le scelte, carrello (cassetto e pagina), checkout fino alla conferma con la carta 4242.
  * Uso: node scripts/prova-flusso-ne.mjs --base http://localhost:4330 [--out DIR]
  */
@@ -16,8 +16,26 @@ for (const [w, h] of [[1440, 900], [390, 844]]) {
   const p = await ctx.newPage();
   const errori = []; p.on('pageerror', (e) => errori.push(String(e))); p.on('console', (m) => m.type() === 'error' && errori.push(m.text()));
   const shot = async (n) => OUT && p.screenshot({ path: `${OUT}/${n}_${w}.png` });
+  // home: niente scorrimento, il mazzo si muove, What? apre e chiude, i nomi portano ai due negozi
+  await p.goto(B + '/it/', { waitUntil: 'networkidle' }); await p.waitForTimeout(600);
+  const alt = await p.evaluate(() => document.documentElement.scrollHeight - innerHeight);
+  ok(alt <= 0, `${w}: home senza scorrimento (${alt})`);
+  const t0 = await p.locator('.mz-v').first().evaluate((e) => e.style.transform); await p.waitForTimeout(400);
+  ok(t0 !== await p.locator('.mz-v').first().evaluate((e) => e.style.transform), `${w}: le foto si muovono`);
+  const dirs = await p.evaluate(() => [...document.querySelectorAll('.mz-v')].map((e) => e.dataset.chi));
+  ok(dirs.filter((d) => d === 'ninni').length === 8 && dirs.filter((d) => d === 'ernesto').length === 10, `${w}: 8 foto di Ninni e 10 di Ernesto nel mazzo`);
+  await p.locator('[data-what-apri]').click(); await p.waitForTimeout(300);
+  const voci = await p.locator('[data-what-menu] .what__a').allInnerTexts();
+  ok(voci.length === 5 && /PRISMA/.test(voci.join()), `${w}: What? apre ${voci.join(' / ')}`);
+  ok(await p.locator('[data-what-menu] a[href*="prismamov"]').getAttribute('target') === '_blank', `${w}: PRISMA in una scheda nuova`);
+  await p.keyboard.press('Escape'); await p.waitForTimeout(300);
+  ok(await p.locator('[data-what-menu]').isHidden() && await p.evaluate(() => document.activeElement?.hasAttribute('data-what-apri')), `${w}: Esc chiude e il fuoco torna su What?`);
+  const nomi = await p.locator('.mz-nome__a').evaluateAll((as) => as.map((x) => x.getAttribute('href')));
+  ok(nomi[0] === '/it/ninni/' && nomi[1] === '/it/ernesto/', `${w}: Ninni → ${nomi[0]}, Ernesto → ${nomi[1]}`);
+  await p.locator('.mz-nome__a').nth(1).click(); await p.waitForURL('**/it/ernesto/');
+  ok(true, `${w}: clic su Ernesto apre il suo negozio`);
   // edizione
-  await p.goto(B + '/it/ninni/tulipano/', { waitUntil: 'networkidle' });
+  await p.goto(B + '/it/ninni/volto/', { waitUntil: 'networkidle' });
   // audit 28/10: si apre su Stampa, l'edizione limitata è la seconda scheda
   ok(await p.locator('[role=tab][aria-selected=true]').getAttribute('data-v') === 's', `${w}: la scheda si apre su Stampa`);
   // anteprima: la cornice scelta cambia la foto, la didascalia e la figura in scala
@@ -38,6 +56,14 @@ for (const [w, h] of [[1440, 900], [390, 844]]) {
   const n1 = await p.evaluate(() => JSON.parse(localStorage.getItem('ne:cart:v1') || '[]').length);
   ok(n1 === 1, `${w}: edizione nel carrello (${n1})`);
   await p.keyboard.press('Escape'); await p.waitForTimeout(400);
+  // serie: un solo articolo, tutte e 8 le stampe
+  await p.goto(B + '/it/ernesto/mare-su-tela/', { waitUntil: 'networkidle' });
+  ok(await p.locator('.sk__serie-f').count() === 8, `${w}: la serie mostra 8 stampe`);
+  const notaSerie = await p.locator('.sk__acq').innerText();
+  ok(!/cornice inclusa|incorniciat/i.test(notaSerie), `${w}: la serie non promette la cornice`);
+  await p.locator('[data-acq-form="o"] [data-acq-btn]').click(); await p.waitForTimeout(700);
+  ok(await p.evaluate(() => JSON.parse(localStorage.getItem('ne:cart:v1') || '[]').length) === 2, `${w}: serie nel carrello`);
+  await p.keyboard.press('Escape'); await p.waitForTimeout(400);
   // stampa con cornice
   await p.goto(B + '/it/ninni/pugno/', { waitUntil: 'networkidle' });
   const prezzo = () => p.locator('[data-acq-form="s"] [data-acq-prezzo]').textContent();
@@ -50,7 +76,7 @@ for (const [w, h] of [[1440, 900], [390, 844]]) {
   await shot('stampa');
   await p.locator('[data-acq-form="s"] [data-acq-btn]').click(); await p.waitForTimeout(700);
   const righe = await p.evaluate(() => JSON.parse(localStorage.getItem('ne:cart:v1') || '[]').map((r) => r.key));
-  ok(righe.length === 2 && righe.some((k) => /oak/.test(k)), `${w}: stampa con rovere nel carrello (${righe.join(', ')})`);
+  ok(righe.length === 3 && righe.some((k) => /oak/.test(k)), `${w}: stampa con rovere nel carrello (${righe.join(', ')})`);
   // pagina carrello
   await p.goto(B + '/it/carrello/', { waitUntil: 'networkidle' }); await p.waitForTimeout(300);
   await shot('carrello');

@@ -5,7 +5,7 @@
 .cc__h2 { font-size: var(--t-tab); line-height: var(--lh-tab); font-weight: var(--w-display); letter-spacing: var(--ls-list); margin-bottom: var(--s-6); }
 .cc__lista { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--s-6); }
 @media (min-width: 768px) { .cc__lista { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-7); } }
-@media (min-width: 1280px) { .cc__lista { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 1280px) { .cc__lista { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .cc__v { display: grid; gap: var(--s-2); align-content: start; }
 .cc__n { font-size: var(--t-small); color: var(--c-mute); }
 .cc__nome { font-size: var(--t-lead); font-weight: var(--w-strong); line-height: var(--lh-tight); display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: baseline; }
