@@ -1,7 +1,7 @@
 ---
 /**
  * C1 Header (audit ninni 03/11): fisso, senza filetto.
- * Sinistra «What?», con le lettere del vecchio logotipo: apre un menu a tendina con Stampe · Carte e cornici · PRISMA ·
+ * Sinistra «What?», con le lettere del vecchio logotipo: apre un menu a tendina con Carte e cornici · PRISMA ·
  * Chi siamo · Contatti (fuori dalla home anche Home). Al posto di logo, Shop e Indice.
  * Destra: Shop (blu 004e89, audit ninni 03/11) · Carrello (n) · IT EN.
  * In home l'header è trasparente e in differenza sopra le foto che scorrono (styles/struttura.css).
@@ -18,7 +18,6 @@ const t = useT(lang);
 const home = pathname === `/${lang}/` || pathname === `/${lang}`;
 const voci = [
   ...(home ? [] : [{ testo: t('galleria.nav.home'), url: href(lang, '/'), fuori: false }]),
-  { testo: t('galleria.nav.stampe'), url: href(lang, '/ninni/?vista=stampe'), fuori: false },
   { testo: t('galleria.nav.carte'), url: href(lang, '/carte-e-cornici/'), fuori: false },
   { testo: 'PRISMA', url: PRISMA, fuori: true },
   { testo: t('galleria.nav.chi_siamo'), url: href(lang, '/chi-siamo/'), fuori: false },

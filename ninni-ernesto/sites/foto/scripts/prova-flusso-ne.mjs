@@ -26,7 +26,7 @@ for (const [w, h] of [[1440, 900], [390, 844]]) {
   ok(dirs.filter((d) => d === 'ninni').length === 8 && dirs.filter((d) => d === 'ernesto').length === 10, `${w}: 8 foto di Ninni e 10 di Ernesto nel mazzo`);
   await p.locator('[data-what-apri]').click(); await p.waitForTimeout(300);
   const voci = await p.locator('[data-what-menu] .what__a').allInnerTexts();
-  ok(voci.length === 5 && /PRISMA/.test(voci.join()), `${w}: What? apre ${voci.join(' / ')}`);
+  ok(voci.length === 4 && /PRISMA/.test(voci.join()), `${w}: What? apre ${voci.join(' / ')}`);
   ok(await p.locator('[data-what-menu] a[href*="prismamov"]').getAttribute('target') === '_blank', `${w}: PRISMA in una scheda nuova`);
   await p.keyboard.press('Escape'); await p.waitForTimeout(300);
   ok(await p.locator('[data-what-menu]').isHidden() && await p.evaluate(() => document.activeElement?.hasAttribute('data-what-apri')), `${w}: Esc chiude e il fuoco torna su What?`);
