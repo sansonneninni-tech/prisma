@@ -3,12 +3,13 @@
  * C1 Header (audit ninni 03/11): fisso, senza filetto.
  * Sinistra «What?», con le lettere del vecchio logotipo: apre un menu a tendina con Stampe · Carte e cornici · PRISMA ·
  * Chi siamo · Contatti (fuori dalla home anche Home). Al posto di logo, Shop e Indice.
- * Destra: Carrello (n) · IT EN.
+ * Destra: Shop (blu 004e89, audit ninni 03/11) · Carrello (n) · IT EN.
  * In home l'header è trasparente e in differenza sopra le foto che scorrono (styles/struttura.css).
  * Comportamento del menu in lib/what-client.ts.
  */
 import Lingue from './Lingue.astro';
 import ContaCarrello from './ContaCarrello.astro';
+import Shop from './Shop.astro';
 import { href, useT, type Locale } from '../lib/i18n';
 import { PRISMA } from '../lib/nav';
 interface Props { lang: Locale; pathname: string; /** checkout: il menu c'è, ma niente link che tolgono il fuoco dall'ordine in più */ ridotto?: boolean }
@@ -42,6 +43,7 @@ const voci = [
     </nav>
   </div>
   <div class="hd__nav">
+    <Shop lang={lang} pathname={pathname} />
     <ContaCarrello lang={lang} />
     <Lingue lang={lang} pathname={pathname} ridotte={false} class="hd__lang" />
   </div>

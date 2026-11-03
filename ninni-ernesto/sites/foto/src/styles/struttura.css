@@ -211,3 +211,9 @@ html[data-home] .hd .lingue__a[aria-current] { color: #fff; }
 html[data-home][data-what-aperto] .hd { background: var(--c-bg); color: var(--c-ink); mix-blend-mode: normal; }
 html[data-home][data-what-aperto] .hd .lingue__a { color: var(--c-mute); }
 html[data-home][data-what-aperto] .hd .lingue__a[aria-current] { color: var(--c-ink); }
+
+/* Shop in blu (audit ninni 03/11). In home l'header è in differenza sul bianco: per vedere 004e89 il testo è il suo
+   complementare (ffb176), che la differenza col bianco riporta a 004e89 */
+.hd .hd__shop { color: #004e89; }
+html[data-home] .hd .hd__shop { color: #ffb176; }
+html[data-home][data-what-aperto] .hd .hd__shop { color: #004e89; }
