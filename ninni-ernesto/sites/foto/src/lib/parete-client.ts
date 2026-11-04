@@ -13,6 +13,7 @@
  */
 import { lockScroll, unlockScroll } from './scroll-lock';
 import { storiaDialog, arrivoConHash } from './dialog-storia';
+import type { Scelta } from './anteprima-client';
 
 const HASH = '#parete';
 const CHIAVE = 'galParete';
@@ -161,28 +162,99 @@ function avviaParete(dlg: HTMLDialogElement): () => void {
   document.addEventListener('click', onClick);
   pulizie.push(() => document.removeEventListener('click', onClick));
 
-  // modello della scelta corrente: edizione con cornice o formato di stampa (misura reale di quello che si compra)
-  const modelli = (() => { try { return JSON.parse(dlg.dataset.modelli ?? '{}') as Record<string, { glb: string; usdz: string; testo: string }>; } catch { return {}; } })();
+  // modello della scelta corrente: l'edizione con la sua cornice, o la stampa con formato, carta e cornice scelti.
+  // Stampa su Photo Rag senza cornice: il modello fisso del formato. Altre carte o una cornice: modello composto nel
+  // browser dalla foto del modello fisso (lib/ar-composto.ts), tenuto in memoria per ogni scelta.
+  type Modello = { glb: string; usdz: string; testo: string; w?: number; h?: number };
+  const modelli = (() => { try { return JSON.parse(dlg.dataset.modelli ?? '{}') as Record<string, Modello>; } catch { return {}; } })();
   const mvAr = dlg.querySelector<HTMLElement>('model-viewer');
   const testoMisura = dlg.querySelector<HTMLElement>('[data-parete-misura]');
   const titoloAr = dlg.dataset.titolo ?? '';
+  const nf = new Intl.NumberFormat(document.documentElement.lang === 'en' ? 'en-US' : 'it-IT', { maximumFractionDigits: 1 });
+  const misura = (w: number, h: number) => `${nf.format(w)}\u00a0×\u00a0${nf.format(h)}\u00a0cm`;
+  // Android: Scene Viewer non legge i file creati nel browser (blob:). Il modello composto va solo con la AR dentro
+  // Chrome (WebXR); dove non c'è, resta il modello fisso del formato.
+  const ANDROID = /Android/i.test(navigator.userAgent);
+  const xr = (navigator as Navigator & { xr?: { isSessionSupported(m: string): Promise<boolean> } }).xr;
+  const composto = ANDROID ? (xr?.isSessionSupported('immersive-ar').catch(() => false) ?? Promise.resolve(false)) : Promise.resolve(true);
+  const cache = new Map<string, Promise<Modello>>();
+  const daRevocare: string[] = [];
+  pulizie.push(() => { for (const u of daRevocare) URL.revokeObjectURL(u); });
   let attuale = dlg.dataset.iniziale ?? '';
-  const usaModello = (chiave?: string) => {
-    const m = chiave ? modelli[chiave] : undefined;
-    if (!m || chiave === attuale || !mvAr) return;
-    attuale = chiave!;
-    mvAr.setAttribute('src', `${m.glb}&title=${encodeURIComponent(titoloAr)}`);
+  let richiesta = 0;
+
+  const metti = (m: Modello, id: string, nelBrowser: boolean) => {
+    if (!mvAr) return;
+    attuale = id;
+    // Scene Viewer legge il titolo dall'indirizzo del modello: solo per i file veri, non per i blob:
+    mvAr.setAttribute('src', nelBrowser ? m.glb : `${m.glb}&title=${encodeURIComponent(titoloAr)}`);
     mvAr.setAttribute('ios-src', m.usdz);
+    if (ANDROID) mvAr.setAttribute('ar-modes', nelBrowser ? 'webxr scene-viewer quick-look' : 'scene-viewer webxr quick-look');
     dlg.querySelectorAll<HTMLAnchorElement>('a[rel="ar"]').forEach((a) => { a.href = `${m.usdz}#allowsContentScaling=0`; });
     if (testoMisura) testoMisura.textContent = m.testo;
+    dlg.dataset.arScelta = id; // per i controlli automatici
   };
-  const onModello = (e: Event) => usaModello((e as CustomEvent<{ chiave: string }>).detail?.chiave);
-  document.addEventListener('galleria:modello-ar', onModello);
-  pulizie.push(() => document.removeEventListener('galleria:modello-ar', onModello));
-  usaModello(document.documentElement.dataset.modelloAr);
 
-  // QR del computer: questa scheda, già su #parete (senza la query della scheda Stampa: la AR è dell'originale)
-  if (viewer) viewer.dataset.urlQr = `${location.origin}${location.pathname}${HASH}`;
+  const componi = (id: string, base: Modello, s: Scelta): Promise<Modello> => {
+    let p = cache.get(id);
+    if (p) return p;
+    p = (async () => {
+      const { componiModello } = await import('./ar-composto');
+      const r = await fetch(base.glb);
+      if (!r.ok) throw new Error(`modello ${r.status}`);
+      const c = await componiModello(await r.arrayBuffer(), { formato: s.formato, carta: s.carta, cornice: s.cornice, w: base.w!, h: base.h! }, titoloAr);
+      const glb = URL.createObjectURL(new Blob([c.glb as BlobPart], { type: 'model/gltf-binary' }));
+      const usdz = URL.createObjectURL(new Blob([c.usdz as BlobPart], { type: 'model/vnd.usdz+zip' }));
+      daRevocare.push(glb, usdz);
+      const t = (s.cornice === 'none' ? dlg.dataset.tStampa : dlg.dataset.tCornice) ?? '{m}';
+      return { glb, usdz, testo: t.replace('{m}', misura(c.misure.w, c.misure.h)) };
+    })();
+    cache.set(id, p);
+    p.catch(() => cache.delete(id));
+    return p;
+  };
+
+  const usaScelta = async (s: Scelta) => {
+    const n = ++richiesta;
+    aggiornaQr(s);
+    const chiave = s.vista === 'o' ? 'ed' : s.formato;
+    const base = modelli[chiave];
+    if (!base || !mvAr) return;
+    const fisso = s.vista === 'o' || (s.carta === 'rag' && s.cornice === 'none') || !base.w || !base.h;
+    const id = fisso ? chiave : `${s.formato}:${s.carta}:${s.cornice}`;
+    if (id === attuale) return;
+    if (fisso || !(await composto)) {
+      if (n === richiesta && chiave !== attuale) metti(base, chiave, false);
+      return;
+    }
+    try {
+      const m = await componi(id, base, s);
+      if (n === richiesta) metti(m, id, true);
+    } catch (err) {
+      console.warn('[parete] modello con cornice e carta non composto, resta la stampa', err);
+      if (n === richiesta && chiave !== attuale) metti(base, chiave, false);
+    }
+  };
+  const onScelta = (e: Event) => { void usaScelta((e as CustomEvent<Scelta>).detail); };
+  document.addEventListener('galleria:anteprima', onScelta);
+  pulizie.push(() => document.removeEventListener('galleria:anteprima', onScelta));
+
+  // QR del computer: questa scheda già su #parete, con la stessa scelta (?scelta=formato.carta.cornice, la legge
+  // scheda-client.ts sul telefono) e la stessa scheda (Stampa o Edizione, ?v= tenuto dalla scheda)
+  function aggiornaQr(s?: Scelta) {
+    if (!viewer) return;
+    const u = new URL(location.href);
+    u.hash = HASH;
+    u.searchParams.delete('scelta');
+    if (s?.vista === 's' && s.formato) u.searchParams.set('scelta', `${s.formato}.${s.carta}.${s.cornice}`);
+    const url = u.toString();
+    const v = viewer as HTMLElement & { aggiornaQr?: (url: string) => void };
+    if (v.aggiornaQr) v.aggiornaQr(url);
+    else viewer.dataset.urlQr = url;
+  }
+  const iniziale = (() => { try { return JSON.parse(document.documentElement.dataset.sceltaAr ?? '') as Scelta; } catch { return null; } })();
+  if (iniziale) void usaScelta(iniziale);
+  else aggiornaQr();
 
   // arrivo con #parete (dal QR): tolgo l'àncora dalla voce corrente e apro
   if (arrivoConHash(HASH, CHIAVE)) requestAnimationFrame(() => apri());

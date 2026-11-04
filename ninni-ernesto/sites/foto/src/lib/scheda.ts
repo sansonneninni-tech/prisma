@@ -85,7 +85,9 @@ export interface DatiScheda {
   particolari: Particolare[];
   ar: { glb: string; usdz: string; misure: MisureAr | null; testoMisure: string | null; poster: string;
     /** Un modello per vista: `ed` (edizione con cornice) e ogni formato di stampa. */
-    modelli: Record<string, { glb: string; usdz: string; testo: string }>; iniziale: string };
+    modelli: Record<string, { glb: string; usdz: string; testo: string; w?: number; h?: number }>; iniziale: string;
+    /** testi della misura per il modello composto nel browser (ar-composto.ts), {m} = misure */
+    tStampa: string; tCornice: string };
   precedente: Artwork;
   successiva: Artwork;
   /** Opera molto più larga che alta (24, 25): l'opera prende tutta la larghezza della scheda. */
@@ -145,7 +147,7 @@ export function datiScheda(art: Artwork, lang: Locale, site?: URL): DatiScheda {
   }));
   const formati = [...new Map(varianti.map((v) => [v.format.id, v.format])).values()]
     .sort((a, b) => a.widthCm * a.heightCm - b.widthCm * b.heightCm)
-    .map((f) => ({ id: f.id, etichetta: formatDimensions(f, lang) }));
+    .map((f) => ({ id: f.id, etichetta: formatDimensions(f, lang), widthCm: f.widthCm, heightCm: f.heightCm }));
   // all'apertura: il formato di mezzo (effetto «medio» del menu: il più scelto quando ci sono tre taglie), Photo Rag, senza cornice
   const fApertura = formati[Math.min(1, formati.length - 1)];
   const primaStampa = fApertura ? stampe.find((s) => s.formato === fApertura.id && s.supporto === 'rag' && s.cornice === 'none') ?? stampe.find((s) => s.formato === fApertura.id) ?? null : null;
@@ -195,7 +197,7 @@ export function datiScheda(art: Artwork, lang: Locale, site?: URL): DatiScheda {
   if (ff) particolari.push({ id: 'signature', nome: t('etichette.firma'), zoom: ff.zoom, stile: ff.stile });
 
   // --- AR ---
-  const modelli: Record<string, { glb: string; usdz: string; testo: string }> = {};
+  const modelli: Record<string, { glb: string; usdz: string; testo: string; w?: number; h?: number }> = {};
   const idAr: Record<string, string> = {};
   const voce = (chiave: string, id: string, testo: (m: string) => string) => {
     const m = misureAr(id);
@@ -205,7 +207,11 @@ export function datiScheda(art: Artwork, lang: Locale, site?: URL): DatiScheda {
   };
   // modello dell'edizione: NN-ed-LxA (misura della stampa); NN-ed senza misura resta per le versioni libera e ispirata
   if (art.edition) voce('ed', `${art.id}-ed-${art.edition.dimensions.widthCm}x${art.edition.dimensions.heightCm}`, (m) => t(art.edition!.frame === 'none' ? 'galleria.ar.misura' : 'galleria.ar.misura_cornice', { misure: m }));
-  for (const f of formati) voce(f.id, `${art.id}-${f.id}`, (m) => t('galleria.ar.misura', { misure: m }));
+  for (const f of formati) {
+    voce(f.id, `${art.id}-${f.id}`, (m) => t('galleria.ar.misura', { misure: m }));
+    // misura della stampa: il modello con carta e cornice scelte si compone nel browser (lib/ar-composto.ts)
+    if (modelli[f.id]) Object.assign(modelli[f.id]!, { w: f.widthCm, h: f.heightCm });
+  }
   // si apre sulla stampa (audit 28/10): il modello AR iniziale è quello del formato di stampa scelto
   const arIniziale = primaStampa && modelli[primaStampa.formato] ? primaStampa.formato : art.edition && art.status !== 'sold' ? 'ed' : Object.keys(modelli)[0] ?? 'ed';
   const scelto = modelli[arIniziale] ?? Object.values(modelli)[0]!;
@@ -288,7 +294,8 @@ export function datiScheda(art: Artwork, lang: Locale, site?: URL): DatiScheda {
     primaStampa,
     maxStampe: MAX_PRINT_QUANTITY,
     particolari,
-    ar: { glb, usdz, misure: mAr, testoMisure: testoMisureAr, poster, modelli, iniziale: arIniziale },
+    ar: { glb, usdz, misure: mAr, testoMisure: testoMisureAr, poster, modelli, iniziale: arIniziale,
+      tStampa: t('galleria.ar.misura', { misure: '{m}' }), tCornice: t('galleria.ar.misura_cornice', { misure: '{m}' }) },
     precedente,
     successiva,
     panoramica: art.aspectRatio > RAPPORTO_PANORAMICA,

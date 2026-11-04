@@ -64,6 +64,7 @@ class ArViewer extends HTMLElement {
   #avviato = false;
   /** true quando l'AR si apre con <a rel="ar"> diretto (iPhone/iPad senza WebGL o con model-viewer fuori uso). */
   #quickLookDiretto = false;
+  #qrInCorso = false;
 
   connectedCallback() {
     this.#mv = this.querySelector('model-viewer') as ModelViewerEl;
@@ -110,6 +111,16 @@ class ArViewer extends HTMLElement {
     mq?.addEventListener?.('change', () => {
       if (this.dataset.ar === 'qr' || this.dataset.ar === 'non-supportato') this.#valuta();
     });
+  }
+
+  /** Cambia l'indirizzo del QR (es. la scelta di formato, carta e cornice) e lo ridisegna se e' gia' a schermo. */
+  aggiornaQr(url: string) {
+    if (this.dataset.urlQr === url) return;
+    this.dataset.urlQr = url;
+    const box = this.#qr?.querySelector('.isa-ar__qr-codice') as HTMLElement | null;
+    if (!box?.childElementCount) return; // non ancora disegnato (o in corso: legge l'indirizzo nuovo da solo)
+    box.replaceChildren();
+    if (!this.#qr.hidden) void this.#mostraQR();
   }
 
   /** Chiamata quando model-viewer segnala che WebGL manca. */
@@ -190,6 +201,7 @@ class ArViewer extends HTMLElement {
   #apriQuickLookDiretto() {
     const usdz = this.#mv.getAttribute('ios-src') ?? '';
     const url = new URL(usdz, location.href);
+    const blob = url.protocol === 'blob:';
     // come model-viewer con ar-scale="fixed": niente ridimensionamento con le dita
     url.hash = 'allowsContentScaling=0';
     const a = document.createElement('a');
@@ -197,6 +209,8 @@ class ArViewer extends HTMLElement {
     a.href = url.toString();
     a.hidden = true;
     a.dataset.isaQuickLook = '';
+    // modello creato nel browser: come fa model-viewer con l'USDZ che genera lui
+    if (blob) a.download = 'modello.usdz';
     // Quick Look richiede un'immagine come primo figlio del link
     a.appendChild(document.createElement('img'));
     this.appendChild(a);
@@ -229,7 +243,8 @@ class ArViewer extends HTMLElement {
   }
 
   async #apriAR() {
-    if (this.#quickLookDiretto) {
+    // USDZ creato nel browser (blob:): model-viewer lo aprirebbe senza l'attributo download che Quick Look vuole
+    if (this.#quickLookDiretto || (QUICK_LOOK() && this.#mv.getAttribute('ios-src')?.startsWith('blob:'))) {
       this.#apriQuickLookDiretto();
       return;
     }
@@ -244,24 +259,34 @@ class ArViewer extends HTMLElement {
   async #mostraQR() {
     const box = this.#qr.querySelector('.isa-ar__qr-codice') as HTMLElement;
     this.#qr.hidden = false;
-    if (box.childElementCount) return;
-    const pagina = `${location.origin}${location.pathname}${location.search}`;
-    const hash = this.dataset.hashQr ? `#${this.dataset.hashQr.replace(/^#/, '')}` : `#${this.id}`;
-    const url = this.dataset.urlQr || `${pagina}${hash}`;
+    if (box.childElementCount || this.#qrInCorso) return;
+    this.#qrInCorso = true;
+    const indirizzo = () => {
+      const pagina = `${location.origin}${location.pathname}${location.search}`;
+      const hash = this.dataset.hashQr ? `#${this.dataset.hashQr.replace(/^#/, '')}` : `#${this.id}`;
+      return this.dataset.urlQr || `${pagina}${hash}`;
+    };
     try {
       const QR = await import('qrcode');
-      const svg = await QR.toString(url, {
-        type: 'svg',
-        margin: 2,
-        errorCorrectionLevel: 'M',
-        color: { dark: '#000000ff', light: '#ffffff00' },
-      });
-      // colori dal CSS: moduli = currentColor (--isa-ar-qr-colore), fondo = --isa-ar-qr-sfondo
-      box.innerHTML = svg.replace(/stroke="#000000"/g, 'stroke="currentColor"');
-      box.dataset.url = url;
+      // se l'indirizzo cambia mentre il QR si disegna (aggiornaQr), si ridisegna con l'ultimo
+      let url = '';
+      while (url !== indirizzo()) {
+        url = indirizzo();
+        const svg = await QR.toString(url, {
+          type: 'svg',
+          margin: 2,
+          errorCorrectionLevel: 'M',
+          color: { dark: '#000000ff', light: '#ffffff00' },
+        });
+        // colori dal CSS: moduli = currentColor (--isa-ar-qr-colore), fondo = --isa-ar-qr-sfondo
+        box.innerHTML = svg.replace(/stroke="#000000"/g, 'stroke="currentColor"');
+        box.dataset.url = url;
+      }
     } catch (err) {
       console.warn('[isa-ar] QR non generato', err);
       this.#qr.hidden = true;
+    } finally {
+      this.#qrInCorso = false;
     }
   }
 
