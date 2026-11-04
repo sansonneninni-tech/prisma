@@ -9,7 +9,7 @@ export type ModoSequenza = 'taglio' | 'dissolvenza';
 export type VoceAltro = 'carte' | 'chi_siamo' | 'prisma';
 
 const MODI: ModoSequenza[] = ['taglio', 'dissolvenza'];
-export const VOCI_ALTRO: Record<VoceAltro, string> = { carte: '/carte-e-cornici/', chi_siamo: '/chi-siamo/', prisma: 'https://prisma.example' };
+export const VOCI_ALTRO: Record<VoceAltro, string> = { carte: '/carte-e-cornici/', chi_siamo: '/chi-siamo/', prisma: 'https://prismamov.netlify.app/' };
 
 function foto(id: string | null): string | null {
   if (id === null) return null;

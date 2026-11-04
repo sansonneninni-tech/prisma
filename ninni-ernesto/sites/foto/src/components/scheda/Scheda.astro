@@ -20,7 +20,8 @@ import FiguraScala from './FiguraScala.astro';
 import { fit } from '../../lib/fit';
 import { href, useT, type Locale } from '../../lib/i18n';
 import { hrefOpera } from '../../lib/opera-link';
-import { tRate, type DatiScheda } from '../../lib/scheda';
+import { tRate, SERIE_COLONNE, SERIE_SPAZIO_CM, type DatiScheda } from '../../lib/scheda';
+import { toResponsiveImage } from '@ne/core/catalog';
 
 interface Props { d: DatiScheda; lang: Locale }
 const { d, lang } = Astro.props;
@@ -39,11 +40,23 @@ const prodottiStampa = Object.fromEntries(d.stampe.map((s) => [s.chiave, s.produ
 const prezziStampa = Object.fromEntries(d.stampe.map((s) => [s.chiave, s.prezzo]));
 const centsStampa = Object.fromEntries(d.stampe.map((s) => [s.chiave, s.cents]));
 const prima = d.primaStampa;
+// serie: proporzioni della griglia appesa (col stampe per riga, SERIE_SPAZIO_CM fra l'una e l'altra), già nell'HTML
+const serieBox = (() => {
+  const sr = d.anteprima.ed?.serie;
+  if (!sr || !d.anteprima.ed) return undefined;
+  const { w, h } = d.anteprima.ed;
+  const righe = Math.ceil(sr.n / sr.col);
+  return `--ar-box:${sr.col * w + (sr.col - 1) * sr.gap}/${righe * h + (righe - 1) * sr.gap};--cf:0%;--cm:0%`;
+})();
 // pezzo 7: l'opera viaggia nell'URL e la pagina d'arrivo mette un messaggio iniziale col suo titolo
 const chiedi = `${href(lang, '/chi-siamo/')}?opera=${art.slug}#contatti`;
 // figura in scala all'apertura: il formato di stampa scelto, senza cornice (poi la aggiorna scheda-client.ts)
 const fPrima = prima ? d.anteprima.formati[prima.formato] : null;
-const misureScala = fPrima ? { larghezzaCm: fPrima.w, altezzaCm: fPrima.h, profonditaCm: 0 } : d.ar.misure;
+const sr = d.anteprima.ed?.serie;
+const serieScala = sr && d.anteprima.ed ? { col: sr.col, gap: sr.gap, w: d.anteprima.ed.w, h: d.anteprima.ed.h } : undefined;
+const misureScala = fPrima ? { larghezzaCm: fPrima.w, altezzaCm: fPrima.h, profonditaCm: 0 }
+  : serieScala && sr ? { larghezzaCm: sr.col * serieScala.w + (sr.col - 1) * sr.gap, altezzaCm: Math.ceil(sr.n / sr.col) * serieScala.h + (Math.ceil(sr.n / sr.col) - 1) * sr.gap, profonditaCm: 0 }
+  : d.ar.misure;
 const sizes = d.panoramica ? '(min-width: 1920px) 1864px, 100vw' : '(min-width: 1024px) 50vw, (min-width: 768px) 58vw, 100vw';
 ---
 <article
@@ -70,13 +83,22 @@ const sizes = d.panoramica ? '(min-width: 1920px) 1864px, 100vw' : '(min-width: 
 
   <!-- anteprima della scelta: cornice, passe-partout e carta cambiano con le opzioni (lib/scheda-client.ts);
        clic sulla foto: una lente segue il mouse (o il dito) e fa vedere da vicino carta e cornice -->
-  <figure class="sk__opera">
+  <figure class="sk__opera" style={serieBox}>
     <button class="sk__box" type="button" data-anteprima data-lente-apri aria-pressed="false" aria-label={t('galleria.scheda.lente')}
       data-cornice="none" data-carta={prima?.supporto ?? 'rag'} data-dati={JSON.stringify(d.anteprima)}>
       <span class="sk__cornice">
         <span class="sk__pp">
           <span class="sk__foto">
-            <ArtworkPicture artwork={art} lang={lang} width={d.panoramica ? 1400 : 760} sizes={sizes} loading="eager" fetchpriority="high" />
+            {art.series.length ? (
+              /* serie (Mare su tela): tutte le stampe appese in griglia, come si comprano */
+              <span class="sk__serie" style={`--col:${SERIE_COLONNE};--gap:${(SERIE_SPAZIO_CM / (SERIE_COLONNE * (art.edition?.dimensions.widthCm ?? 20) + (SERIE_COLONNE - 1) * SERIE_SPAZIO_CM) * 100).toFixed(3)}%`}>
+                {art.series.map((img, i) => (
+                  <span class="sk__serie-f"><ArtworkPicture image={toResponsiveImage(img, { width: 480, sizes: '(min-width: 1024px) 13vw, 24vw' })} lang={lang} alt="" loading={i < 4 ? 'eager' : 'lazy'} /></span>
+                ))}
+              </span>
+            ) : (
+              <ArtworkPicture artwork={art} lang={lang} width={d.panoramica ? 1400 : 760} sizes={sizes} loading="eager" fetchpriority="high" />
+            )}
             <span class="sk__carta" aria-hidden="true"></span>
           </span>
         </span>
@@ -93,7 +115,7 @@ const sizes = d.panoramica ? '(min-width: 1920px) 1864px, 100vw' : '(min-width: 
         <button class="tabs__b" type="button" role="tab" id="sk-tab-o" aria-controls="sk-pan-o" aria-selected={iniziale === 'o' ? 'true' : 'false'} tabindex={iniziale === 'o' ? 0 : -1} data-v="o">{t('galleria.scheda.originale')}</button>
       </div>
     ) : (
-      <p class="acq__solo">{t('galleria.scheda.stampa')}</p>
+      <p class="acq__solo">{t(d.stampabile ? 'galleria.scheda.stampa' : 'galleria.scheda.originale')}</p>
     )}
 
     <!-- Stampa: formato, carta, cornice -->
@@ -159,7 +181,7 @@ const sizes = d.panoramica ? '(min-width: 1920px) 1864px, 100vw' : '(min-width: 
             </ol>
             <ul class="ed__inclusi">
               <li>{ed.misura} · {ed.carta}</li>
-              <li>{ed.cornice} · <span class="num">{ed.misuraCornice}</span></li>
+              {art.edition?.frame !== 'none' && <li>{ed.cornice} · <span class="num">{ed.misuraCornice}</span></li>}
               <li>{t('galleria.edizione.firma', { autore: d.autore })}</li>
             </ul>
             <InstallmentsNote totalCents={art.priceCents} lang={lang} t={tRate(t)} class="acq__rate" />
@@ -206,7 +228,7 @@ const sizes = d.panoramica ? '(min-width: 1920px) 1864px, 100vw' : '(min-width: 
       </dl>
     )}
     {d.descrizione && <p class="dati__p">{d.descrizione}</p>}
-    <FiguraScala art={art} misure={misureScala} lang={lang} class="dati__scala" anteprima />
+    <FiguraScala art={art} misure={misureScala} lang={lang} class="dati__scala" anteprima serie={serieScala} />
   </section>
 
   <!-- barra fissa in basso (sotto 1024): prezzo + azione principale quando il bottone vero non si vede -->

@@ -104,6 +104,8 @@ export interface Artwork {
   /** True when prints can be ordered (panoramic friezes excluded). */
   printable: boolean;
   images: Partial<Record<ArtworkImageVariant, ImageAsset>>;
+  /** Opera venduta come serie intera (es. Mare su tela): tutte le foto, nell'ordine. Vuoto per le foto singole. */
+  series: ImageAsset[];
   sourceUrl: string | null;
   quality: DataQuality;
   /** Photographer: each one has a separate, signed catalogue. */

@@ -7,12 +7,14 @@
  * Con `anteprima` (scheda): la ridisegna scheda-client.ts a ogni scelta di formato e cornice (ridisegnaScala), con
  * gli stessi conti di qui; la cornice è il rettangolo esterno, la foto sta dentro.
  */
-import { getArtworkImage, type Artwork } from '@ne/core/catalog';
+import { getArtworkImage, toResponsiveImage, type Artwork } from '@ne/core/catalog';
 import type { MisureAr } from '@ne/core/ar';
 import { useT, type Locale } from '../../lib/i18n';
 
-interface Props { art: Artwork; misure: MisureAr | null; lang: Locale; class?: string; anteprima?: boolean }
-const { art, misure, lang, class: cls, anteprima = false } = Astro.props;
+/** serie: le stampe appese in griglia (col per riga, gap cm), al posto della foto unica */
+interface Serie { col: number; gap: number; w: number; h: number }
+interface Props { art: Artwork; misure: MisureAr | null; lang: Locale; class?: string; anteprima?: boolean; serie?: Serie }
+const { art, misure, lang, class: cls, anteprima = false, serie } = Astro.props;
 const t = useT(lang);
 const w = misure?.larghezzaCm ?? art.dimensions?.widthCm ?? 0;
 const h = misure?.altezzaCm ?? art.dimensions?.heightCm ?? 0;
@@ -25,14 +27,24 @@ const H = Math.max(alto, PERSONA) + 4;
 const px = w + SPAZIO;
 const W = px + 52;
 const img = getArtworkImage(art, 'canvas', { width: 240 });
+const pezzi = serie ? art.series.map((im, i) => ({ src: toResponsiveImage(im, { width: 120 }).src, x: (i % serie.col) * (serie.w + serie.gap), y: Math.floor(i / serie.col) * (serie.h + serie.gap) })) : [];
 ---
 {w > 0 && h > 0 && (
   <figure class:list={['scala', cls]} data-scala={anteprima ? '' : undefined}>
     <svg class="scala__svg" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={t('galleria.scheda.scala')} preserveAspectRatio="xMinYMax meet" style={`--scala-r:${(W / H).toFixed(4)}`}>
       <rect x="0" y={H - alto} width={w} height={h} class="scala__cornice" data-scala-cornice />
       <rect x="0" y={H - alto} width={w} height={h} class="scala__pp" data-scala-pp />
-      <image href={img.src} x="0" y={H - alto} width={w} height={h} preserveAspectRatio="xMidYMid slice" data-scala-img />
-      <rect x="0" y={H - alto} width={w} height={h} class="scala__bordo" data-scala-bordo />
+      {serie ? pezzi.map((q) => (
+        <>
+          <image href={q.src} x={q.x} y={H - alto + q.y} width={serie.w} height={serie.h} preserveAspectRatio="xMidYMid slice" />
+          <rect x={q.x} y={H - alto + q.y} width={serie.w} height={serie.h} class="scala__bordo" />
+        </>
+      )) : (
+        <>
+          <image href={img.src} x="0" y={H - alto} width={w} height={h} preserveAspectRatio="xMidYMid slice" data-scala-img />
+          <rect x="0" y={H - alto} width={w} height={h} class="scala__bordo" data-scala-bordo />
+        </>
+      )}
       <g transform={`translate(${px} ${H - PERSONA}) scale(1.7)`} class="scala__persona" data-scala-persona>
         <circle cx="15" cy="8" r="6.5" />
         <path d="M15 15v45M3 30h24M15 60 6 99.6M15 60l9 39.6" />

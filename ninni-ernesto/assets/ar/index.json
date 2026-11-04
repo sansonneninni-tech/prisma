@@ -43,8 +43,8 @@
    "unita": "metri",
    "glb": "01-40x60.glb",
    "usdz": "01-40x60.usdz",
-   "glb_kb": 741,
-   "usdz_kb": 742,
+   "glb_kb": 740,
+   "usdz_kb": 741,
    "texture_px": [
     2048,
     2048
@@ -59,8 +59,8 @@
    "unita": "metri",
    "glb": "01-60x90.glb",
    "usdz": "01-60x90.usdz",
-   "glb_kb": 741,
-   "usdz_kb": 742,
+   "glb_kb": 740,
+   "usdz_kb": 741,
    "texture_px": [
     2048,
     2048
@@ -243,6 +243,22 @@
    ]
   },
   {
+   "id": "03-ed-100x150",
+   "titolo": "Volto",
+   "larghezza_cm": 114.0,
+   "altezza_cm": 164.0,
+   "profondita_cm": 3.5,
+   "unita": "metri",
+   "glb": "03-ed-100x150.glb",
+   "usdz": "03-ed-100x150.usdz",
+   "glb_kb": 882,
+   "usdz_kb": 883,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
    "id": "04-30x30",
    "titolo": "Negativo",
    "larghezza_cm": 30,
@@ -331,8 +347,8 @@
    "unita": "metri",
    "glb": "06-20x30.glb",
    "usdz": "06-20x30.usdz",
-   "glb_kb": 159,
-   "usdz_kb": 160,
+   "glb_kb": 158,
+   "usdz_kb": 159,
    "texture_px": [
     1024,
     1024
@@ -347,8 +363,8 @@
    "unita": "metri",
    "glb": "06-30x45.glb",
    "usdz": "06-30x45.usdz",
-   "glb_kb": 159,
-   "usdz_kb": 160,
+   "glb_kb": 158,
+   "usdz_kb": 159,
    "texture_px": [
     1024,
     1024
@@ -363,8 +379,8 @@
    "unita": "metri",
    "glb": "06-40x60.glb",
    "usdz": "06-40x60.usdz",
-   "glb_kb": 1038,
-   "usdz_kb": 1039,
+   "glb_kb": 1037,
+   "usdz_kb": 1038,
    "texture_px": [
     2048,
     2048
@@ -443,7 +459,7 @@
    "unita": "metri",
    "glb": "08-60x80.glb",
    "usdz": "08-60x80.usdz",
-   "glb_kb": 802,
+   "glb_kb": 801,
    "usdz_kb": 803,
    "texture_px": [
     2048,
@@ -464,6 +480,358 @@
    "texture_px": [
     2048,
     2048
+   ]
+  },
+  {
+   "id": "51-ed-20x30",
+   "titolo": "Mare su tela",
+   "larghezza_cm": 20,
+   "altezza_cm": 30,
+   "profondita_cm": 3.5,
+   "unita": "metri",
+   "glb": "51-ed-20x30.glb",
+   "usdz": "51-ed-20x30.usdz",
+   "glb_kb": 122,
+   "usdz_kb": 124,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "52-20x30",
+   "titolo": "Chiringuito",
+   "larghezza_cm": 20,
+   "altezza_cm": 30,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "52-20x30.glb",
+   "usdz": "52-20x30.usdz",
+   "glb_kb": 136,
+   "usdz_kb": 137,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "52-30x45",
+   "titolo": "Chiringuito",
+   "larghezza_cm": 30,
+   "altezza_cm": 45,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "52-30x45.glb",
+   "usdz": "52-30x45.usdz",
+   "glb_kb": 136,
+   "usdz_kb": 137,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "52-40x60",
+   "titolo": "Chiringuito",
+   "larghezza_cm": 40,
+   "altezza_cm": 60,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "52-40x60.glb",
+   "usdz": "52-40x60.usdz",
+   "glb_kb": 638,
+   "usdz_kb": 639,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "52-60x90",
+   "titolo": "Chiringuito",
+   "larghezza_cm": 60,
+   "altezza_cm": 90,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "52-60x90.glb",
+   "usdz": "52-60x90.usdz",
+   "glb_kb": 638,
+   "usdz_kb": 639,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "53-20x30",
+   "titolo": "Sigaro",
+   "larghezza_cm": 20,
+   "altezza_cm": 30,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "53-20x30.glb",
+   "usdz": "53-20x30.usdz",
+   "glb_kb": 45,
+   "usdz_kb": 47,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "53-30x45",
+   "titolo": "Sigaro",
+   "larghezza_cm": 30,
+   "altezza_cm": 45,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "53-30x45.glb",
+   "usdz": "53-30x45.usdz",
+   "glb_kb": 45,
+   "usdz_kb": 47,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "54-20x30",
+   "titolo": "Donna sul molo",
+   "larghezza_cm": 20,
+   "altezza_cm": 30,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "54-20x30.glb",
+   "usdz": "54-20x30.usdz",
+   "glb_kb": 162,
+   "usdz_kb": 163,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "54-30x45",
+   "titolo": "Donna sul molo",
+   "larghezza_cm": 30,
+   "altezza_cm": 45,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "54-30x45.glb",
+   "usdz": "54-30x45.usdz",
+   "glb_kb": 162,
+   "usdz_kb": 163,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "55-20x30",
+   "titolo": "Sagome",
+   "larghezza_cm": 20,
+   "altezza_cm": 30,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "55-20x30.glb",
+   "usdz": "55-20x30.usdz",
+   "glb_kb": 127,
+   "usdz_kb": 128,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "55-30x45",
+   "titolo": "Sagome",
+   "larghezza_cm": 30,
+   "altezza_cm": 45,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "55-30x45.glb",
+   "usdz": "55-30x45.usdz",
+   "glb_kb": 127,
+   "usdz_kb": 128,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "55-40x60",
+   "titolo": "Sagome",
+   "larghezza_cm": 40,
+   "altezza_cm": 60,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "55-40x60.glb",
+   "usdz": "55-40x60.usdz",
+   "glb_kb": 597,
+   "usdz_kb": 598,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "56-30x40",
+   "titolo": "Salto",
+   "larghezza_cm": 30,
+   "altezza_cm": 40,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "56-30x40.glb",
+   "usdz": "56-30x40.usdz",
+   "glb_kb": 169,
+   "usdz_kb": 171,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "57-30x20",
+   "titolo": "Uomini di mare",
+   "larghezza_cm": 30,
+   "altezza_cm": 20,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "57-30x20.glb",
+   "usdz": "57-30x20.usdz",
+   "glb_kb": 61,
+   "usdz_kb": 62,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "57-45x30",
+   "titolo": "Uomini di mare",
+   "larghezza_cm": 45,
+   "altezza_cm": 30,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "57-45x30.glb",
+   "usdz": "57-45x30.usdz",
+   "glb_kb": 61,
+   "usdz_kb": 62,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "57-60x40",
+   "titolo": "Uomini di mare",
+   "larghezza_cm": 60,
+   "altezza_cm": 40,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "57-60x40.glb",
+   "usdz": "57-60x40.usdz",
+   "glb_kb": 172,
+   "usdz_kb": 173,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "57-90x60",
+   "titolo": "Uomini di mare",
+   "larghezza_cm": 90,
+   "altezza_cm": 60,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "57-90x60.glb",
+   "usdz": "57-90x60.usdz",
+   "glb_kb": 172,
+   "usdz_kb": 173,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "58-30x40",
+   "titolo": "Viscere del pescatore",
+   "larghezza_cm": 30,
+   "altezza_cm": 40,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "58-30x40.glb",
+   "usdz": "58-30x40.usdz",
+   "glb_kb": 326,
+   "usdz_kb": 327,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "58-45x60",
+   "titolo": "Viscere del pescatore",
+   "larghezza_cm": 45,
+   "altezza_cm": 60,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "58-45x60.glb",
+   "usdz": "58-45x60.usdz",
+   "glb_kb": 1001,
+   "usdz_kb": 1002,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "58-60x80",
+   "titolo": "Viscere del pescatore",
+   "larghezza_cm": 60,
+   "altezza_cm": 80,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "58-60x80.glb",
+   "usdz": "58-60x80.usdz",
+   "glb_kb": 1001,
+   "usdz_kb": 1002,
+   "texture_px": [
+    2048,
+    2048
+   ]
+  },
+  {
+   "id": "59-20x30",
+   "titolo": "Maschera",
+   "larghezza_cm": 20,
+   "altezza_cm": 30,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "59-20x30.glb",
+   "usdz": "59-20x30.usdz",
+   "glb_kb": 87,
+   "usdz_kb": 88,
+   "texture_px": [
+    1024,
+    1024
+   ]
+  },
+  {
+   "id": "60-30x40",
+   "titolo": "Uomo con la sigaretta",
+   "larghezza_cm": 30,
+   "altezza_cm": 40,
+   "profondita_cm": 0.4,
+   "unita": "metri",
+   "glb": "60-30x40.glb",
+   "usdz": "60-30x40.usdz",
+   "glb_kb": 117,
+   "usdz_kb": 118,
+   "texture_px": [
+    1024,
+    1024
    ]
   }
  ],

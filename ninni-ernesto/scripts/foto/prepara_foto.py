@@ -7,8 +7,11 @@ Legge  scripts/foto/sorgenti.json  (id -> file originale) e scrive
   assets/foto/       altre foto (ritratto chi siamo)
   assets/manifest.json
 
-Uso:  python3 scripts/foto/prepara_foto.py [--sorgenti <cartella>]
+Uso:  python3 scripts/foto/prepara_foto.py --sorgenti <cartella> [--aggiungi]
 Le foto originali NON vanno nel repo: si leggono dalla cartella indicata.
+--aggiungi: rifa' solo le opere i cui file sono nella cartella e tiene le altre gia' nel manifest
+(utile quando gli originali stanno in cartelle diverse, es. Ninni ed Ernesto).
+"serie" (opzionale): tutte le foto di un'opera venduta come serie; ognuna diventa la variante serie-N.
 """
 from __future__ import annotations
 import argparse, base64, io, json
@@ -71,13 +74,20 @@ def ritaglio(img, cx, cy, frac, ratio=1.0):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--sorgenti", required=True, help="cartella con le foto originali")
+    ap.add_argument("--aggiungi", action="store_true", help="tiene le opere gia' nel manifest i cui file non sono nella cartella")
     args = ap.parse_args()
     src = Path(args.sorgenti)
     cfg = json.loads((QUI / "sorgenti.json").read_text(encoding="utf-8"))
+    vecchio = json.loads((ASSETS / "manifest.json").read_text(encoding="utf-8")) if args.aggiungi else {"opere": [], "foto": []}
+    vecchie = {o["id"]: o for o in vecchio["opere"]}
     man = {"versione": 1, "opere": [], "foto": []}
 
     for o in cfg["opere"]:
         oid = o["id"]
+        if args.aggiungi and not (src / o["file"]).exists():
+            if oid in vecchie:
+                man["opere"].append(vecchie[oid]); print(f"= {oid} (tenuta)")
+            continue
         img = ImageOps.exif_transpose(Image.open(src / o["file"])).convert("RGB")
         W, H = img.size
         rel = f"opere/{oid}"
@@ -103,6 +113,11 @@ def main():
         }
         for i, (cx, cy, frac) in enumerate(o.get("particolari", [])[:2], start=1):
             immagini[f"dettaglio-{i}"] = salva_varianti(ritaglio(img, cx, cy, frac), out, f"foto-{oid}_dettaglio-{i}", [480, 960, 1500], rel, 1500)
+        for i, nome in enumerate(o.get("serie", []), start=1):
+            s_img = ImageOps.exif_transpose(Image.open(src / nome)).convert("RGB")
+            v = salva_varianti(s_img, out, f"foto-{oid}_serie-{i}", [480, 960, 1600], rel, 1200)
+            v.update({"src": nome, "aspect_ratio": round(s_img.size[0] / s_img.size[1], 4), "lqip": lqip(s_img), "colore_dominante": palette(s_img)[0]["hex"]})
+            immagini[f"serie-{i}"] = v
         man["opere"].append({
             "id": oid, "slug": f"foto-{oid}", "aspect_ratio": r, "orientamento": ori,
             "tela_px": [W, H], "colore_dominante": pal[0]["hex"], "palette": pal, "lqip": lqip(img),
@@ -110,7 +125,11 @@ def main():
         })
         print(f"+ {oid} {o['file']} {W}x{H}")
 
+    if args.aggiungi:
+        man["foto"] = [f for f in vecchio.get("foto", []) if not (src / (f.get("src") or "")).is_file()]
     for f in cfg.get("foto", []):
+        if args.aggiungi and not (src / f["file"]).exists():
+            continue
         img = ImageOps.exif_transpose(Image.open(src / f["file"])).convert("RGB")
         W, H = img.size
         v = salva_varianti(img, ASSETS / "foto", f["id"], [480, 960, 1600], "foto", 1200)

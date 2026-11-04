@@ -14,33 +14,7 @@
   "anno": null,
   "luogo": null,
   "stampa_max_cm": 90,
-  "edizione": {
-   "esemplari": 7,
-   "prove_artista": 1,
-   "vendute": 4,
-   "larghezza_cm": 60,
-   "altezza_cm": 90,
-   "carta": "rag",
-   "cornice": "walnut",
-   "scaglioni": [
-    {
-     "fino": 3,
-     "eur": 990
-    },
-    {
-     "fino": 5,
-     "eur": 1190
-    },
-    {
-     "fino": 6,
-     "eur": 1390
-    },
-    {
-     "fino": 7,
-     "eur": 1690
-    }
-   ]
-  },
+  "edizione": null,
   "campi_mancanti": [
    "titolo da confermare con Ninni",
    "anno"
@@ -62,33 +36,7 @@
   "anno": null,
   "luogo": null,
   "stampa_max_cm": 90,
-  "edizione": {
-   "esemplari": 10,
-   "prove_artista": 2,
-   "vendute": 6,
-   "larghezza_cm": 40,
-   "altezza_cm": 60,
-   "carta": "bizan",
-   "cornice": "oak",
-   "scaglioni": [
-    {
-     "fino": 4,
-     "eur": 690
-    },
-    {
-     "fino": 7,
-     "eur": 790
-    },
-    {
-     "fino": 9,
-     "eur": 950
-    },
-    {
-     "fino": 10,
-     "eur": 1190
-    }
-   ]
-  },
+  "edizione": null,
   "campi_mancanti": [
    "titolo da confermare con Ninni",
    "anno"
@@ -111,29 +59,25 @@
   "luogo": null,
   "stampa_max_cm": 90,
   "edizione": {
-   "esemplari": 7,
+   "esemplari": 5,
    "prove_artista": 1,
-   "vendute": 2,
-   "larghezza_cm": 60,
-   "altezza_cm": 90,
-   "carta": "baryta",
+   "vendute": 0,
+   "larghezza_cm": 100,
+   "altezza_cm": 150,
+   "carta": "rag",
    "cornice": "walnut",
    "scaglioni": [
     {
-     "fino": 3,
-     "eur": 990
+     "fino": 2,
+     "eur": 2400
+    },
+    {
+     "fino": 4,
+     "eur": 2900
     },
     {
      "fino": 5,
-     "eur": 1190
-    },
-    {
-     "fino": 6,
-     "eur": 1390
-    },
-    {
-     "fino": 7,
-     "eur": 1690
+     "eur": 3500
     }
    ]
   },
@@ -158,33 +102,7 @@
   "anno": null,
   "luogo": null,
   "stampa_max_cm": 70,
-  "edizione": {
-   "esemplari": 10,
-   "prove_artista": 2,
-   "vendute": 3,
-   "larghezza_cm": 50,
-   "altezza_cm": 50,
-   "carta": "baryta",
-   "cornice": "oak",
-   "scaglioni": [
-    {
-     "fino": 4,
-     "eur": 590
-    },
-    {
-     "fino": 7,
-     "eur": 690
-    },
-    {
-     "fino": 9,
-     "eur": 850
-    },
-    {
-     "fino": 10,
-     "eur": 1050
-    }
-   ]
-  },
+  "edizione": null,
   "campi_mancanti": [
    "titolo da confermare con Ninni",
    "anno"
@@ -272,37 +190,253 @@
   "anno": null,
   "luogo": null,
   "stampa_max_cm": 80,
-  "edizione": {
-   "esemplari": 10,
-   "prove_artista": 2,
-   "vendute": 1,
-   "larghezza_cm": 45,
-   "altezza_cm": 60,
-   "carta": "bizan",
-   "cornice": "oak",
-   "scaglioni": [
-    {
-     "fino": 4,
-     "eur": 690
-    },
-    {
-     "fino": 7,
-     "eur": 790
-    },
-    {
-     "fino": 9,
-     "eur": 950
-    },
-    {
-     "fino": 10,
-     "eur": 1190
-    }
-   ]
-  },
+  "edizione": null,
   "campi_mancanti": [
    "titolo da confermare con Ninni",
    "anno"
   ],
   "note_abbinamento": "Titolo provvisorio scelto dal sito: da confermare."
+ },
+ {
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": "Otto fotografie del mare guardato così da vicino che diventa una tela: oro, petrolio, verde, argento. Si vendono solo tutte insieme.",
+  "descrizione_en": "Eight photographs of the sea, looked at so closely it turns into a canvas: gold, petrol blue, green, silver. Sold only as a complete set.",
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "edizione": {
+   "esemplari": 10,
+   "prove_artista": 1,
+   "vendute": 0,
+   "larghezza_cm": 20,
+   "altezza_cm": 30,
+   "carta": "rag",
+   "cornice": "none",
+   "scaglioni": [
+    {
+     "fino": 5,
+     "eur": 1200
+    },
+    {
+     "fino": 8,
+     "eur": 1450
+    },
+    {
+     "fino": 10,
+     "eur": 1800
+    }
+   ]
+  },
+  "campi_mancanti": [
+   "titolo da confermare con Ernesto",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo e prezzo scelti dal sito (ninni, 03/11): da confermare con Ernesto.",
+  "id": "51",
+  "titolo": "Mare su tela",
+  "titolo_en": "Sea on Canvas",
+  "autore": "ernesto",
+  "stampa_max_cm": 1
+ },
+ {
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "edizione": null,
+  "campi_mancanti": [
+   "titolo da confermare con Ernesto",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo e prezzo scelti dal sito (ninni, 03/11): da confermare con Ernesto.",
+  "id": "52",
+  "titolo": "Chiringuito",
+  "titolo_en": "Chiringuito",
+  "autore": "ernesto",
+  "stampa_max_cm": 90
+ },
+ {
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "edizione": null,
+  "campi_mancanti": [
+   "titolo da confermare con Ernesto",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo e prezzo scelti dal sito (ninni, 03/11): da confermare con Ernesto.",
+  "id": "53",
+  "titolo": "Sigaro",
+  "titolo_en": "Cigar",
+  "autore": "ernesto",
+  "stampa_max_cm": 45
+ },
+ {
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "edizione": null,
+  "campi_mancanti": [
+   "titolo da confermare con Ernesto",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo e prezzo scelti dal sito (ninni, 03/11): da confermare con Ernesto.",
+  "id": "54",
+  "titolo": "Donna sul molo",
+  "titolo_en": "Woman on the Pier",
+  "autore": "ernesto",
+  "stampa_max_cm": 45
+ },
+ {
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "edizione": null,
+  "campi_mancanti": [
+   "titolo da confermare con Ernesto",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo e prezzo scelti dal sito (ninni, 03/11): da confermare con Ernesto.",
+  "id": "55",
+  "titolo": "Sagome",
+  "titolo_en": "Silhouettes",
+  "autore": "ernesto",
+  "stampa_max_cm": 60
+ },
+ {
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "edizione": null,
+  "campi_mancanti": [
+   "titolo da confermare con Ernesto",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo e prezzo scelti dal sito (ninni, 03/11): da confermare con Ernesto.",
+  "id": "56",
+  "titolo": "Salto",
+  "titolo_en": "The Leap",
+  "autore": "ernesto",
+  "stampa_max_cm": 40
+ },
+ {
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "edizione": null,
+  "campi_mancanti": [
+   "titolo da confermare con Ernesto",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo e prezzo scelti dal sito (ninni, 03/11): da confermare con Ernesto.",
+  "id": "57",
+  "titolo": "Uomini di mare",
+  "titolo_en": "Men of the Sea",
+  "autore": "ernesto",
+  "stampa_max_cm": 90
+ },
+ {
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "edizione": null,
+  "campi_mancanti": [
+   "titolo da confermare con Ernesto",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo e prezzo scelti dal sito (ninni, 03/11): da confermare con Ernesto.",
+  "id": "58",
+  "titolo": "Viscere del pescatore",
+  "titolo_en": "The Fisherman's Viscera",
+  "autore": "ernesto",
+  "stampa_max_cm": 80
+ },
+ {
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "edizione": null,
+  "campi_mancanti": [
+   "titolo da confermare con Ernesto",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo e prezzo scelti dal sito (ninni, 03/11): da confermare con Ernesto.",
+  "id": "59",
+  "titolo": "Maschera",
+  "titolo_en": "Mask",
+  "autore": "ernesto",
+  "stampa_max_cm": 30
+ },
+ {
+  "tecnica": "Stampa fine art a pigmenti",
+  "misure": null,
+  "prezzo_eur": null,
+  "disponibilita": "disponibile",
+  "descrizione_it": null,
+  "descrizione_en": null,
+  "cornice": null,
+  "anno": null,
+  "luogo": null,
+  "edizione": null,
+  "campi_mancanti": [
+   "titolo da confermare con Ernesto",
+   "anno"
+  ],
+  "note_abbinamento": "Titolo e prezzo scelti dal sito (ninni, 03/11): da confermare con Ernesto.",
+  "id": "60",
+  "titolo": "Uomo con la sigaretta",
+  "titolo_en": "Man with a Cigarette",
+  "autore": "ernesto",
+  "stampa_max_cm": 40
  }
 ]

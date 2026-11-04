@@ -18,7 +18,7 @@ export const INDICE_PRINCIPALE: Voce[] = [
 /** Indice: voci piccole sotto il filetto (anche nella riga sotto la mappa, su computer). */
 export const INDICE_SECONDARIO: Voce[] = [
   { chiave: 'galleria.nav.stampe', path: '/ninni/?vista=stampe', vista: 'stampe' },
-  { chiave: 'galleria.nav.prisma', path: 'https://prisma.example' },
+  { chiave: 'galleria.nav.prisma', path: 'https://prismamov.netlify.app/' },
   { chiave: 'galleria.nav.contatti', path: '/chi-siamo/#contatti' },
 ];
 
@@ -32,7 +32,7 @@ export const EMAIL = 'ciao@ninnieernesto.example';
 export const TELEFONO = '+39 000 000 0000';
 export const WHATSAPP = 'https://wa.me/390000000000';
 export const MAPPE = 'https://www.google.com/maps/search/?api=1&query=Puglia';
-export const PRISMA = 'https://prisma.example';
+export const PRISMA = 'https://prismamov.netlify.app/';
 
 /** Footer. */
 export const FOOTER: Voce[] = [

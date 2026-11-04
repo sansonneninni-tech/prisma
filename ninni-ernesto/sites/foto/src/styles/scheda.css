@@ -59,6 +59,13 @@
 .sk__carta { position: absolute; inset: 0; display: block; pointer-events: none; background-size: var(--tex, 20%) auto; }
 .sk__dida { display: block; margin-top: var(--s-2); font-size: var(--t-small); line-height: 1.3; color: var(--c-mute); font-variant-numeric: tabular-nums; }
 
+/* serie (Mare su tela): le stampe in griglia, come appese; la carta e la lente valgono per tutte */
+.sk__serie { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(var(--col, 4), minmax(0, 1fr)); gap: 0 var(--gap, 3%); align-content: space-between; }
+.sk__serie-f { display: block; aspect-ratio: 2 / 3; position: relative; box-shadow: 0 1px 2px rgb(0 0 0 / 0.12), 0 8px 18px -10px rgb(0 0 0 / 0.35); }
+.sk__serie-f .isa-picture, .sk__serie-f img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.sk__foto:has(.sk__serie) { overflow: visible; }
+.sk__foto:has(.sk__serie) .sk__carta { display: none; }
+
 /* cornici */
 .sk__box[data-cornice='alu'] .sk__cornice {
   background: linear-gradient(135deg, #3a3a3a, #121212 38%, #1b1b1b 62%, #0b0b0b);

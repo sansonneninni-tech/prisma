@@ -143,6 +143,19 @@ function avviaAcquisto(sk: HTMLElement): () => void {
     nota.hidden = n === 0;
     testo.textContent = n >= max ? (fs.dataset.tMax ?? '') : (fs.dataset.tN ?? '').replace('{n}', String(n));
   };
+  // arrivo dal QR del computer (?scelta=formato.carta.cornice): sul telefono la stessa stampa, poi via dall'indirizzo
+  const daQr = new URL(location.href).searchParams.get('scelta');
+  if (fs && daQr) {
+    const [f, c, k] = daQr.split('.');
+    const spunta = (n: string, v?: string) => {
+      const el = v ? fs.querySelector<HTMLInputElement>(`input[name="${n}"][value="${CSS.escape(v)}"]`) : null;
+      if (el) el.checked = true; // sincronizza() qui sotto toglie una carta che il formato non ha
+    };
+    spunta('formato', f); spunta('supporto', c); spunta('cornice', k);
+    const u = new URL(location.href);
+    u.searchParams.delete('scelta');
+    history.replaceState(history.state, '', u.pathname + u.search + u.hash);
+  }
   if (fs) {
     const onChange = () => { sincronizza(); disegnaS(); aggiornaBarra(); };
     const onSubmit = (e: SubmitEvent) => {
@@ -162,9 +175,10 @@ function avviaAcquisto(sk: HTMLElement): () => void {
     document.documentElement.dataset.modelloAr = chiave;
     document.dispatchEvent(new CustomEvent('galleria:modello-ar', { detail: { chiave } }));
     // anteprima della stampa e figura in scala (lib/anteprima-client.ts)
-    document.dispatchEvent(new CustomEvent<Scelta>('galleria:anteprima', {
-      detail: { vista: corrente(), formato: scelto('formato'), carta: scelto('supporto') || 'rag', cornice: scelto('cornice') || 'none' },
-    }));
+    const detail: Scelta = { vista: corrente(), formato: scelto('formato'), carta: scelto('supporto') || 'rag', cornice: scelto('cornice') || 'none' };
+    // la AR (parete-client.ts) legge la scelta anche se si avvia dopo
+    document.documentElement.dataset.sceltaAr = JSON.stringify(detail);
+    document.dispatchEvent(new CustomEvent<Scelta>('galleria:anteprima', { detail }));
   }
 
   /* ---------- barra fissa in basso ---------- */

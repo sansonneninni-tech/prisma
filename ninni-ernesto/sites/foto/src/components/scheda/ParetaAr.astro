@@ -19,7 +19,7 @@ const { art, ar, lang } = Astro.props;
 const t = useT(lang);
 const titolo = lang === 'en' && art.titleEn ? art.titleEn : art.title;
 ---
-<dialog class="parete" data-parete aria-labelledby="parete-t" style={`--tela:url("${ar.poster}")`} data-modelli={JSON.stringify(ar.modelli)} data-iniziale={ar.iniziale} data-titolo={titolo}>
+<dialog class="parete" data-parete aria-labelledby="parete-t" style={`--tela:url("${ar.poster}")`} data-modelli={JSON.stringify(ar.modelli)} data-iniziale={ar.iniziale} data-titolo={titolo} data-t-stampa={ar.tStampa} data-t-cornice={ar.tCornice}>
   <div class="parete__barra">
     <p class="parete__t" id="parete-t">{t('galleria.ar.titolo')}</p>
     <button class="parete__chiudi" type="button" data-parete-chiudi>{t('galleria.nav.chiudi')}</button>

@@ -13,7 +13,6 @@ import '../styles/struttura.css';
 import '../styles/acquisto.css';
 import '../styles/movimento.css';
 import Header from '../components/Header.astro';
-import Indice from '../components/Indice.astro';
 import Footer from '../components/Footer.astro';
 import Cassetto from '../components/acquisto/Cassetto.astro';
 import Cookie from '../components/Cookie.astro';
@@ -83,7 +82,6 @@ const canonical = Astro.site ? new URL(pathname, Astro.site).href : pathname;
       <slot />
     </main>
     {!home && <Footer lang={lang} />}
-    {acquisto !== 'checkout' && <Indice lang={lang} pathname={pathname} />}
     {!acquisto && <Cassetto lang={lang} />}
     <!-- banner cookie (pezzo 7): fisso in basso finché non c'è una scelta -->
     <Cookie lang={lang} />

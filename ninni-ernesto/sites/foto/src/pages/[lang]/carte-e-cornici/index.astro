@@ -20,7 +20,6 @@ const k = (c: string, p?: Record<string, string | number>) => t(`galleria.carte.
 const titolo = t('galleria.nav.carte');
 const fasce = [k('fascia_s'), k('fascia_m'), k('fascia_l')];
 const carte = PRINT_MATERIALS.map((id) => ({ id, nome: t(`carte.${id}.nome`), testo: t(`carte.${id}.testo`) }));
-const bizan = { id: 'bizan', nome: t('carte.bizan.nome'), testo: t('carte.bizan.testo') };
 const cornici = FRAMES.filter((f) => f !== 'none').map((id) => ({
   id, nome: t(`cornici.${id}.nome`), testo: t(`cornici.${id}.testo`),
   prezzi: FRAME_PRICES[id as Exclude<typeof id, 'none'>].map((c) => formatPrice(c, lang)),
@@ -35,10 +34,10 @@ const dettaglio = requireArtwork('02');
     <section class="cc__sez" aria-labelledby="cc-carte">
       <h2 class="cc__h2" id="cc-carte">{k('carte_t')}</h2>
       <ul class="cc__lista" role="list">
-        {[...carte, bizan].map((c, i) => (
+        {carte.map((c, i) => (
           <li class="cc__v">
             <span class="cc__n num">{String(i + 1).padStart(2, '0')}</span>
-            <h3 class="cc__nome">{c.nome}{c.id === 'bizan' && <span class="cc__tag">{k('solo_edizioni')}</span>}</h3>
+            <h3 class="cc__nome">{c.nome}</h3>
             <p class="cc__t">{c.testo}</p>
           </li>
         ))}

@@ -1,16 +1,213 @@
 {
- "_nota": "id a due cifre: 01-49 Ninni, 51-99 Ernesto. particolari = [centro x, centro y, frazione del lato corto].",
+ "_nota": "id a due cifre: 01-49 Ninni, 51-99 Ernesto. particolari = [centro x, centro y, frazione del lato corto]. serie = altre foto della stessa opera (edizione venduta come serie intera). --aggiungi: tiene le voci gia' nel manifest.",
  "opere": [
-  {"id": "01", "file": "_DSC1926.jpg", "alt": "Tulipano bianco aperto su un cielo blu", "particolari": [[0.5, 0.42, 0.32], [0.3, 0.33, 0.3]]},
-  {"id": "02", "file": "_DSC3124.jpg", "alt": "Fiori rosa in un bicchiere su una tovaglia verde", "particolari": [[0.48, 0.26, 0.3], [0.52, 0.66, 0.3]]},
-  {"id": "03", "file": "1.jpg", "alt": "Volto di statua in bianco e nero, occhi bianchi", "particolari": [[0.35, 0.5, 0.3], [0.62, 0.72, 0.3]]},
-  {"id": "04", "file": "25x25.jpg", "alt": "Costa in negativo sotto un cielo rosso", "centro": [0.5, 0.5], "particolari": [[0.7, 0.75, 0.3], [0.35, 0.86, 0.3]]},
-  {"id": "05", "file": "_DSC3028.jpg", "alt": "Pugno che stringe un fiore rosa contro il cielo", "particolari": [[0.55, 0.3, 0.45], [0.6, 0.65, 0.45]]},
-  {"id": "06", "file": "_DSC4714.jpg", "alt": "Forma arancione tenuta da dita su fondo rosa", "particolari": [[0.38, 0.5, 0.35], [0.75, 0.25, 0.35]]},
-  {"id": "07", "file": "croce rossa.jpg", "alt": "Palo coperto di rami bianchi su fondo rosso", "particolari": [[0.5, 0.35, 0.35], [0.5, 0.7, 0.35]]},
-  {"id": "08", "file": "due.jpg", "alt": "Macchia scura sfocata su fondo bianco", "particolari": [[0.42, 0.45, 0.35], [0.8, 0.3, 0.3]]}
+  {
+   "id": "01",
+   "file": "_DSC1926.jpg",
+   "alt": "Tulipano bianco aperto su un cielo blu",
+   "particolari": [
+    [
+     0.5,
+     0.42,
+     0.32
+    ],
+    [
+     0.3,
+     0.33,
+     0.3
+    ]
+   ]
+  },
+  {
+   "id": "02",
+   "file": "_DSC3124.jpg",
+   "alt": "Fiori rosa in un bicchiere su una tovaglia verde",
+   "particolari": [
+    [
+     0.48,
+     0.26,
+     0.3
+    ],
+    [
+     0.52,
+     0.66,
+     0.3
+    ]
+   ]
+  },
+  {
+   "id": "03",
+   "file": "1.jpg",
+   "alt": "Volto di statua in bianco e nero, occhi bianchi",
+   "particolari": [
+    [
+     0.35,
+     0.5,
+     0.3
+    ],
+    [
+     0.62,
+     0.72,
+     0.3
+    ]
+   ]
+  },
+  {
+   "id": "04",
+   "file": "25x25.jpg",
+   "alt": "Costa in negativo sotto un cielo rosso",
+   "centro": [
+    0.5,
+    0.5
+   ],
+   "particolari": [
+    [
+     0.7,
+     0.75,
+     0.3
+    ],
+    [
+     0.35,
+     0.86,
+     0.3
+    ]
+   ]
+  },
+  {
+   "id": "05",
+   "file": "_DSC3028.jpg",
+   "alt": "Pugno che stringe un fiore rosa contro il cielo",
+   "particolari": [
+    [
+     0.55,
+     0.3,
+     0.45
+    ],
+    [
+     0.6,
+     0.65,
+     0.45
+    ]
+   ]
+  },
+  {
+   "id": "06",
+   "file": "_DSC4714.jpg",
+   "alt": "Forma arancione tenuta da dita su fondo rosa",
+   "particolari": [
+    [
+     0.38,
+     0.5,
+     0.35
+    ],
+    [
+     0.75,
+     0.25,
+     0.35
+    ]
+   ]
+  },
+  {
+   "id": "07",
+   "file": "croce rossa.jpg",
+   "alt": "Palo coperto di rami bianchi su fondo rosso",
+   "particolari": [
+    [
+     0.5,
+     0.35,
+     0.35
+    ],
+    [
+     0.5,
+     0.7,
+     0.35
+    ]
+   ]
+  },
+  {
+   "id": "08",
+   "file": "due.jpg",
+   "alt": "Macchia scura sfocata su fondo bianco",
+   "particolari": [
+    [
+     0.42,
+     0.45,
+     0.35
+    ],
+    [
+     0.8,
+     0.3,
+     0.3
+    ]
+   ]
+  },
+  {
+   "id": "51",
+   "file": "Mare su tela.jpg",
+   "alt": "Riflessi d'oro sull'acqua scura del mare",
+   "serie": [
+    "Mare su tela.jpg",
+    "Mare su tela_1.JPG",
+    "Mare su tela_2.jpg",
+    "Mare su tela_3.JPG",
+    "Mare su tela_4.jpg",
+    "Mare su tela_5.jpg",
+    "Mare su tela_7.JPG",
+    "Mare su tela_9.JPG"
+   ]
+  },
+  {
+   "id": "52",
+   "file": "Chiringuito.jpg",
+   "alt": "Furgoncino rosso fermo sul molo, il porto sullo sfondo"
+  },
+  {
+   "id": "53",
+   "file": "Cigar_2.jpg",
+   "alt": "Mano con un sigaro acceso su fondo nero, in bianco e nero"
+  },
+  {
+   "id": "54",
+   "file": "Donna sul molo__.JPG",
+   "alt": "Donna bionda di spalle appoggiata alla ringhiera del molo"
+  },
+  {
+   "id": "55",
+   "file": "Sagome_9.JPG",
+   "alt": "Sagoma di un pescatore con la canna nella luce del tramonto"
+  },
+  {
+   "id": "56",
+   "file": "Salto_5.JPG",
+   "alt": "Ragazzo in controluce seduto su un muretto davanti al mare"
+  },
+  {
+   "id": "57",
+   "file": "Uominidimare_11.jpg",
+   "alt": "Ragazzi che saltano da un parapetto sul mare, in bianco e nero"
+  },
+  {
+   "id": "58",
+   "file": "Viscere del pescatore 4-3.jpg",
+   "alt": "Pescatore seduto che ripara le reti verdi stese a terra"
+  },
+  {
+   "id": "59",
+   "file": "Maschera.JPG",
+   "alt": "Donna con maschera dorata, perle e rossetto rosso"
+  },
+  {
+   "id": "60",
+   "file": "Uomo con la sigaretta.jpg",
+   "alt": "Uomo con colbacco e occhiali che fuma una sigaretta"
+  }
  ],
  "foto": [
-  {"id": "ninni-ernesto-ritratto", "file": "ninni-ernesto-ritratto.png", "gruppo": "ritratti", "soggetto": "Ninni ed Ernesto in silhouette su fondo arancio"}
+  {
+   "id": "ninni-ernesto-ritratto",
+   "file": "ninni-ernesto-ritratto.png",
+   "gruppo": "ritratti",
+   "soggetto": "Ninni ed Ernesto in silhouette su fondo arancio"
+  }
  ]
 }

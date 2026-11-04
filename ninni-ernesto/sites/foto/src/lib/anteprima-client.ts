@@ -24,7 +24,7 @@ interface Dati {
   formati: Record<string, { w: number; h: number; et: string }>;
   carte: Record<string, string>;
   cornici: Record<string, string>;
-  ed: null | { w: number; h: number; fw: number; fh: number; carta: string; cornice: string; et: string };
+  ed: null | { w: number; h: number; fw: number; fh: number; carta: string; cornice: string; et: string; serie?: { n: number; col: number; gap: number } };
 }
 export interface Scelta { vista: 'o' | 's'; formato: string; carta: string; cornice: string }
 
@@ -58,8 +58,9 @@ function ridisegnaScala(fig: HTMLElement, W: number, H: number, bordo: number) {
 }
 
 export function avviaAnteprima(sk: HTMLElement): () => void {
-  const box = sk.querySelector<HTMLButtonElement>('[data-anteprima]');
-  if (!box) return () => {};
+  const trovato = sk.querySelector<HTMLButtonElement>('[data-anteprima]');
+  if (!trovato) return () => {};
+  const box: HTMLButtonElement = trovato;
   let dati: Dati;
   try { dati = JSON.parse(box.dataset.dati ?? '') as Dati; } catch { return () => {}; }
   const dida = sk.querySelector<HTMLElement>('[data-anteprima-dida]');
@@ -83,7 +84,13 @@ export function avviaAnteprima(sk: HTMLElement): () => void {
       const c = CORNICI[cornice] ?? CORNICI.none!;
       f = c.f; m = c.m;
     }
-    const W = w + 2 * (f + m), H = h + 2 * (f + m);
+    let W = w + 2 * (f + m), H = h + 2 * (f + m);
+    // serie: le stampe appese in griglia (col per riga, gap cm fra l'una e l'altra), senza cornice
+    const serie = s.vista === 'o' ? dati.ed?.serie : undefined;
+    if (serie) {
+      const righe = Math.ceil(serie.n / serie.col);
+      W = serie.col * w + (serie.col - 1) * serie.gap; H = righe * h + (righe - 1) * serie.gap;
+    }
     box.dataset.cornice = cornice;
     box.dataset.carta = carta;
     const fig = box.parentElement ?? box;

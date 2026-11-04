@@ -51,15 +51,29 @@ const est = { target: '_blank', rel: 'noopener' };
 
     <section class="is__sez is__bio" id="bio" aria-labelledby="bio-h">
       <h2 class="vh" id="bio-h">{k('bio_t')}</h2>
-      <figure class="is__ritratto">
-        <ArtworkPicture photoId="ninni-ernesto-ritratto" lang={lang} alt={k('ritratto_alt')} sizes="(min-width: 1024px) 48vw, (min-width: 768px) 60vw, 100vw" loading="eager" fetchpriority="high" />
+      {/* il ritratto si gira (passaggio del mouse, tocco, fuoco da tastiera): sul retro chi sono, in due colonne */}
+      <figure class="is__ritratto gira" data-gira>
+        <div class="gira__in" tabindex="0" role="group" aria-label={k('gira_aria')}>
+          <div class="gira__faccia gira__fronte">
+            <ArtworkPicture photoId="ninni-ernesto-ritratto" lang={lang} alt={k('ritratto_alt')} sizes="(min-width: 1024px) 48vw, (min-width: 768px) 60vw, 100vw" loading="eager" fetchpriority="high" />
+            <span class="gira__invito" aria-hidden="true"><span class="gira__mouse">{k('gira_mouse')}</span><span class="gira__tocco">{k('gira_tocco')}</span></span>
+          </div>
+          <div class="gira__faccia gira__retro">
+            <div class="gira__col">
+              <p class="gira__nome">Ninni</p>
+              <p class="gira__nato">{k('nato_ninni')}</p>
+              <p class="gira__t">{k('bio_ninni')}</p>
+            </div>
+            <div class="gira__col">
+              <p class="gira__nome">Ernesto</p>
+              <p class="gira__nato">{k('nato_ernesto')}</p>
+              <p class="gira__t">{k('bio_ernesto')}</p>
+            </div>
+          </div>
+        </div>
       </figure>
       <div class="is__testo">
         <p class="is__bio-t">{k('bio')}</p>
-        <dl class="is__due">
-          <div><dt>Ninni</dt><dd>{k('bio_ninni')}</dd></div>
-          <div><dt>Ernesto</dt><dd>{k('bio_ernesto')}</dd></div>
-        </dl>
       </div>
     </section>
 
@@ -115,4 +129,5 @@ const est = { target: '_blank', rel: 'noopener' };
 
 <script>
   import '../../../lib/moduli-client';
+  import '../../../lib/gira-client';
 </script>

@@ -1498,6 +1498,1582 @@
      }
     }
    }
+  },
+  {
+   "id": "51",
+   "slug": "foto-51",
+   "aspect_ratio": 0.6668,
+   "orientamento": "verticale",
+   "tela_px": [
+    1823,
+    2734
+   ],
+   "colore_dominante": "#011e2a",
+   "palette": [
+    {
+     "hex": "#011e2a",
+     "share": 0.284
+    },
+    {
+     "hex": "#1a3d4e",
+     "share": 0.212
+    },
+    {
+     "hex": "#556264",
+     "share": 0.206
+    },
+    {
+     "hex": "#837967",
+     "share": 0.176
+    },
+    {
+     "hex": "#9d8d73",
+     "share": 0.123
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAABQAwCdASoNABQAPu1iqU2ppaQiMAgBMB2JQAAH+1UxU6ZtAADuAm8NISGkIdfsITjgy+lvHSAqribst60PqcBz1z+uh3LKpFTeECYKAAA=",
+   "alt": "Riflessi d'oro sull'acqua scura del mare",
+   "immagini": {
+    "tela": {
+     "w": 1823,
+     "h": 2734,
+     "avif": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_tela_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_tela_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/51/foto-51_tela_1600.avif"
+      },
+      {
+       "w": 1823,
+       "h": 2734,
+       "file": "opere/51/foto-51_tela_1823.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_tela_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_tela_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/51/foto-51_tela_1600.webp"
+      },
+      {
+       "w": 1823,
+       "h": 2734,
+       "file": "opere/51/foto-51_tela_1823.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1600,
+      "h": 2400,
+      "file": "opere/51/foto-51_tela_1600.jpg"
+     },
+     "src": "Mare su tela.jpg",
+     "aspect_ratio": 0.6668
+    },
+    "miniatura": {
+     "w": 800,
+     "h": 1000,
+     "avif": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/51/foto-51_miniatura_400.avif"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/51/foto-51_miniatura_800.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/51/foto-51_miniatura_400.webp"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/51/foto-51_miniatura_800.webp"
+      }
+     ],
+     "jpg": {
+      "w": 800,
+      "h": 1000,
+      "file": "opere/51/foto-51_miniatura_800.jpg"
+     }
+    },
+    "serie-1": {
+     "w": 1600,
+     "h": 2400,
+     "avif": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_serie-1_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_serie-1_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/51/foto-51_serie-1_1600.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_serie-1_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_serie-1_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/51/foto-51_serie-1_1600.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1200,
+      "h": 1800,
+      "file": "opere/51/foto-51_serie-1_1200.jpg"
+     },
+     "src": "Mare su tela.jpg",
+     "aspect_ratio": 0.6668,
+     "lqip": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAABQAwCdASoNABQAPu1iqU2ppaQiMAgBMB2JQAAH+1UxU6ZtAADuAm8NISGkIdfsITjgy+lvHSAqribst60PqcBz1z+uh3LKpFTeECYKAAA=",
+     "colore_dominante": "#011e2a"
+    },
+    "serie-2": {
+     "w": 1600,
+     "h": 2400,
+     "avif": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_serie-2_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_serie-2_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/51/foto-51_serie-2_1600.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_serie-2_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_serie-2_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/51/foto-51_serie-2_1600.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1200,
+      "h": 1800,
+      "file": "opere/51/foto-51_serie-2_1200.jpg"
+     },
+     "src": "Mare su tela_1.JPG",
+     "aspect_ratio": 0.6666,
+     "lqip": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAADwAwCdASoNABQAPu1iqU2ppaQiMAgBMB2JZwC7ACG+XHpdMX4UsvsAAP61kL9X6pCDVVciql1Gr+c0zo2CQy28pcHOOFm3UsMu7lvNESDNfr5eSPQdDQReU7HjvJGPkSTZNlm3WgA=",
+     "colore_dominante": "#1b2225"
+    },
+    "serie-3": {
+     "w": 1600,
+     "h": 2400,
+     "avif": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_serie-3_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_serie-3_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/51/foto-51_serie-3_1600.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_serie-3_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_serie-3_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/51/foto-51_serie-3_1600.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1200,
+      "h": 1800,
+      "file": "opere/51/foto-51_serie-3_1200.jpg"
+     },
+     "src": "Mare su tela_2.jpg",
+     "aspect_ratio": 0.6667,
+     "lqip": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAADwAwCdASoNABQAPu1iqU2ppaQiMAgBMB2JQBOmUI7gBP+dIwD7hL0AAP5T+W1vl6EcPwmRi/eJKZJyUl3dbLDY4OQpqRI0gOJ2DRgA",
+     "colore_dominante": "#214f59"
+    },
+    "serie-4": {
+     "w": 1600,
+     "h": 2400,
+     "avif": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_serie-4_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_serie-4_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/51/foto-51_serie-4_1600.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_serie-4_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_serie-4_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/51/foto-51_serie-4_1600.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1200,
+      "h": 1800,
+      "file": "opere/51/foto-51_serie-4_1200.jpg"
+     },
+     "src": "Mare su tela_3.JPG",
+     "aspect_ratio": 0.6666,
+     "lqip": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADQAwCdASoNABQAPu1iqU2ppaQiMAgBMB2JQBOgBEPx0e78FT9cXgAA+3uHU1BxXkTH+hJNlxgkqNg1nhmqyFG7SwV7qOnkMHoSutfr3FkwGRAA",
+     "colore_dominante": "#3d292b"
+    },
+    "serie-5": {
+     "w": 1469,
+     "h": 2204,
+     "avif": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_serie-5_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_serie-5_960.avif"
+      },
+      {
+       "w": 1469,
+       "h": 2204,
+       "file": "opere/51/foto-51_serie-5_1469.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_serie-5_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_serie-5_960.webp"
+      },
+      {
+       "w": 1469,
+       "h": 2204,
+       "file": "opere/51/foto-51_serie-5_1469.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1200,
+      "h": 1800,
+      "file": "opere/51/foto-51_serie-5_1200.jpg"
+     },
+     "src": "Mare su tela_4.jpg",
+     "aspect_ratio": 0.6665,
+     "lqip": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADQAwCdASoNABQAPu1iqU2ppaQiMAgBMB2JZwC7AB6SdMJggDqQ2UAA/u7y2XdchUGqBblYG+9HL9VCP+wbf+NdFILs0AAA",
+     "colore_dominante": "#45515e"
+    },
+    "serie-6": {
+     "w": 1600,
+     "h": 2400,
+     "avif": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_serie-6_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_serie-6_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/51/foto-51_serie-6_1600.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_serie-6_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_serie-6_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/51/foto-51_serie-6_1600.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1200,
+      "h": 1800,
+      "file": "opere/51/foto-51_serie-6_1200.jpg"
+     },
+     "src": "Mare su tela_5.jpg",
+     "aspect_ratio": 0.6666,
+     "lqip": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAACwAwCdASoNABQAPu1iqk2ppaQiMAgBMB2JZQC/OBi5XJcYY+XugAD+gQwkM/GGhStYdF7/u82rX2bhpmO9V7ud61X/BnBH+xSqzImyloHqrMn9gAA=",
+     "colore_dominante": "#141d16"
+    },
+    "serie-7": {
+     "w": 1512,
+     "h": 2268,
+     "avif": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_serie-7_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_serie-7_960.avif"
+      },
+      {
+       "w": 1512,
+       "h": 2268,
+       "file": "opere/51/foto-51_serie-7_1512.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_serie-7_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_serie-7_960.webp"
+      },
+      {
+       "w": 1512,
+       "h": 2268,
+       "file": "opere/51/foto-51_serie-7_1512.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1200,
+      "h": 1800,
+      "file": "opere/51/foto-51_serie-7_1200.jpg"
+     },
+     "src": "Mare su tela_7.JPG",
+     "aspect_ratio": 0.6667,
+     "lqip": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAABwAwCdASoNABQAPu1iqk4ppaQiMAgBMB2JZwAAUvcXjLaBcugA7W154zQEgQDRWkzLCInU8gYngoKrNqa9PZwL3VfNTDrZlX3YKhSRabxwde+o8jeSHx2WJAAAAA==",
+     "colore_dominante": "#354047"
+    },
+    "serie-8": {
+     "w": 1600,
+     "h": 2400,
+     "avif": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_serie-8_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_serie-8_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/51/foto-51_serie-8_1600.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/51/foto-51_serie-8_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/51/foto-51_serie-8_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/51/foto-51_serie-8_1600.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1200,
+      "h": 1800,
+      "file": "opere/51/foto-51_serie-8_1200.jpg"
+     },
+     "src": "Mare su tela_9.JPG",
+     "aspect_ratio": 0.6667,
+     "lqip": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAACwAwCdASoNABQAPu1iqU2ppaOiMAgBMB2JZwDCgCP7cSE+zRTgAAD+1yyrTBR6pGnnOa+KCPQA+Q/Nl71D/pljUolPYNRtJZmW0gqlj0N24egZJS3A8HCFeDG5nfuE77GAbDTV6XIn8ojfNuBYIAAA",
+     "colore_dominante": "#161f21"
+    }
+   }
+  },
+  {
+   "id": "52",
+   "slug": "foto-52",
+   "aspect_ratio": 0.6667,
+   "orientamento": "verticale",
+   "tela_px": [
+    3026,
+    4539
+   ],
+   "colore_dominante": "#9ca2a9",
+   "palette": [
+    {
+     "hex": "#9ca2a9",
+     "share": 0.287
+    },
+    {
+     "hex": "#b62d25",
+     "share": 0.278
+    },
+    {
+     "hex": "#a1b5c7",
+     "share": 0.204
+    },
+    {
+     "hex": "#b4c3cf",
+     "share": 0.12
+    },
+    {
+     "hex": "#987b7a",
+     "share": 0.112
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAAAQBACdASoNABQAPu1iqU2ppaQiMAgBMB2JbACdACHpaODisMRNLBZGIAD8vXfQC/y4CxQ/I1n980m8KuiCGx/3dRzl99n3u7FNM7pU3P6/59VKEToAAA==",
+   "alt": "Furgoncino rosso fermo sul molo, il porto sullo sfondo",
+   "immagini": {
+    "tela": {
+     "w": 2400,
+     "h": 3600,
+     "avif": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/52/foto-52_tela_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/52/foto-52_tela_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/52/foto-52_tela_1600.avif"
+      },
+      {
+       "w": 2400,
+       "h": 3600,
+       "file": "opere/52/foto-52_tela_2400.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/52/foto-52_tela_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/52/foto-52_tela_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/52/foto-52_tela_1600.webp"
+      },
+      {
+       "w": 2400,
+       "h": 3600,
+       "file": "opere/52/foto-52_tela_2400.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1600,
+      "h": 2400,
+      "file": "opere/52/foto-52_tela_1600.jpg"
+     },
+     "src": "Chiringuito.jpg",
+     "aspect_ratio": 0.6667
+    },
+    "miniatura": {
+     "w": 800,
+     "h": 1000,
+     "avif": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/52/foto-52_miniatura_400.avif"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/52/foto-52_miniatura_800.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/52/foto-52_miniatura_400.webp"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/52/foto-52_miniatura_800.webp"
+      }
+     ],
+     "jpg": {
+      "w": 800,
+      "h": 1000,
+      "file": "opere/52/foto-52_miniatura_800.jpg"
+     }
+    }
+   }
+  },
+  {
+   "id": "53",
+   "slug": "foto-53",
+   "aspect_ratio": 0.6668,
+   "orientamento": "verticale",
+   "tela_px": [
+    1797,
+    2695
+   ],
+   "colore_dominante": "#000000",
+   "palette": [
+    {
+     "hex": "#000000",
+     "share": 0.657
+    },
+    {
+     "hex": "#101010",
+     "share": 0.097
+    },
+    {
+     "hex": "#323232",
+     "share": 0.09
+    },
+    {
+     "hex": "#888888",
+     "share": 0.081
+    },
+    {
+     "hex": "#030303",
+     "share": 0.075
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAACwAwCdASoNABQAPu1iqk4ppaQiMAgBMB2JaQAAXlOQRjjaC4ZkAAD+9CpHjP0dtqFntE4Tf99bwZtu9KDXhkCSUOvybR5RuBxrSSsQHFzgQm2cbjaXh/nEDtqqfTwAAAA=",
+   "alt": "Mano con un sigaro acceso su fondo nero, in bianco e nero",
+   "immagini": {
+    "tela": {
+     "w": 1797,
+     "h": 2695,
+     "avif": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/53/foto-53_tela_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/53/foto-53_tela_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/53/foto-53_tela_1600.avif"
+      },
+      {
+       "w": 1797,
+       "h": 2695,
+       "file": "opere/53/foto-53_tela_1797.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/53/foto-53_tela_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/53/foto-53_tela_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/53/foto-53_tela_1600.webp"
+      },
+      {
+       "w": 1797,
+       "h": 2695,
+       "file": "opere/53/foto-53_tela_1797.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1600,
+      "h": 2400,
+      "file": "opere/53/foto-53_tela_1600.jpg"
+     },
+     "src": "Cigar_2.jpg",
+     "aspect_ratio": 0.6668
+    },
+    "miniatura": {
+     "w": 800,
+     "h": 1000,
+     "avif": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/53/foto-53_miniatura_400.avif"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/53/foto-53_miniatura_800.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/53/foto-53_miniatura_400.webp"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/53/foto-53_miniatura_800.webp"
+      }
+     ],
+     "jpg": {
+      "w": 800,
+      "h": 1000,
+      "file": "opere/53/foto-53_miniatura_800.jpg"
+     }
+    }
+   }
+  },
+  {
+   "id": "54",
+   "slug": "foto-54",
+   "aspect_ratio": 0.6668,
+   "orientamento": "verticale",
+   "tela_px": [
+    1819,
+    2728
+   ],
+   "colore_dominante": "#a39d97",
+   "palette": [
+    {
+     "hex": "#a39d97",
+     "share": 0.28
+    },
+    {
+     "hex": "#b2b8bc",
+     "share": 0.275
+    },
+    {
+     "hex": "#7b7066",
+     "share": 0.188
+    },
+    {
+     "hex": "#d8cfc1",
+     "share": 0.156
+    },
+    {
+     "hex": "#babebf",
+     "share": 0.101
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAADQAwCdASoNABQAPu1mq04ppaQiMAgBMB2JYwC7ACHdBebTgxAZ3YAA/q5v2+3dbGRGeeSoGPQg2l7ZJGvdWEIoMLqJ/IonBtczDZFyNgbR72MZA31g+aJr3omuDEAA",
+   "alt": "Donna bionda di spalle appoggiata alla ringhiera del molo",
+   "immagini": {
+    "tela": {
+     "w": 1819,
+     "h": 2728,
+     "avif": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/54/foto-54_tela_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/54/foto-54_tela_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/54/foto-54_tela_1600.avif"
+      },
+      {
+       "w": 1819,
+       "h": 2728,
+       "file": "opere/54/foto-54_tela_1819.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/54/foto-54_tela_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/54/foto-54_tela_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/54/foto-54_tela_1600.webp"
+      },
+      {
+       "w": 1819,
+       "h": 2728,
+       "file": "opere/54/foto-54_tela_1819.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1600,
+      "h": 2400,
+      "file": "opere/54/foto-54_tela_1600.jpg"
+     },
+     "src": "Donna sul molo__.JPG",
+     "aspect_ratio": 0.6668
+    },
+    "miniatura": {
+     "w": 800,
+     "h": 1000,
+     "avif": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/54/foto-54_miniatura_400.avif"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/54/foto-54_miniatura_800.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/54/foto-54_miniatura_400.webp"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/54/foto-54_miniatura_800.webp"
+      }
+     ],
+     "jpg": {
+      "w": 800,
+      "h": 1000,
+      "file": "opere/54/foto-54_miniatura_800.jpg"
+     }
+    }
+   }
+  },
+  {
+   "id": "55",
+   "slug": "foto-55",
+   "aspect_ratio": 0.6667,
+   "orientamento": "verticale",
+   "tela_px": [
+    2382,
+    3573
+   ],
+   "colore_dominante": "#6f5f4b",
+   "palette": [
+    {
+     "hex": "#6f5f4b",
+     "share": 0.252
+    },
+    {
+     "hex": "#605447",
+     "share": 0.213
+    },
+    {
+     "hex": "#0f0a06",
+     "share": 0.211
+    },
+    {
+     "hex": "#786549",
+     "share": 0.199
+    },
+    {
+     "hex": "#836b4b",
+     "share": 0.125
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADQAwCdASoNABQAPu1kqU2ppaOiMAgBMB2JYwCdMoADQxPdW5RxAxAA/p14f+/D8CrnfGz5YxnHBqwvD8dRO3MRTT0P/ZOUqfeCZf2HvoMtPW6m/Rlc+xemPAA=",
+   "alt": "Sagoma di un pescatore con la canna nella luce del tramonto",
+   "immagini": {
+    "tela": {
+     "w": 2382,
+     "h": 3573,
+     "avif": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/55/foto-55_tela_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/55/foto-55_tela_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/55/foto-55_tela_1600.avif"
+      },
+      {
+       "w": 2382,
+       "h": 3573,
+       "file": "opere/55/foto-55_tela_2382.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/55/foto-55_tela_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1440,
+       "file": "opere/55/foto-55_tela_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2400,
+       "file": "opere/55/foto-55_tela_1600.webp"
+      },
+      {
+       "w": 2382,
+       "h": 3573,
+       "file": "opere/55/foto-55_tela_2382.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1600,
+      "h": 2400,
+      "file": "opere/55/foto-55_tela_1600.jpg"
+     },
+     "src": "Sagome_9.JPG",
+     "aspect_ratio": 0.6667
+    },
+    "miniatura": {
+     "w": 800,
+     "h": 1000,
+     "avif": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/55/foto-55_miniatura_400.avif"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/55/foto-55_miniatura_800.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/55/foto-55_miniatura_400.webp"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/55/foto-55_miniatura_800.webp"
+      }
+     ],
+     "jpg": {
+      "w": 800,
+      "h": 1000,
+      "file": "opere/55/foto-55_miniatura_800.jpg"
+     }
+    }
+   }
+  },
+  {
+   "id": "56",
+   "slug": "foto-56",
+   "aspect_ratio": 0.75,
+   "orientamento": "verticale",
+   "tela_px": [
+    1071,
+    1428
+   ],
+   "colore_dominante": "#050508",
+   "palette": [
+    {
+     "hex": "#050508",
+     "share": 0.322
+    },
+    {
+     "hex": "#33495e",
+     "share": 0.238
+    },
+    {
+     "hex": "#162431",
+     "share": 0.158
+    },
+    {
+     "hex": "#c3d4dc",
+     "share": 0.146
+    },
+    {
+     "hex": "#6b8397",
+     "share": 0.136
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAAAwBACdASoPABQAPu1iqU2ppaOiMAgBMB2JYwC7ACFsNRECkjQu1d++kAAA/ulOeGTue06JYF5aWNSQLiePAeocm915kNpNZoBI8GmYBEfe4D46uZbPRvnvFVS+r4i7S31+Mo9EMBzskb58WBT1OpZt7RBeJNAA",
+   "alt": "Ragazzo in controluce seduto su un muretto davanti al mare",
+   "immagini": {
+    "tela": {
+     "w": 1071,
+     "h": 1428,
+     "avif": [
+      {
+       "w": 480,
+       "h": 640,
+       "file": "opere/56/foto-56_tela_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1280,
+       "file": "opere/56/foto-56_tela_960.avif"
+      },
+      {
+       "w": 1071,
+       "h": 1428,
+       "file": "opere/56/foto-56_tela_1071.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 640,
+       "file": "opere/56/foto-56_tela_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1280,
+       "file": "opere/56/foto-56_tela_960.webp"
+      },
+      {
+       "w": 1071,
+       "h": 1428,
+       "file": "opere/56/foto-56_tela_1071.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1071,
+      "h": 1428,
+      "file": "opere/56/foto-56_tela_1071.jpg"
+     },
+     "src": "Salto_5.JPG",
+     "aspect_ratio": 0.75
+    },
+    "miniatura": {
+     "w": 800,
+     "h": 999,
+     "avif": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/56/foto-56_miniatura_400.avif"
+      },
+      {
+       "w": 800,
+       "h": 999,
+       "file": "opere/56/foto-56_miniatura_800.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/56/foto-56_miniatura_400.webp"
+      },
+      {
+       "w": 800,
+       "h": 999,
+       "file": "opere/56/foto-56_miniatura_800.webp"
+      }
+     ],
+     "jpg": {
+      "w": 800,
+      "h": 999,
+      "file": "opere/56/foto-56_miniatura_800.jpg"
+     }
+    }
+   }
+  },
+  {
+   "id": "57",
+   "slug": "foto-57",
+   "aspect_ratio": 1.5,
+   "orientamento": "orizzontale",
+   "tela_px": [
+    5253,
+    3502
+   ],
+   "colore_dominante": "#6c6c6c",
+   "palette": [
+    {
+     "hex": "#6c6c6c",
+     "share": 0.326
+    },
+    {
+     "hex": "#747474",
+     "share": 0.232
+    },
+    {
+     "hex": "#7a7a7a",
+     "share": 0.193
+    },
+    {
+     "hex": "#515151",
+     "share": 0.156
+    },
+    {
+     "hex": "#878787",
+     "share": 0.094
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAABwAwCdASoUAA0APu1kq04ppaQiMAgBMB2JaQAAMsR7Pt69qQAA+ePtrdW4rcbEc+Lyi72ocbbAMt5N0cfxgYc+tgwtECUfVB/IAAAA",
+   "alt": "Ragazzi che saltano da un parapetto sul mare, in bianco e nero",
+   "immagini": {
+    "tela": {
+     "w": 2400,
+     "h": 1600,
+     "avif": [
+      {
+       "w": 480,
+       "h": 320,
+       "file": "opere/57/foto-57_tela_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 640,
+       "file": "opere/57/foto-57_tela_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 1067,
+       "file": "opere/57/foto-57_tela_1600.avif"
+      },
+      {
+       "w": 2400,
+       "h": 1600,
+       "file": "opere/57/foto-57_tela_2400.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 320,
+       "file": "opere/57/foto-57_tela_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 640,
+       "file": "opere/57/foto-57_tela_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 1067,
+       "file": "opere/57/foto-57_tela_1600.webp"
+      },
+      {
+       "w": 2400,
+       "h": 1600,
+       "file": "opere/57/foto-57_tela_2400.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1600,
+      "h": 1067,
+      "file": "opere/57/foto-57_tela_1600.jpg"
+     },
+     "src": "Uominidimare_11.jpg",
+     "aspect_ratio": 1.5
+    },
+    "miniatura": {
+     "w": 800,
+     "h": 1000,
+     "avif": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/57/foto-57_miniatura_400.avif"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/57/foto-57_miniatura_800.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/57/foto-57_miniatura_400.webp"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/57/foto-57_miniatura_800.webp"
+      }
+     ],
+     "jpg": {
+      "w": 800,
+      "h": 1000,
+      "file": "opere/57/foto-57_miniatura_800.jpg"
+     }
+    }
+   }
+  },
+  {
+   "id": "58",
+   "slug": "foto-58",
+   "aspect_ratio": 0.75,
+   "orientamento": "verticale",
+   "tela_px": [
+    3360,
+    4480
+   ],
+   "colore_dominante": "#7b7c60",
+   "palette": [
+    {
+     "hex": "#7b7c60",
+     "share": 0.272
+    },
+    {
+     "hex": "#939b7f",
+     "share": 0.234
+    },
+    {
+     "hex": "#37362a",
+     "share": 0.21
+    },
+    {
+     "hex": "#b7b5a7",
+     "share": 0.142
+    },
+    {
+     "hex": "#9db296",
+     "share": 0.142
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRpYAAABXRUJQVlA4IIoAAADwAwCdASoPABQAPu1iqU2ppaOiMAgBMB2JYwC7ACBQuRAPrPyNVpYAAP2aDgIV4j8d/DCtHtn1EYBeZHvVaEBDqu998hwI5fmwdmVGfZKzL61QjjGScTtOOZuEpF4jmE7DERnG87EHS8/Y5q+XqHOiIfyux801gftle6ahecIxgrSgPkawQ3dLAAA=",
+   "alt": "Pescatore seduto che ripara le reti verdi stese a terra",
+   "immagini": {
+    "tela": {
+     "w": 2400,
+     "h": 3200,
+     "avif": [
+      {
+       "w": 480,
+       "h": 640,
+       "file": "opere/58/foto-58_tela_480.avif"
+      },
+      {
+       "w": 960,
+       "h": 1280,
+       "file": "opere/58/foto-58_tela_960.avif"
+      },
+      {
+       "w": 1600,
+       "h": 2133,
+       "file": "opere/58/foto-58_tela_1600.avif"
+      },
+      {
+       "w": 2400,
+       "h": 3200,
+       "file": "opere/58/foto-58_tela_2400.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 640,
+       "file": "opere/58/foto-58_tela_480.webp"
+      },
+      {
+       "w": 960,
+       "h": 1280,
+       "file": "opere/58/foto-58_tela_960.webp"
+      },
+      {
+       "w": 1600,
+       "h": 2133,
+       "file": "opere/58/foto-58_tela_1600.webp"
+      },
+      {
+       "w": 2400,
+       "h": 3200,
+       "file": "opere/58/foto-58_tela_2400.webp"
+      }
+     ],
+     "jpg": {
+      "w": 1600,
+      "h": 2133,
+      "file": "opere/58/foto-58_tela_1600.jpg"
+     },
+     "src": "Viscere del pescatore 4-3.jpg",
+     "aspect_ratio": 0.75
+    },
+    "miniatura": {
+     "w": 800,
+     "h": 1000,
+     "avif": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/58/foto-58_miniatura_400.avif"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/58/foto-58_miniatura_800.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 500,
+       "file": "opere/58/foto-58_miniatura_400.webp"
+      },
+      {
+       "w": 800,
+       "h": 1000,
+       "file": "opere/58/foto-58_miniatura_800.webp"
+      }
+     ],
+     "jpg": {
+      "w": 800,
+      "h": 1000,
+      "file": "opere/58/foto-58_miniatura_800.jpg"
+     }
+    }
+   }
+  },
+  {
+   "id": "59",
+   "slug": "foto-59",
+   "aspect_ratio": 0.6671,
+   "orientamento": "verticale",
+   "tela_px": [
+    563,
+    844
+   ],
+   "colore_dominante": "#948781",
+   "palette": [
+    {
+     "hex": "#948781",
+     "share": 0.3
+    },
+    {
+     "hex": "#8a7c76",
+     "share": 0.264
+    },
+    {
+     "hex": "#795d53",
+     "share": 0.186
+    },
+    {
+     "hex": "#a4a5aa",
+     "share": 0.131
+    },
+    {
+     "hex": "#959292",
+     "share": 0.119
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAABQAwCdASoNABQAPu1iqU2ppaQiMAgBMB2JYwCdADKQ1WjJ4AD7Nhh2jUXAVq6FKZCqxvWWWP4JT0OwBUFOs8wkRfe4AA==",
+   "alt": "Donna con maschera dorata, perle e rossetto rosso",
+   "immagini": {
+    "tela": {
+     "w": 563,
+     "h": 844,
+     "avif": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/59/foto-59_tela_480.avif"
+      },
+      {
+       "w": 563,
+       "h": 844,
+       "file": "opere/59/foto-59_tela_563.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 720,
+       "file": "opere/59/foto-59_tela_480.webp"
+      },
+      {
+       "w": 563,
+       "h": 844,
+       "file": "opere/59/foto-59_tela_563.webp"
+      }
+     ],
+     "jpg": {
+      "w": 563,
+      "h": 844,
+      "file": "opere/59/foto-59_tela_563.jpg"
+     },
+     "src": "Maschera.JPG",
+     "aspect_ratio": 0.6671
+    },
+    "miniatura": {
+     "w": 563,
+     "h": 703,
+     "avif": [
+      {
+       "w": 400,
+       "h": 499,
+       "file": "opere/59/foto-59_miniatura_400.avif"
+      },
+      {
+       "w": 563,
+       "h": 703,
+       "file": "opere/59/foto-59_miniatura_563.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 499,
+       "file": "opere/59/foto-59_miniatura_400.webp"
+      },
+      {
+       "w": 563,
+       "h": 703,
+       "file": "opere/59/foto-59_miniatura_563.webp"
+      }
+     ],
+     "jpg": {
+      "w": 563,
+      "h": 703,
+      "file": "opere/59/foto-59_miniatura_563.jpg"
+     }
+    }
+   }
+  },
+  {
+   "id": "60",
+   "slug": "foto-60",
+   "aspect_ratio": 0.75,
+   "orientamento": "verticale",
+   "tela_px": [
+    519,
+    692
+   ],
+   "colore_dominante": "#191516",
+   "palette": [
+    {
+     "hex": "#191516",
+     "share": 0.311
+    },
+    {
+     "hex": "#a89782",
+     "share": 0.235
+    },
+    {
+     "hex": "#d2c0a3",
+     "share": 0.184
+    },
+    {
+     "hex": "#56443c",
+     "share": 0.164
+    },
+    {
+     "hex": "#e8e1d4",
+     "share": 0.106
+    }
+   ],
+   "lqip": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAACwAwCdASoPABQAPu1iqU2ppaOiMAgBMB2JQBOgAxpdPlU/KZb4gAD+2tas43xwtv9EmbsyNIlti1LDyK67BdYDjLbPujIqle3P5fxfPLYaqHZS/6R/fdWN01a5rU/y9kfpaD7km9cI53zrqo5OJTwXACNQuiAlvza/oAAA",
+   "alt": "Uomo con colbacco e occhiali che fuma una sigaretta",
+   "immagini": {
+    "tela": {
+     "w": 519,
+     "h": 692,
+     "avif": [
+      {
+       "w": 480,
+       "h": 640,
+       "file": "opere/60/foto-60_tela_480.avif"
+      },
+      {
+       "w": 519,
+       "h": 692,
+       "file": "opere/60/foto-60_tela_519.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 480,
+       "h": 640,
+       "file": "opere/60/foto-60_tela_480.webp"
+      },
+      {
+       "w": 519,
+       "h": 692,
+       "file": "opere/60/foto-60_tela_519.webp"
+      }
+     ],
+     "jpg": {
+      "w": 519,
+      "h": 692,
+      "file": "opere/60/foto-60_tela_519.jpg"
+     },
+     "src": "Uomo con la sigaretta.jpg",
+     "aspect_ratio": 0.75
+    },
+    "miniatura": {
+     "w": 519,
+     "h": 648,
+     "avif": [
+      {
+       "w": 400,
+       "h": 499,
+       "file": "opere/60/foto-60_miniatura_400.avif"
+      },
+      {
+       "w": 519,
+       "h": 648,
+       "file": "opere/60/foto-60_miniatura_519.avif"
+      }
+     ],
+     "webp": [
+      {
+       "w": 400,
+       "h": 499,
+       "file": "opere/60/foto-60_miniatura_400.webp"
+      },
+      {
+       "w": 519,
+       "h": 648,
+       "file": "opere/60/foto-60_miniatura_519.webp"
+      }
+     ],
+     "jpg": {
+      "w": 519,
+      "h": 648,
+      "file": "opere/60/foto-60_miniatura_519.jpg"
+     }
+    }
+   }
   }
  ],
  "foto": [

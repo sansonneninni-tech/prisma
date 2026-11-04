@@ -97,6 +97,10 @@ export function buildArtworks(rawArtworks: unknown, rawManifest: unknown): Artwo
     slugs.add(slug);
 
     const images: Artwork['images'] = {};
+    const series = Object.entries(m.immagini)
+      .filter(([k]) => /^serie-\d+$/.test(k))
+      .sort(([a], [b]) => Number(a.slice(6)) - Number(b.slice(6)))
+      .map(([, img]) => toImageAsset(img));
     for (const [key, img] of Object.entries(m.immagini)) {
       const variant = VARIANT_MAP[key];
       if (!variant) continue;
@@ -133,6 +137,7 @@ export function buildArtworks(rawArtworks: unknown, rawManifest: unknown): Artwo
       palette: m.palette,
       printable: m.aspect_ratio <= MAX_PRINTABLE_ASPECT_RATIO,
       images,
+      series,
       sourceUrl: raw.fonte_url ?? null,
       quality: {
         confidence: raw.confidenza_abbinamento ? CONFIDENCE_MAP[raw.confidenza_abbinamento] : 'low',

@@ -80,3 +80,53 @@ html:has(.si--sempre) { scroll-padding-top: calc(var(--header-h) + env(safe-area
 .is__due { display: grid; gap: var(--s-4); margin: 0; font-size: var(--t-cap); line-height: var(--lh-text); max-width: 30rem; }
 .is__due dt { font-weight: var(--w-strong); }
 .is__due dd { margin: 2px 0 0; color: var(--c-mute); }
+
+/* ---------- ritratto che si gira (04/11): davanti la foto, dietro chi sono in due colonne ---------- */
+.gira { perspective: 1800px; }
+.gira__in {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr); outline: none;
+  transform-style: preserve-3d; transition: transform 900ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  cursor: pointer; -webkit-tap-highlight-color: transparent;
+}
+.gira__faccia { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.gira__retro {
+  transform: rotateY(180deg);
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(14px, 3vw, 40px); align-content: end; align-items: start;
+  overflow: hidden;
+  padding: clamp(16px, 4vw, 48px);
+  /* il retro della stessa foto: buio caldo, i colori del ritratto appena sotto */
+  background: radial-gradient(120% 90% at 70% 20%, #5a2310 0%, #2a1209 45%, #120805 100%);
+  color: #f6efe8;
+}
+.gira__col { display: grid; align-content: end; gap: 6px; }
+.gira__nome { font-size: clamp(22px, 2.6vw, 40px); font-weight: 300; line-height: 1; letter-spacing: -0.02em; }
+.gira__nato { font-size: clamp(11px, 0.9vw, 13px); font-weight: 400; letter-spacing: 0.02em; color: rgb(246 239 232 / 0.6); font-variant-numeric: tabular-nums; }
+.gira__t { margin-top: clamp(4px, 1vw, 14px); font-size: clamp(12px, 1.05vw, 16px); font-weight: 250; line-height: 1.45; max-width: 28ch; }
+.gira__invito {
+  position: absolute; right: 12px; bottom: 12px; padding: 6px 10px;
+  font-size: 12px; font-weight: 400; line-height: 1; color: #fff; background: rgb(0 0 0 / 0.38);
+  border-radius: 999px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  transition: opacity 300ms;
+}
+.gira__mouse { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .gira__mouse { display: inline; }
+  .gira__tocco { display: none; }
+  .gira:hover .gira__in { transform: rotateY(180deg); }
+}
+.gira--girata .gira__in, .gira__in:focus-visible { transform: rotateY(180deg); }
+.gira__in:focus-visible { outline: 2px solid var(--c-ink, #000); outline-offset: 4px; }
+/* la faccia girata non prende il mouse né il tocco */
+.gira--girata .gira__fronte, .gira__in:focus-visible .gira__fronte { pointer-events: none; }
+@media (hover: hover) and (pointer: fine) { .gira:hover .gira__fronte { pointer-events: none; } }
+/* le misure del ritratto restano quelle di prima anche sul retro */
+.gira .gira__fronte .isa-picture { height: 100%; }
+@media (prefers-reduced-motion: reduce) {
+  .gira__in { transition: none; }
+}
+/* telefoni stretti (320–360): testo un filo più piccolo perché le due colonne stiano nella foto */
+@media (max-width: 360px) {
+  .gira__retro { gap: 12px; padding: 14px; }
+  .gira__nome { font-size: 20px; }
+  .gira__t { font-size: 11px; line-height: 1.4; }
+}
