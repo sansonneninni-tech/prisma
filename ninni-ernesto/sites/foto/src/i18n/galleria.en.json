@@ -231,8 +231,13 @@
       "invio": "Sending…",
       "demo": "Demo: no message is sent.",
       "nuova_scheda": "opens in a new tab",
-      "bio_ninni": "Flowers, bodies, full color. Looking for the light that makes ordinary things strange.",
-      "bio_ernesto": "His catalog is coming soon.",
+      "bio_ninni": "Director and artist. He builds every image like a scene: hard light, full colour, one detail out of place. Flowers and bodies turn just strange enough to make you look twice.",
+      "nato_ninni": "1995, Bisceglie",
+      "nato_ernesto": "1994, Bari",
+      "gira_mouse": "Hover to turn it over",
+      "gira_tocco": "Tap to turn it over",
+      "gira_aria": "Portrait of Ninni and Ernesto: turn it over to read who they are",
+      "bio_ernesto": "Videomaker and documentary photographer. He works where things actually happen, camera on his shoulder, staging nothing. His photographs come from there: the sea, faces, light as it is.",
       "prisma": "PRISMA, our film studio"
     },
     "info": {

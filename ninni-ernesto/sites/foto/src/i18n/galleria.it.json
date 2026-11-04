@@ -231,8 +231,13 @@
       "invio": "Invio…",
       "demo": "Demo: nessun messaggio viene inviato.",
       "nuova_scheda": "si apre in una nuova scheda",
-      "bio_ninni": "Fiori, corpi, colori pieni. Cerca la luce che rende strano quello che è normale.",
-      "bio_ernesto": "Il suo catalogo arriva presto.",
+      "bio_ninni": "Regista e artista. Costruisce ogni immagine come una scena: luce decisa, colore pieno, un dettaglio fuori posto. Fiori e corpi diventano strani quanto basta per guardarli due volte.",
+      "nato_ninni": "1995, Bisceglie",
+      "nato_ernesto": "1994, Bari",
+      "gira_mouse": "Passa sopra per girarla",
+      "gira_tocco": "Tocca per girarla",
+      "gira_aria": "Ritratto di Ninni ed Ernesto: giralo per leggere chi sono",
+      "bio_ernesto": "Videomaker e reportagista. Lavora dove le cose succedono, con la camera in spalla e senza mettere in scena niente. Le sue foto arrivano da lì: il mare, le facce, la luce com'è.",
       "prisma": "PRISMA, il nostro studio video"
     },
     "info": {
