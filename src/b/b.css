@@ -165,6 +165,8 @@ body.is-pl .pos { visibility: hidden; }
 .v { position: absolute; inset: 0; visibility: hidden; overflow: hidden; background: var(--bg); }
 .v.is-on, .v.is-in { visibility: visible; }
 .v.is-in { z-index: 5; }
+/* la pagina davanti resta sul suo strato: a fine passaggio non si ridipinge */
+.v.is-on, .v.is-in { will-change: transform; }
 
 /* 00 Home */
 .v--home { background: #111; }

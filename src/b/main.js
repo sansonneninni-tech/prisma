@@ -824,8 +824,9 @@ const kidsOf = (r) => [...r.querySelectorAll(KIDS)].filter(e => e.getClientRects
 let sysT = 0
 function pgEnter(i) {
   clearTimeout(sysT)
-  if (i === 2 && pgAt[2] === 1) { if (!sysSeen) { sysSeen = true; sysT = setTimeout(() => { if (cur === 2 && pgAt[2] === 1) sysPlay() }, ms(.45)) } }
-  else if (sysSeen) sysReset()
+  if (i === 2 && pgAt[2] === 1) { if (!sysSeen) { sysSeen = true; sysT = setTimeout(() => { if (cur === 2 && pgAt[2] === 1) sysPlay() }, ms(.06)) } }
+  /* l'azzeramento misura il prisma: si fa a pagina ferma, quando il browser è libero */
+  else if (sysSeen) { sysSeen = false; sysT = setTimeout(() => { if (!(cur === 2 && pgAt[2] === 1)) sysEmpty() }, 160) }
   pvSync()
 }
 let busy = false, lockUntil = 0
@@ -840,7 +841,8 @@ async function stepTo(i, k, dir) {
   b.scrollTop = dir > 0 ? 0 : b.scrollHeight
   if (document.activeElement && a.contains(document.activeElement)) document.activeElement.blur()
   b.classList.add('is-mv')
-  if (i === 2 && k === 1) pgEnter(i)
+  /* il racconto del sistema si ferma mentre la pagina scorre via (niente lavoro sotto l'animazione) */
+  if (i === 2 && k === 0) { sysTl?.pause(); sysLoop?.pause() }
   if (reduced) { a.classList.remove('is-cur'); b.classList.add('is-cur'); b.classList.remove('is-mv'); pgEnter(i); return }
   a.classList.add('is-mv')
   rise(kidsOf(b), { y: 26 * dir, at: .32, each: .03, dur: .75 })
@@ -848,7 +850,7 @@ async function stepTo(i, k, dir) {
   const [oa, ia] = await Promise.all([out, inn])
   a.classList.remove('is-cur', 'is-mv'); b.classList.add('is-cur'); b.classList.remove('is-mv')
   oa.cancel(); ia.cancel()
-  if (!(i === 2 && k === 1)) pgEnter(i)
+  pgEnter(i)
 }
 /* tra i capitoli: la tenda calda sale e copre (0,3 s), sotto cambia la pagina, poi si ritira verso l'alto.
    La tenda è ancorata in basso: scaleY + translateY fanno anche la ritirata dall'alto, tutto in un'animazione sola */
@@ -858,11 +860,16 @@ function chapter(i, dir, k) {
   const from = cur, a = views[from], b = views[i]
   cur = i
   if (PG[i] && split(i)) { pgAt[i] = k; PG[i].el.forEach((e, n) => e.classList.toggle('is-cur', n === k)) }
-  ui(i, reduced ? 0 : FL_IN)
+  if (reduced) ui(i)
   if (i !== 2) prismOff()
+  if (from === 2) { sysTl?.pause(); sysLoop?.pause() }
   if (document.activeElement && a.contains(document.activeElement)) document.activeElement.blur()
   const sc = pgEl(i) || $('.scrl', b); if (sc) sc.scrollTop = dir > 0 ? 0 : sc.scrollHeight
-  const done = () => { a.classList.remove('is-on'); b.classList.remove('is-in'); b.classList.add('is-on'); onEnter(i); pgEnter(i) }
+  const done = () => {
+    a.classList.remove('is-on'); b.classList.remove('is-in'); b.classList.add('is-on')
+    /* il lavoro della pagina nuova parte al fotogramma dopo, non nello stesso della fine animazione */
+    requestAnimationFrame(() => requestAnimationFrame(() => { if (cur === i) { onEnter(i); pgEnter(i) } }))
+  }
   if (reduced) { done(); return Promise.resolve() }
   b.classList.add('is-in')
   const o1 = FL_IN / FL, o2 = (FL_IN + FL_HOLD) / FL
@@ -873,6 +880,8 @@ function chapter(i, dir, k) {
     { transform: 'translateY(-100%) scaleY(0)', easing: P2 }, { offset: o1, transform: 'translateY(0%) scaleY(1)' },
     { offset: o2, transform: 'translateY(0%) scaleY(1)', easing: P2 }, { transform: 'translateY(0%) scaleY(0)' },
   ], { duration: FL })
+  /* la testata cambia colore quando la tenda copre davvero (tempo dell'animazione, non un timer) */
+  flash.animate([{ opacity: 1 }, { opacity: 1 }], { duration: FL_IN }).finished.then(() => { if (cur === i) ui(i) }).catch(() => {})
   /* sotto la tenda: la vecchia sparisce e la nuova c'è, nello stesso istante, senza aspettare il codice */
   const ao = a.animate([{ opacity: 1 }, { opacity: 0 }], { duration: FL_IN, easing: 'step-end', fill: 'forwards' })
   const bo = b.animate([{ opacity: 0 }, { opacity: 1 }], { duration: FL_IN, easing: 'step-end' })
@@ -985,7 +994,7 @@ addEventListener('hashchange', () => {
   const [h, id] = location.hash.slice(1).split('/')
   const i = HASH.indexOf(h)
   if (id && pl.hidden) { const w = all.find(x => x.id === id); if (w) { if (cur !== 1) nav.go(1); plOpen(w, listFor(), false) } return }
-  if (i >= 0 && pl.hidden) nav.go(i)
+  if (i >= 0 && pl.hidden && !csOpenNow() && i !== cur) nav.go(i)
 })
 
 views.forEach((v, k) => v.classList.toggle('is-on', k === cur))
