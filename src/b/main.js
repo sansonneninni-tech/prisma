@@ -824,7 +824,7 @@ const kidsOf = (r) => [...r.querySelectorAll(KIDS)].filter(e => e.getClientRects
 let sysT = 0
 function pgEnter(i) {
   clearTimeout(sysT)
-  if (i === 2 && pgAt[2] === 1) { if (!sysSeen) { sysSeen = true; sysT = setTimeout(() => { if (cur === 2 && pgAt[2] === 1) sysPlay() }, ms(.06)) } }
+  if (i === 2 && pgAt[2] === 1) { if (!sysSeen) { sysSeen = true; sysT = setTimeout(() => { if (cur === 2 && pgAt[2] === 1) sysPlay() }, ms(.22)) } }
   /* l'azzeramento misura il prisma: si fa a pagina ferma, quando il browser è libero */
   else if (sysSeen) { sysSeen = false; sysT = setTimeout(() => { if (!(cur === 2 && pgAt[2] === 1)) sysEmpty() }, 160) }
   pvSync()
