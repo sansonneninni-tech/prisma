@@ -2,7 +2,7 @@ import '@fontsource-variable/archivo/wdth.css'
 import './b.css'
 import { gsap } from 'gsap'
 import { LAVORI } from '../data.js'
-import { works, CATS, wireContacts, makeLang, wireForm, wheelGesture } from '../shared/works.js'
+import { works, CATS, wireContacts, makeLang, wireForm } from '../shared/works.js'
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
 const fine = matchMedia('(hover: hover) and (pointer: fine)').matches
@@ -829,10 +829,14 @@ function pgEnter(i) {
   else if (sysSeen) { sysSeen = false; sysT = setTimeout(() => { if (!(cur === 2 && pgAt[2] === 1)) sysEmpty() }, 160) }
   pvSync()
 }
-let busy = false, lockUntil = 0
+let busy = false, lockUntil = 0, queued = 0, runAt = 0
+/* un gesto nuovo che arriva mentre la pagina sta ancora arrivando non va perso: parte appena finisce */
 async function run(f) {
-  busy = true
-  try { await f() } finally { busy = false; lockUntil = performance.now() + 380 }
+  busy = true; runAt = performance.now()
+  try { await f() } finally {
+    busy = false; lockUntil = performance.now() + 60
+    flushSoon()
+  }
 }
 /* dentro la sezione: le due pagine scorrono insieme, come un foglio solo */
 async function stepTo(i, k, dir) {
@@ -896,8 +900,17 @@ function chapter(i, dir, k) {
   }
   return Promise.all([f, bm].map(x => x.finished.catch(() => {}))).then(() => { done(); ao.cancel(); bo.cancel(); bm.cancel(); f.cancel() })
 }
-function page(dir) {
-  if (busy || performance.now() < lockUntil) return false
+const DBG = location.search.includes('debug')
+let qT = 0
+function flushSoon() {
+  clearTimeout(qT)
+  if (!queued) return
+  qT = setTimeout(() => { if (busy) return; if (performance.now() < lockUntil) { flushSoon(); return } const d = queued; queued = 0; page(d, 'queue') }, Math.max(0, lockUntil - performance.now()) + 10)
+}
+function page(dir, src = '') {
+  if (DBG) (window.__pg ||= []).push([Math.round(performance.now()), dir, busy, Math.round(performance.now() - runAt), cur, src])
+  /* in coda solo verso la fine del passaggio: all'inizio è ancora lo stesso gesto */
+  if (busy || performance.now() < lockUntil) { if (free() && performance.now() - runAt > 250) { queued = dir; if (!busy) flushSoon() } return false }
   const k = split(cur) ? pgAt[cur] : 0
   if (k + dir >= 0 && k + dir < pgN(cur)) { run(() => stepTo(cur, k + dir, dir)); return true }
   const i = cur + dir
@@ -915,24 +928,41 @@ const nav = { go: goTo, get cur() { return cur } }
 const free = () => pl.hidden && !csOpenNow() && !document.querySelector('[data-load]')
 
 /* rotella e trackpad: l'inerzia non conta come gesto nuovo; se il gesto ha fatto scorrere un contenuto lungo, non cambia pagina */
-const wheelG = wheelGesture()
-let wAcc = 0
+/* Un gesto = una pagina. L'inerzia del trackpad (numeri che calano piano) appartiene al gesto che l'ha
+   lanciata; un colpo nuovo si riconosce anche dentro la coda d'inerzia, perché i numeri risalgono di scatto. */
+let wAcc = 0, wLast = 0, wMag = 0, wDir = 0, wSpent = false, wPeak = 0, wDecay = false, wFloor = Infinity
+function wheelFresh(mag, d) {
+  const now = performance.now(), gap = now - wLast
+  let fresh = gap > 170
+  if (!fresh && wSpent && wDir && d !== wDir && mag >= Math.max(8, wMag * 1.25)) fresh = true
+  if (!fresh && wSpent && d === wDir && wDecay && mag >= 8 && mag > wMag * 1.5 && mag >= wFloor * 2.4) fresh = true
+  wLast = now
+  if (fresh) { wSpent = false; wAcc = 0; wPeak = 0; wDecay = false; wFloor = Infinity }
+  if (wSpent) {
+    wPeak = Math.max(wPeak, mag)
+    if (mag < wPeak * .5) wDecay = true
+    if (wDecay) wFloor = Math.min(wFloor, mag)
+  }
+  wMag = mag; wDir = d
+  return fresh
+}
+function wheelSpend(mag) { wSpent = true; wPeak = mag; wDecay = false; wFloor = Infinity }
 addEventListener('wheel', (e) => {
-  if (wheelG.tick()) wAcc = 0
   if (!free() || e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return
   const dy = e.deltaY * (e.deltaMode === 1 ? 36 : e.deltaMode === 2 ? innerHeight : 1)
   if (Math.abs(dy) < 1) return
+  const mag = Math.abs(dy), d = Math.sign(dy)
+  wheelFresh(mag, d)
   const sc = scroller()
-  if (sc && !atEdge(sc, Math.sign(dy))) {
+  if (sc && !atEdge(sc, d)) {
     /* la rotella sopra la testata muove comunque il contenuto */
     if (!sc.contains(e.target)) { e.preventDefault(); sc.scrollBy({ top: dy }) }
-    wheelG.spend(); return
+    wheelSpend(mag); return
   }
   e.preventDefault()
-  if (busy || performance.now() < lockUntil) { wheelG.spend(); wAcc = 0; return }
-  if (wheelG.spent) return
+  if (wSpent) return
   wAcc += dy
-  if (Math.abs(wAcc) > 40) { wheelG.spend(); page(Math.sign(wAcc)); wAcc = 0 }
+  if (Math.abs(wAcc) > 24) { wheelSpend(mag); page(Math.sign(wAcc), 'wheel'); wAcc = 0 }
 }, { passive: false })
 
 /* dito: la pagina non scorre mai da sola; il gesto verticale cambia pagina appena supera la soglia.
@@ -954,7 +984,7 @@ addEventListener('touchmove', (e) => {
   if (tch.axis === 'x') return
   if (tch.sc) return
   if (e.cancelable) e.preventDefault()
-  if (!tch.done && tch.axis === 'y' && Math.abs(dy) > TH()) { tch.done = true; page(Math.sign(dy)) }
+  if (!tch.done && tch.axis === 'y' && Math.abs(dy) > TH()) { tch.done = true; page(Math.sign(dy), 'move') }
 }, { passive: false })
 addEventListener('touchend', (e) => {
   const s = tch; tch = null
@@ -965,12 +995,12 @@ addEventListener('touchend', (e) => {
   const ok = Math.abs(dy) > Math.abs(dx) * 1.15 && (Math.abs(dy) > TH() * .8 || (Math.abs(dy) > 22 && dt < 260))
   if (!ok) return
   if (s.sc && (s.sc.scrollTop !== s.top || !atEdge(s.sc, dir))) return
-  page(dir)
+  page(dir, 'end')
 }, { passive: true })
 addEventListener('touchcancel', () => { tch = null }, { passive: true })
 
 addEventListener('keydown', (e) => {
-  if (!free() || e.metaKey || e.ctrlKey || e.altKey || e.target.closest?.('input,textarea,select')) return
+  if (!free() || e.repeat || e.metaKey || e.ctrlKey || e.altKey || e.target.closest?.('input,textarea,select')) return
   const k = e.key
   if (k === 'Home') { e.preventDefault(); goTo(0); return }
   if (k === 'End') { e.preventDefault(); goTo(views.length - 1, pgN(views.length - 1) - 1); return }
