@@ -28,7 +28,7 @@ const EN = {
   'f.ed': 'Editorial', 'f.ed.d': 'The brand story, from concept to colour.',
   'f.ed.1': 'One or more shoot days', 'f.ed.2': 'Direction, light and sound on set', 'f.ed.3': 'Edit, colour grading, sound design',
   'f.sys': 'Content system',
-  'ask': 'Ask', 'ex': 'Watch an example',
+  'ask': 'Ask', 'ex': 'Watch an example', 'pv.k': 'Example',
   'f.note': 'Prices on request: the quote follows the brief.',
   's.h': 'Two people,<br />from&nbsp;brief to export.', 's.alt': 'Ninni and Ernesto, PRISMA',
   's.team': 'Studio · Puglia', 's.ninni': 'Direction, edit, colour', 's.ernesto': 'Production and clients', 's.foto': 'Photography · Ninni &amp; Ernesto',
@@ -43,7 +43,7 @@ const EN = {
 const L = makeLang(EN)
 const IT_X = {
   'pp.play': 'Play', 's.ok': 'Ricevuto. Ti rispondiamo a breve.', 's.alt': 'Ninni ed Ernesto, PRISMA', 's.clients': 'Clienti', 's.err': 'Qualcosa non va. Scrivici su WhatsApp.', all: 'Tutti', 'w.one': 'lavoro', 'w.many': 'lavori',
-  'cs.resume': 'Riprendi', 'fa.client': 'Cliente', 'fa.fmt': 'Formato', 'fa.ratio': 'Proporzioni', 'fa.len': 'Durata', 'fa.where': 'Dove',
+  'pv.k': 'Esempio', 'cs.resume': 'Riprendi', 'fa.client': 'Cliente', 'fa.fmt': 'Formato', 'fa.ratio': 'Proporzioni', 'fa.len': 'Durata', 'fa.where': 'Dove',
 }
 const t = (k) => (L.get() === 'en' ? EN[k] : (IT_X[k] ?? L.t(k)))
 const tx = (o) => o[L.get()] ?? o.it
@@ -566,10 +566,56 @@ function acToggle(li, open) {
        Il blocco si apre, i suoi contenuti salgono di poco uno dopo l'altro */
     gsap.fromTo(b, { height: 0 }, { height: 'auto', duration: reduced ? 0 : .5, ease: 'power3.inOut', clearProps: 'height' })
     rise([...b.children], { y: 10, at: .12, each: .05, dur: .55 })
+    /* il video cambia a riga ferma: le due animazioni non si sovrappongono */
+    setTimeout(() => { if (li.classList.contains('is-open')) pvShow(li.dataset.fmt) }, ms(.5))
   } else {
     gsap.to(b, { height: 0, opacity: 0, duration: reduced ? 0 : .5, ease: 'power3.inOut', onComplete: () => { b.hidden = true; gsap.set(b, { clearProps: 'height,opacity' }) } })
   }
 }
+/* ---------- formati, schermi larghi: a destra gira l'esempio del formato aperto ----------
+   Un video per formato, creato solo quando serve; si alternano in dissolvenza (sul compositore)
+   e gira solo quello visibile, solo con la pagina Formati davanti. */
+const pv = $('[data-pv]'), pvSt = $('[data-pv-st]', pv), pvCap = $('[data-pv-cap]', pv)
+const pvWide = matchMedia('(min-width: 1101px) and (min-height: 600px)')
+const pvV = {}
+let pvCur = null, pvVis = false
+const pvWork = (fmt) => { const li = $(`.ac__i[data-fmt="${fmt}"]`, ac); return { li, w: all.find(x => x.id === $('[data-ex]', li).dataset.ex) } }
+function pvFit() {
+  const W = pvSt.clientWidth, H = pvSt.clientHeight
+  Object.values(pvV).forEach(v => { const [a, b] = v.dataset.r.split('/').map(Number), r = a / b, w = Math.min(W, H * r); v.style.width = `${Math.round(w)}px`; v.style.height = `${Math.round(w / r)}px` })
+  if (pvCur && pvV[pvCur]) pvSt.style.setProperty('--pvh', pvV[pvCur].style.height)
+}
+new ResizeObserver(pvFit).observe(pvSt)
+function pvCapPaint() {
+  if (!pvCur) return
+  const { li, w } = pvWork(pvCur)
+  pvCap.innerHTML = `<b>${t('pv.k')}</b> ${w.title} · ${$('.ac__t', li).textContent} · ${w.ratio.replace('/', ':')}`
+}
+function pvShow(fmt) {
+  if (!pvWide.matches || !fmt || fmt === pvCur) return
+  const { w } = pvWork(fmt)
+  if (!w) return
+  if (!pvV[fmt]) {
+    const v = document.createElement('video')
+    v.className = 'fp__v'; v.setAttribute('aria-hidden', 'true'); v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'auto'
+    v.poster = w.poster; v.dataset.r = w.ratio || '9/16'; v.src = w.hover || w.preview || w.src
+    pvSt.append(v); pvV[fmt] = v; pvFit()
+  }
+  pvCur = fmt
+  Object.entries(pvV).forEach(([k, v]) => v.classList.toggle('is-on', k === fmt))
+  pvSt.style.setProperty('--pvh', pvV[fmt].style.height)
+  pv.dataset.ex = w.id
+  pvCapPaint(); pvSync()
+}
+function pvSync() {
+  const live = pvVis && cur === 2 && !document.body.classList.contains('is-pl') && !document.body.classList.contains('is-cs') && !reduced
+  Object.entries(pvV).forEach(([k, v]) => { if (live && k === pvCur) v.play().catch(() => {}); else if (!v.paused) setTimeout(() => { if (k !== pvCur || !live) v.pause() }, k === pvCur ? 0 : 650) })
+}
+new IntersectionObserver(([e]) => { pvVis = e.isIntersecting; pvSync() }, { threshold: .25 }).observe(pv)
+new MutationObserver(pvSync).observe(document.body, { attributes: true, attributeFilter: ['class'] })
+pvSt.addEventListener('click', () => { const b = $(`[data-ex="${pv.dataset.ex}"]`, ac); if (b) b.click() })
+pvWide.addEventListener('change', () => { if (cur === 2) pvShow(($('.ac__i.is-open', ac) || $('.ac__i', ac)).dataset.fmt) })
+
 ac.addEventListener('click', (e) => {
   const h = e.target.closest('.ac__h')
   if (h) { const li = h.closest('.ac__i'); const open = !li.classList.contains('is-open'); $$('.ac__i', ac).forEach(x => acToggle(x, x === li && open)); return }
@@ -753,6 +799,8 @@ function onEnter(i) {
   if (i === 0) playReel(); else rv.pause()
   if (i !== 1) showBg(null)
   if (i === 2) prismOn(); else prismOff()
+  if (i === 2) pvShow(($('.ac__i.is-open', ac) || $('.ac__i', ac)).dataset.fmt)
+  pvSync()
 }
 function transition(i, dir, from) {
   const a = views[from], b = views[i]
@@ -828,7 +876,7 @@ views.forEach((v, k) => v.classList.toggle('is-on', k === cur))
 ui(cur)
 buildBand(); buildIdx()
 document.addEventListener('langchange', () => {
-  buildBand(); applyFilter(); paint()
+  buildBand(); applyFilter(); paint(); pvCapPaint()
   if (!pl.hidden) { plShow(); $('.pl__back [data-i18n]', pl).textContent = pl.dataset.back || t('pl.back') }
   if (csOpenNow()) edSync()
 })

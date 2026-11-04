@@ -812,3 +812,18 @@ body.is-cs .hd__nav a:hover::after, body.is-pl .hd__nav a:hover::after { transfo
 /* fuoco da tastiera sulle righe dei formati: niente riquadro, il titolo si sottolinea col filo caldo */
 .ac__h:focus-visible { outline: none; }
 .ac__h:focus-visible .ac__t { text-decoration: underline; text-decoration-thickness: 1.2px; text-underline-offset: .16em; text-decoration-color: var(--c2); }
+
+/* formati su schermi larghi: due colonne, a destra l'esempio del formato aperto */
+.fp__pv { display: none; margin: 0; }
+@media (min-width: 1101px) and (min-height: 600px) {
+  .fp--one { grid-template-columns: minmax(0, 860px) minmax(0, 1fr); column-gap: clamp(48px, 6vw, 120px); align-items: center; }
+  .fp--one .one { width: 100%; }
+  .fp__pv { display: grid; gap: 14px; width: 100%; max-width: 460px; justify-self: center; align-self: center; }
+  .fp__st { position: relative; height: min(62vh, 620px); cursor: pointer; }
+  .fp__v { position: absolute; inset: 0; margin: auto; object-fit: cover; background: #0B0A0A; opacity: 0; transition: opacity .7s var(--out); box-shadow: 0 30px 60px -30px rgba(40, 10, 0, .35); }
+  .fp__v.is-on { opacity: 1; }
+  /* la didascalia sta sempre 14px sotto il video, anche quando cambia forma */
+  .fp__cap { position: absolute; left: 0; right: 0; top: 50%; z-index: 1; transform: translateY(calc(var(--pvh, 0px) / 2 + 14px)); transition: transform .7s var(--out); display: flex; align-items: center; gap: 7px; justify-content: center; color: var(--ink-2); font-size: var(--t-xs); letter-spacing: .07em; text-transform: uppercase; font-variation-settings: 'wdth' 112; font-weight: 500; line-height: 1.35; }
+  .fp__cap::before { content: ''; width: 9px; height: 8px; background: var(--tri) center / contain no-repeat; }
+  .fp__cap b { font-weight: 500; color: var(--ink); }
+}
