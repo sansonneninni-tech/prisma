@@ -2,14 +2,31 @@ import '@fontsource-variable/archivo/wdth.css'
 import './b.css'
 import { gsap } from 'gsap'
 import { LAVORI } from '../data.js'
-import { works, CATS, wireContacts, makeLang, wireForm, viewNav, wheelGesture } from '../shared/works.js'
+import { works, CATS, wireContacts, makeLang, wireForm, wheelGesture } from '../shared/works.js'
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
 const fine = matchMedia('(hover: hover) and (pointer: fine)').matches
 const $ = (s, r = document) => r.querySelector(s)
 const $$ = (s, r = document) => [...r.querySelectorAll(s)]
-const setH = () => document.documentElement.style.setProperty('--app-h', `${innerHeight}px`)
-setH(); addEventListener('resize', setH)
+/* altezza vera della finestra visibile (le barre del browser sul telefono la cambiano) e posizione della
+   zona visibile nel documento: il body si mette lì. Con la tastiera aperta non si tocca nulla. */
+const coarse = matchMedia('(pointer: coarse)').matches
+function syncVH() {
+  const f = document.activeElement
+  if (coarse && f && f.matches?.('input, textarea, select')) return
+  const vv = window.visualViewport, st = document.documentElement.style
+  const h = Math.round(vv ? vv.height * (vv.scale || 1) : innerHeight)
+  const top = Math.max(0, Math.round((vv && vv.pageTop) || scrollY || 0))
+  if (h > 0) st.setProperty('--app-h', `${h}px`)
+  st.setProperty('--app-page-top', `${top}px`)
+}
+document.documentElement.style.setProperty('--app-slack', coarse ? '240px' : '0px')
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
+scrollTo(0, 0); syncVH()
+addEventListener('resize', syncVH); addEventListener('orientationchange', () => setTimeout(syncVH, 250))
+addEventListener('scroll', syncVH, { passive: true })
+visualViewport?.addEventListener('resize', syncVH); visualViewport?.addEventListener('scroll', syncVH)
+addEventListener('focusout', () => setTimeout(syncVH, 320))
 
 const EN = {
   'nav.1': 'Work', 'nav.2': 'Formats', 'nav.3': 'Studio',
@@ -532,8 +549,8 @@ $$('[data-cs-close]', cs).forEach(b => b.addEventListener('click', () => csClose
 $('[data-cs-sys]', cs).addEventListener('click', (e) => {
   e.preventDefault()
   csClose(false, () => {
-    nav.go(2)
-    setTimeout(() => { fmtSc.scrollTo({ top: sysEl.offsetTop, behavior: reduced ? 'auto' : 'smooth' }); const h = $('#t-sys'); h.tabIndex = -1; h.focus({ preventScroll: true }) }, reduced ? 0 : 1000)
+    nav.go(2, 1)
+    setTimeout(() => { const h = $('#t-sys'); h.tabIndex = -1; h.focus({ preventScroll: true }) }, reduced ? 0 : 1000)
   })
 })
 addEventListener('popstate', () => {
@@ -578,7 +595,8 @@ function acToggle(li, open) {
 const pv = $('[data-pv]'), pvSt = $('[data-pv-st]', pv), pvCap = $('[data-pv-cap]', pv)
 const pvWide = matchMedia('(min-width: 1101px) and (min-height: 600px)')
 const pvV = {}
-let pvCur = null, pvVis = false
+let pvCur = null
+const pgAt = { 2: 0, 3: 0 }
 const pvWork = (fmt) => { const li = $(`.ac__i[data-fmt="${fmt}"]`, ac); return { li, w: all.find(x => x.id === $('[data-ex]', li).dataset.ex) } }
 function pvFit() {
   const W = pvSt.clientWidth, H = pvSt.clientHeight
@@ -608,10 +626,9 @@ function pvShow(fmt) {
   pvCapPaint(); pvSync()
 }
 function pvSync() {
-  const live = pvVis && cur === 2 && !document.body.classList.contains('is-pl') && !document.body.classList.contains('is-cs') && !reduced
+  const live = cur === 2 && pgAt[2] === 0 && !document.body.classList.contains('is-pl') && !document.body.classList.contains('is-cs') && !reduced
   Object.entries(pvV).forEach(([k, v]) => { if (live && k === pvCur) v.play().catch(() => {}); else if (!v.paused) setTimeout(() => { if (k !== pvCur || !live) v.pause() }, k === pvCur ? 0 : 650) })
 }
-new IntersectionObserver(([e]) => { pvVis = e.isIntersecting; pvSync() }, { threshold: .25 }).observe(pv)
 new MutationObserver(pvSync).observe(document.body, { attributes: true, attributeFilter: ['class'] })
 pvSt.addEventListener('click', () => { const b = $(`[data-ex="${pv.dataset.ex}"]`, ac); if (b) b.click() })
 pvWide.addEventListener('change', () => { if (cur === 2) pvShow(($('.ac__i.is-open', ac) || $('.ac__i', ac)).dataset.fmt) })
@@ -746,37 +763,8 @@ function sysReset() { sysEmpty(); sysSeen = false }
 let edgeLoop = null
 function prismOn() { if (reduced) return; edgeLoop ??= gsap.timeline({ repeat: -1, yoyo: true }).to('#prEdge', { attr: { x1: 198, x2: 362 }, duration: 3.4, ease: 'sine.inOut' }, 0).to('.pr__warm', { scale: 1.06, transformOrigin: '50% 50%', duration: 3.4, ease: 'sine.inOut' }, 0); edgeLoop.play(); sysLoop?.play() }
 function prismOff() { edgeLoop?.pause(); sysLoop?.pause() }
-new IntersectionObserver((es) => {
-  es.forEach(e => {
-    const half = e.isIntersecting && (e.intersectionRatio > .5 || e.intersectionRect.height > e.rootBounds.height * .5)
-    if (half && !sysSeen) { sysSeen = true; sysPlay() }
-    /* a filo del bordo conta come uscito, così tornando si rivede */
-    if (e.intersectionRatio < .04 && sysSeen) sysReset()
-  })
-}, { root: fmtSc, threshold: [0, .04, .25, .5, .55, .75, 1] }).observe(sysEl)
-$('[data-to-sys]').addEventListener('click', (e) => { e.preventDefault(); fmtSc.scrollTo({ top: sysEl.offsetTop, behavior: reduced ? 'auto' : 'smooth' }) })
 sysEmpty()
 
-/* sul desktop i due pannelli dei Formati vanno a pagine: un gesto, un pannello */
-const fmtPaged = () => getComputedStyle(fmtSc).scrollSnapType.includes('mandatory') || sysEl.offsetHeight <= fmtSc.clientHeight + 2
-let fmtLock = 0
-function fmtPage(dir) {
-  if (!fmtPaged()) return false
-  const top = fmtSc.scrollTop, s = sysEl.offsetTop
-  if (dir > 0 && top < s - 4) { fmtSc.scrollTo({ top: s, behavior: reduced ? 'auto' : 'smooth' }); return true }
-  if (dir < 0 && top > 4 && top <= s + 4) { fmtSc.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' }); return true }
-  return false
-}
-const wheelG = wheelGesture()
-fmtSc.addEventListener('wheel', (e) => {
-  wheelG.tick()
-  if (Math.abs(e.deltaY) < 2 || !fmtPaged()) return
-  const now = performance.now()
-  if (now < fmtLock || wheelG.spent) { e.preventDefault(); e.stopPropagation(); wheelG.spend(); return }
-  if (fmtPage(Math.sign(e.deltaY))) { e.preventDefault(); e.stopPropagation(); wheelG.spend(); fmtLock = now + 950 }
-}, { passive: false })
-
-/* ---------- schermate ---------- */
 const views = $$('[data-v]')
 const HASH = ['home', 'lavori', 'formati', 'studio']
 const pos = $('[data-pos]')
@@ -802,66 +790,194 @@ function onEnter(i) {
   if (i === 2) pvShow(($('.ac__i.is-open', ac) || $('.ac__i', ac)).dataset.fmt)
   pvSync()
 }
-function transition(i, dir, from) {
-  const a = views[from], b = views[i]
-  cur = i
-  ui(i, ms(.95 * (dir > 0 ? .68 : .2)))
-  if (i !== 2) prismOff()
-  b.classList.add('is-in')
-  const sc = $('.scrl', b); if (sc) sc.scrollTop = 0
-  const kids = [...b.querySelectorAll('.band, .sys > *, .one > *, .st > *')]
-  edge(b, dir)
-  const at = .95 * .45
-  rise(dir > 0 ? kids : kids.reverse(), { y: 24 * dir, at, each: .025 })
-  /* indice dei lavori: le voci salgono una per una, la dissolvenza è una sola su tutto l'indice */
-  const ix = $('.idx', b)
-  if (ix && !reduced) {
-    const li = $$('li', ix)
-    rise(dir > 0 ? li : li.reverse(), { y: 24 * dir, at, each: .025, fade: false })
-    ix.animate([{ opacity: 0 }, {}], { duration: ms(.7), delay: ms(at), easing: EOUT, fill: 'backwards' })
-  }
-  const out = slide(a, 0, -28 * dir, .95)
-  return slide(b, 100 * dir, 0, .95).then(async (inA) => {
-    const outA = await out
-    a.classList.remove('is-on'); b.classList.remove('is-in'); b.classList.add('is-on'); edge(b, 0)
-    inA.cancel(); outA.cancel()
-    onEnter(i)
+/* ---------- pagine: un gesto (rotella, dito, tasto) = una pagina ----------
+   Tra un capitolo e l'altro passa il lampo caldo; dentro una sezione (Formati, Studio sul telefono)
+   la pagina scorre via pulita, senza lampo. Tutto sul compositore. */
+const flash = $('.flash')
+const stMQ = matchMedia('(max-width: 1024px) and (orientation: portrait), (orientation: landscape) and (max-height: 520px)')
+const PG = {
+  2: { box: fmtSc, el: [$('.fp--one', fmtSc), sysEl], on: () => true },
+  3: { box: $('.st', views[3]), el: [$('.st__about', views[3]), $('.st__ct', views[3])], on: () => stMQ.matches },
+}
+const split = (i) => !!PG[i] && PG[i].on()
+const pgN = (i) => (split(i) ? PG[i].el.length : 1)
+const pgEl = (i = cur) => (split(i) ? PG[i].el[pgAt[i]] : null)
+function pgLayout() {
+  Object.entries(PG).forEach(([i, p]) => {
+    const on = p.on()
+    if (!on) pgAt[i] = 0
+    p.box.classList.toggle('is-split', on)
+    p.el.forEach((e, k) => { e.classList.toggle('pg', on); e.classList.toggle('is-cur', on && k === pgAt[i]); e.classList.remove('is-mv') })
   })
 }
-
-/* le schermate che scorrono dentro (telefono, tablet) cambiano pagina solo dal bordo */
-let touchTop = null
-addEventListener('touchstart', () => { const sc = $('.v.is-on .scrl'); touchTop = sc ? sc.scrollTop : null }, { passive: true })
-function canNav(e) {
-  if (!pl.hidden || csOpenNow() || document.querySelector('[data-load]')) return false
-  const sc = $('.v.is-on .scrl')
-  if (!sc || sc.scrollHeight <= sc.clientHeight + 2) return true
-  const atTop = sc.scrollTop <= 1, atEnd = sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 2
-  if (e.type === 'wheel') {
-    const edge = e.deltaY > 0 ? atEnd : atTop
-    /* la rotella sopra l'intestazione muove comunque la schermata */
-    if (!edge && !sc.contains(e.target) && Math.abs(e.deltaY) >= 2) {
-      const now = performance.now()
-      if (sc === fmtSc && fmtPaged()) { if (now >= fmtLock && !wheelG.spent && fmtPage(Math.sign(e.deltaY))) fmtLock = now + 950; wheelG.spend() }
-      else sc.scrollBy({ top: e.deltaY })
-    }
-    return edge
+pgLayout()
+stMQ.addEventListener('change', () => { if (!busy) pgLayout() })
+/* la parte che scorre davvero, se il contenuto non sta in una schermata (schermi molto bassi, una riga aperta) */
+function scroller(i = cur) {
+  const e = pgEl(i) || $('.scrl', views[i])
+  return e && e.scrollHeight > e.clientHeight + 2 ? e : null
+}
+const atEdge = (sc, dir) => (dir > 0 ? sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 2 : sc.scrollTop <= 1)
+const KIDS = '.band, .one > *, .fp__pv, .sys__txt > *, .pr, .st__img, .st__txt > *, .st__ct > *'
+const kidsOf = (r) => [...r.querySelectorAll(KIDS)].filter(e => e.getClientRects().length)
+/* il sistema racconta i passaggi quando la sua pagina è davanti; uscendo si azzera, così tornando si rivede */
+let sysT = 0
+function pgEnter(i) {
+  clearTimeout(sysT)
+  if (i === 2 && pgAt[2] === 1) { if (!sysSeen) { sysSeen = true; sysT = setTimeout(() => { if (cur === 2 && pgAt[2] === 1) sysPlay() }, ms(.45)) } }
+  else if (sysSeen) sysReset()
+  pvSync()
+}
+let busy = false, lockUntil = 0
+async function run(f) {
+  busy = true
+  try { await f() } finally { busy = false; lockUntil = performance.now() + 380 }
+}
+/* dentro la sezione: le due pagine scorrono insieme, come un foglio solo */
+async function stepTo(i, k, dir) {
+  const p = PG[i], a = p.el[pgAt[i]], b = p.el[k]
+  pgAt[i] = k
+  b.scrollTop = dir > 0 ? 0 : b.scrollHeight
+  if (document.activeElement && a.contains(document.activeElement)) document.activeElement.blur()
+  b.classList.add('is-mv')
+  if (i === 2 && k === 1) pgEnter(i)
+  if (reduced) { a.classList.remove('is-cur'); b.classList.add('is-cur'); b.classList.remove('is-mv'); pgEnter(i); return }
+  a.classList.add('is-mv')
+  rise(kidsOf(b), { y: 26 * dir, at: .32, each: .03, dur: .75 })
+  const out = slide(a, 0, -100 * dir, .9), inn = slide(b, 100 * dir, 0, .9)
+  const [oa, ia] = await Promise.all([out, inn])
+  a.classList.remove('is-cur', 'is-mv'); b.classList.add('is-cur'); b.classList.remove('is-mv')
+  oa.cancel(); ia.cancel()
+  if (!(i === 2 && k === 1)) pgEnter(i)
+}
+/* tra i capitoli: la tenda calda sale e copre (0,3 s), sotto cambia la pagina, poi si ritira verso l'alto.
+   La tenda è ancorata in basso: scaleY + translateY fanno anche la ritirata dall'alto, tutto in un'animazione sola */
+const FL_IN = 300, FL_HOLD = 20, FL_OUT = 420, FL = FL_IN + FL_HOLD + FL_OUT
+const P2 = 'cubic-bezier(.45, 0, .55, 1)', P3 = 'cubic-bezier(.215, .61, .355, 1)'
+function chapter(i, dir, k) {
+  const from = cur, a = views[from], b = views[i]
+  cur = i
+  if (PG[i] && split(i)) { pgAt[i] = k; PG[i].el.forEach((e, n) => e.classList.toggle('is-cur', n === k)) }
+  ui(i, reduced ? 0 : FL_IN)
+  if (i !== 2) prismOff()
+  if (document.activeElement && a.contains(document.activeElement)) document.activeElement.blur()
+  const sc = pgEl(i) || $('.scrl', b); if (sc) sc.scrollTop = dir > 0 ? 0 : sc.scrollHeight
+  const done = () => { a.classList.remove('is-on'); b.classList.remove('is-in'); b.classList.add('is-on'); onEnter(i); pgEnter(i) }
+  if (reduced) { done(); return Promise.resolve() }
+  b.classList.add('is-in')
+  const o1 = FL_IN / FL, o2 = (FL_IN + FL_HOLD) / FL
+  const f = flash.animate(dir > 0 ? [
+    { transform: 'translateY(0%) scaleY(0)', easing: P2 }, { offset: o1, transform: 'translateY(0%) scaleY(1)' },
+    { offset: o2, transform: 'translateY(0%) scaleY(1)', easing: P2 }, { transform: 'translateY(-100%) scaleY(0)' },
+  ] : [
+    { transform: 'translateY(-100%) scaleY(0)', easing: P2 }, { offset: o1, transform: 'translateY(0%) scaleY(1)' },
+    { offset: o2, transform: 'translateY(0%) scaleY(1)', easing: P2 }, { transform: 'translateY(0%) scaleY(0)' },
+  ], { duration: FL })
+  /* sotto la tenda: la vecchia sparisce e la nuova c'è, nello stesso istante, senza aspettare il codice */
+  const ao = a.animate([{ opacity: 1 }, { opacity: 0 }], { duration: FL_IN, easing: 'step-end', fill: 'forwards' })
+  const bo = b.animate([{ opacity: 0 }, { opacity: 1 }], { duration: FL_IN, easing: 'step-end' })
+  const bm = b.animate([{ transform: `translate3d(0, ${3 * dir}%, 0)` }, { transform: 'none' }], { duration: 580, delay: FL_IN, easing: P3, fill: 'backwards' })
+  const at = FL_IN / 1000 + .02
+  const ix = $('.idx', b)
+  rise(dir > 0 ? kidsOf(b.querySelector('.pg.is-cur') || b) : kidsOf(b.querySelector('.pg.is-cur') || b).reverse(), { y: 22 * dir, at, each: .025, dur: .75 })
+  if (ix) {
+    const li = $$('li', ix)
+    rise(dir > 0 ? li : li.reverse(), { y: 22 * dir, at, each: .022, fade: false, dur: .75 })
+    if (!reduced) ix.animate([{ opacity: 0 }, {}], { duration: ms(.6), delay: ms(at), easing: EOUT, fill: 'backwards' })
   }
-  if (e.type === 'touchend') return touchTop === sc.scrollTop && (atTop || atEnd)
-  if (e.type === 'keydown') {
-    if (e.target.closest?.('input,textarea,select') || (e.key === ' ' && e.target.closest?.('button,a'))) return true
-    const dir = ['ArrowDown', 'PageDown', ' '].includes(e.key) ? 1 : ['ArrowUp', 'PageUp'].includes(e.key) ? -1 : 0
-    if (!dir) return true
-    if (sc === fmtSc && fmtPage(dir)) { e.preventDefault(); return false }
-    if (dir > 0 ? !atEnd : !atTop) { e.preventDefault(); sc.scrollBy({ top: dir * sc.clientHeight * .8, behavior: reduced ? 'auto' : 'smooth' }); return false }
-  }
+  return Promise.all([f, bm].map(x => x.finished.catch(() => {}))).then(() => { done(); ao.cancel(); bo.cancel(); bm.cancel(); f.cancel() })
+}
+function page(dir) {
+  if (busy || performance.now() < lockUntil) return false
+  const k = split(cur) ? pgAt[cur] : 0
+  if (k + dir >= 0 && k + dir < pgN(cur)) { run(() => stepTo(cur, k + dir, dir)); return true }
+  const i = cur + dir
+  if (i < 0 || i >= views.length) return false
+  run(() => chapter(i, dir, dir > 0 ? 0 : pgN(i) - 1))
   return true
 }
-const nav = viewNav(views.length, transition, { start: cur, canNav, gesture: wheelG })
+function goTo(i, k = 0) {
+  if (busy) return
+  i = Math.max(0, Math.min(views.length - 1, i)); k = Math.min(k, pgN(i) - 1)
+  if (i === cur) { if (split(i) && k !== pgAt[i]) run(() => stepTo(i, k, k > pgAt[i] ? 1 : -1)); return }
+  run(() => chapter(i, i > cur ? 1 : -1, k))
+}
+const nav = { go: goTo, get cur() { return cur } }
+const free = () => pl.hidden && !csOpenNow() && !document.querySelector('[data-load]')
+
+/* rotella e trackpad: l'inerzia non conta come gesto nuovo; se il gesto ha fatto scorrere un contenuto lungo, non cambia pagina */
+const wheelG = wheelGesture()
+let wAcc = 0
+addEventListener('wheel', (e) => {
+  if (wheelG.tick()) wAcc = 0
+  if (!free() || e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return
+  const dy = e.deltaY * (e.deltaMode === 1 ? 36 : e.deltaMode === 2 ? innerHeight : 1)
+  if (Math.abs(dy) < 1) return
+  const sc = scroller()
+  if (sc && !atEdge(sc, Math.sign(dy))) {
+    /* la rotella sopra la testata muove comunque il contenuto */
+    if (!sc.contains(e.target)) { e.preventDefault(); sc.scrollBy({ top: dy }) }
+    wheelG.spend(); return
+  }
+  e.preventDefault()
+  if (busy || performance.now() < lockUntil) { wheelG.spend(); wAcc = 0; return }
+  if (wheelG.spent) return
+  wAcc += dy
+  if (Math.abs(wAcc) > 40) { wheelG.spend(); page(Math.sign(wAcc)); wAcc = 0 }
+}, { passive: false })
+
+/* dito: la pagina non scorre mai da sola; il gesto verticale cambia pagina appena supera la soglia.
+   Solo un contenuto più lungo della schermata scorre col dito, e cambia pagina dal suo bordo. */
+let tch = null
+addEventListener('touchstart', (e) => {
+  tch = null
+  /* con la tastiera aperta il dito fa quello che fa sempre; sopra un campo chiuso il gesto cambia pagina come altrove */
+  if (e.touches.length !== 1 || !free() || document.activeElement?.matches?.('input, textarea, select')) return
+  const t = e.touches[0], sc = scroller()
+  tch = { x: t.clientX, y: t.clientY, t: performance.now(), sc: sc && sc.contains(e.target) ? sc : null, top: sc ? sc.scrollTop : 0, axis: '', done: false }
+}, { passive: true })
+const TH = () => Math.max(42, innerHeight * .06)
+addEventListener('touchmove', (e) => {
+  if (!tch) return
+  if (e.touches.length !== 1) { tch = null; return }
+  const t = e.touches[0], dx = t.clientX - tch.x, dy = tch.y - t.clientY
+  if (!tch.axis && Math.hypot(dx, dy) > 6) tch.axis = Math.abs(dy) >= Math.abs(dx) ? 'y' : 'x'
+  if (tch.axis === 'x') return
+  if (tch.sc) return
+  if (e.cancelable) e.preventDefault()
+  if (!tch.done && tch.axis === 'y' && Math.abs(dy) > TH()) { tch.done = true; page(Math.sign(dy)) }
+}, { passive: false })
+addEventListener('touchend', (e) => {
+  const s = tch; tch = null
+  if (!s || s.done || s.axis === 'x' || !e.changedTouches.length) return
+  const t = e.changedTouches[0], dx = t.clientX - s.x, dy = s.y - t.clientY, dt = performance.now() - s.t
+  const dir = Math.sign(dy)
+  /* un colpetto veloce vale come gesto anche se corto */
+  const ok = Math.abs(dy) > Math.abs(dx) * 1.15 && (Math.abs(dy) > TH() * .8 || (Math.abs(dy) > 22 && dt < 260))
+  if (!ok) return
+  if (s.sc && (s.sc.scrollTop !== s.top || !atEdge(s.sc, dir))) return
+  page(dir)
+}, { passive: true })
+addEventListener('touchcancel', () => { tch = null }, { passive: true })
+
+addEventListener('keydown', (e) => {
+  if (!free() || e.metaKey || e.ctrlKey || e.altKey || e.target.closest?.('input,textarea,select')) return
+  const k = e.key
+  if (k === 'Home') { e.preventDefault(); goTo(0); return }
+  if (k === 'End') { e.preventDefault(); goTo(views.length - 1, pgN(views.length - 1) - 1); return }
+  const dir = ['ArrowDown', 'PageDown'].includes(k) || (k === ' ' && !e.target.closest?.('button,a')) ? 1 : ['ArrowUp', 'PageUp'].includes(k) ? -1 : 0
+  if (!dir) return
+  e.preventDefault()
+  const sc = scroller()
+  if (sc && !atEdge(sc, dir)) { sc.scrollBy({ top: dir * sc.clientHeight * .8, behavior: reduced ? 'auto' : 'smooth' }); return }
+  page(dir)
+})
+$('[data-to-sys]').addEventListener('click', (e) => { e.preventDefault(); goTo(2, 1) })
 $$('[data-go]').forEach(a => a.addEventListener('click', (e) => {
   e.preventDefault()
   if (a.dataset.ask) { const r = $(`[data-ask-chips] input[value="${a.dataset.ask}"]`); if (r) r.checked = true }
-  const go = () => nav.go(+a.dataset.go)
+  /* "Chiedi" porta dritto al modulo */
+  const go = () => nav.go(+a.dataset.go, a.dataset.ask ? 9 : 0)
   if (!pl.hidden) { plClose(); setTimeout(() => { if (csOpenNow()) csClose(false, go); else go() }, reduced ? 0 : 750) } else if (csOpenNow()) csClose(false, go); else go()
 }))
 addEventListener('hashchange', () => {

@@ -1,6 +1,6 @@
 /* Studio micro: stesso linguaggio del sito (fondo chiaro, filo sottile, etichette tecniche) */
 .se {
-  position: fixed; inset: 0; z-index: 55; height: var(--app-h); background: var(--bg); color: var(--ink);
+  position: absolute; inset: 0; z-index: 55; height: var(--app-h); background: var(--bg); color: var(--ink);
   display: grid; grid-template-rows: auto minmax(0, 1fr); grid-template-columns: minmax(0, 1fr);
 }
 .se[hidden] { display: none; }

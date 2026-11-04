@@ -34,9 +34,14 @@
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 *, *::before, *::after { box-sizing: border-box; }
-html, body { height: 100%; }
+/* Telefoni: l'altezza vera della finestra la misura main.js (--app-h). Niente position:fixed
+   (Chrome su iPhone lo disegna sotto la barra degli indirizzi): il body è alto quanto la finestra
+   visibile e tutto ciò che è a schermo intero è assoluto dentro di lui. Il documento resta un po'
+   più alto (--app-slack), altrimenti Chrome iOS lo sposta sotto la barra; lo scorrimento è comunque bloccato. */
+html { height: calc(var(--app-h) + var(--app-slack, 0px)); overflow: hidden; overscroll-behavior: none; }
 body {
-  margin: 0; overflow: hidden; overscroll-behavior: none;
+  position: absolute; top: var(--app-page-top, 0px); left: 0; width: 100%; height: var(--app-h);
+  margin: 0; overflow: hidden; overscroll-behavior: none; touch-action: pan-x pinch-zoom;
   background: var(--bg); color: var(--ink);
   font: 400 var(--t-s)/1.4 var(--f); font-variation-settings: 'wdth' 100;
   -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
@@ -70,7 +75,7 @@ ul, ol { list-style: none; }
 .btn--light:hover { background: var(--c3); }
 
 /* ============ Apertura: il prisma che rifrange ============ */
-.load { --s: clamp(96px, 13vw, 150px); position: fixed; inset: 0; z-index: 60; background: var(--bg); display: grid; place-items: center; overflow: hidden; }
+.load { --s: clamp(96px, 13vw, 150px); position: absolute; inset: 0; z-index: 60; background: var(--bg); display: grid; place-items: center; overflow: hidden; }
 .load__rays {
   position: absolute; left: 50%; top: 50%; width: calc(var(--s) * 16.67); height: calc(var(--s) * 6.67);
   transform: translate(-50%, -50%); pointer-events: none;
@@ -108,7 +113,7 @@ ul, ol { list-style: none; }
 
 /* ============ Logo ============ */
 .lg {
-  position: fixed; z-index: 45; left: calc(var(--pad) + var(--sal)); top: 9px; width: var(--lgw); color: var(--ink);
+  position: absolute; z-index: 45; left: calc(var(--pad) + var(--sal)); top: 9px; width: var(--lgw); color: var(--ink);
   transform-origin: 0 0; transform: scale(var(--lgk, .4));
   transition: transform .9s var(--ease), color .45s;
 }
@@ -122,7 +127,7 @@ body.is-pl .lg use { fill: url(#wmGrad); }
 
 /* ============ Testata ============ */
 .hd {
-  position: fixed; inset: 0 0 auto; height: var(--hd); z-index: 40; padding: 0 calc(var(--pad) + var(--sar)) 0 calc(var(--pad) + var(--sal));
+  position: absolute; inset: 0 0 auto; height: var(--hd); z-index: 40; padding: 0 calc(var(--pad) + var(--sar)) 0 calc(var(--pad) + var(--sal));
   display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; color: var(--ink); transition: color .45s;
   pointer-events: none;
 }
@@ -135,16 +140,28 @@ body.is-pl .lg use { fill: url(#wmGrad); }
   transform: scaleX(0); transform-origin: 100% 0; transition: transform .45s var(--out);
 }
 .hd__nav a:hover::after, .hd__nav a.is-on::after { transform: scaleX(1); transform-origin: 0 0; }
-.hd__lang { grid-column: 3; justify-self: end; display: flex; gap: 12px; }
+.hd__lang { grid-column: 3; justify-self: end; display: flex; gap: 12px; white-space: nowrap; flex-wrap: nowrap; }
 .hd__lang button[aria-pressed="false"] { opacity: .62; }
 .hd__lang button:hover { opacity: 1; }
-.pos { position: fixed; left: calc(var(--pad) + var(--sal)); bottom: calc(var(--pad) + var(--sab)); z-index: 40; color: var(--ink); transition: color .45s; }
+.pos { position: absolute; left: calc(var(--pad) + var(--sal)); bottom: calc(var(--pad) + var(--sab)); z-index: 40; color: var(--ink); transition: color .45s; }
 body.at-0 .hd, body.at-0 .pos, body.is-hov .hd, body.is-hov .pos { color: #fff; }
 body.is-pl .hd { color: var(--ink); }
 body.is-pl .pos { visibility: hidden; }
 
 /* ============ Schermate ============ */
-.vw { position: fixed; inset: 0; height: var(--app-h); overflow: hidden; }
+.vw { position: absolute; inset: 0; overflow: hidden; }
+/* il lampo tra i capitoli: una tenda calda che sale e scopre la pagina nuova */
+.flash {
+  position: absolute; inset: 0; z-index: 38; pointer-events: none; transform: scaleY(0); transform-origin: 50% 100%;
+  background-color: var(--bg);
+  background-image: linear-gradient(180deg, rgba(239, 237, 233, .96), rgba(198, 60, 17, .82) 45%, rgba(240, 120, 18, .72) 55%, rgba(239, 237, 233, .97));
+}
+/* pagine dentro una sezione (Formati, Studio sul telefono): una alla volta, un gesto per pagina */
+.is-split { overflow: hidden !important; scroll-snap-type: none !important; }
+.is-split > .pg { position: absolute; inset: 0; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; visibility: hidden; }
+.is-split > .pg::-webkit-scrollbar { display: none; }
+/* visibile solo dentro la schermata davanti (visibility: visible sui figli vincerebbe sul genitore nascosto) */
+:is(.v.is-on, .v.is-in) .is-split > :is(.pg.is-cur, .pg.is-mv) { visibility: visible; }
 .v { position: absolute; inset: 0; visibility: hidden; overflow: hidden; background: var(--bg); }
 .v.is-on, .v.is-in { visibility: visible; }
 .v.is-in { z-index: 5; }
@@ -243,7 +260,7 @@ body.is-pl .pos { visibility: hidden; }
 /* 2 · sistema contenuti */
 .fp--sys {
   display: grid; grid-template-columns: minmax(280px, .78fr) minmax(0, 1.5fr); gap: clamp(28px, 4.5vw, 80px);
-  align-items: center; align-content: center;
+  align-items: center; align-content: safe center;
 }
 .sys__txt { display: grid; gap: clamp(10px, 1.7vh, 16px); align-content: center; min-width: 0; }
 .sys__k { display: flex; align-items: center; gap: 8px; color: var(--ink-2); }
@@ -402,7 +419,7 @@ body.is-pl .pos { visibility: hidden; }
 
 /* ============ Scheda del lavoro (lettore integrato) ============ */
 .pl {
-  position: fixed; inset: 0; z-index: 35; background: var(--bg); color: var(--ink);
+  position: absolute; inset: 0; z-index: 35; background: var(--bg); color: var(--ink);
   padding: var(--hd) calc(var(--pad) + var(--sar)) calc(var(--pad) + var(--sab)) calc(var(--pad) + var(--sal));
   display: grid; grid-template-columns: minmax(0, 1fr) clamp(250px, 24vw, 340px); grid-template-rows: auto minmax(0, 1fr); column-gap: clamp(20px, 3vw, 48px);
   height: var(--app-h);
@@ -438,7 +455,7 @@ body.is-pl .pos { visibility: hidden; }
 
 /* ============ Caso Isabella (dentro il sito) ============ */
 .cs {
-  position: fixed; inset: 0; z-index: 34; background: var(--bg); color: var(--ink); height: var(--app-h);
+  position: absolute; inset: 0; z-index: 34; background: var(--bg); color: var(--ink); height: var(--app-h);
   padding: var(--hd) calc(var(--pad) + var(--sar)) calc(var(--pad) + var(--sab)) calc(var(--pad) + var(--sal));
   display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); column-gap: clamp(24px, 3.6vw, 64px);
 }
@@ -540,7 +557,7 @@ body.is-cs .hd { color: var(--ink); }
 /* ============ Tablet (verticale) ============ */
 @media (max-width: 1024px) and (orientation: portrait) {
   .fmt { scroll-snap-type: y proximity; }
-  .fp--sys { display: flex; flex-direction: column; justify-content: center; align-items: stretch; gap: clamp(10px, 1.7vh, 16px); }
+  .fp--sys { display: flex; flex-direction: column; justify-content: safe center; align-items: stretch; gap: clamp(10px, 1.7vh, 16px); }
   .sys__txt { display: contents; }
   .sys__k { order: 1; } .sys__h { order: 2; } .sys__lead { order: 3; }
   .pr { order: 4; max-width: none; width: 100%; align-self: stretch; margin: 6px 0 4px; }
@@ -566,7 +583,7 @@ body.is-cs .hd { color: var(--ink); }
 }
 @media (min-width: 701px) and (max-width: 1024px) and (orientation: portrait) {
   :root { --idx: 4.4vw; }
-  .fp--one { align-content: center; padding-top: 24px; }
+  .fp--one { align-content: safe center; padding-top: 24px; }
   .one__h { font-size: 56px; }
   .ac__t { font-size: 30px; }
 }
@@ -593,7 +610,7 @@ body.is-cs .hd { color: var(--ink); }
   .idx sup { font-size: 8.5px; }
   .v--st { padding: calc(var(--hd) + 18px) var(--pad) 0; align-items: start; }
   .fp { padding: 14px var(--pad) calc(48px + var(--sab)); }
-  .fp--one { place-items: start stretch; align-content: center; }
+  .fp--one { place-items: start stretch; align-content: safe center; }
   .fp__cue { left: auto; right: var(--pad); transform: none; }
   .pos { display: none; }
   .sys__txt { gap: 10px; }
@@ -826,4 +843,57 @@ body.is-cs .hd__nav a:hover::after, body.is-pl .hd__nav a:hover::after { transfo
   .fp__cap { position: absolute; left: 0; right: 0; top: 50%; z-index: 1; transform: translateY(calc(var(--pvh, 0px) / 2 + 14px)); transition: transform .7s var(--out); display: flex; align-items: center; gap: 7px; justify-content: center; color: var(--ink-2); font-size: var(--t-xs); letter-spacing: .07em; text-transform: uppercase; font-variation-settings: 'wdth' 112; font-weight: 500; line-height: 1.35; }
   .fp__cap::before { content: ''; width: 9px; height: 8px; background: var(--tri) center / contain no-repeat; }
   .fp__cap b { font-weight: 500; color: var(--ink); }
+}
+
+/* Studio in due pagine (tablet, telefono): prima voi due con la foto grande, poi contatti e modulo */
+.st.is-split { position: absolute; inset: 0; display: block; max-height: none; padding: 0; }
+.st.is-split > .pg {
+  display: flex; flex-direction: column; justify-content: safe center; gap: 22px;
+  padding: calc(var(--hd) + 18px) calc(var(--pad) + var(--sar)) calc(28px + var(--sab)) calc(var(--pad) + var(--sal));
+}
+.st.is-split .st__ft { position: static; transform: none; margin-top: 2px; }
+.st.is-split > .st__about { display: flex; flex-direction: column; gap: 18px; }
+.st.is-split .st__img { flex: 1 1 0; min-height: 200px; max-height: min(125vw, 640px); aspect-ratio: auto; align-self: stretch; }
+.st.is-split .st__img img { object-position: 50% 30%; }
+.st.is-split .st__txt { flex: 0 0 auto; }
+@media (min-width: 701px) and (orientation: portrait) {
+  .st.is-split > .st__about { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 36px); align-items: center; align-content: safe center; }
+  .st.is-split .st__img { flex: none; aspect-ratio: 4 / 5; max-height: none; min-height: 0; }
+  .st.is-split .st__txt { gap: 18px; }
+  .st.is-split > .st__ct { max-width: 640px; }
+}
+@media (orientation: landscape) and (max-height: 520px) {
+  .st.is-split > .pg { padding-top: calc(var(--hd) + 10px); padding-bottom: calc(16px + var(--sab)); }
+  .st.is-split > .st__about { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 24px; align-items: center; }
+  .st.is-split .st__img { flex: none; height: calc(var(--app-h) - var(--hd) - 34px - var(--sab)); max-height: none; min-height: 0; aspect-ratio: 4 / 5; }
+  .st.is-split .st__txt { gap: 10px; }
+}
+@media (max-width: 700px) and (orientation: portrait) {
+  .st.is-split > .st__ct { gap: 16px; }
+  .st.is-split .st__f { gap: 14px; margin-top: 0; }
+  .st.is-split .st__fld { gap: 2px; }
+  .st.is-split .st__chips, .st.is-split .st__quick { gap: 6px; }
+}
+@media (max-width: 700px) and (orientation: portrait) and (max-height: 600px) {
+  .st.is-split > .pg { padding-top: calc(var(--hd) + 10px); padding-bottom: calc(14px + var(--sab)); gap: 12px; }
+  .st.is-split .st__f { gap: 10px; }
+  .st.is-split .st__q, .st.is-split .st__chips span, .st.is-split .st__f .btn { min-height: 38px; }
+  .st.is-split .st__fld textarea { height: 2.8em; }
+  .st.is-split .st__ppl li { padding: 5px 0; }
+}
+/* telefono basso: il sistema e la prima pagina dello Studio stanno ognuno in una schermata */
+@media (max-width: 700px) and (orientation: portrait) and (max-height: 680px) {
+  .fp--sys { padding-bottom: calc(18px + var(--sab)); gap: 6px; }
+  .stp__i { padding: 3px 0; }
+  .st.is-split .st__img { min-height: 150px; }
+  .st.is-split > .pg { padding-top: calc(var(--hd) + 10px); padding-bottom: calc(14px + var(--sab)); gap: 12px; }
+  .st.is-split .st__f { gap: 10px; }
+  .st.is-split .st__fld textarea { height: 2.8em; }
+  .st.is-split .st__ppl li { padding: 5px 0; }
+}
+@media (max-width: 700px) and (orientation: portrait) and (max-height: 600px) {
+  .pr { padding-bottom: 36px; }
+  .pr__lb { bottom: 36px; }
+  .st.is-split .st__q, .st.is-split .st__chips span, .st.is-split .st__f .btn { min-height: 38px; }
+  .st.is-split .st__row { grid-template-columns: 1fr 1fr; gap: 14px; }
 }
