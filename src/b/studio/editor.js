@@ -1,7 +1,8 @@
 /* Studio micro: l'editor a tutto schermo. Scrivi sul micro, scegli font, misura, colore, ombra, animazione,
    trascina il testo (si aggancia al centro e ai margini) e scarica l'MP4 con l'audio originale. */
 import { FONTS, PALETTE, SIZES, ANIMS, SAFE, FRAME_W, FRAME_H, drawText, textBox, clampPosition, defaultState, sanitizeState, loadFonts, clamp } from './render.js'
-import { exportVideo, canExport, ExportCanceled } from './export.js'
+/* il motore di export (pesante) si carica solo quando serve */
+const canExport = () => typeof VideoEncoder !== 'undefined' && typeof VideoDecoder !== 'undefined' && typeof VideoFrame !== 'undefined'
 
 const KEY = (n) => `prisma-micro-${n}`
 export const store = {
@@ -253,6 +254,7 @@ export function createEditor({ items, lang = () => 'it', onClose = () => {} }) {
     video.pause()
     try {
       if (!fontsReady) { await loadFonts(); fontsReady = true }
+      const { exportVideo } = await import('./export.js')
       const blob = await exportVideo({ url: it.original, state: snap, signal: ac.signal, onProgress: (p) => { prog.style.transform = `scaleX(${p})`; pct.textContent = `${Math.round(p * 100)}%` } })
       busy = false
       const name = `Isabella-Micro-${it.n}.mp4`
@@ -271,7 +273,7 @@ export function createEditor({ items, lang = () => 'it', onClose = () => {} }) {
       btns.querySelector('button')?.focus()
     } catch (e) {
       busy = false
-      if (e instanceof ExportCanceled) { exp.hidden = true; video.play().catch(() => {}); return }
+      if (e?.name === 'ExportCanceled') { exp.hidden = true; video.play().catch(() => {}); return }
       console.error(e)
       k.textContent = t.err
       btns.innerHTML = `<button type="button" class="se__pill" data-back>${t.back}</button>`
@@ -285,24 +287,44 @@ export function createEditor({ items, lang = () => 'it', onClose = () => {} }) {
     root.hidden = false; document.body.classList.add('is-se')
     sizeCanvas()
     i = Math.max(0, items.findIndex(it => it.n === n))
-    load(); syncSound()
-    cancelAnimationFrame(raf); draw()
-    loadFonts().then(() => { fontsReady = true })
+    /* entra dal basso come le altre finestre; il video parte a finestra ferma */
+    const it = items[i]; state = store.get(it.n); video.poster = it.poster; sync()
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches
+    /* un fotogramma fermo prima di entrare: la finestra arriva già completa */
+    draw(); cancelAnimationFrame(raf)
+    root.classList.add('edge-t')
+    const a = root.animate([{ transform: 'translate3d(0, 100%, 0)' }, { transform: 'translate3d(0, 0, 0)' }], { duration: still ? 0 : 850, easing: 'cubic-bezier(.87, 0, .13, 1)', fill: 'both' })
+    a.finished.catch(() => {}).then(() => {
+      root.classList.remove('edge-t'); a.cancel()
+      if (root.hidden) return
+      load(); syncSound()
+      cancelAnimationFrame(raf); draw()
+      loadFonts().then(() => { fontsReady = true })
+    })
     $('[data-x]').focus({ preventScroll: true })
     history.pushState({ se: 1 }, '', location.hash); pushed = true
   }
   /* quiet: chi chiama gestisce la cronologia; restituisce se c'era un passo da togliere */
+  let closing = false
   function close(quiet = false) {
-    if (root.hidden) return false
+    if (root.hidden || closing) return false
+    closing = true
     const had = pushed; pushed = false
     if (had && !quiet) history.back()
     ac?.abort()
     cancelAnimationFrame(raf)
-    video.pause(); video.removeAttribute('src'); video.load()
-    root.hidden = true; document.body.classList.remove('is-se')
-    onClose()
+    video.pause()
+    const still = matchMedia('(prefers-reduced-motion: reduce)').matches
+    root.classList.add('edge-t')
+    const a = root.animate([{ transform: 'translate3d(0, 0, 0)' }, { transform: 'translate3d(0, 100%, 0)' }], { duration: still ? 0 : 700, easing: 'cubic-bezier(.87, 0, .13, 1)', fill: 'both' })
+    a.finished.catch(() => {}).then(() => {
+      root.classList.remove('edge-t')
+      video.removeAttribute('src'); video.load()
+      root.hidden = true; document.body.classList.remove('is-se'); a.cancel(); closing = false
+      onClose()
+    })
     focusBack?.focus?.({ preventScroll: true })
     return had
   }
-  return { open, close, get isOpen() { return !root.hidden } }
+  return { open, close, get isOpen() { return !root.hidden && !closing } }
 }

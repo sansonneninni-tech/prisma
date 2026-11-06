@@ -2,15 +2,31 @@ import '@fontsource-variable/archivo/wdth.css'
 import './b.css'
 import { gsap } from 'gsap'
 import { LAVORI } from '../data.js'
-import { works, CATS, wireContacts, makeLang, wireForm, viewNav } from '../shared/works.js'
-import { initTetra } from '../tetra.js'
+import { works, CATS, wireContacts, makeLang, wireForm } from '../shared/works.js'
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
 const fine = matchMedia('(hover: hover) and (pointer: fine)').matches
 const $ = (s, r = document) => r.querySelector(s)
 const $$ = (s, r = document) => [...r.querySelectorAll(s)]
-const setH = () => document.documentElement.style.setProperty('--app-h', `${innerHeight}px`)
-setH(); addEventListener('resize', setH)
+/* altezza vera della finestra visibile (le barre del browser sul telefono la cambiano) e posizione della
+   zona visibile nel documento: il body si mette lì. Con la tastiera aperta non si tocca nulla. */
+const coarse = matchMedia('(pointer: coarse)').matches
+function syncVH() {
+  const f = document.activeElement
+  if (coarse && f && f.matches?.('input, textarea, select')) return
+  const vv = window.visualViewport, st = document.documentElement.style
+  const h = Math.round(vv ? vv.height * (vv.scale || 1) : innerHeight)
+  const top = Math.max(0, Math.round((vv && vv.pageTop) || scrollY || 0))
+  if (h > 0) st.setProperty('--app-h', `${h}px`)
+  st.setProperty('--app-page-top', `${top}px`)
+}
+document.documentElement.style.setProperty('--app-slack', coarse ? '240px' : '0px')
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
+scrollTo(0, 0); syncVH()
+addEventListener('resize', syncVH); addEventListener('orientationchange', () => setTimeout(syncVH, 250))
+addEventListener('scroll', syncVH, { passive: true })
+visualViewport?.addEventListener('resize', syncVH); visualViewport?.addEventListener('scroll', syncVH)
+addEventListener('focusout', () => setTimeout(syncVH, 320))
 
 const EN = {
   'nav.1': 'Work', 'nav.2': 'Formats', 'nav.3': 'Studio',
@@ -29,13 +45,13 @@ const EN = {
   'f.ed': 'Editorial', 'f.ed.d': 'The brand story, from concept to colour.',
   'f.ed.1': 'One or more shoot days', 'f.ed.2': 'Direction, light and sound on set', 'f.ed.3': 'Edit, colour grading, sound design',
   'f.sys': 'Content system',
-  'ask': 'Ask', 'ex': 'Watch an example',
+  'ask': 'Ask', 'ex': 'Watch an example', 'pv.k': 'Example',
   'f.note': 'Prices on request: the quote follows the brief.',
   's.h': 'Two people,<br />from&nbsp;brief to export.', 's.alt': 'Ninni and Ernesto, PRISMA',
   's.team': 'Studio · Puglia', 's.ninni': 'Direction, edit, colour', 's.ernesto': 'Production and clients', 's.foto': 'Photography · Ninni &amp; Ernesto',
   's.direct': 'Contacts', 's.clients': 'Clients', 's.name': 'Name', 's.fmt': 'What you need', 's.msg': 'The project, in two lines', 's.send': 'Send',
   's.ok': 'Got it. We’ll reply soon.', 's.err': 'Something went wrong. Write us on WhatsApp.',
-  'all': 'All', 'pl.back': 'All work', 'pl.close': 'Close', 'pl.dl': 'Download original', 'pl.case': 'Open the case', 'drive': 'Watch on Drive',
+  'all': 'All', 'w.one': 'work', 'w.many': 'works', 'pl.back': 'All work', 'pl.close': 'Close', 'pl.dl': 'Download original', 'pl.case': 'Open the case', 'drive': 'Watch on Drive',
   'cs.back': 'Back', 'cs.k': 'Case study · Artist', 'cs.play': 'Watch the editorial with sound', 'cs.pause': 'Pause', 'cs.resume': 'Play', 'cs.audio': 'Sound', 'cs.full': 'Full screen', 'cs.dl': 'Download original',
   'cs.lead': 'An artist needed a steady presence, not a video. We shot one day.', 'cs.k1': 'shoot day', 'cs.k2': 'pieces delivered', 'cs.k3': 'in&nbsp;the&nbsp;reserve', 'cs.k4': 'weeks of&nbsp;posts',
   'cs.sh': 'short', 'cs.sh.d': 'with sound, they open', 'cs.mi': 'micro', 'cs.mi.d': 'write on them and download the video', 'cs.res': 'Reserve: 24 pieces already shot, activated when needed.', 'cs.cta': 'The same system, for you', 'cs.cta.b': 'The content system',
@@ -43,8 +59,8 @@ const EN = {
 }
 const L = makeLang(EN)
 const IT_X = {
-  'pp.play': 'Play', 's.ok': 'Ricevuto. Ti rispondiamo a breve.', 's.alt': 'Ninni ed Ernesto, PRISMA', 's.clients': 'Clienti', 's.err': 'Qualcosa non va. Scrivici su WhatsApp.', all: 'Tutti',
-  'cs.resume': 'Riprendi', 'fa.client': 'Cliente', 'fa.fmt': 'Formato', 'fa.ratio': 'Proporzioni', 'fa.len': 'Durata', 'fa.where': 'Dove',
+  'pp.play': 'Play', 's.ok': 'Ricevuto. Ti rispondiamo a breve.', 's.alt': 'Ninni ed Ernesto, PRISMA', 's.clients': 'Clienti', 's.err': 'Qualcosa non va. Scrivici su WhatsApp.', all: 'Tutti', 'w.one': 'lavoro', 'w.many': 'lavori',
+  'pv.k': 'Esempio', 'cs.resume': 'Riprendi', 'fa.client': 'Cliente', 'fa.fmt': 'Formato', 'fa.ratio': 'Proporzioni', 'fa.len': 'Durata', 'fa.where': 'Dove',
 }
 const t = (k) => (L.get() === 'en' ? EN[k] : (IT_X[k] ?? L.t(k)))
 const tx = (o) => o[L.get()] ?? o.it
@@ -77,25 +93,64 @@ LAVORI.forEach(w => {
   li.append(img); logos.append(li)
 })
 
+/* il bordo che entra porta il filo caldo del segno PRISMA (1 = arriva dal basso, -1 = dall'alto, 0 = via) */
+function edge(el, dir) {
+  el.classList.toggle('edge-t', dir > 0); el.classList.toggle('edge-b', dir < 0)
+}
+/* Movimento sul compositore (Web Animations): i pannelli scorrono anche se il codice è occupato.
+   Due curve per tutto il sito: EIO per i cambi di pagina, EOUT per i contenuti che arrivano. */
+const EIO = 'cubic-bezier(.87, 0, .13, 1)', EOUT = 'cubic-bezier(.16, 1, .3, 1)'
+const ms = (sec) => (reduced ? 0 : sec * 1000)
+function slide(el, from, to, dur, easing = EIO) {
+  const a = el.animate([{ transform: `translate3d(0, ${from}%, 0)` }, { transform: `translate3d(0, ${to}%, 0)` }], { duration: ms(dur), easing, fill: 'both' })
+  return a.finished.catch(() => {}).then(() => a)
+}
+/* i contenuti salgono di poco e compaiono, uno dopo l'altro; si somma ai transform che hanno già */
+function rise(kids, { y = 24, at = .38, each = .04, dur = .7, fade = true } = {}) {
+  if (reduced) return
+  kids.forEach((k, i) => {
+    const o = { duration: ms(dur), delay: ms(at + i * each), easing: EOUT, fill: 'backwards' }
+    /* translate (non transform): si somma da solo ai transform esistenti e resta sul compositore */
+    k.animate([{ translate: `0 ${y}px` }, { translate: '0 0' }], o)
+    if (fade) k.animate([{ opacity: 0 }, {}], o)
+  })
+}
+/* finestre a tutto schermo: entrano dal basso ed escono verso il basso */
+function sheetIn(el, kids) {
+  edge(el, 1)
+  rise(kids, { y: 30 })
+  return slide(el, 100, 0, .85).then(a => { edge(el, 0); a.cancel() })
+}
+function sheetOut(el, done) {
+  edge(el, 1)
+  return slide(el, 0, 100, .7).then(a => { edge(el, 0); done(); a.cancel() })
+}
+
 /* ---------- apertura: il prisma rifrange la luce, poi il video ---------- */
 const load = $('[data-load]')
-const tetra = initTetra($('[data-tetra]'), { reduced })
-tetra.kick(3)
+/* i raggi corrono in CSS dal primo fotogramma; qui si decide solo quando il velo sale */
 function reveal() {
-  const d = reduced ? 0 : 1
-  const tl = gsap.timeline({ delay: reduced ? 0 : .25 })
-  tl.fromTo('.load__in', { scaleX: 0, transformOrigin: '0% 50%' }, { scaleX: 1, duration: .7 * d, ease: 'power2.in' })
-    .fromTo('.load__out', { scaleX: 0, opacity: .92, transformOrigin: '0% 50%' }, { scaleX: 1, duration: .8 * d, ease: 'expo.out', stagger: .07 }, '>-.05')
-    .to(load, { clipPath: 'inset(0 0 100% 0)', duration: .9 * d, ease: 'expo.inOut', onComplete: () => { load.remove(); tetra.pause() } }, '+=.35')
-    .from('.lg', { yPercent: 30, opacity: 0, duration: .9 * d, ease: 'expo.out', clearProps: 'transform,opacity' }, '-=.4')
-  return tl
+  if (reduced || !load) { load?.remove(); return }
+  const dl = Math.max(0, 2350 - performance.now())
+  load.style.setProperty('--dl', `${dl}ms`)
+  load.classList.add('is-go')
+  load.addEventListener('animationend', (e) => { if (e.animationName === 'loadOut') load.remove() })
+  gsap.from('.lg svg', { yPercent: 30, opacity: 0, duration: .9, ease: 'expo.out', delay: dl / 1000 + .5, clearProps: 'transform,opacity' })
 }
+/* il logo cambia misura solo con transform: qui si calcola il rapporto tra piccolo e grande */
+function logoK() {
+  const m = (v) => { const i = document.createElement('i'); i.style.cssText = `position:absolute;visibility:hidden;width:var(${v})`; document.body.append(i); const w = i.offsetWidth; i.remove(); return w }
+  const big = m('--lgw'), small = m('--lgw-s')
+  if (big) document.documentElement.style.setProperty('--lgk', (small / big).toFixed(4))
+}
+logoK(); addEventListener('resize', logoK)
 
 /* ---------- home: video a tutto schermo ---------- */
 const all = works().map(w => ({ ...w, hover: w.preview ? w.preview.replace('preview.mp4', 'hover.mp4') : null }))
 const REEL = {
-  h: { src: '/media/_reel/reel-h.mp4', poster: '/media/_reel/reel-h.jpg', seg: 4, names: ['DF Marmi'] },
-  v: { src: '/media/_reel/reel-v.mp4', poster: '/media/_reel/reel-v.jpg', seg: 3.6, names: ['Archemi', 'Petali', 'T.G.T.M.', 'Trailer', 'Edward'] },
+  /* il film della home (WebPrisma): intero sul computer, ritagliato in verticale sul telefono */
+  h: { src: '/media/_reel/home-h.mp4', poster: '/media/_reel/home-h.jpg', seg: 22, names: ['Showreel'] },
+  v: { src: '/media/_reel/home-v.mp4', poster: '/media/_reel/home-v.jpg', seg: 22, names: ['Showreel'] },
 }
 const rv = $('[data-reel] video')
 const now = $('[data-reel-now]')
@@ -105,6 +160,8 @@ function setReel() {
   if (k === reelKind) return
   reelKind = k
   rv.src = REEL[k].src; rv.poster = REEL[k].poster; rv.loop = true
+  /* la copertina sotto il video: mentre il reel si carica si vede già l'immagine */
+  rv.parentElement.style.background = `#111 url(${REEL[k].poster}) center / cover no-repeat`
   if (cur === 0 && !paused) rv.play().catch(() => {})
 }
 rv.addEventListener('timeupdate', () => {
@@ -115,6 +172,9 @@ rv.addEventListener('timeupdate', () => {
 rv.addEventListener('playing', () => rv.classList.add('is-on'))
 addEventListener('resize', setReel)
 function playReel() { setReel(); if (!paused && pl.hidden) rv.play().catch(() => {}) }
+/* telefoni in risparmio energetico bloccano l'avvio automatico: al primo tocco il film parte */
+const kick = () => { if (cur === 0 && !paused && pl.hidden && rv.paused) rv.play().catch(() => {}) }
+addEventListener('touchend', kick, { passive: true }); addEventListener('click', kick)
 const pp = $('[data-reel-pp]')
 pp.addEventListener('click', () => {
   paused = !paused
@@ -145,8 +205,7 @@ const band = $('[data-band]')
 function buildBand() {
   const cats = ['all', 'editoriale', 'social', 'evento', 'sistema', 'original']
   const one = cats.map(c => `<button type="button" data-f="${c}" aria-pressed="${c === filter}">${c === 'all' ? t('all') : tx(CATS[c])}</button>`).join('')
-  band.innerHTML = `<div class="band__t"><span>${one}</span><span aria-hidden="true">${one}</span><span aria-hidden="true">${one}</span><span aria-hidden="true">${one}</span></div>`
-  $$('[aria-hidden] button', band).forEach(b => { b.tabIndex = -1 })
+  band.innerHTML = `<div class="band__t">${one}</div>`
 }
 band.addEventListener('click', (e) => {
   const b = e.target.closest('[data-f]'); if (!b) return
@@ -162,7 +221,7 @@ function applyFilter() {
     $('a', li).tabIndex = on ? 0 : -1
     if (on) n++
   })
-  meta.textContent = `${n} / ${all.length} — ${filter === 'all' ? t('all') : tx(CATS[filter])}`
+  meta.textContent = `${n} ${t(n === 1 ? 'w.one' : 'w.many')} — ${filter === 'all' ? t('all') : tx(CATS[filter])}`
 }
 let hot = null
 function showBg(w, a) {
@@ -182,7 +241,9 @@ function showBg(w, a) {
   }
 }
 if (fine) {
-  idx.addEventListener('pointerover', (e) => { const a = e.target.closest('a[data-i]'); if (a && a !== hot) showBg(all[a.dataset.i], a) })
+  let hovT = 0
+  idx.addEventListener('pointerover', (e) => { const a = e.target.closest('a[data-i]'); if (!a || a === hot) return; clearTimeout(hovT); hovT = setTimeout(() => showBg(all[a.dataset.i], a), hot ? 40 : 0) })
+  idx.addEventListener('pointerleave', () => clearTimeout(hovT))
   idx.addEventListener('pointerleave', () => showBg(null))
 }
 idx.addEventListener('focusin', (e) => { const a = e.target.closest('a[data-i]'); if (a) showBg(all[a.dataset.i], a) })
@@ -198,9 +259,14 @@ function fitStage() {
   const w = plList[plIdx]; if (!w) return
   const [a, b] = (w.ratio || '16/9').split('/').map(Number)
   const r = a / b
-  const W = plStage.clientWidth, H = plStage.clientHeight
+  const duo = !matchMedia('(max-width: 1024px) and (orientation: portrait)').matches
+  const iw = Math.min(340, Math.max(250, innerWidth * .24)), gap = Math.min(48, Math.max(20, innerWidth * .03))
+  const cw = pl.clientWidth - parseFloat(getComputedStyle(pl).paddingLeft) - parseFloat(getComputedStyle(pl).paddingRight)
+  const W = duo ? cw - iw - gap : plStage.clientWidth, H = plStage.clientHeight
   const width = Math.min(W, H * r), height = width / r
-  ;[plV, plImg].forEach(el => { el.style.width = `${Math.floor(width)}px`; el.style.height = `${Math.floor(height)}px` })
+  pl.classList.toggle('is-duo', duo)
+  pl.style.gridTemplateColumns = duo ? `${Math.floor(width)}px ${iw}px` : ''
+  ;[plV, plImg, plCtl].forEach(el => { el.style.width = `${Math.floor(width)}px`; el.style.height = `${Math.floor(height)}px` })
 }
 new ResizeObserver(() => fitStage()).observe(plStage)
 function facts(w, len) {
@@ -209,7 +275,44 @@ function facts(w, len) {
   if (w.drive) rows.push([t('fa.where'), 'Google Drive'])
   $('[data-pl-facts]').innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')
 }
-function plShow() {
+/* comandi del lettore */
+const plCtl = $('[data-pl-ctl]'), plBar = $('[data-pl-bar]'), plProg = $('[data-pl-prog]')
+let plIdleT = 0
+function plWake() {
+  plCtl.classList.remove('is-idle'); clearTimeout(plIdleT)
+  if (!plV.paused) plIdleT = setTimeout(() => plCtl.classList.add('is-idle'), 2200)
+}
+function plSync() {
+  $('[data-pl-tl]').textContent = t(plV.paused ? 'cs.resume' : 'cs.pause')
+  $('[data-pl-audio]').setAttribute('aria-pressed', String(!plV.muted)); $('[data-pl-snd]').textContent = plV.muted ? 'off' : 'on'
+}
+const plTick = () => {
+  if (!plV.duration) return
+  const k = plV.currentTime / plV.duration
+  plBar.style.transform = `scaleX(${k})`; plProg.setAttribute('aria-valuenow', String(Math.round(k * 100)))
+  $('[data-pl-time]').textContent = `${fmtTime(plV.currentTime)} / ${fmtTime(plV.duration)}`
+}
+plV.addEventListener('timeupdate', plTick)
+;['play', 'pause', 'volumechange'].forEach(ev => plV.addEventListener(ev, () => { plSync(); plWake() }))
+plV.addEventListener('click', () => { plV.paused ? plV.play() : plV.pause() })
+$('[data-pl-toggle]').addEventListener('click', () => { plV.paused ? plV.play() : plV.pause() })
+$('[data-pl-audio]').addEventListener('click', () => { plV.muted = !plV.muted })
+$('[data-pl-full]').addEventListener('click', () => { if (plV.requestFullscreen) plV.requestFullscreen().catch(() => {}); else plV.webkitEnterFullscreen?.() })
+const plSeek = (x) => { const r = plProg.getBoundingClientRect(); if (plV.duration) plV.currentTime = Math.max(0, Math.min(1, (x - r.left) / r.width)) * plV.duration }
+plProg.addEventListener('pointerdown', (e) => { plSeek(e.clientX); plProg.setPointerCapture(e.pointerId) })
+plProg.addEventListener('pointermove', (e) => { if (plProg.hasPointerCapture(e.pointerId)) plSeek(e.clientX) })
+plProg.addEventListener('keydown', (e) => { if (!plV.duration) return; if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); e.stopPropagation(); plV.currentTime += e.key === 'ArrowRight' ? 5 : -5 } })
+$('[data-pl-stage]').addEventListener('pointermove', plWake)
+plCtl.addEventListener('focusin', plWake)
+function plPlay() {
+  const w = plList[plIdx]
+  if (pl.hidden || !w?.src) return
+  if (plV.dataset.src !== w.src) { plV.dataset.src = w.src; plV.src = w.src }
+  plV.muted = false
+  plV.play().catch(() => { plV.muted = true; plV.play().catch(() => {}) })
+}
+function plStop() { plV.pause(); plV.removeAttribute('src'); delete plV.dataset.src; plV.load() }
+function plShow(play = true) {
   const w = plList[plIdx]
   $('[data-pl-cat]').textContent = tx(CATS[w.cat])
   $('[data-pl-title]').textContent = w.title
@@ -218,12 +321,13 @@ function plShow() {
   const dl = $('[data-pl-dl]'), cs = $('[data-pl-case]')
   facts(w)
   if (w.src) {
-    plImg.hidden = true; plDrive.hidden = true; plV.hidden = false
-    plV.poster = w.poster; plV.src = w.src; plV.muted = false
-    plV.play().catch(() => { plV.muted = true; plV.play().catch(() => {}) })
+    plImg.hidden = true; plDrive.hidden = true; plV.hidden = false; plCtl.hidden = false
+    plBar.style.transform = 'scaleX(0)'; $('[data-pl-time]').textContent = ''
+    plV.poster = w.poster
+    if (play) plPlay(); else if (plV.dataset.src !== w.src) plStop()
     dl.hidden = false; dl.href = w.dl; dl.setAttribute('download', w.dl.split('/').pop())
   } else {
-    plV.pause(); plV.removeAttribute('src'); plV.load(); plV.hidden = true
+    plStop(); plV.hidden = true; plCtl.hidden = true
     plImg.hidden = false; plImg.src = w.poster; plImg.alt = w.title
     plDrive.hidden = false; plDrive.href = w.drive
     dl.hidden = true
@@ -259,11 +363,11 @@ function plOpen(w, list = listFor(), push = true, back = null) {
   pl.hidden = false
   document.body.classList.add('is-pl')
   if (push) { history.pushState({ pl: 1 }, '', w.short ? '#isabella' : `#lavori/${w.id}`); plPushed = true }
-  plShow()
+  prismOff()
+  plShow(false)
   const d = reduced ? 0 : 1
-  gsap.timeline()
-    .fromTo(pl, { clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: .8 * d, ease: 'expo.inOut', clearProps: 'clipPath' })
-    .fromTo([plStage, ...$$('.pl__info > *', pl)], { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: .7 * d, ease: 'expo.out', stagger: .04, clearProps: 'transform,opacity' }, .35 * d)
+  /* il video parte quando la finestra è ferma: niente decodifica durante il movimento */
+  sheetIn(pl, [plStage, ...$$('.pl__info > *', pl)]).then(() => plPlay())
   pl.focus({ preventScroll: true })
 }
 function plClose(fromPop = false) {
@@ -272,16 +376,15 @@ function plClose(fromPop = false) {
   plPushed = false
   pl.dataset.closing = '1'
   plV.pause()
-  gsap.to(pl, {
-    clipPath: 'inset(0 0 100% 0)', duration: reduced ? 0 : .7, ease: 'expo.inOut', onComplete: () => {
-      pl.hidden = true; delete pl.dataset.closing; gsap.set(pl, { clearProps: 'clipPath' })
-      plV.removeAttribute('src'); plV.load()
+  sheetOut(pl, () => {
+      pl.hidden = true; delete pl.dataset.closing
+      plStop()
       document.body.classList.remove('is-pl')
       history.replaceState(null, '', csOpenNow() ? '#isabella' : `#${HASH[cur]}`)
       pl.dataset.back = ''; $('.pl__back [data-i18n]', pl).textContent = t('pl.back')
       if (cur === 0 && !csOpenNow()) playReel()
+      if (cur === 2 && !csOpenNow()) prismOn()
       plFocus?.focus?.({ preventScroll: true })
-    },
   })
 }
 const plStep = (d) => { plIdx = (plIdx + d + plList.length) % plList.length; plShow() }
@@ -325,7 +428,7 @@ function thumb(kind, it, k) {
   const b = document.createElement('button')
   b.type = 'button'; b.className = `cs__tb cs__tb--${kind}`; b.dataset.k = k
   b.setAttribute('aria-label', kind === 'sh' ? it.title : `Micro ${String(it.n).padStart(2, '0')}`)
-  b.innerHTML = `<img src="${it.poster}" alt="" loading="lazy" decoding="async" />${kind === 'mi' ? '<canvas></canvas>' : ''}<span>${String(kind === 'sh' ? k + 1 : it.n).padStart(2, '0')}</span>`
+  b.innerHTML = `<img src="${it.poster}" alt="" decoding="async" />${kind === 'mi' ? '<canvas></canvas>' : ''}<span>${String(kind === 'sh' ? k + 1 : it.n).padStart(2, '0')}</span>`
   return b
 }
 function csBuild() {
@@ -419,11 +522,11 @@ function csOpen(push = true) {
   rv.pause(); showBg(null)
   cs.hidden = false; document.body.classList.add('is-cs')
   if (push) { history.pushState({ cs: 1 }, '', '#isabella'); csPushed = true }
-  edIdle(); edSync()
+  prismOff()
+  ed.dataset.state = 'idle'; edSync()
   const d = reduced ? 0 : 1
-  gsap.timeline()
-    .fromTo(cs, { clipPath: 'inset(100% 0 0 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: .8 * d, ease: 'expo.inOut', clearProps: 'clipPath' })
-    .fromTo([ed, ...$$('.cs__info > *', cs)], { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: .7 * d, ease: 'expo.out', stagger: .04, clearProps: 'transform,opacity' }, .35 * d)
+  /* il video di anteprima parte a finestra ferma; prima si vede la copertina */
+  sheetIn(cs, [ed, ...$$('.cs__info > *', cs)]).then(() => { if (csOpenNow()) { edIdle(); edSync(); paintMicros() } })
   cs.focus({ preventScroll: true })
 }
 function csClose(fromPop = false, after = null) {
@@ -434,16 +537,15 @@ function csClose(fromPop = false, after = null) {
   csPushed = false
   cs.dataset.closing = '1'
   edV.pause()
-  gsap.to(cs, {
-    clipPath: 'inset(0 0 100% 0)', duration: reduced ? 0 : .7, ease: 'expo.inOut', onComplete: () => {
-      cs.hidden = true; delete cs.dataset.closing; gsap.set(cs, { clearProps: 'clipPath' })
+  sheetOut(cs, () => {
+      cs.hidden = true; delete cs.dataset.closing
       edV.removeAttribute('src'); delete edV.dataset.src; edV.load()
       document.body.classList.remove('is-cs')
       history.replaceState(null, '', `#${HASH[cur]}`)
       if (cur === 0) playReel()
+      if (cur === 2) prismOn()
       const f = after || csAfter; csAfter = null
       if (f) f(); else csFocus?.focus?.({ preventScroll: true })
-    },
   })
 }
 let csAfter = null
@@ -451,8 +553,8 @@ $$('[data-cs-close]', cs).forEach(b => b.addEventListener('click', () => csClose
 $('[data-cs-sys]', cs).addEventListener('click', (e) => {
   e.preventDefault()
   csClose(false, () => {
-    nav.go(2)
-    setTimeout(() => { fmtSc.scrollTo({ top: sysEl.offsetTop, behavior: reduced ? 'auto' : 'smooth' }); const h = $('#t-sys'); h.tabIndex = -1; h.focus({ preventScroll: true }) }, reduced ? 0 : 1000)
+    nav.go(2, 1)
+    setTimeout(() => { const h = $('#t-sys'); h.tabIndex = -1; h.focus({ preventScroll: true }) }, reduced ? 0 : 1000)
   })
 })
 addEventListener('popstate', () => {
@@ -481,11 +583,60 @@ function acToggle(li, open) {
   gsap.killTweensOf(b)
   if (open) {
     b.hidden = false
-    gsap.fromTo(b, { height: 0, opacity: 0 }, { height: 'auto', opacity: 1, duration: reduced ? 0 : .55, ease: 'expo.out', clearProps: 'height,opacity' })
+    /* apertura e chiusura con la stessa curva e la stessa durata: l'altezza totale resta ferma.
+       Il blocco si apre, i suoi contenuti salgono di poco uno dopo l'altro */
+    gsap.fromTo(b, { height: 0 }, { height: 'auto', duration: reduced ? 0 : .5, ease: 'power3.inOut', clearProps: 'height' })
+    rise([...b.children], { y: 10, at: .12, each: .05, dur: .55 })
+    /* il video cambia a riga ferma: le due animazioni non si sovrappongono */
+    setTimeout(() => { if (li.classList.contains('is-open')) pvShow(li.dataset.fmt) }, ms(.5))
   } else {
-    gsap.to(b, { height: 0, opacity: 0, duration: reduced ? 0 : .4, ease: 'expo.inOut', onComplete: () => { b.hidden = true; gsap.set(b, { clearProps: 'height,opacity' }) } })
+    gsap.to(b, { height: 0, opacity: 0, duration: reduced ? 0 : .5, ease: 'power3.inOut', onComplete: () => { b.hidden = true; gsap.set(b, { clearProps: 'height,opacity' }) } })
   }
 }
+/* ---------- formati, schermi larghi: a destra gira l'esempio del formato aperto ----------
+   Un video per formato, creato solo quando serve; si alternano in dissolvenza (sul compositore)
+   e gira solo quello visibile, solo con la pagina Formati davanti. */
+const pv = $('[data-pv]'), pvSt = $('[data-pv-st]', pv), pvCap = $('[data-pv-cap]', pv)
+const pvWide = matchMedia('(min-width: 1101px) and (min-height: 600px)')
+const pvV = {}
+let pvCur = null
+const pgAt = { 2: 0, 3: 0 }
+const pvWork = (fmt) => { const li = $(`.ac__i[data-fmt="${fmt}"]`, ac); return { li, w: all.find(x => x.id === $('[data-ex]', li).dataset.ex) } }
+function pvFit() {
+  const W = pvSt.clientWidth, H = pvSt.clientHeight
+  Object.values(pvV).forEach(v => { const [a, b] = v.dataset.r.split('/').map(Number), r = a / b, w = Math.min(W, H * r); v.style.width = `${Math.round(w)}px`; v.style.height = `${Math.round(w / r)}px` })
+  if (pvCur && pvV[pvCur]) pvSt.style.setProperty('--pvh', pvV[pvCur].style.height)
+}
+new ResizeObserver(pvFit).observe(pvSt)
+function pvCapPaint() {
+  if (!pvCur) return
+  const { li, w } = pvWork(pvCur)
+  pvCap.innerHTML = `<b>${t('pv.k')}</b> ${w.title} · ${$('.ac__t', li).textContent} · ${w.ratio.replace('/', ':')}`
+}
+function pvShow(fmt) {
+  if (!pvWide.matches || !fmt || fmt === pvCur) return
+  const { w } = pvWork(fmt)
+  if (!w) return
+  if (!pvV[fmt]) {
+    const v = document.createElement('video')
+    v.className = 'fp__v'; v.setAttribute('aria-hidden', 'true'); v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'auto'
+    v.poster = w.poster; v.dataset.r = w.ratio || '9/16'; v.src = w.hover || w.preview || w.src
+    pvSt.append(v); pvV[fmt] = v; pvFit()
+  }
+  pvCur = fmt
+  Object.entries(pvV).forEach(([k, v]) => v.classList.toggle('is-on', k === fmt))
+  pvSt.style.setProperty('--pvh', pvV[fmt].style.height)
+  pv.dataset.ex = w.id
+  pvCapPaint(); pvSync()
+}
+function pvSync() {
+  const live = cur === 2 && pgAt[2] === 0 && !document.body.classList.contains('is-pl') && !document.body.classList.contains('is-cs') && !reduced
+  Object.entries(pvV).forEach(([k, v]) => { if (live && k === pvCur) v.play().catch(() => {}); else if (!v.paused) setTimeout(() => { if (k !== pvCur || !live) v.pause() }, k === pvCur ? 0 : 650) })
+}
+new MutationObserver(pvSync).observe(document.body, { attributes: true, attributeFilter: ['class'] })
+pvSt.addEventListener('click', () => { const b = $(`[data-ex="${pv.dataset.ex}"]`, ac); if (b) b.click() })
+pvWide.addEventListener('change', () => { if (cur === 2) pvShow(($('.ac__i.is-open', ac) || $('.ac__i', ac)).dataset.fmt) })
+
 ac.addEventListener('click', (e) => {
   const h = e.target.closest('.ac__h')
   if (h) { const li = h.closest('.ac__i'); const open = !li.classList.contains('is-open'); $$('.ac__i', ac).forEach(x => acToggle(x, x === li && open)); return }
@@ -501,37 +652,38 @@ for (let i = 0; i < 38; i++) ticksEl.append(document.createElement('i'))
 const ticks = $$('i', ticksEl)
 const rays = $$('.pr__rays line', prism)
 rays.forEach(l => { l.dataset.x = l.getAttribute('x2'); l.dataset.y = l.getAttribute('y2') })
-const dotsG = $('.pr__dots', prism)
 /* i raggi finiscono prima della loro etichetta, a qualsiasi larghezza; l'etichetta sta al centro del suo fascio */
 rays.forEach(l => { l.dataset.ox = l.dataset.x; l.dataset.oy = l.dataset.y })
 const prSvg = $('.pr__svg', prism)
-let raysOpen = true
+let raysOpen = true, prPx = 1
 function fitRays() {
   const w = prSvg.clientWidth, h = prSvg.clientHeight
   if (!w) return
   const k = 700 / w
-  ;['1', '2', '3'].forEach(g => {
-    const lb = $(`.pr__l--${g}`, prism), group = rays.filter(l => l.dataset.g === g)
-    const end = Math.min(700, (lb.offsetLeft - 16) * k)
+  const G = ['1', '2', '3'].map(g => { const lb = $(`.pr__l--${g}`, prism); return { g, lb, left: lb.offsetLeft, hh: lb.offsetHeight } })
+  G.forEach(o => {
+    const end = Math.min(700, (o.left - 16) * k)
     let sy = 0
+    const group = rays.filter(l => l.dataset.g === o.g)
     group.forEach(l => {
       const t = (end - 375) / (700 - 375)
       l.dataset.x = end; l.dataset.y = 126 + (+l.dataset.oy - 126) * t; sy += +l.dataset.y
       if (raysOpen) { l.setAttribute('x2', l.dataset.x); l.setAttribute('y2', l.dataset.y) }
     })
-    lb.style.top = `${(sy / group.length) / 300 * h - lb.offsetHeight / 2}px`
+    o.top = (sy / group.length) / 300 * h - o.hh / 2
   })
   /* su schermi stretti le etichette non si sovrappongono: la prima sale se serve */
-  const l1 = $('.pr__l--1', prism), l2 = $('.pr__l--2', prism)
-  const over = l1.offsetTop + l1.offsetHeight + 4 - l2.offsetTop
-  if (over > 0) l1.style.top = `${l1.offsetTop - over}px`
+  const over = G[0].top + G[0].hh + 4 - G[1].top
+  if (over > 0) G[0].top -= over
+  G.forEach(o => { o.lb.style.top = `${o.top}px` })
+  prPx = w / 700
 }
 new ResizeObserver(fitRays).observe(prSvg)
 const SVGNS = 'http://www.w3.org/2000/svg'
 const IN = [[0, 152], [285, 126], [375, 126]]
 let sysTl = null, sysLoop = null, sysSeen = false
 const stepOn = (n) => () => { steps.forEach((li, k) => li.classList.toggle('is-on', k === n)); stpList.classList.remove('is-done') }
-function countUp(el, to, d = .9) { const o = { v: 0 }; return gsap.to(o, { v: to, duration: d, ease: 'power2.out', onUpdate: () => { el.textContent = Math.round(o.v) } }) }
+function countUp(el, to, d = .9) { const o = { v: 0 }; let last = -1; return gsap.to(o, { v: to, duration: d, ease: 'power2.out', onUpdate: () => { const n = Math.round(o.v); if (n !== last) { last = n; el.textContent = n } } }) }
 function sysFinal() {
   steps.forEach(li => li.classList.remove('is-on')); stpList.classList.add('is-done')
   ticks.forEach((t, k) => { t.className = k < 14 ? 'is-rdy' : 'is-res' })
@@ -542,24 +694,26 @@ function sysFinal() {
   fitRays()
   $$('.pr__l b', prism).forEach(b => { b.textContent = b.dataset.n })
 }
-/* la luce che continua a scorrere: un impulso entra nel prisma e si divide nei raggi */
+/* la luce che continua a scorrere: un impulso entra nel prisma e si divide nei raggi.
+   Sempre gli stessi punti, mossi solo con transform sopra il disegno (niente SVG ridisegnato). */
+const pulseEl = document.createElement('div'); pulseEl.className = 'pr__pulse'; pulseEl.setAttribute('aria-hidden', 'true')
+prism.append(pulseEl)
+const pIn = document.createElement('i'); pIn.className = 'is-in'; pulseEl.append(pIn)
+const pOut = rays.map(l => { const d = document.createElement('i'); d.style.background = l.getAttribute('stroke'); pulseEl.append(d); return d })
+const P = (x, y) => ({ x: x * prPx, y: y * prPx })
 function pulse() {
   const tl = gsap.timeline()
-  const c = document.createElementNS(SVGNS, 'circle')
-  c.setAttribute('r', 3); c.setAttribute('cx', IN[0][0]); c.setAttribute('cy', IN[0][1]); c.setAttribute('fill', '#0B0A0A'); dotsG.append(c)
-  tl.fromTo(c, { attr: { cx: IN[0][0], cy: IN[0][1] }, opacity: 0 }, { attr: { cx: IN[1][0], cy: IN[1][1] }, opacity: 1, duration: 1.1, ease: 'power1.in' })
-    .to(c, { attr: { cx: IN[2][0], cy: IN[2][1] }, fill: '#E8722A', duration: .35, ease: 'none' })
-    .add(() => c.remove())
-  rays.forEach((l) => {
-    const d = document.createElementNS(SVGNS, 'circle')
-    d.setAttribute('r', 2.4); d.setAttribute('cx', 375); d.setAttribute('cy', 126); d.setAttribute('fill', l.getAttribute('stroke')); d.setAttribute('opacity', 0); dotsG.append(d)
-    tl.fromTo(d, { attr: { cx: 375, cy: 126 }, opacity: 1 }, { attr: { cx: +l.dataset.x, cy: +l.dataset.y }, opacity: 0, duration: 1.5, ease: 'power1.out', onComplete: () => d.remove() }, 1.45)
+  tl.fromTo(pIn, { ...P(IN[0][0], IN[0][1]), opacity: 0, backgroundColor: '#0B0A0A' }, { ...P(IN[1][0], IN[1][1]), opacity: 1, duration: 1.1, ease: 'power1.in' })
+    .to(pIn, { ...P(IN[2][0], IN[2][1]), backgroundColor: '#E8722A', duration: .35, ease: 'none' })
+    .set(pIn, { opacity: 0 })
+  rays.forEach((l, k) => {
+    tl.fromTo(pOut[k], { ...P(375, 126), opacity: 1 }, { ...P(+l.dataset.x, +l.dataset.y), opacity: 0, duration: 1.5, ease: 'power1.out' }, 1.45)
   })
   return tl
 }
 /* stato di partenza: niente è visibile prima del suo passaggio */
 function sysEmpty() {
-  sysTl?.kill(); sysLoop?.kill(); dotsG.innerHTML = ''
+  sysTl?.kill(); sysLoop?.kill(); gsap.set([pIn, ...pOut], { opacity: 0 })
   if (reduced) { sysFinal(); return }
   steps.forEach(li => li.classList.remove('is-on')); stpList.classList.remove('is-done')
   ticks.forEach(t => { t.className = '' })
@@ -613,35 +767,8 @@ function sysReset() { sysEmpty(); sysSeen = false }
 let edgeLoop = null
 function prismOn() { if (reduced) return; edgeLoop ??= gsap.timeline({ repeat: -1, yoyo: true }).to('#prEdge', { attr: { x1: 198, x2: 362 }, duration: 3.4, ease: 'sine.inOut' }, 0).to('.pr__warm', { scale: 1.06, transformOrigin: '50% 50%', duration: 3.4, ease: 'sine.inOut' }, 0); edgeLoop.play(); sysLoop?.play() }
 function prismOff() { edgeLoop?.pause(); sysLoop?.pause() }
-new IntersectionObserver((es) => {
-  es.forEach(e => {
-    const half = e.isIntersecting && (e.intersectionRatio > .5 || e.intersectionRect.height > e.rootBounds.height * .5)
-    if (half && !sysSeen) { sysSeen = true; sysPlay() }
-    /* a filo del bordo conta come uscito, così tornando si rivede */
-    if (e.intersectionRatio < .04 && sysSeen) sysReset()
-  })
-}, { root: fmtSc, threshold: [0, .04, .25, .5, .55, .75, 1] }).observe(sysEl)
-$('[data-to-sys]').addEventListener('click', (e) => { e.preventDefault(); fmtSc.scrollTo({ top: sysEl.offsetTop, behavior: reduced ? 'auto' : 'smooth' }) })
 sysEmpty()
 
-/* sul desktop i due pannelli dei Formati vanno a pagine: un gesto, un pannello */
-const fmtPaged = () => getComputedStyle(fmtSc).scrollSnapType.includes('mandatory') || sysEl.offsetHeight <= fmtSc.clientHeight + 2
-let fmtLock = 0
-function fmtPage(dir) {
-  if (!fmtPaged()) return false
-  const top = fmtSc.scrollTop, s = sysEl.offsetTop
-  if (dir > 0 && top < s - 4) { fmtSc.scrollTo({ top: s, behavior: reduced ? 'auto' : 'smooth' }); return true }
-  if (dir < 0 && top > 4 && top <= s + 4) { fmtSc.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' }); return true }
-  return false
-}
-fmtSc.addEventListener('wheel', (e) => {
-  if (Math.abs(e.deltaY) < 2) return
-  const now = performance.now()
-  if (now < fmtLock) { e.preventDefault(); e.stopPropagation(); return }
-  if (fmtPage(Math.sign(e.deltaY))) { e.preventDefault(); e.stopPropagation(); fmtLock = now + 950 }
-}, { passive: false })
-
-/* ---------- schermate ---------- */
 const views = $$('[data-v]')
 const HASH = ['home', 'lavori', 'formati', 'studio']
 const pos = $('[data-pos]')
@@ -650,8 +777,12 @@ const hashView = () => HASH.indexOf(location.hash.slice(1).split('/')[0])
 let cur = location.hash === '#isabella' ? 2 : Math.max(0, hashView())
 const deepId = location.hash.slice(1).split('/')[1]
 const deepCase = location.hash === '#isabella'
-function ui(i) {
-  document.body.className = document.body.className.replace(/\bat-\d\b/g, '').trim() + ` at-${i}`
+let uiT = 0
+function ui(i, later = 0) {
+  /* il colore della testata cambia quando la nuova pagina passa davvero sotto la testata */
+  const at = () => { document.body.className = document.body.className.replace(/\bat-\d\b/g, '').trim() + ` at-${i}` }
+  clearTimeout(uiT)
+  if (later) uiT = setTimeout(() => { if (cur === i) at() }, later); else at()
   $$('.hd__nav a').forEach(a => a.classList.toggle('is-on', +a.dataset.go === i))
   pos.textContent = String(i + 1).padStart(2, '0')
   if (pl.hidden) history.replaceState(null, '', `#${HASH[i]}`)
@@ -660,57 +791,236 @@ function onEnter(i) {
   if (i === 0) playReel(); else rv.pause()
   if (i !== 1) showBg(null)
   if (i === 2) prismOn(); else prismOff()
+  if (i === 2) pvShow(($('.ac__i.is-open', ac) || $('.ac__i', ac)).dataset.fmt)
+  pvSync()
 }
-const D = reduced ? 0 : .95
-function transition(i, dir, from) {
-  const a = views[from], b = views[i]
-  cur = i
-  ui(i)
-  if (i !== 2) prismOff()
-  return new Promise(res => {
-    b.classList.add('is-in')
-    const sc = $('.scrl', b); if (sc) sc.scrollTop = 0
-    const kids = [...b.querySelectorAll('.idx li, .band, .sys > *, .one > *, .st > *')]
-    const tl = gsap.timeline({ onComplete: () => { a.classList.remove('is-on'); b.classList.remove('is-in'); b.classList.add('is-on'); gsap.set([a, b], { clearProps: 'clipPath,transform' }); onEnter(i); res() } })
-    tl.fromTo(b, { clipPath: dir > 0 ? 'inset(100% 0 0 0)' : 'inset(0 0 100% 0)' }, { clipPath: 'inset(0% 0 0 0)', duration: D, ease: 'expo.inOut' })
-      .to(a, { yPercent: -12 * dir, duration: D, ease: 'expo.inOut' }, 0)
-    if (kids.length) tl.fromTo(kids, { y: 24 * dir, opacity: 0 }, { y: 0, opacity: 1, duration: reduced ? 0 : .7, ease: 'expo.out', stagger: { each: .025, from: dir > 0 ? 'start' : 'end' }, clearProps: 'transform,opacity' }, D * .45)
+/* ---------- pagine: un gesto (rotella, dito, tasto) = una pagina ----------
+   Tra un capitolo e l'altro passa il lampo caldo; dentro una sezione (Formati, Studio sul telefono)
+   la pagina scorre via pulita, senza lampo. Tutto sul compositore. */
+const flash = $('.flash')
+const stMQ = matchMedia('(max-width: 1024px) and (orientation: portrait), (orientation: landscape) and (max-height: 520px)')
+const PG = {
+  2: { box: fmtSc, el: [$('.fp--one', fmtSc), sysEl], on: () => true },
+  3: { box: $('.st', views[3]), el: [$('.st__about', views[3]), $('.st__ct', views[3])], on: () => stMQ.matches },
+}
+const split = (i) => !!PG[i] && PG[i].on()
+const pgN = (i) => (split(i) ? PG[i].el.length : 1)
+const pgEl = (i = cur) => (split(i) ? PG[i].el[pgAt[i]] : null)
+function pgLayout() {
+  Object.entries(PG).forEach(([i, p]) => {
+    const on = p.on()
+    if (!on) pgAt[i] = 0
+    p.box.classList.toggle('is-split', on)
+    p.el.forEach((e, k) => { e.classList.toggle('pg', on); e.classList.toggle('is-cur', on && k === pgAt[i]); e.classList.remove('is-mv') })
   })
 }
-
-/* le schermate che scorrono dentro (telefono, tablet) cambiano pagina solo dal bordo */
-let touchTop = null
-addEventListener('touchstart', () => { const sc = $('.v.is-on .scrl'); touchTop = sc ? sc.scrollTop : null }, { passive: true })
-function canNav(e) {
-  if (!pl.hidden || csOpenNow() || document.querySelector('[data-load]')) return false
-  const sc = $('.v.is-on .scrl')
-  if (!sc || sc.scrollHeight <= sc.clientHeight + 2) return true
-  const atTop = sc.scrollTop <= 1, atEnd = sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 2
-  if (e.type === 'wheel') {
-    const edge = e.deltaY > 0 ? atEnd : atTop
-    /* la rotella sopra l'intestazione muove comunque la schermata */
-    if (!edge && !sc.contains(e.target) && Math.abs(e.deltaY) >= 2) {
-      const now = performance.now()
-      if (sc === fmtSc && (now < fmtLock || fmtPage(Math.sign(e.deltaY)))) { if (now >= fmtLock) fmtLock = now + 950 }
-      else sc.scrollBy({ top: e.deltaY })
-    }
-    return edge
+pgLayout()
+stMQ.addEventListener('change', () => { if (!busy) pgLayout() })
+/* la parte che scorre davvero, se il contenuto non sta in una schermata (schermi molto bassi, una riga aperta) */
+function scroller(i = cur) {
+  const e = pgEl(i) || $('.scrl', views[i])
+  return e && e.scrollHeight > e.clientHeight + 2 ? e : null
+}
+const atEdge = (sc, dir) => (dir > 0 ? sc.scrollTop + sc.clientHeight >= sc.scrollHeight - 2 : sc.scrollTop <= 1)
+const KIDS = '.band, .one > *, .fp__pv, .sys__txt > *, .pr, .st__img, .st__txt > *, .st__ct > *'
+const kidsOf = (r) => [...r.querySelectorAll(KIDS)].filter(e => e.getClientRects().length)
+/* il sistema racconta i passaggi quando la sua pagina è davanti; uscendo si azzera, così tornando si rivede */
+let sysT = 0
+function pgEnter(i) {
+  clearTimeout(sysT)
+  if (i === 2 && pgAt[2] === 1) { if (!sysSeen) { sysSeen = true; sysT = setTimeout(() => { if (cur === 2 && pgAt[2] === 1) sysPlay() }, ms(.22)) } }
+  /* l'azzeramento misura il prisma: si fa a pagina ferma, quando il browser è libero */
+  else if (sysSeen) { sysSeen = false; sysT = setTimeout(() => { if (!(cur === 2 && pgAt[2] === 1)) sysEmpty() }, 160) }
+  pvSync()
+}
+let busy = false, lockUntil = 0, queued = 0, runAt = 0
+/* un gesto nuovo che arriva mentre la pagina sta ancora arrivando non va perso: parte appena finisce */
+async function run(f) {
+  busy = true; runAt = performance.now()
+  try { await f() } finally {
+    busy = false; lockUntil = performance.now() + 60
+    flushSoon()
   }
-  if (e.type === 'touchend') return touchTop === sc.scrollTop && (atTop || atEnd)
-  if (e.type === 'keydown') {
-    if (e.target.closest?.('input,textarea,select') || (e.key === ' ' && e.target.closest?.('button,a'))) return true
-    const dir = ['ArrowDown', 'PageDown', ' '].includes(e.key) ? 1 : ['ArrowUp', 'PageUp'].includes(e.key) ? -1 : 0
-    if (!dir) return true
-    if (sc === fmtSc && fmtPage(dir)) { e.preventDefault(); return false }
-    if (dir > 0 ? !atEnd : !atTop) { e.preventDefault(); sc.scrollBy({ top: dir * sc.clientHeight * .8, behavior: reduced ? 'auto' : 'smooth' }); return false }
+}
+/* dentro la sezione: le due pagine scorrono insieme, come un foglio solo */
+async function stepTo(i, k, dir) {
+  const p = PG[i], a = p.el[pgAt[i]], b = p.el[k]
+  pgAt[i] = k
+  b.scrollTop = dir > 0 ? 0 : b.scrollHeight
+  if (document.activeElement && a.contains(document.activeElement)) document.activeElement.blur()
+  b.classList.add('is-mv')
+  /* il racconto del sistema si ferma mentre la pagina scorre via (niente lavoro sotto l'animazione) */
+  if (i === 2 && k === 0) { sysTl?.pause(); sysLoop?.pause() }
+  if (reduced) { a.classList.remove('is-cur'); b.classList.add('is-cur'); b.classList.remove('is-mv'); pgEnter(i); return }
+  a.classList.add('is-mv')
+  rise(kidsOf(b), { y: 26 * dir, at: .32, each: .03, dur: .75 })
+  const out = slide(a, 0, -100 * dir, .9), inn = slide(b, 100 * dir, 0, .9)
+  const [oa, ia] = await Promise.all([out, inn])
+  a.classList.remove('is-cur', 'is-mv'); b.classList.add('is-cur'); b.classList.remove('is-mv')
+  oa.cancel(); ia.cancel()
+  pgEnter(i)
+}
+/* tra i capitoli: la tenda calda sale e copre (0,3 s), sotto cambia la pagina, poi si ritira verso l'alto.
+   La tenda è ancorata in basso: scaleY + translateY fanno anche la ritirata dall'alto, tutto in un'animazione sola */
+const FL_IN = 300, FL_HOLD = 20, FL_OUT = 420, FL = FL_IN + FL_HOLD + FL_OUT
+const P2 = 'cubic-bezier(.45, 0, .55, 1)', P3 = 'cubic-bezier(.215, .61, .355, 1)'
+function chapter(i, dir, k) {
+  const from = cur, a = views[from], b = views[i]
+  cur = i
+  if (PG[i] && split(i)) { pgAt[i] = k; PG[i].el.forEach((e, n) => e.classList.toggle('is-cur', n === k)) }
+  if (reduced) ui(i)
+  if (i !== 2) prismOff()
+  if (from === 2) { sysTl?.pause(); sysLoop?.pause() }
+  if (document.activeElement && a.contains(document.activeElement)) document.activeElement.blur()
+  const sc = pgEl(i) || $('.scrl', b); if (sc) sc.scrollTop = dir > 0 ? 0 : sc.scrollHeight
+  const done = () => {
+    a.classList.remove('is-on'); b.classList.remove('is-in'); b.classList.add('is-on')
+    /* il lavoro della pagina nuova parte al fotogramma dopo, non nello stesso della fine animazione */
+    requestAnimationFrame(() => requestAnimationFrame(() => { if (cur === i) { onEnter(i); pgEnter(i) } }))
   }
+  if (reduced) { done(); return Promise.resolve() }
+  b.classList.add('is-in')
+  const o1 = FL_IN / FL, o2 = (FL_IN + FL_HOLD) / FL
+  const f = flash.animate(dir > 0 ? [
+    { transform: 'translateY(0%) scaleY(0)', easing: P2 }, { offset: o1, transform: 'translateY(0%) scaleY(1)' },
+    { offset: o2, transform: 'translateY(0%) scaleY(1)', easing: P2 }, { transform: 'translateY(-100%) scaleY(0)' },
+  ] : [
+    { transform: 'translateY(-100%) scaleY(0)', easing: P2 }, { offset: o1, transform: 'translateY(0%) scaleY(1)' },
+    { offset: o2, transform: 'translateY(0%) scaleY(1)', easing: P2 }, { transform: 'translateY(0%) scaleY(0)' },
+  ], { duration: FL })
+  /* la testata cambia colore quando la tenda copre davvero (tempo dell'animazione, non un timer) */
+  flash.animate([{ opacity: 1 }, { opacity: 1 }], { duration: FL_IN }).finished.then(() => { if (cur === i) ui(i) }).catch(() => {})
+  /* sotto la tenda: la vecchia sparisce e la nuova c'è, nello stesso istante, senza aspettare il codice */
+  const ao = a.animate([{ opacity: 1 }, { opacity: 0 }], { duration: FL_IN, easing: 'step-end', fill: 'forwards' })
+  const bo = b.animate([{ opacity: 0 }, { opacity: 1 }], { duration: FL_IN, easing: 'step-end' })
+  const bm = b.animate([{ transform: `translate3d(0, ${3 * dir}%, 0)` }, { transform: 'none' }], { duration: 580, delay: FL_IN, easing: P3, fill: 'backwards' })
+  const at = FL_IN / 1000 + .02
+  const ix = $('.idx', b)
+  rise(dir > 0 ? kidsOf(b.querySelector('.pg.is-cur') || b) : kidsOf(b.querySelector('.pg.is-cur') || b).reverse(), { y: 22 * dir, at, each: .025, dur: .75 })
+  if (ix) {
+    const li = $$('li', ix)
+    rise(dir > 0 ? li : li.reverse(), { y: 22 * dir, at, each: .022, fade: false, dur: .75 })
+    if (!reduced) ix.animate([{ opacity: 0 }, {}], { duration: ms(.6), delay: ms(at), easing: EOUT, fill: 'backwards' })
+  }
+  return Promise.all([f, bm].map(x => x.finished.catch(() => {}))).then(() => { done(); ao.cancel(); bo.cancel(); bm.cancel(); f.cancel() })
+}
+const DBG = location.search.includes('debug')
+let qT = 0
+function flushSoon() {
+  clearTimeout(qT)
+  if (!queued) return
+  qT = setTimeout(() => { if (busy) return; if (performance.now() < lockUntil) { flushSoon(); return } const d = queued; queued = 0; page(d, 'queue') }, Math.max(0, lockUntil - performance.now()) + 10)
+}
+function page(dir, src = '') {
+  if (DBG) (window.__pg ||= []).push([Math.round(performance.now()), dir, busy, Math.round(performance.now() - runAt), cur, src])
+  /* in coda solo verso la fine del passaggio: all'inizio è ancora lo stesso gesto */
+  if (busy || performance.now() < lockUntil) { if (free() && performance.now() - runAt > 250) { queued = dir; if (!busy) flushSoon() } return false }
+  const k = split(cur) ? pgAt[cur] : 0
+  if (k + dir >= 0 && k + dir < pgN(cur)) { run(() => stepTo(cur, k + dir, dir)); return true }
+  const i = cur + dir
+  if (i < 0 || i >= views.length) return false
+  run(() => chapter(i, dir, dir > 0 ? 0 : pgN(i) - 1))
   return true
 }
-const nav = viewNav(views.length, transition, { start: cur, canNav })
+function goTo(i, k = 0) {
+  if (busy) return
+  i = Math.max(0, Math.min(views.length - 1, i)); k = Math.min(k, pgN(i) - 1)
+  if (i === cur) { if (split(i) && k !== pgAt[i]) run(() => stepTo(i, k, k > pgAt[i] ? 1 : -1)); return }
+  run(() => chapter(i, i > cur ? 1 : -1, k))
+}
+const nav = { go: goTo, get cur() { return cur } }
+const free = () => pl.hidden && !csOpenNow() && !document.querySelector('[data-load]')
+
+/* rotella e trackpad: l'inerzia non conta come gesto nuovo; se il gesto ha fatto scorrere un contenuto lungo, non cambia pagina */
+/* Un gesto = una pagina. L'inerzia del trackpad (numeri che calano piano) appartiene al gesto che l'ha
+   lanciata; un colpo nuovo si riconosce anche dentro la coda d'inerzia, perché i numeri risalgono di scatto. */
+let wAcc = 0, wLast = 0, wMag = 0, wDir = 0, wSpent = false, wPeak = 0, wDecay = false, wFloor = Infinity
+function wheelFresh(mag, d) {
+  const now = performance.now(), gap = now - wLast
+  let fresh = gap > 170
+  if (!fresh && wSpent && wDir && d !== wDir && mag >= Math.max(8, wMag * 1.25)) fresh = true
+  if (!fresh && wSpent && d === wDir && wDecay && mag >= 8 && mag > wMag * 1.5 && mag >= wFloor * 2.4) fresh = true
+  wLast = now
+  if (fresh) { wSpent = false; wAcc = 0; wPeak = 0; wDecay = false; wFloor = Infinity }
+  if (wSpent) {
+    wPeak = Math.max(wPeak, mag)
+    if (mag < wPeak * .5) wDecay = true
+    if (wDecay) wFloor = Math.min(wFloor, mag)
+  }
+  wMag = mag; wDir = d
+  return fresh
+}
+function wheelSpend(mag) { wSpent = true; wPeak = mag; wDecay = false; wFloor = Infinity }
+addEventListener('wheel', (e) => {
+  if (!free() || e.ctrlKey || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return
+  const dy = e.deltaY * (e.deltaMode === 1 ? 36 : e.deltaMode === 2 ? innerHeight : 1)
+  if (Math.abs(dy) < 1) return
+  const mag = Math.abs(dy), d = Math.sign(dy)
+  wheelFresh(mag, d)
+  const sc = scroller()
+  if (sc && !atEdge(sc, d)) {
+    /* la rotella sopra la testata muove comunque il contenuto */
+    if (!sc.contains(e.target)) { e.preventDefault(); sc.scrollBy({ top: dy }) }
+    wheelSpend(mag); return
+  }
+  e.preventDefault()
+  if (wSpent) return
+  wAcc += dy
+  if (Math.abs(wAcc) > 24) { wheelSpend(mag); page(Math.sign(wAcc), 'wheel'); wAcc = 0 }
+}, { passive: false })
+
+/* dito: la pagina non scorre mai da sola; il gesto verticale cambia pagina appena supera la soglia.
+   Solo un contenuto più lungo della schermata scorre col dito, e cambia pagina dal suo bordo. */
+let tch = null
+addEventListener('touchstart', (e) => {
+  tch = null
+  /* con la tastiera aperta il dito fa quello che fa sempre; sopra un campo chiuso il gesto cambia pagina come altrove */
+  if (e.touches.length !== 1 || !free() || document.activeElement?.matches?.('input, textarea, select')) return
+  const t = e.touches[0], sc = scroller()
+  tch = { x: t.clientX, y: t.clientY, t: performance.now(), sc: sc && sc.contains(e.target) ? sc : null, top: sc ? sc.scrollTop : 0, axis: '', done: false }
+}, { passive: true })
+const TH = () => Math.max(42, innerHeight * .06)
+addEventListener('touchmove', (e) => {
+  if (!tch) return
+  if (e.touches.length !== 1) { tch = null; return }
+  const t = e.touches[0], dx = t.clientX - tch.x, dy = tch.y - t.clientY
+  if (!tch.axis && Math.hypot(dx, dy) > 6) tch.axis = Math.abs(dy) >= Math.abs(dx) ? 'y' : 'x'
+  if (tch.axis === 'x') return
+  if (tch.sc) return
+  if (e.cancelable) e.preventDefault()
+  if (!tch.done && tch.axis === 'y' && Math.abs(dy) > TH()) { tch.done = true; page(Math.sign(dy), 'move') }
+}, { passive: false })
+addEventListener('touchend', (e) => {
+  const s = tch; tch = null
+  if (!s || s.done || s.axis === 'x' || !e.changedTouches.length) return
+  const t = e.changedTouches[0], dx = t.clientX - s.x, dy = s.y - t.clientY, dt = performance.now() - s.t
+  const dir = Math.sign(dy)
+  /* un colpetto veloce vale come gesto anche se corto */
+  const ok = Math.abs(dy) > Math.abs(dx) * 1.15 && (Math.abs(dy) > TH() * .8 || (Math.abs(dy) > 22 && dt < 260))
+  if (!ok) return
+  if (s.sc && (s.sc.scrollTop !== s.top || !atEdge(s.sc, dir))) return
+  page(dir, 'end')
+}, { passive: true })
+addEventListener('touchcancel', () => { tch = null }, { passive: true })
+
+addEventListener('keydown', (e) => {
+  if (!free() || e.repeat || e.metaKey || e.ctrlKey || e.altKey || e.target.closest?.('input,textarea,select')) return
+  const k = e.key
+  if (k === 'Home') { e.preventDefault(); goTo(0); return }
+  if (k === 'End') { e.preventDefault(); goTo(views.length - 1, pgN(views.length - 1) - 1); return }
+  const dir = ['ArrowDown', 'PageDown'].includes(k) || (k === ' ' && !e.target.closest?.('button,a')) ? 1 : ['ArrowUp', 'PageUp'].includes(k) ? -1 : 0
+  if (!dir) return
+  e.preventDefault()
+  const sc = scroller()
+  if (sc && !atEdge(sc, dir)) { sc.scrollBy({ top: dir * sc.clientHeight * .8, behavior: reduced ? 'auto' : 'smooth' }); return }
+  page(dir)
+})
+$('[data-to-sys]').addEventListener('click', (e) => { e.preventDefault(); goTo(2, 1) })
 $$('[data-go]').forEach(a => a.addEventListener('click', (e) => {
   e.preventDefault()
   if (a.dataset.ask) { const r = $(`[data-ask-chips] input[value="${a.dataset.ask}"]`); if (r) r.checked = true }
-  const go = () => nav.go(+a.dataset.go)
+  /* "Chiedi" porta dritto al modulo */
+  const go = () => nav.go(+a.dataset.go, a.dataset.ask ? 9 : 0)
   if (!pl.hidden) { plClose(); setTimeout(() => { if (csOpenNow()) csClose(false, go); else go() }, reduced ? 0 : 750) } else if (csOpenNow()) csClose(false, go); else go()
 }))
 addEventListener('hashchange', () => {
@@ -718,19 +1028,29 @@ addEventListener('hashchange', () => {
   const [h, id] = location.hash.slice(1).split('/')
   const i = HASH.indexOf(h)
   if (id && pl.hidden) { const w = all.find(x => x.id === id); if (w) { if (cur !== 1) nav.go(1); plOpen(w, listFor(), false) } return }
-  if (i >= 0 && pl.hidden) nav.go(i)
+  if (i >= 0 && pl.hidden && !csOpenNow() && i !== cur) nav.go(i)
 })
 
 views.forEach((v, k) => v.classList.toggle('is-on', k === cur))
 ui(cur)
 buildBand(); buildIdx()
 document.addEventListener('langchange', () => {
-  buildBand(); applyFilter(); paint()
+  buildBand(); applyFilter(); paint(); pvCapPaint()
   if (!pl.hidden) { plShow(); $('.pl__back [data-i18n]', pl).textContent = pl.dataset.back || t('pl.back') }
   if (csOpenNow()) edSync()
 })
 L.apply(L.get())
 reveal()
+/* il caso e l'editor si preparano quando il sito è fermo: all'apertura c'è solo l'animazione */
+{
+  const idle = window.requestIdleCallback || ((f) => setTimeout(f, 200))
+  const prep = () => idle(() => {
+    csBuild()
+    $$('.cs__tb img', cs).forEach(img => img.decode?.().catch(() => {}))
+    idle(() => { import('./studio/studio.css'); import('./studio/editor.js'); import('./studio/render.js') })
+  }, { timeout: 4000 })
+  if (document.readyState === 'complete') setTimeout(prep, 2600); else addEventListener('load', () => setTimeout(prep, 2600), { once: true })
+}
 if (cur === 0) playReel()
 if (cur === 2) prismOn()
 /* link diretto a un lavoro: #lavori/<id> */
