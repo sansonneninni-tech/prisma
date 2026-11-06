@@ -94,8 +94,9 @@ function reveal() {
 /* ---------- home: video a tutto schermo ---------- */
 const all = works().map(w => ({ ...w, hover: w.preview ? w.preview.replace('preview.mp4', 'hover.mp4') : null }))
 const REEL = {
-  h: { src: '/media/_reel/reel-h.mp4', poster: '/media/_reel/reel-h.jpg', seg: 4, names: ['DF Marmi'] },
-  v: { src: '/media/_reel/reel-v.mp4', poster: '/media/_reel/reel-v.jpg', seg: 3.6, names: ['Archemi', 'Petali', 'T.G.T.M.', 'Trailer', 'Edward'] },
+  /* il film della home (WebPrisma): intero sul computer, ritagliato in verticale sul telefono */
+  h: { src: '/media/_reel/home-h.mp4', poster: '/media/_reel/home-h.jpg', seg: 22, names: ['Showreel'] },
+  v: { src: '/media/_reel/home-v.mp4', poster: '/media/_reel/home-v.jpg', seg: 22, names: ['Showreel'] },
 }
 const rv = $('[data-reel] video')
 const now = $('[data-reel-now]')
@@ -115,6 +116,9 @@ rv.addEventListener('timeupdate', () => {
 rv.addEventListener('playing', () => rv.classList.add('is-on'))
 addEventListener('resize', setReel)
 function playReel() { setReel(); if (!paused && pl.hidden) rv.play().catch(() => {}) }
+/* telefoni in risparmio energetico bloccano l'avvio automatico: al primo tocco il film parte */
+const kick = () => { if (cur === 0 && !paused && pl.hidden && rv.paused) rv.play().catch(() => {}) }
+addEventListener('touchend', kick, { passive: true }); addEventListener('click', kick)
 const pp = $('[data-reel-pp]')
 pp.addEventListener('click', () => {
   paused = !paused
