@@ -148,9 +148,9 @@ logoK(); addEventListener('resize', logoK)
 /* ---------- home: video a tutto schermo ---------- */
 const all = works().map(w => ({ ...w, hover: w.preview ? w.preview.replace('preview.mp4', 'hover.mp4') : null }))
 const REEL = {
-  /* il film della home (WebPrisma): intero sul computer, ritagliato in verticale sul telefono */
-  h: { src: '/media/_reel/home-h.mp4', poster: '/media/_reel/home-h.jpg', seg: 22, names: ['Showreel'] },
-  v: { src: '/media/_reel/home-v.mp4', poster: '/media/_reel/home-v.jpg', seg: 22, names: ['Showreel'] },
+  /* il film della home: versione orizzontale sul computer, versione verticale sul telefono */
+  h: { src: '/media/_reel/film-h.mp4', poster: '/media/_reel/film-h.jpg', seg: 22, names: ['Showreel'] },
+  v: { src: '/media/_reel/film-v.mp4', poster: '/media/_reel/film-v.jpg', seg: 22, names: ['Showreel'] },
 }
 const rv = $('[data-reel] video')
 const now = $('[data-reel-now]')
