@@ -1,7 +1,7 @@
 /* Studio micro: stesso linguaggio del sito (fondo chiaro, filo sottile, etichette tecniche) */
 .se {
-  position: fixed; inset: 0; z-index: 55; height: var(--app-h); background: var(--bg); color: var(--ink);
-  display: grid; grid-template-rows: auto minmax(0, 1fr);
+  position: absolute; inset: 0; z-index: 55; height: var(--app-h); background: var(--bg); color: var(--ink);
+  display: grid; grid-template-rows: auto minmax(0, 1fr); grid-template-columns: minmax(0, 1fr);
 }
 .se[hidden] { display: none; }
 body.is-se { overflow: hidden; }
@@ -37,8 +37,7 @@ body.is-se { overflow: hidden; }
 .se__canvas { z-index: 2; touch-action: none; cursor: grab; }
 .se__frame.is-drag .se__canvas { cursor: grabbing; }
 .se__sound {
-  position: absolute; z-index: 3; right: 10px; top: 10px; padding: 6px 9px; background: rgba(239, 237, 233, .88); color: var(--ink);
-  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  position: absolute; z-index: 3; right: 10px; top: 10px; padding: 6px 9px; background: rgba(239, 237, 233, .94); color: var(--ink);
 }
 .se__sound[aria-pressed="true"] span { color: var(--red); }
 .se__time { position: absolute; z-index: 3; left: 0; right: 0; bottom: 0; height: 2px; background: rgba(255, 255, 255, .2); pointer-events: none; }
@@ -97,7 +96,7 @@ body.is-se { overflow: hidden; }
 .se__save { justify-content: center; padding: 13px 14px; }
 .se__note { color: var(--ink-3); text-align: center; }
 
-.se__export { position: absolute; inset: 0; z-index: 5; display: grid; place-items: center; background: rgba(239, 237, 233, .9); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.se__export { position: absolute; inset: 0; z-index: 5; display: grid; place-items: center; background: rgba(239, 237, 233, .96); }
 .se__export[hidden] { display: none; }
 .se__card { width: min(360px, calc(100% - 2 * var(--pad))); display: grid; gap: 12px; }
 .se__card .se__k { color: var(--ink); margin: 0; }
@@ -129,4 +128,19 @@ body.is-se { overflow: hidden; }
   .se__close, .se__reset, .se__sound, .se__pill, .se__done { min-height: 40px; }
   .se__arrow { width: 40px; height: 36px; }
   .se__colors { grid-template-columns: repeat(6, 34px); justify-content: space-between; gap: 10px 0; }
+}
+
+/* telefoni bassi: più spazio ai comandi, la cornice resta leggibile */
+@media (max-width: 700px) and (orientation: portrait) and (max-height: 640px) {
+  .se__body { grid-template-rows: minmax(0, 40%) minmax(0, 1fr); }
+}
+@media (max-width: 340px) {
+  .se__colors { grid-template-columns: repeat(6, 30px); }
+}
+@media (max-width: 360px) {
+  .se__bar { gap: 6px; }
+  .se__close, .se__reset { white-space: nowrap; }
+  .se__nav { gap: 4px; }
+  .se__title { min-width: 0; }
+  .se__arrow { width: 34px; }
 }
